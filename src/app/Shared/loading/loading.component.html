@@ -1,0 +1,12 @@
+
+  <ng-container *ngIf="display=='full'">
+    <div  class="loading-div">
+      <ng-content #verfiymessage></ng-content>
+      <p-progressSpinner class="loader-div" ></p-progressSpinner>
+      </div>
+  </ng-container>
+  <ng-container *ngIf="display==='part'" >
+  <div class="loader-container  ">
+    <p-progressSpinner class="loader-part"></p-progressSpinner>
+  </div>
+  </ng-container>

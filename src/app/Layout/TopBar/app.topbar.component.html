@@ -1,0 +1,128 @@
+<div class="layout-topbar">
+    <div class="layout-topbar-wrapper">
+        <div class="layout-topbar-left">
+            <a tabindex="0" class="menu-button" (click)="appMain.onMenuButtonClick($event)">
+                <i class="pi pi-bars"></i>
+            </a>
+            <a tabindex="0" id="logo-link" class="layout-topbar-logo relative"
+                (click)="appMain.onMenuButtonClick($event)">
+                <ng-container *ngIf="!currentLogo">
+                    <img [style.transform]="currentLang=='ar'?'scaleX(-1)':null" src="assets/images/diwanlogo.svg" width="75"
+                        alt="freya-layout" />
+                    <span [style.left.px]="currentLang=='en'?62:null" [style.right.px]="currentLang=='ar'?62:null"
+                        [style.top]="currentLang=='ar'?'10%':'12%'" class="text-4xl absolute font-bold logo-text"
+                        translate>Diwan</span>
+                </ng-container>
+
+                <ng-container *ngIf="currentLogo">
+                    <img [src]="currentLogo" width="200" alt="freya-layout" />
+                </ng-container>
+
+
+            </a>
+        </div>
+
+
+        <app-menu></app-menu>
+
+        <div class="layout-topbar-right">
+            <!-- [class]="currentLang=='ar'?'menu-ar':'menu-en'" -->
+            <ul class="layout-topbar-actions ">
+                <!-- <li #searchItem class="topbar-item search-item" [ngClass]="{'active-topmenuitem': appMain.search}">
+                    <a tabindex="0" (click)="appMain.onTopbarItemClick($event,searchItem)">
+                        <i class="topbar-icon pi pi-search"></i>
+                    </a>
+
+                    <div class="search-input-wrapper">
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input type="text" pInputText placeholder="Search..."
+                                (click)="appMain.searchClick = true;" />
+                        </span>
+                    </div>
+
+                    <ul class="fadeInDown">
+                        <div class="search-input-wrapper p-fluid" style="width: 100%">
+                            <span class="p-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <input type="text" pInputText placeholder="Search..."
+                                    (click)="appMain.searchClick = true;" />
+                            </span>
+                        </div>
+                    </ul>
+                </li> -->
+
+                <li #lang class="topbar-item user-profile "
+                    [ngClass]="{'active-topmenuitem fadeInDown': appMain.activeTopbarItem === lang}">
+                    <a href="#" (click)="appMain.onTopbarItemClick($event,lang)">
+                        <i class="topbar-icon pi pi-globe"></i>
+
+                    </a>
+                    <ul class="fadeInDown">
+                        <li (click)="changeLang('en')" class="block" > 
+                            <a class="block text-right" >
+                                <span>English</span>
+                            </a>
+                        </li>
+                        <li (click)="changeLang('ar')"  class="block" >
+                            <a class="block text-right" >
+                                <span>العربية</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li #notification class="topbar-item search-item ml-3"
+                    [ngClass]="{'active-topmenuitem': appMain.search}">
+                    <a tabindex="0">
+                        <i class="topbar-icon pi pi-bell "></i>
+                    </a>
+                </li>
+
+                <li #profile class="topbar-item user-profile "
+                    [ngClass]="{'active-topmenuitem fadeInDown': appMain.activeTopbarItem === profile}">
+                    <a href="#" (click)="appMain.onTopbarItemClick($event,profile)">
+                        <img [src]="user?.photo||'./assets/images/user.png'" alt="freya-layout" />
+                    </a>
+                    <ul class="fadeInDown">
+                        <li>
+                            <a href="#">
+                                <span>
+                                    <span class="mx-2 pi pi-user-edit"></span>
+
+                                    {{'Account'|translate}}
+
+                                </span>
+                            </a>
+                        </li>
+                        <li (click)="logOut()">
+                            <a>
+                                <span>
+                                    <span class="mx-2 pi pi-sign-out"></span>
+
+                                    {{'Log Out'|translate}}
+
+                                </span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+                <div class="mx-2 pt-4 cursor-pointer topbar-username"
+                    (click)="appMain.onTopbarItemClick($event,profile)">
+                    <div class="text-lg font-semibold text-800 pb-3"> {{user.displayName}} <li
+                            class="pi pi-chevron-down mx-1">
+                        </li>
+                    </div>
+                    <!-- <div class="text-sm font-semibold text-500 mb-4">Front Developer</div> -->
+
+                </div>
+
+            </ul>
+            <!-- 
+            <a href="#" tabindex="0" class="layout-rightpanel-button" (click)="appMain.onRightPanelClick($event)">
+                <i class="pi pi-arrow-left"></i>
+            </a> -->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,71 @@
+<app-loading *ngIf="loading" display="full"></app-loading>
+<p-toast position="top-right"></p-toast>
+<div class="flex flex-wrap justify-content-center2">
+    <div class=" w-6 h-screen bg-blue-600 flex align-items-center justify-content-center" style="overflow-y: hidden;">
+        <!-- background -->
+        <img style="background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 100%;
+        width: 100%;" [src]="currentBacground ?currentBacground :'assets/images/cover.png'" >
+    </div>
+    <div class=" w-6  h-screen bg-white flex align-items-center justify-content-center relative">
+        <div class="login-body w-6">
+            <div class="login-wrapper ">
+
+                <button pButton pRipple type="button" icon="pi pi-globe" class="p-button-text absolute mt-1"
+                    [style.left]="lang=='ar'?'96%':'1%'" (click)="menu.toggle($event)"></button>
+                <p-menu #menu [popup]="true" appendTo="body" [model]="langs"></p-menu>
+
+                <div class="grid ">
+                    <div class="col-12 text-center">
+                        <div class=" relative logo-marign">
+                            <ng-container *ngIf="!currentLogo">
+                                <img [src]="'assets/images/diwanlogo.svg'" width="120" alt="freya-layout" />
+                                <span [style.right]="lang=='ar'?'20%':null" [style.top]="lang=='ar'?'28%':'32%'"
+                                    class="text-5xl absolute font-bold logo-text" translate>Diwan</span>
+                            </ng-container>
+                            <ng-container *ngIf="currentLogo">
+                                <img [src]="currentLogo" width="200" alt="freya-layout" />
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="col-12 ">
+                        <div class="text-lg font-semibold mb-2" translate>
+                            User Name
+                        </div>
+                        <input pInputText id="email" [(ngModel)]="user" placeholder="{{'User Name'|translate}}"
+                            class="p-inputtext-lg" />
+
+                    </div>
+                    <div class="col-12 pt-2">
+                        <div class="text-lg font-semibold mb-2" translate>
+                            Password
+                        </div>
+                        <input pInputText id="password" type="password" [(ngModel)]="password" class="p-inputtext-lg"
+                            placeholder=" {{'Password'|translate}}" />
+                    </div>
+
+
+                    <div class="col-12 text-center pt-5">
+                        <button *ngIf="!loading" pButton pRipple [style.background]="primaryColor"
+                            [style.borderColor]="primaryColor" [label]="'LOGIN'|translate" (click)="login()"
+                            type="button" class="p-button-lg w-12"></button>
+
+                        <div class="mt-3 ">
+                            <a href="#" translate class="font-semibold text-500 text-lg">forget password?</a>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="login-footer py-2">
+                    <h6 translate>Diwan-footer</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

@@ -1,0 +1,28 @@
+<div class="layout-wrapper" [ngClass]="{
+    'layout-sidebar': app.menuMode === 'sidebar',
+    'layout-static': app.menuMode === 'sidebar' && sidebarStatic,
+    'layout-horizontal': app.menuMode === 'horizontal',
+    'layout-rightpanel-active': rightPanelActive,
+    'layout-slim': app.menuMode === 'slim',
+    'layout-mobile-active': staticMenuMobileActive,
+    'p-input-filled': app.inputStyle === 'filled', 'p-ripple-disabled': !app.ripple}"
+     [class]="'layout-menu-'+ app.menuTheme+ ' layout-topbar-'+ app.topbarTheme"
+     (click)="onLayoutClick()">
+
+    <app-topbar></app-topbar>
+
+    <!-- <app-rightpanel></app-rightpanel> -->
+
+    <app-config ></app-config>
+
+    <div [class]="lang=='ar'?'layout-main-ar':null" class="layout-main "  [style.overflow-x]="currentUrl=='/'?'hidden':null">
+         <div class="layout-content"  [style.padding.px]="currentUrl=='/'?0:null" >
+
+            <router-outlet></router-outlet>
+         </div>
+
+         <!-- <app-footer></app-footer> -->
+     </div>
+
+    <div class="layout-mask modal-in"></div>
+</div>

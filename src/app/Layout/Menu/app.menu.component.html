@@ -1,0 +1,36 @@
+<div [style.right]="lang=='ar'?0:null" class="menu-wrapper" [ngClass]="{'layout-sidebar-active': appMain.sidebarActive}"
+    (click)="appMain.onSidebarClick($event)" (mouseover)="appMain.onSidebarMouseOver($event)"
+    (mouseleave)="appMain.onSidebarMouseLeave($event)">
+    <div class="sidebar-logo">
+
+        <!-- <a href="#" class="p-button-lg p-button-text" (click)="appMain.onToggleMenu($event)">
+            
+
+        </a> -->
+        <button pButton pRipple type="button" class="p-button-lg p-button-text p-button-secondary"
+            icon=" font-semibold text-2xl pi pi-bars"></button>
+
+    </div>
+    <div #menuContainer class="layout-menu-container">
+        <ul class="layout-menu">
+            <li app-menuitem *ngFor="let item of model; let i = index;" [item]="item" [index]="i" [root]="true"
+                (click)="activeControlPanel=false;activeTeamPanel=false"></li>
+        </ul>
+        <div [style.padding-top.px]="menuContainer.offsetHeight-560">
+            <ul class="layout-menu">
+                <li>
+                    <a (click)="navToContorlPanal()" [class.active-route]="activeControlPanel">
+                        <i class=" pi pi-cog text-color"></i>
+                    </a>
+                </li>
+                <li>
+                    <a (click)="navToTeamPanal()" [class.active-route]="activeTeamPanel">
+                        <i class="pi pi-users text-color" ></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+</div>

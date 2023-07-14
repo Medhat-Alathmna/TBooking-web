@@ -1,0 +1,43 @@
+@keyframes ui-progress-spinner-color {
+  100%,
+  0% {
+    stroke: #d62d20;
+  }
+  40% {
+    stroke: #0057e7;
+  }
+  66% {
+    stroke: #008744;
+  }
+  80%,
+  90% {
+    stroke: #ffa700;
+  }
+}
+
+
+.loader-div {
+  left: 50%;
+  margin-left: -4em;
+}
+.loader-div, .loader-div:after {
+  width: 8em;
+  height: 8em;
+  display: block;
+  position: absolute;
+  top: 50%;
+  margin-top: -4.05em;
+}
+
+
+.loader-container{
+  display: block;
+  position: relative;
+  text-align: center;
+}
+
+
+::ng-deep .loader-part .p-progress-spinner{
+  width: 80px !important;
+  height: 80px !important;
+}
