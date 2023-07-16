@@ -28,7 +28,7 @@ import { MenuService } from './app.menu.service';
 				<i class="pi pi-fw pi-chevron-down layout-submenu-toggler" *ngIf="item.items"></i>
 			</a>
             <div class="layout-menu-tooltip">
-                <div  [class.tooltip-arrow-ar]="currentLang=='ar'" class="layout-menu-tooltip-arrow"></div>
+                <div  [class.tooltip-arrow-ar]="currentlang!='en'" class="layout-menu-tooltip-arrow"></div>
                 <div class="layout-menu-tooltip-text" translate>{{item.label}}</div>
             </div>
 			<ul *ngIf="item.items && active && item.visible !== false" [@children]="((appMain.isSlim()||appMain.isHorizontal()) && !appMain.isMobile() && root) ? (active ? 'visible' : 'hidden') :
@@ -95,7 +95,7 @@ export class AppMenuitemComponent implements OnInit, OnDestroy {
     menuResetSubscription: Subscription;
 
     key: string;
-    currentLang = localStorage.getItem('currentLang')
+    currentlang = 'en'
     constructor(public appMain: AppMainComponent, public router: Router, private cd: ChangeDetectorRef, private menuService: MenuService) {
         this.menuSourceSubscription = this.menuService.menuSource$.subscribe(key => {
             // deactivate current active menu

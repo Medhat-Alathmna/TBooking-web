@@ -35,11 +35,11 @@ export class AppComponent implements OnInit {
     if (!localStorage.getItem('currentLang')) {
       localStorage.setItem('currentLang', 'en')
     }
-    const lang = localStorage.getItem('currentLang')
+    const lang = 'en'
     this.translate.setDefaultLang(lang);
     this.translate.use(lang);
     const htmlTag = this.document.getElementsByTagName("html")[0] as HTMLHtmlElement;
-    htmlTag.dir = lang === "ar" ? "rtl" : "ltr";
+    htmlTag.dir = lang !== "en" ? "rtl" : "ltr";
   }
   getColors() {
     const SystemColors={

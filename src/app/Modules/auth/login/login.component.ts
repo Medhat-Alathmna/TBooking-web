@@ -22,7 +22,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document) {
     super(messageService, translate)
   }
-  lang = localStorage.getItem('currentLang')
+  lang = 'ar'
   user: string
 
   password: string
@@ -54,29 +54,33 @@ export class LoginComponent extends BaseComponent implements OnInit {
   }
  
   login() {
-    this.loading = true
-    this.authService.login(this.user, this.password).subscribe((user: ResponseBody<UserToken>) => {
-      this.loading = false
+    // this.loading = true
+    this.authService.login(this.user, this.password).subscribe((user: UserToken) => {
+      this.router.navigate(['/'])
+      // this.loading = false
 
-      if (!isSet(user.data)) {
-        return this.errorMessage(user.message)
-      }
-      const date = new Date(user.data.expireAt * 1000);
-      const authData = {
-        user: user.data.user,
-        token_data: user.data.token,
-        token_expires: date.toString(),
-      }
+      // if (!isSet(user.data)) {
+      //   return this.errorMessage(user.message)
+      // }
+      // const date = new Date(user.data.expireAt * 1000);
+      // const authData = {
+      //   user: user.data.user,
+      //   token_data: user.data.token,
+      //   token_expires: date.toString(),
+      // }
 
-      localStorage.setItem('authData', JSON.stringify(authData))
-      this.authService.authData.next(authData)
+      // localStorage.setItem('authData', JSON.stringify(authData))
+      // this.authService.authData.next(authData)
       // this.router?.navigate(['/'], { relativeTo: this.route });
-      window.location.href = '/'+this.landingPage
+      // window.location.href = '/'+this.landingPage
 
+console.log(user);
 
 
     }, error => {
-      this.loading = false
+      // this.loading = false
+      console.log(error);
+      
     })
   }
   changeLang(lang) {

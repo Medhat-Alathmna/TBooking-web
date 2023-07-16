@@ -20,9 +20,7 @@ export class AuthGuard implements CanActivate {
   token_expires = new Date(this.authData?.token_expires)
   canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): boolean {
-      console.log(this.authData);
-      
+    state: RouterStateSnapshot): boolean {      
     if (this.authData?.user && this.authData?.token_data) {
       let currentDate = new Date()
 

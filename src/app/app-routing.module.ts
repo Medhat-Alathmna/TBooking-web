@@ -6,6 +6,7 @@ import { AppNotfoundComponent } from './Layout/NotFound/app.notfound.component';
 import { AuthModule } from './Modules/auth/auth.module';
 import { AuthGuard } from './Modules/auth/guards/auth.guard';
 import { GuestGuard } from './Modules/auth/guards/guest.guard';
+import { HomeModule } from './Modules/home/home.module';
 
 
 
@@ -19,7 +20,7 @@ import { GuestGuard } from './Modules/auth/guards/guest.guard';
                 path: '', component: AppMainComponent,
                 canActivate: [AuthGuard],
                 children: [
-                    // { path: '', loadChildren: () => HomeModule },
+                    { path: '', loadChildren: () => HomeModule },
 
 
                         
@@ -27,7 +28,7 @@ import { GuestGuard } from './Modules/auth/guards/guest.guard';
             },
             { path: 'notfound', component: AppNotfoundComponent },
             {
-                path: 'login', loadChildren: () => AuthModule, canActivate: [GuestGuard],
+                path: 'login', loadChildren: () => AuthModule,canActivate: [GuestGuard],
             },
             { path: '**', redirectTo: '/notfound' },
             { path: '**', redirectTo: '' },

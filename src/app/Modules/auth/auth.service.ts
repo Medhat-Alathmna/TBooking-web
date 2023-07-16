@@ -17,17 +17,12 @@ export class AuthService {
   authData = new BehaviorSubject<UserToken>(JSON.parse(localStorage.getItem('authData')));
   authDataEmitter: Observable<UserToken> = this.authData.asObservable();
 
-  login(userName: string, password: string): Observable<ResponseBody<UserToken>> {
-    const headers = new HttpHeaders({
-      'Accept-Language': localStorage.getItem('currentLang'),
+  public login(username: string, password: string): Observable<UserToken> {
+
+    return this.httpClient.post<UserToken>(`${environment.apiUrl}api/login`,{
+      username: username,
+      password: password
     });
-    return this.httpClient.post<ResponseBody<UserToken>>(environment.apiUrl + `users/authenticate`, { userName: userName, password: password },
-      { headers: headers })
-  }
-  setauthData() {
-    this.authDataEmitter.subscribe(item => {
-      item
-    })
   }
   getAuthData() {
 

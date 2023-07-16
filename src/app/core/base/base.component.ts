@@ -16,7 +16,7 @@ export class BaseComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
   public loading = false;
-  currentLang = localStorage.getItem('currentLang')
+  currentlang = 'en'
 
   fileTypes = ['image/png', 'application/pdf', 'application/vnd.ms-excel', "image/jpeg", ".doc", '.docx', '.ppt', '.pptx', '.xls', '.xlsx', '.csv', '.mp4', '.mov', '.wmv', '.avi', '.mkv']
 

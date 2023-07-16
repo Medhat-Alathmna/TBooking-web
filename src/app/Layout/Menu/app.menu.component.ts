@@ -18,7 +18,7 @@ export class AppMenuComponent   implements OnInit {
         private menuService: MenuService,
 ) { 
         }
-    lang = localStorage.getItem('currentLang')
+    lang = 'en'
     activeControlPanel = false
     activeTeamPanel = false
 
