@@ -1,0 +1,52 @@
+:host full-calendar::ng-deep {
+    .fc-daygrid-day-top {
+        display: block !important;
+        text-align: center !important;
+        margin-top: 5px;
+    }
+ 
+
+    .fc-view-harness th {
+        background-color: var(--surface-50) !important;
+    }
+
+    .fc-col-header-cell-cushion {
+        padding: 10px;
+    }
+
+    .fc-daygrid-event {
+        padding: 10px !important;
+        font-size: 1rem !important;
+    }
+    .fc-event-title {
+
+        color:  var(--surface-700) !important;
+        font-weight: 600;
+    }
+    .fc-event-time {
+        color:  var(--blue-800);
+        font-weight: 600;
+
+    }
+//   .fc-daygrid-day-frame {
+//         width: max-content !important;
+//     }
+    //  .fc-event-main-frame {
+    //         display: block;
+    //         height: 100;
+    //     }
+    //  .fc-daygrid-day-frame{
+    //         height: 130px
+    //     }
+
+}
+
+::ng-deep .pi-google {
+    background: conic-gradient(from -45deg, #ea4335 110deg, #4285f4 90deg 180deg, #34a853 180deg 270deg, #fbbc05 270deg) 73% 55%/150% 150% no-repeat !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    font-weight: 600 !important;
+}
+

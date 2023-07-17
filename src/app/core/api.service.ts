@@ -28,7 +28,7 @@ export class ApiService {
   private bearerToken;
   
   constructor(private httpClient: HttpClient,private configEnvironment: ConfigEnvironmentService,private authService ?:AuthService) {
-    let url =  this.configEnvironment.config.API_URL || environment.apiUrl;
+    let url = environment.apiUrl;
     if (url.charAt(url.length - 1) === '/') {
       url = url.slice(0, url.length - 1);
     }

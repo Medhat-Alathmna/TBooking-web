@@ -1,0 +1,81 @@
+<div class="grid ">
+    <div class="lg:col-8 sm:col-12 ">
+        <div #carddH style="height: 70vh;" class="card p-0 ">
+            <div class="flex justify-content-between flex-wrap p-3">
+                <div class="flex align-items-center justify-content-center  ">
+                    <div (click)="getCurrentDay()" class="flex align-items-center justify-content-center  ">
+                        <button pButton pRipple type="button" [label]="'Today'|translate"
+                            class=" p-button-outlined p-button-secondary2 "></button>
+                    </div>
+                    <div class="flex align-items-center justify-content-center mx-3 font-semibold text-700">
+                        <span class="text-2xl">{{currentDate}}</span>
+                    </div>
+                    <div style="direction: initial;" class="flex align-items-center justify-content-center  ">
+                        <button pButton pRipple type="button" icon="pi pi-chevron-left " (click)="getNext()"
+                            class=" p-button-text p-button-secondary"></button>
+                        <button pButton pRipple type="button" icon="pi pi-chevron-right" (click)="getPrev()"
+                            class=" p-button-text p-button-secondary"></button>
+
+                    </div>
+                </div>
+                <div class="flex align-items-center justify-content-center  ">
+
+
+                    <div class="flex align-items-center justify-content-center ">
+                        <button pButton pRipple type="button" [label]="selectedViewType| translate"
+                            icon='pi pi-chevron-down {{"css.ml-2"|translate}} ' iconPos="right"
+                            class=" p-button-outlined p-button-secondary2 "
+                            (click)="calendarMenu.toggle($event)"></button>
+                        <p-menu #calendarMenu [popup]="true" [model]="viewTypes"></p-menu>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+        </div>
+
+
+    </div>
+    <div class="lg:col-4 sm:col-12 lg:mt-0 sm:mt-7 ">
+        <div height="carddH?.offsetHeight+60">
+            <div class="card p-0">
+                <p-tabView>
+                    <p-tabPanel header="{{'Upcoming Meets'|translate}}">
+                        <div style="max-height: 68vh;" class="overflow-y-auto">
+
+                            <div class="mb-3 font-semibold text-lg text-500">
+                                <div class="block">
+                                    <i [class]="'css.mr-2' | translate" style.color="green"
+                                        class="pi pi-circle-fill"></i>
+                                    <span>Yasmeen Abd alazeez</span>
+                                </div>
+
+                                <div [class]="'css.ml-4' | translate" class="mt-1 text-lg">
+                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-shopping-bag"
+                                        tooltipPosition="bottom" pTooltip="Services" value="Make Up"></p-tag>
+                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-user" pTooltip="Employment"
+                                        tooltipPosition="bottom" value="Mohammed Jamal"></p-tag>
+                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-clock"
+                                        tooltipPosition="bottom" pTooltip="Time" value="9:00 -> 12:00"></p-tag>
+
+                                </div>
+                            </div>
+                            <div style="padding-top: 50%;" class="font-semibold text-xl text-center" translate>
+                                <i class="pi pi-exclamation-circle text-xl mx-2"></i>
+                                No Upcoming Booking
+                            </div>
+
+                        </div>
+                    </p-tabPanel>
+
+                    <p-tabPanel header="{{'Previous Meets'|translate}}">
+
+                    </p-tabPanel>
+                </p-tabView>
+
+            </div>
+        </div>
+    </div>
+</div>

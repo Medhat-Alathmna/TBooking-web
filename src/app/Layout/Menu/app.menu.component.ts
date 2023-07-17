@@ -31,14 +31,13 @@ export class AppMenuComponent   implements OnInit {
     }
     initModules() {
         this.model = [
-            { label: 'Home', key: 'Home', icon: 'pi pi-home text-color', routerLink: ['/'] },
-            { label: 'Tasks', key: "Task", icon: 'icon-tasks text-color', routerLink: ['/tasks'] },
-            // { label: 'Timeline', key: "", icon: 'icon-timeline text-color', },
-            { label: 'Meetings', key: "Meeting", icon: 'icon-business-meeting text-color', routerLink: ['/meetings'] },
-            { label: 'Committees', key: "Committee", icon: 'icon-committees text-color', routerLink: ['/committees'] },
-            { label: 'News', key: "New", icon: 'icon-news text-color', routerLink: ['/news'] },
-            { label: 'Dashboard', key: "Dashboard", icon: 'icon-statistics text-color', routerLink: ['/dashboard'] },
-            { label: 'My Space', key: "My Space", icon: 'pi pi-tags text-color', routerLink: ['/mySpace'] },
+            { label: 'Home',  icon: 'pi pi-home text-color', routerLink: ['/'] },
+            { label: 'Dashboard',  icon: 'icon-statistics text-color', routerLink: ['/dashboard'] },
+            { label: 'Tasks', icon: 'icon-tasks text-color', routerLink: ['/calender'] },
+            { label: 'Roles',  icon: 'icon-business-meeting text-color', routerLink: ['/meetings'] },
+            { label: 'Moblie',  icon: 'pi pi-mobile text-color', routerLink: ['/mobile'] },
+            { label: 'News',  icon: 'icon-news text-color', routerLink: ['/news'] },
+            { label: 'My Space',  icon: 'pi pi-tags text-color', routerLink: ['/mySpace'] },
             
         ];
         this.menuService.menuData = this.model

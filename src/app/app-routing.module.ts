@@ -5,8 +5,10 @@ import { AppMainComponent } from './Layout/Main/app.main.component';
 import { AppNotfoundComponent } from './Layout/NotFound/app.notfound.component';
 import { AuthModule } from './Modules/auth/auth.module';
 import { AuthGuard } from './Modules/auth/guards/auth.guard';
-import { GuestGuard } from './Modules/auth/guards/guest.guard';
 import { HomeModule } from './Modules/home/home.module';
+import { MobileModule } from './Modules/mobile/mobile.module';
+import { CalenderModule } from './Modules/calender/calender.module';
+import { GuestGuard } from './Modules/auth/guards/guest.guard';
 
 
 
@@ -18,9 +20,11 @@ import { HomeModule } from './Modules/home/home.module';
         RouterModule.forRoot([
             {
                 path: '', component: AppMainComponent,
-                canActivate: [AuthGuard],
+                // canActivate: [AuthGuard],
                 children: [
                     { path: '', loadChildren: () => HomeModule },
+                    { path: 'mobile', loadChildren: () => MobileModule },
+                    { path: 'calender', loadChildren: () => CalenderModule },
 
 
                         
@@ -28,7 +32,7 @@ import { HomeModule } from './Modules/home/home.module';
             },
             { path: 'notfound', component: AppNotfoundComponent },
             {
-                path: 'login', loadChildren: () => AuthModule,canActivate: [GuestGuard],
+                path: 'login', loadChildren: () => AuthModule,
             },
             { path: '**', redirectTo: '/notfound' },
             { path: '**', redirectTo: '' },

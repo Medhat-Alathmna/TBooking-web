@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://luxury.tamimysoft.com/'
+  apiUrl: 'http://luxury.tamimysoft.com/api'
 };
 
 /*
