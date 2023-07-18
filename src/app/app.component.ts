@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
     if (!localStorage.getItem('currentLang')) {
       localStorage.setItem('currentLang', 'en')
     }
-    const lang = 'en'
+    const lang = localStorage.getItem('currentLang')
     this.translate.setDefaultLang(lang);
     this.translate.use(lang);
     const htmlTag = this.document.getElementsByTagName("html")[0] as HTMLHtmlElement;

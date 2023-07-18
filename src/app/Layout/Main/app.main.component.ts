@@ -38,7 +38,7 @@ export class AppMainComponent implements AfterViewInit {
     configClick: boolean;
 
     menuHoverActive = false;
-    lang = 'en'
+    lang = localStorage.getItem('currentLang')
     currentUrl = ''
     constructor(private menuService: MenuService, private primengConfig: PrimeNGConfig,
          public app: AppComponent, private cdref: ChangeDetectorRef, private router: Router,) {

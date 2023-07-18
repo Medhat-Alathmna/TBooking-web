@@ -18,8 +18,7 @@ export class CalenderComponent extends BaseComponent implements OnInit {
 
    selectedViewType = this.trans('Monthly')
   viewTypes = []
-  currentLang='en'
-  currentDate =  moment(new Date(), 'MM-DD').locale(this.currentLang).format('Do MMM -dddd');    
+  currentDate =  moment(new Date(), 'MM-DD').locale(this.lang).format('Do MMM -dddd');    
   calendarOptions: CalendarOptions
 
 
@@ -31,7 +30,7 @@ export class CalenderComponent extends BaseComponent implements OnInit {
       height: '100%',
       editable: true,
       selectable: true,
-      locale: this.currentLang,
+      locale: this.lang,
       events: [
         { title: 'event 1', date: '2023-07-01' },
         { title: 'event 2', date: '2023-07-02' }

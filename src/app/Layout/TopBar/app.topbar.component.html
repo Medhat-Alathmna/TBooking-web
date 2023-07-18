@@ -6,12 +6,12 @@
             </a>
             <a tabindex="0" id="logo-link" class="layout-topbar-logo relative"
                 (click)="appMain.onMenuButtonClick($event)">
-                <ng-container *ngIf="!currentLogo">
-                    <img [style.transform]="currentLang=='ar'?'scaleX(-1)':null" src="assets/images/diwanlogo.svg" width="75"
-                        alt="freya-layout" />
+                <ng-container *ngIf="!currentLogo" class="col-6">
+                    <!-- <img [style.transform]="currentLang=='ar'?'scaleX(-1)':null" src="assets/images/diwanlogo.svg" width="75"
+                        alt="freya-layout" /> -->
                     <span [style.left.px]="currentLang=='en'?62:null" [style.right.px]="currentLang=='ar'?62:null"
-                        [style.top]="currentLang=='ar'?'10%':'12%'" class="text-4xl absolute font-bold logo-text"
-                        translate>Luxury</span>
+                        [style.top]="currentLang=='ar'?'10%':'12%'" style="display: contents;" class="text-4xl  absolute font-bold logo-text"
+                        translate>Luxury beatuy Center</span>
                 </ng-container>
 
                 <ng-container *ngIf="currentLogo">

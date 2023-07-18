@@ -18,7 +18,7 @@ export class AppMenuComponent   implements OnInit {
         private menuService: MenuService,
 ) { 
         }
-    lang = 'en'
+    lang = localStorage.getItem('currentLang')
     activeControlPanel = false
     activeTeamPanel = false
 
@@ -34,7 +34,7 @@ export class AppMenuComponent   implements OnInit {
             { label: 'Home',  icon: 'pi pi-home text-color', routerLink: ['/'] },
             { label: 'Dashboard',  icon: 'icon-statistics text-color', routerLink: ['/dashboard'] },
             { label: 'Tasks', icon: 'icon-tasks text-color', routerLink: ['/calender'] },
-            { label: 'Roles',  icon: 'icon-business-meeting text-color', routerLink: ['/meetings'] },
+            { label: 'Users',  icon: 'icon-business-meeting text-color', routerLink: ['/users'] },
             { label: 'Moblie',  icon: 'pi pi-mobile text-color', routerLink: ['/mobile'] },
             { label: 'News',  icon: 'icon-news text-color', routerLink: ['/news'] },
             { label: 'My Space',  icon: 'pi pi-tags text-color', routerLink: ['/mySpace'] },

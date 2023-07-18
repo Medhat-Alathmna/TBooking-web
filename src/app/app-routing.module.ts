@@ -9,6 +9,7 @@ import { HomeModule } from './Modules/home/home.module';
 import { MobileModule } from './Modules/mobile/mobile.module';
 import { CalenderModule } from './Modules/calender/calender.module';
 import { GuestGuard } from './Modules/auth/guards/guest.guard';
+import { UsersModule } from './Modules/users/users.module';
 
 
 
@@ -25,6 +26,7 @@ import { GuestGuard } from './Modules/auth/guards/guest.guard';
                     { path: '', loadChildren: () => HomeModule },
                     { path: 'mobile', loadChildren: () => MobileModule },
                     { path: 'calender', loadChildren: () => CalenderModule },
+                    { path: 'users', loadChildren: () => UsersModule },
 
 
                         
