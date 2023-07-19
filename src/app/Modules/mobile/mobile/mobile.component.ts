@@ -77,9 +77,9 @@ export class MobileComponent extends BaseComponent implements OnInit {
     this.loading = true
     const subscription = this.mobileService.getSubServices(id).subscribe((results:SubServices []) => {
       this.loading = false
-      if (!isSet(results)) {
-        return
-      }
+
+      console.log(results);
+      
       this.Subservices =SubServices.cloneManyObjects(results) 
       subscription.unsubscribe()
     }, error => {

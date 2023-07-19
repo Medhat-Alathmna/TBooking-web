@@ -26,22 +26,22 @@
                 </div>
             </ng-template>
             <ng-template pTemplate="header">
-                <tr>
-                    <th tyle="width: 20%">Users</th>
-                    <th tyle="width: 20%">Email</th>
-                    <th>Role</th>
+                <tr >
+                    <th style="width: 30vw">Users</th>
+                    <th style="width: 30vw">Email</th>
+                    <th >Role</th>
                     <th>Status</th>
                     <th style="width: 10% !important">Actions</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-ser let-i="rowIndex">
                 <tr>
-                    <td style="width: 20%">
+                    <td style="width: 30vw">
                         <span class="text-xl text-primary  bold">
                             {{ser.name}}
                         </span>
                     </td>
-                    <td style="width: 20%">
+                    <td style="width: 30vw">
                         <span class="text-xl text-primary  bold">
                             {{ser.email}}
                         </span>
@@ -61,7 +61,7 @@
                         <button pButton pRipple icon="pi pi-pencil text-base" 
                             class="p-button-sm  p-button-primary mr-1"></button>
                         <button pButton pRipple icon="pi pi-trash text-base"
-                            class="p-button-sm  p-button-danger "></button>
+                            class="p-button-sm mr-1 p-button-danger "></button>
                     </td>
                 </tr>
             </ng-template>

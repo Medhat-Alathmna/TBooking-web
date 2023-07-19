@@ -33,7 +33,7 @@ export class AppMenuComponent   implements OnInit {
         this.model = [
             { label: 'Home',  icon: 'pi pi-home text-color', routerLink: ['/'] },
             { label: 'Dashboard',  icon: 'icon-statistics text-color', routerLink: ['/dashboard'] },
-            { label: 'Tasks', icon: 'icon-tasks text-color', routerLink: ['/calender'] },
+            { label: 'Appointments', icon: 'icon-tasks text-color', routerLink: ['/calender'] },
             { label: 'Users',  icon: 'icon-business-meeting text-color', routerLink: ['/users'] },
             { label: 'Moblie',  icon: 'pi pi-mobile text-color', routerLink: ['/mobile'] },
             { label: 'News',  icon: 'icon-news text-color', routerLink: ['/news'] },

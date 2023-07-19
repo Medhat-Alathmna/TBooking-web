@@ -19,14 +19,11 @@
 
                 <div class="grid ">
                     <div class="col-12 text-center">
-                        <div class=" relative logo-marign">
-                            <ng-container *ngIf="!currentLogo">
-                                <img [src]="'assets/images/diwanlogo.svg'" width="120" alt="freya-layout" />
-                                <span [style.right]="lang=='ar'?'20%':null" [style.top]="lang=='ar'?'28%':'32%'"
-                                    class="text-5xl absolute font-bold logo-text" translate>Diwan</span>
-                            </ng-container>
-                            <ng-container *ngIf="currentLogo">
-                                <img [src]="currentLogo" width="200" alt="freya-layout" />
+                        <div class=" relative logo-marign"  class="col-6 ">
+                            <ng-container class="text-center">
+                                <!-- <img [src]="'assets/images/diwanlogo.svg'" width="120" alt="freya-layout" /> -->
+                                <span [style.right]="lang=='ar'?'31%':null" [style.top]="lang=='ar'?'24%':'32%'"
+                                    class="text-5xl absolute font-bold logo-text" translate>Luxury beatuy Center</span>
                             </ng-container>
                         </div>
                     </div>
