@@ -13,14 +13,82 @@ import * as moment from 'moment';
 })
 export class CalenderComponent extends BaseComponent implements OnInit {
 
-  constructor(public translates: TranslateService,public messageService: MessageService,)
-   {super(messageService,translates) }
+  constructor(public translates: TranslateService, public messageService: MessageService,) { super(messageService, translates) }
 
-   selectedViewType = this.trans('Monthly')
+  selectedViewType = this.trans('Monthly')
+  tabSelected = 'calender'
   viewTypes = []
-  currentDate =  moment(new Date(), 'MM-DD').locale(this.lang).format('Do MMM -dddd');    
+  employ: any = [
+    {
+    name: 'Leena',
+    status:'Active',
+    appo: [
+      {
+        id: 1,
+        name: 'samar',
+        dateTime: '20 / 7 / 2023',
+        fromDate: '9:00',
+        endDate: '11:30',
+        service: 'Hair Cut',
+        subService: 'Small Hair Cut',
+        verified:true
+      },
+      {
+        id: 2,
+        name: 'Hanan',
+        dateTime: '20 / 7 / 2023',
+        fromDate: '9:30',
+        endDate: '11:30',
+        service: 'Massage',
+        subService: 'Full Time Massage',
+        verified:false
+      },
+    ]
+  },
+    {
+    name: 'Am Myaar',
+    status:'Active',
+    appo: [
+      {
+        id: 1,
+        name: 'SOsO',
+        dateTime: '21 / 7 / 2023',
+        fromDate: '9:00',
+        endDate: '11:30',
+        service: 'Hair Cut',
+        subService: 'Small Hair Cut',
+        verified:false
+      },
+      {
+        id: 2,
+        name: 'Sleena',
+        dateTime: '21 / 7 / 2023',
+        fromDate: '9:30',
+        endDate: '11:30',
+        service: 'Massage',
+        subService: 'Full Time Massage',
+        verified:true
+      },
+    ]
+  }
+]
+  currentDate = moment(new Date(), 'MM-DD').locale(this.lang).format('Do MMM -dddd');
   calendarOptions: CalendarOptions
 
+  tabIndex = [
+    {
+      label: 'Calender',
+      command: event => {
+        this.tabSelected = 'calender'
+      }
+    },
+    {
+      label: 'Employees',
+      command: event => {
+        this.tabSelected = 'employees'
+      }
+    }
+  ]
 
   @ViewChild('calendar') calendar: FullCalendarComponent;
 

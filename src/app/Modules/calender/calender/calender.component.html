@@ -1,4 +1,6 @@
-<div class="grid ">
+<p-tabMenu class="col-12" [model]="tabIndex" [activeItem]="tabIndex[0]"></p-tabMenu>
+
+<div *ngIf="tabSelected=='calender'" class="grid ">
     <div class="lg:col-8 sm:col-12 ">
         <div #carddH style="height: 70vh;" class="card p-0 ">
             <div class="flex justify-content-between flex-wrap p-3">
@@ -42,7 +44,7 @@
         <div height="carddH?.offsetHeight+60">
             <div class="card p-0">
                 <p-tabView>
-                    <p-tabPanel header="{{'Upcoming Meets'|translate}}">
+                    <p-tabPanel header="{{'Upcoming Appointments'|translate}}">
                         <div style="max-height: 68vh;" class="overflow-y-auto">
 
                             <div class="mb-3 font-semibold text-lg text-500">
@@ -57,20 +59,20 @@
                                         tooltipPosition="bottom" pTooltip="Services" value="Make Up"></p-tag>
                                     <p-tag styleClass="tag-secondary mx-2" icon="pi pi-user" pTooltip="Employment"
                                         tooltipPosition="bottom" value="Mohammed Jamal"></p-tag>
-                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-clock"
-                                        tooltipPosition="bottom" pTooltip="Time" value="9:00 -> 12:00"></p-tag>
+                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-clock" tooltipPosition="bottom"
+                                        pTooltip="Time" value="9:00 -> 12:00"></p-tag>
 
                                 </div>
                             </div>
                             <div style="padding-top: 50%;" class="font-semibold text-xl text-center" translate>
                                 <i class="pi pi-exclamation-circle text-xl mx-2"></i>
-                                No Upcoming Booking
+                                No Upcoming Appointments
                             </div>
 
                         </div>
                     </p-tabPanel>
 
-                    <p-tabPanel header="{{'Previous Meets'|translate}}">
+                    <p-tabPanel header="{{'Previous Appointments'|translate}}">
 
                     </p-tabPanel>
                 </p-tabView>
@@ -78,4 +80,74 @@
             </div>
         </div>
     </div>
+
+</div>
+<div *ngIf="tabSelected=='employees'" style="height:calc(100vh - 68px) ;" class="grid card">
+
+    <div>
+        <p-table [value]="employ" dataKey="name" [tableStyle]="{ 'min-width': '60rem' }">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 5rem"></th>
+                    <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+                    <th pSortableColumn="inventoryStatus">Status <p-sortIcon field="inventoryStatus"></p-sortIcon></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-product let-expanded="expanded">
+                <tr>
+                    <td>
+                        <button type="button" pButton pRipple [pRowToggler]="product"
+                            class="p-button-text p-button-rounded p-button-plain"
+                            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                    </td>
+                    <td>{{ product.name }}</td>
+                    <td><p-tag [value]="product.status" severity="success"></p-tag></td>
+
+
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="rowexpansion" let-product>
+                <tr>
+                    <td colspan="7">
+                        <div class="p-3">
+                            <p-table [value]="product.appo" dataKey="id">
+                                <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="id">Id <p-sortIcon field="price"></p-sortIcon></th>
+                    <th pSortableColumn="customer">Customer Name<p-sortIcon field="customer"></p-sortIcon></th>
+                    <th pSortableColumn="date">Date Appoiment<p-sortIcon field="date"></p-sortIcon></th>
+                    <th pSortableColumn="amount">Time <p-sortIcon field="amount"></p-sortIcon></th>
+                    <th pSortableColumn="status">Service <p-sortIcon field="status"></p-sortIcon></th>
+                    <th pSortableColumn="status">Sub Service <p-sortIcon field="status"></p-sortIcon></th>
+                    <th pSortableColumn="status">verified <p-sortIcon field="status"></p-sortIcon></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-order>
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.name }}</td>
+                    <td>{{ order.dateTime }}</td>
+                    <td>{{ order.fromDate }} ->{{order.endDate}} </td>
+                    <td>{{ order.service }} </td>
+                    <td>{{ order.subService }} </td>
+                    <td> 
+                        <i class="pi"
+                            [ngClass]="{ 'text-green-500 pi-check-circle': order.verified,
+                             'text-red-500 pi-times-circle': !order.verified }"></i>
+                    </td>
+
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="6">There are no order for this product yet.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    </td>
+    </tr>
+    </ng-template>
+    </p-table>
+</div>
 </div>
