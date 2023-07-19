@@ -9,16 +9,16 @@ export class GuestGuard implements CanActivate {
 
   constructor(private router: Router,private authService: AuthService) {
   }
+  authData = JSON.parse(localStorage.getItem('userAuth'))
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
-      console.log(localStorage.getItem('userAuth'));
 
-      if (JSON.parse(localStorage.getItem('userAuth')) ) {        
-        this.router.navigate(['/login']);
-        return false;
-      }
-  
-      return true;
+    if (this.authData) {
+      this.router.navigate(['auth/login']);
+      return false;
     }
+
+    return true;
+  }
 }

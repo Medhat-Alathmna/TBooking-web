@@ -59,9 +59,17 @@ export class LoginComponent extends BaseComponent implements OnInit {
     this.loading = true
     this.authService.login(this.user, this.password).subscribe((user: UserToken) => {
       this.loading = false
-      localStorage.setItem('userAuth', JSON.stringify(user))
-      this.router?.navigate(['/']);
-console.log(user);
+      console.log(user[0]);
+      
+      if (user[0]?.msg_Str == 'faild') {
+        return 
+      }
+
+        localStorage.setItem('userAuth', JSON.stringify(user))
+        this.router?.navigate(['/']);
+      
+  
+
 
 
     }, error => {

@@ -21,7 +21,7 @@ import { UsersModule } from './Modules/users/users.module';
         RouterModule.forRoot([
             {
                 path: '', component: AppMainComponent,
-                // canActivate: [AuthGuard],
+                canActivate: [AuthGuard],
                 children: [
                     { path: '', loadChildren: () => HomeModule },
                     { path: 'mobile', loadChildren: () => MobileModule },
@@ -35,6 +35,7 @@ import { UsersModule } from './Modules/users/users.module';
             { path: 'notfound', component: AppNotfoundComponent },
             {
                 path: 'login', loadChildren: () => AuthModule,
+                canActivate: [GuestGuard]
             },
             { path: '**', redirectTo: '/notfound' },
             { path: '**', redirectTo: '' },

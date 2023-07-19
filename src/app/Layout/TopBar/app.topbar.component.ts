@@ -40,7 +40,7 @@ export class AppTopBarComponent extends BaseComponent implements OnDestroy, OnIn
         location.reload()
     }
     logOut() {
-        // this.authService.clearAuthData()
+        localStorage.removeItem('userAuth')
         this.router.navigate(['/login']);
 
     }
