@@ -56,6 +56,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
   }
  
   login() {
+    if (!this.password || !this.user) return this.errorMessage('Rejected', 'Please Insert reqiure Info')
     this.loading = true
     this.authService.login(this.user, this.password).subscribe((user: UserToken) => {
       this.loading = false

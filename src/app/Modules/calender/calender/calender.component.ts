@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
@@ -17,6 +17,7 @@ export class CalenderComponent extends BaseComponent implements OnInit {
 
   selectedViewType = this.trans('Monthly')
   tabSelected = 'calender'
+  showSppoSidebar:boolean=true
   viewTypes = []
   employ: any = [
     {
@@ -89,29 +90,35 @@ export class CalenderComponent extends BaseComponent implements OnInit {
       }
     }
   ]
+  // @Output() Appointment: EventEmitter<any> = new EventEmitter();
+  @Input() Appointment: any
 
   @ViewChild('calendar') calendar: FullCalendarComponent;
 
   ngOnInit(): void {
+    this.showSppoSidebar=true
     this.calendarOptions = {
+      initialView: 'dayGridMonth',
       headerToolbar: false,
       height: '100%',
       editable: true,
       selectable: true,
       locale: this.lang,
       events: [
-        { title: 'event 1', date: '2023-07-01' },
+        { title: 'event 1', date: '2023-07-01' ,slotDuration:'02:00'},
         { title: 'event 2', date: '2023-07-02' }
-      ]
-      // eventClick: (arg) => {
-      //   this.meetClick.emit(arg?.event?.id)
-      // },
-      // eventDrop: (arg) => {
-      //   this.meetingDrop(arg.event)
-      // },
+      ],
+      eventClick: (arg) => {
+        console.log(this.showSppoSidebar);
 
-
+        
+        // console.log( arg?.event);
+        
+        // this.Appointment.emit(arg?.event?.id)
+        this.Appointment='medat'
+      },
     }
+    this.getActions()
   }
   getActions() {
     setTimeout(() => {
@@ -119,6 +126,7 @@ export class CalenderComponent extends BaseComponent implements OnInit {
         {
           label: this.trans('Monthly'),
           command: () => {
+
             this.selectedViewType = this.trans('Monthly')
             this.calendar.getApi().changeView('dayGridMonth')
           }

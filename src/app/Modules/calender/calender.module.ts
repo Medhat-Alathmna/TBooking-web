@@ -9,6 +9,9 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid'; 
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import { AddAppoComponent } from './add-appo/add-appo.component';
+import { SidebarComponent } from 'src/app/Shared/sidebar/sidebar.component';
+import { InputComponent } from 'src/app/Shared/input/input.component';
 
 
 FullCalendarModule.registerPlugins([
@@ -23,13 +26,16 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [CalenderComponent],
+  declarations: [CalenderComponent, ],
   imports: [
     CommonModule,
     FullCalendarModule,
     RouterModule.forChild(routes),
     PrimengComponentsModule,
     TranslateModule,
+    AddAppoComponent,
+    SidebarComponent,
+    InputComponent,
     LoadingComponent
   ]
 })
