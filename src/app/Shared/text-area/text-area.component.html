@@ -1,0 +1,7 @@
+<div class="block">
+    <div class="text-lg font-semibold mb-2">{{title}}
+        <span *ngIf="required && !value" style="color: var(--danger) !important">*</span>
+    </div>
+    <textarea [(ngModel)]="value" [rows]="5" [class]="class" placeholder="{{'Enter'|translate}} {{title}}"
+        [name]="title" [required]="required" [cols]="30" pInputTextarea [autoResize]="true"></textarea>
+</div>

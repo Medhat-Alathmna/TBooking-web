@@ -1,0 +1,33 @@
+<div class="block">
+    <div *ngIf="hideTitle==false" class="text-lg font-semibold mb-2" translate>{{title}}
+        <span *ngIf="required && !selectedUser" style="color: var(--danger) !important">*</span>
+
+    </div>
+
+    <div class="relative">
+        <span style="margin: 10px;" [ngClass]="{'pi-user': !multiple,'pi-users': multiple}"
+            [class]="'css.right-0'|translate" class="pi  absolute z-1 text-lg"></span>
+        <p-autoComplete id="myinput" appendTo="body" #myinput="ngModel" [(ngModel)]="selectedUser" name="{{title}}"
+            [required]="required" (onBlur)="onBlur()" placeholder="{{'Select'|translate}} {{title}}"
+            [showEmptyMessage]="true" [emptyMessage]="'No results found'|translate" [suggestions]="usersSuggestions"
+            (completeMethod)="findUser($event)" field="label" [minLength]="2" [multiple]="multiple">
+            <ng-template let-value pTemplate="item">
+                <div class="flex-initial flex align-items-center  ">
+                   
+                    <span > {{value?.label}}</span>
+
+                </div>
+            </ng-template>
+            <ng-template let-value pTemplate="selectedItem">
+                <div class="flex-initial flex align-items-center  ">
+                 
+                    <span class="text-white"> {{value?.label}}</span>
+
+                </div>
+            </ng-template>
+
+        </p-autoComplete>
+
+    </div>
+
+</div>

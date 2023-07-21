@@ -265,6 +265,7 @@
     "Services Management":"إدارة الخدمات",
     "Appointments":"المواعيد",
     "Users":"المستخدمين",
+    "New Appointment":" إضافة حجز جديد",
     "css": {
         "ml-auto": "mr-auto",
         "mr-1": "ml-1",

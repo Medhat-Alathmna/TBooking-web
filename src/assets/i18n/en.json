@@ -177,7 +177,6 @@
     "No Upcoming Appointments": "No Upcoming Appointments",
     "Meetings Summary": "Meetings Summary",
     "All": "All",
-    "All": "All",
     "Upcoming Appointments": "Upcoming Appointments",
     "Previous Appointments": "Previous Appointments",
     "Activities": "Activities",
@@ -258,6 +257,7 @@
     "Organizer":"Organizer",
     "Luxury beatuy Center":"Luxury beatuy Center",
     "Services Management":"Services Management",
+    "New Appointment":"Add New Appointment",
     "css": {
         "ml-auto": "ml-auto",
         "ml-1": "ml-1",

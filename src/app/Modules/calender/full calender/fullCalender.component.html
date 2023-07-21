@@ -73,11 +73,19 @@
                     </p-tabPanel>
 
                     <p-tabPanel header="{{'Previous Appointments'|translate}}">
+                        <div style="max-height: 68vh;" class="overflow-y-auto">
+                        </div>
 
                     </p-tabPanel>
                 </p-tabView>
 
             </div>
+        </div>
+        <div class="flex align-items-center justify-content-center m-2 pt-2">
+            <button pButton pRipple type="button" icon="pi pi pi-plus " (click)="openAppoDeatils()"
+                [label]="'New Appointment'| translate"
+                class="p-button-rounded p-button-outlined p-button-secondary2 text-btn"></button>
+
         </div>
 
     </div>
@@ -152,5 +160,5 @@
     </p-table>
 </div>
 </div>
-        <app-add-appp *ngIf="showSppoSidebar" [Appointment]="Appointment" [(display)]="showSppoSidebar"></app-add-appp>
+        <app-add-appo *ngIf="showSppoSidebar" [Appointment]="Appointment" [detailMode]="detailMode" [(display)]="showSppoSidebar"></app-add-appo>
 

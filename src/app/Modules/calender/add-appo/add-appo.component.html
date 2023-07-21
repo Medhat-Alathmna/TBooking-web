@@ -1,39 +1,111 @@
 <!-- <app-loading *ngIf="loading" display="full"></app-loading> -->
 
-<app-sidebar [display]="display" (displayChange)="onHide()" >
+<app-sidebar [display]="display" (displayChange)="onHide()">
     <div header>
         <div class="flex justify-content-between flex-wrap ">
-            <div class="flex align-items-center justify-content-center   ">
+            <div *ngIf="detailMode" class="flex align-items-center justify-content-center   ">
                 <div class="flex-initial flex align-items-center justify-content-center mx-2">
-                    <button pButton (click)="onHide()" pRipple type="button"  icon="pi pi-times"
+                    <button pButton pRipple type="button" icon="pi pi-times" (click)="onHide()"
+                        class="p-button-rounded p-button-secondary p-button-lg p-button-text btn-white "></button>
+                </div>
+                <div class="flex align-items-center justify-content-center border-break"></div>
+                <div class="flex-initial flex align-items-center justify-content-center px-3">
+                    <i class="pi pi-calendar text-100 text-3xl " [class]="'css.mr-2'|translate"></i>
+                    <entity-viewer
+                        [entity]="{type:'text',title:'CREATION DATE' | translate,value:'21-7-2023 12:00'}"
+                        [darkMode]="true"></entity-viewer>
+                </div>
+                <div class="flex align-items-center justify-content-center border-break"></div>
+
+                <div class="flex-initial flex align-items-center justify-content-center px-3">
+                    <span [class]="'css.mr-2'|translate">
+                        <i class="pi pi-calendar text-100 text-3xl "></i>
+                    </span>
+                    <entity-viewer [entity]="{type:'text',title:'DATE'| translate,value:'21-7-2023'}"
+                        [darkMode]="true"></entity-viewer>
+                </div>
+                <div class="flex align-items-center justify-content-center border-break"></div>
+
+                <div class="flex-initial flex align-items-center justify-content-center px-3">
+                    <span [class]="'css.mr-2'|translate">
+                        <i class="pi pi-clock text-100 text-3xl "></i>
+                    </span>
+                    <entity-viewer [entity]="{type:'text',title:'TIME'| translate,value:'12:00 PM - 2:00 PM'}"
+                        [darkMode]="true"></entity-viewer>
+                </div>
+                <div class="flex align-items-center justify-content-center border-break"></div>
+
+                <div class="flex-initial flex align-items-center justify-content-center px-3">
+                    <entity-viewer [entity]="{type:'user',title:'CREATED BY'|translate,value:'Medhat'}"
+                        [darkMode]="true"></entity-viewer>
+
+                </div>
+
+
+
+            </div>
+
+
+            <div *ngIf="!detailMode" class="flex align-items-center justify-content-center   ">
+
+                <div class="flex-initial flex align-items-center justify-content-center mx-2">
+                    <button pButton (click)="onHide()" pRipple type="button" icon="pi pi-times"
                         class="p-button-rounded p-button-secondary p-button-lg p-button-text btn-white "></button>
                 </div>
                 <div class="flex align-items-center justify-content-center border-break"></div>
 
                 <div class="flex-initial flex align-items-center justify-content-center px-3">
-                    <span class="text-3xl text-white ">  </span>
+                    <span class="text-3xl text-white " translate> New Appointment </span>
 
                 </div>
-
-            </div>
-            <div class="flex align-items-center justify-content-center  ">
-
-                <!-- <button pButton pRipple type="button" [label]="'Save'|translate" (click)="meetingAddEdit()"
-                    icon="pi pi-check " [disabled]="form?.invalid || meeting.props.Invalid"
-                    class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button> -->
-
-
             </div>
         </div>
     </div>
     <form #form="ngForm" body class="px-5 ">
         <div class="grid ">
-            <div class="lg:col-6 sm:col-12 ">
-                <app-input [(ngModel)]="Appointment" name="title" [title]="'Title'|translate"
+            <div class="col-12 pb-4">
+                <span class="text-3xl ont-semibold font-bold">Customer Details </span>
+            </div>
+            <div class="lg:col-4 sm:col-6">
+                <app-input [(ngModel)]="Appointment" name="title" title="First Name" [required]="true"></app-input>
+            </div>
+            <div class="lg:col-4 sm:col-6 ">
+                <app-input [(ngModel)]="Appointment" name="title" title="Middle Name" [required]="true"></app-input>
+            </div>
+            <div class="lg:col-4 sm:col-6 ">
+                <app-input [(ngModel)]="Appointment" name="title" title="Last Name" [required]="true"></app-input>
+            </div>
+            <div class="lg:col-4 sm:col-6 ">
+                <app-input [(ngModel)]="Appointment" name="title" title="Phone" [required]="true"></app-input>
+            </div>
+            <div class="lg:col-4 sm:col-6 ">
+                <app-input [(ngModel)]="Appointment" name="title" title="Address" [required]="true"></app-input>
+            </div>
+            <div class="lg:col-4 sm:col-6 ">
+                <app-input [(ngModel)]="Appointment" name="title" title="Deposit / JOD" type="number"
                     [required]="true"></app-input>
             </div>
-            
-           
+        </div>
+        <div class="grid">
+            <div class="col-12 py-4">
+                <span class="text-3xl ont-semibold font-bold">
+                    Appointment Details </span>
+            </div>
+            <div class="lg:col-6 sm:col-12 ">
+                <app-calender [showTime]="true" [required]="true" name="startDateTime" showIcon="true"
+                    [title]="'Start Date'|translate"></app-calender>
+            </div>
+            <div class="lg:col-6 sm:col-12 ">
+                <app-calender [showTime]="true" [required]="true" name="finishDateTime" showIcon="true"
+                    [title]="'Finish Date'|translate"></app-calender>
+            </div>
+            <div class="lg:col-6 sm:col-12 ">
+                <app-find-user multiple="true" name="Invited" [required]="true" title="Employee"></app-find-user>
+
+            </div>
+            <div class="col-12">
+                <app-text-area name="notes" [title]="'Notes'|translate"></app-text-area>
+            </div>
         </div>
     </form>
 

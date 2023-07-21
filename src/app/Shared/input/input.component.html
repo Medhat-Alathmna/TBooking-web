@@ -1,11 +1,11 @@
 <div class="block">
     <ng-container *ngIf="hideTitle!=true">
-        <div  class="text-lg font-semibold mb-2">
+        <div class="text-lg font-semibold mb-2">
             {{title}}
             <span *ngIf=" required && !value" style="color: var(--danger) !important">*</span>
         </div>
     </ng-container>
-    <input [(ngModel)]="value" [class]="class" [required]="required" [disabled]="disabled" type="text"
-        placeholder="{{'Enter'|translate}} {{title}}" [name]="title" pInputText />
+    <input [(ngModel)]="value" [class]="class" [required]="required" [disabled]="disabled" [type]="type"
+         placeholder="{{'Enter'|translate}} {{title}}" [name]="title" pInputText />
 
 </div>

@@ -1,0 +1,8 @@
+<div class="block">
+    <div class="text-lg font-semibold mb-2">{{title}}
+        <span *ngIf="required && !value" style="color: var(--danger) !important">*</span>
+    </div>
+    <p-calendar dateFormat="mm-dd-yy" [inputStyleClass]="'css.dir-ltr'|translate" [showTime]="showTime"
+        [timeOnly]="timeOnly" hourFormat="12" [showIcon]="showIcon" appendTo="body" [(ngModel)]="value"
+        [required]="required" type="text" placeholder="{{'Enter'|translate}} {{title}}" [name]="title"> </p-calendar>
+</div>

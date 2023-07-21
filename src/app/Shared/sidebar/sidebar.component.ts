@@ -1,4 +1,4 @@
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { SidebarModule } from 'primeng/sidebar';
@@ -12,7 +12,7 @@ import { SidebarModule } from 'primeng/sidebar';
 })
 export class SidebarComponent implements OnInit {
 
-  constructor(@Inject(DOCUMENT) private document: Document) { }
+  constructor() { }
   @Input() display = false
   @Output() displayChange: EventEmitter<boolean> = new EventEmitter();
   @Input() size='xl-sidbar'
@@ -21,14 +21,8 @@ export class SidebarComponent implements OnInit {
     
   }
   onHide() {
-    this.overflow('auto')
     this.displayChange.emit(false);
   }
-  onShow(){
-    this.overflow('hidden')
-  }
-  overflow(value) {
-    const htmlTag = this.document.getElementsByTagName("html")[0] as HTMLHtmlElement
-    htmlTag.style.overflow = value
-  }
+
+
 }

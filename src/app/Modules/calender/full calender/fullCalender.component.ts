@@ -2,22 +2,27 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
-import { BaseComponent } from 'src/app/core/base/base.component';
+import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import * as moment from 'moment';
+import { CalenderService } from '../calender.service';
+import { Appointment } from 'src/app/modals/appoiments';
 
 
 @Component({
-  selector: 'app-calender',
-  templateUrl: './calender.component.html',
-  styleUrls: ['./calender.component.scss']
+  selector: 'app-full-calender',
+  templateUrl: './fullCalender.component.html',
+  styleUrls: ['./fullCalender.component.scss']
 })
-export class CalenderComponent extends BaseComponent implements OnInit {
+export class FullCalenderComponent extends BaseComponent implements OnInit {
 
-  constructor(public translates: TranslateService, public messageService: MessageService,) { super(messageService, translates) }
+  constructor(public translates: TranslateService, 
+    public messageService: MessageService,private calenderService:CalenderService) { super(messageService, translates) }
 
+  Appointments:Appointment[]=[]
   selectedViewType = this.trans('Monthly')
   tabSelected = 'calender'
-  showSppoSidebar:boolean=true
+  showSppoSidebar:boolean=false
+  detailMode:boolean=false
   viewTypes = []
   employ: any = [
     {
@@ -75,7 +80,6 @@ export class CalenderComponent extends BaseComponent implements OnInit {
 ]
   currentDate = moment(new Date(), 'MM-DD').locale(this.lang).format('Do MMM -dddd');
   calendarOptions: CalendarOptions
-
   tabIndex = [
     {
       label: 'Calender',
@@ -90,13 +94,9 @@ export class CalenderComponent extends BaseComponent implements OnInit {
       }
     }
   ]
-  // @Output() Appointment: EventEmitter<any> = new EventEmitter();
   @Input() Appointment: any
-
   @ViewChild('calendar') calendar: FullCalendarComponent;
-
   ngOnInit(): void {
-    this.showSppoSidebar=true
     this.calendarOptions = {
       initialView: 'dayGridMonth',
       headerToolbar: false,
@@ -104,21 +104,51 @@ export class CalenderComponent extends BaseComponent implements OnInit {
       editable: true,
       selectable: true,
       locale: this.lang,
-      events: [
-        { title: 'event 1', date: '2023-07-01' ,slotDuration:'02:00'},
-        { title: 'event 2', date: '2023-07-02' }
-      ],
       eventClick: (arg) => {
-        console.log(this.showSppoSidebar);
 
+        console.log(arg?.event);
         
         // console.log( arg?.event);
         
-        // this.Appointment.emit(arg?.event?.id)
-        this.Appointment='medat'
+        this.Appointment=arg?.event
+        this.detailMode=true
+        this.showSppoSidebar=true
+
       },
     }
     this.getActions()
+    this.getCalender()
+  }
+
+  getCalender() {
+    this.loading = true
+    const subscription = this.calenderService.getAppominets().subscribe((results: Appointment[]) => {
+      this.loading = false
+      if (!isSet(results)) {
+        return
+      }
+      this.Appointments = Appointment.cloneManyObjects(results) 
+      
+      this.calendarOptions.events = []
+    for (let index = 0; index < this.Appointments?.length; index++) {
+      this.calendarOptions.events.push({
+        id: this.Appointments[index].id,
+        title: this.Appointments[index].First_Name,
+        start: new Date(this.Appointments[index].FromTime),
+        end: new Date(this.Appointments[index].ToTime),
+        backgroundColor:'#ff9200',
+        borderColor: '#ff9200',
+      })
+      
+    }
+    // console.log(this.datePipe.transform( this.Appointments[index].ToTime, 'dd-MM-yyyy hh:mm a'));
+
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+      console.log(error);
+      subscription.unsubscribe()
+    })
   }
   getActions() {
     setTimeout(() => {
@@ -160,4 +190,9 @@ export class CalenderComponent extends BaseComponent implements OnInit {
   getCurrentDay() {
     this.calendar.getApi().today()
   }
+  openAppoDeatils(){
+    this.showSppoSidebar=true
+    this.detailMode=false
+  }
+
 }

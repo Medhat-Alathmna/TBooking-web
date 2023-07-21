@@ -1,35 +1,30 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import {InputTextModule} from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 @Component({
-  selector: 'app-input',
-  templateUrl: './input.component.html',
-  styleUrls: ['./input.component.scss'],
+  selector: 'app-text-area',
+  templateUrl: './text-area.component.html',
+  styleUrls: ['./text-area.component.scss'],
   standalone:true,
-  imports:[InputTextModule,CommonModule,FormsModule,TranslateModule],
+  imports:[InputTextareaModule,CommonModule,FormsModule,TranslateModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: InputComponent,
+      useExisting: TextAreaComponent,
       multi: true
     }]
 })
-export class InputComponent implements ControlValueAccessor {
-  
+export class TextAreaComponent implements ControlValueAccessor {
   @Input() title: string
-  @Input() type: string='text'
-  @Input() class: string
   @Input() required: boolean=false
   @Input() placeholder: string
-  @Input() hideTitle: boolean
-  @Input() disabled: boolean
+  @Input() class: string
 
   constructor() { }
   innervalue
- 
 
   private onTouchedCallback: () => void = () => {};
   private onChangeCallback: (_: any) => void = () => {};
@@ -62,5 +57,4 @@ export class InputComponent implements ControlValueAccessor {
   public validate(c: FormControl) {
     return c.errors;
   }
-
 }
