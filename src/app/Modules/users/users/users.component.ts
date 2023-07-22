@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { BaseComponent } from 'src/app/core/base/base.component';
+import { UserInfo } from 'src/app/modals/User';
 
 @Component({
   selector: 'app-users',
@@ -11,7 +12,10 @@ import { BaseComponent } from 'src/app/core/base/base.component';
 export class UsersComponent extends BaseComponent implements OnInit {
 
   tabSelected = 'users'
-  users:any=[]
+  detailMode:boolean=false
+  showUserSidebar:boolean=false
+  users:UserInfo[]=[]
+  selectedUser:UserInfo
 
 
   tabIndex = [
@@ -33,12 +37,10 @@ export class UsersComponent extends BaseComponent implements OnInit {
    { super(messageService,translates)}
 
   ngOnInit(): void {
-   this.users=[{
-    name:'Medhat Alathamna',
-    email:'MedhatAlathamna@gmail.com',
-    role:'Employee',
-    status:'Active',
-  }]
   }
-
+  showUserSide(){
+    this.selectedUser=new UserInfo
+    this.showUserSidebar=true
+    this.detailMode=false
+  }
 }

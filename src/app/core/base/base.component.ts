@@ -17,7 +17,7 @@ export class BaseComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   public loading = false;
   lang = localStorage.getItem('currentLang')
-  userAuth =JSON.parse(localStorage.getItem('userAuth')) 
+  userAuth =JSON.parse(localStorage.getItem('userAuth'))
 
   fileTypes = ['image/png', 'application/pdf', 'application/vnd.ms-excel', "image/jpeg", ".doc", '.docx', '.ppt', '.pptx', '.xls', '.xlsx', '.csv', '.mp4', '.mov', '.wmv', '.avi', '.mkv']
 

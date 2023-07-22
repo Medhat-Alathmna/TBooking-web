@@ -1,0 +1,83 @@
+<app-sidebar [display]="display" (displayChange)="onHide()">
+    <div header>
+        <div class="flex justify-content-between flex-wrap ">
+            <div *ngIf="detailMode" class="flex align-items-center justify-content-center   ">
+                <div class="flex-initial flex align-items-center justify-content-center mx-2">
+                    <button pButton pRipple type="button" icon="pi pi-times" (click)="onHide()"
+                        class="p-button-rounded p-button-secondary p-button-lg p-button-text btn-white "></button>
+                </div>
+                <div class="flex align-items-center justify-content-center border-break"></div>
+                <div class="flex-initial flex align-items-center justify-content-center px-3">
+                    <i class="pi pi-calendar text-100 text-3xl " [class]="'css.mr-2'|translate"></i>
+                    <entity-viewer [entity]="{type:'text',title:'CREATION DATE' | translate,value:'21-7-2023 12:00'}"
+                        [darkMode]="true"></entity-viewer>
+                </div>
+                <div class="flex align-items-center justify-content-center border-break"></div>
+
+                <div class="flex-initial flex align-items-center justify-content-center px-3">
+                    <entity-viewer [entity]="{type:'user',title:'CREATED BY'|translate,value:'Medhat'}"
+                        [darkMode]="true"></entity-viewer>
+
+                </div>
+
+
+
+            </div>
+
+
+            <div *ngIf="!detailMode" class="flex align-items-center justify-content-center   ">
+
+                <div class="flex-initial flex align-items-center justify-content-center mx-2">
+                    <button pButton (click)="onHide()" pRipple type="button" icon="pi pi-times"
+                        class="p-button-rounded p-button-secondary p-button-lg p-button-text btn-white "></button>
+                </div>
+                <div class="flex align-items-center justify-content-center border-break"></div>
+
+                <div class="flex-initial flex align-items-center justify-content-center px-3">
+                    <span class="text-3xl text-white ">Add New User </span>
+
+                </div>
+            </div>
+            <div *ngIf="!detailMode" class="flex align-items-center justify-content-center mx-2 ">
+
+                <button pButton [disabled]="form?.invalid || !selectedUser.user_name ||!selectedUser.email || ! selectedUser.password || !selectedUser.confirmPassword ||!selectedUser.phone"
+                pRipple type="button" [label]="'Save'|translate" icon="pi pi-check " (click)="createUser()"
+                    class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
+
+
+            </div>
+        </div>
+    </div>
+    <form #form="ngForm" body class="px-5 ">
+        <div class="grid ">
+            <div class="col-12 pb-4">
+                <span class="text-3xl ont-semibold font-bold">User Details </span>
+            </div>
+            <div class="lg:col-6 sm:col-12">
+                <app-input [(ngModel)]="selectedUser.user_name" name="title" title="User Name" [required]="true"></app-input>
+            </div>
+            <div class="lg:col-6 sm:col-12">
+                <app-input type="email" [(ngModel)]="selectedUser.email" name="title" title="Email" [required]="true"></app-input>
+            </div>
+            <div class="lg:col-6 sm:col-12">
+                <app-input type="text" [(ngModel)]="selectedUser.password" name="title" title="Password" [required]="true"></app-input>
+            </div>
+            <div class="lg:col-6 sm:col-12">
+                <app-input type="text" [(ngModel)]="selectedUser.confirmPassword" name="title" title="Confirm Password" [required]="true"></app-input>
+            </div>
+            <div class="lg:col-4 sm:col-6">
+                <app-input type="text" [(ngModel)]="selectedUser.phone" name="title" title="Phone" [required]="true"></app-input>
+            </div>
+            <div class="lg:col-4 sm:col-6">
+                <app-input type="text" [(ngModel)]="selectedUser.address" name="title" title="Address" [required]="false"></app-input>
+            </div>
+            <div class="lg:col-4 sm:col-6">
+                <app-dropdown [(ngModel)]="selectedUser.role" [required]="true" name="recurrence" [filter]="false"
+                    title="Role" [data]="roles" [showColor]="false"></app-dropdown>
+            </div>
+           
+        </div>
+    </form>
+
+
+</app-sidebar>

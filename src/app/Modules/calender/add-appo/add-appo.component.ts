@@ -36,9 +36,7 @@ export class AddAppoComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
-    console.log(this.display);
-    
+  ngOnInit(): void {    
   }
 
   onHide() {

@@ -18,7 +18,7 @@
                     <div class="table-header inputgroup-stopwords block ">
                         <div class="p-inputgroup inputgroup-stopwords">
                             <div>
-                                <button type="button" (click)="showcreateDialog()" label="Add User" pRipple pButton
+                                <button type="button" (click)="showUserSide()" label="Add User" pRipple pButton
                                     icon="pi pi-plus" class="p-button-success "></button>
                             </div>
                         </div>
@@ -77,3 +77,5 @@
 
     <div *ngIf="tabSelected=='roles'" class="grid"></div>
 </div>
+
+<app-add-edit-user *ngIf='showUserSidebar' [selectedUser]="selectedUser" [detailMode]="detailMode" [(display)]="showUserSidebar"></app-add-edit-user>

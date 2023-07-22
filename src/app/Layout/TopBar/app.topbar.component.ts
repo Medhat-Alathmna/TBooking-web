@@ -17,7 +17,7 @@ export class AppTopBarComponent extends BaseComponent implements OnDestroy, OnIn
 
     subscription: Subscription;
     items: MenuItem[];
-    user = {displayName:'Medhat',photo:null}
+    user = {displayName:this.userAuth[0].User_Name,photo:null}
     currentLogo: any
     constructor(public app: AppComponent, public appMain: AppMainComponent,
         private sanitizer: DomSanitizer,
@@ -34,9 +34,7 @@ export class AppTopBarComponent extends BaseComponent implements OnDestroy, OnIn
         }
     }
     changeLang(lang) {
-        localStorage.removeItem('genralSettings')
         localStorage.setItem('currentLang', lang)
-        localStorage.removeItem('settings')
         location.reload()
     }
     logOut() {
