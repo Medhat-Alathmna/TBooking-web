@@ -25,6 +25,7 @@ export class CalenderComponent implements ControlValueAccessor {
    }
    innervalue
    @Input() title: string
+   @Input() stepMinute: number=1
    @Input() required: boolean=false
    @Input() placeholder: string
    @Input() showIcon: boolean =false

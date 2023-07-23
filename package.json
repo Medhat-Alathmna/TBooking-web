@@ -37,6 +37,7 @@
     "bootstrap": "^3.3.7",
     "chart.js": "^3.3.2",
     "chroma-js": "^2.4.2",
+    "date-fns": "^2.30.0",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
     "leader-line": "^1.0.7",

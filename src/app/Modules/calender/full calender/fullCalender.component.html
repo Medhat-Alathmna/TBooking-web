@@ -160,5 +160,6 @@
     </p-table>
 </div>
 </div>
-        <app-add-appo *ngIf="showSppoSidebar" [Appointment]="Appointment" [detailMode]="detailMode" [(display)]="showSppoSidebar"></app-add-appo>
+        <app-add-appo *ngIf="showSppoSidebar" (refreshLish)="getCalender()"
+         [Appointment]="Appointment" [detailMode]="detailMode" [(display)]="showSppoSidebar"></app-add-appo>
 

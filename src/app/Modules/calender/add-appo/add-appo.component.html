@@ -1,5 +1,6 @@
-<!-- <app-loading *ngIf="loading" display="full"></app-loading> -->
-
+<app-loading *ngIf="loading" display="full"></app-loading>
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog appendTo="body"></p-confirmDialog>
 <app-sidebar [display]="display" (displayChange)="onHide()">
     <div header>
         <div class="flex justify-content-between flex-wrap ">
@@ -11,8 +12,7 @@
                 <div class="flex align-items-center justify-content-center border-break"></div>
                 <div class="flex-initial flex align-items-center justify-content-center px-3">
                     <i class="pi pi-calendar text-100 text-3xl " [class]="'css.mr-2'|translate"></i>
-                    <entity-viewer
-                        [entity]="{type:'text',title:'CREATION DATE' | translate,value:'21-7-2023 12:00'}"
+                    <entity-viewer [entity]="{type:'text',title:'CREATION DATE' | translate,value:'21-7-2023 12:00'}"
                         [darkMode]="true"></entity-viewer>
                 </div>
                 <div class="flex align-items-center justify-content-center border-break"></div>
@@ -25,7 +25,6 @@
                         [darkMode]="true"></entity-viewer>
                 </div>
                 <div class="flex align-items-center justify-content-center border-break"></div>
-
                 <div class="flex-initial flex align-items-center justify-content-center px-3">
                     <span [class]="'css.mr-2'|translate">
                         <i class="pi pi-clock text-100 text-3xl "></i>
@@ -38,26 +37,26 @@
                 <div class="flex-initial flex align-items-center justify-content-center px-3">
                     <entity-viewer [entity]="{type:'user',title:'CREATED BY'|translate,value:'Medhat'}"
                         [darkMode]="true"></entity-viewer>
-
                 </div>
-
-
-
             </div>
-
-
             <div *ngIf="!detailMode" class="flex align-items-center justify-content-center   ">
-
                 <div class="flex-initial flex align-items-center justify-content-center mx-2">
                     <button pButton (click)="onHide()" pRipple type="button" icon="pi pi-times"
                         class="p-button-rounded p-button-secondary p-button-lg p-button-text btn-white "></button>
                 </div>
                 <div class="flex align-items-center justify-content-center border-break"></div>
-
                 <div class="flex-initial flex align-items-center justify-content-center px-3">
                     <span class="text-3xl text-white " translate> New Appointment </span>
-
                 </div>
+            </div>
+            <div class="flex align-items-center justify-content-center mx-2 ">
+
+                <button pButton [disabled]="form?.invalid || !appointment.First_Name ||!appointment.Middle_Name ||
+                     ! appointment.Last_Name || !appointment.Phone ||!appointment.FromTime " pRipple type="button"
+                    [label]="'Save'|translate" icon="pi pi-check " (click)="addAppominet()"
+                    class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
+
+
             </div>
         </div>
     </div>
@@ -67,23 +66,26 @@
                 <span class="text-3xl ont-semibold font-bold">Customer Details </span>
             </div>
             <div class="lg:col-4 sm:col-6">
-                <app-input [(ngModel)]="Appointment" name="title" title="First Name" [required]="true"></app-input>
-            </div>
-            <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="Appointment" name="title" title="Middle Name" [required]="true"></app-input>
-            </div>
-            <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="Appointment" name="title" title="Last Name" [required]="true"></app-input>
-            </div>
-            <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="Appointment" name="title" title="Phone" [required]="true"></app-input>
-            </div>
-            <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="Appointment" name="title" title="Address" [required]="true"></app-input>
-            </div>
-            <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="Appointment" name="title" title="Deposit / JOD" type="number"
+                <app-input [(ngModel)]="appointment.First_Name" name="title" title="First Name"
                     [required]="true"></app-input>
+            </div>
+            <div class="lg:col-4 sm:col-6 ">
+                <app-input [(ngModel)]="appointment.Middle_Name" name="title" title="Middle Name"
+                    [required]="true"></app-input>
+            </div>
+            <div class="lg:col-4 sm:col-6 ">
+                <app-input [(ngModel)]="appointment.Last_Name" name="title" title="Last Name"
+                    [required]="true"></app-input>
+            </div>
+            <div class="lg:col-4 sm:col-6 ">
+                <app-input [(ngModel)]="appointment.Phone" name="title" title="Phone" [required]="true"></app-input>
+            </div>
+            <div class="lg:col-4 sm:col-6 ">
+                <app-input [(ngModel)]="appointment.Address" name="title" title="Address"></app-input>
+            </div>
+            <div class="lg:col-4 sm:col-6 ">
+                <app-input [(ngModel)]="appointment.Deposit" name="title" title="Deposit / JOD"
+                    type="number"></app-input>
             </div>
         </div>
         <div class="grid">
@@ -92,19 +94,28 @@
                     Appointment Details </span>
             </div>
             <div class="lg:col-6 sm:col-12 ">
-                <app-calender [showTime]="true" [required]="true" name="startDateTime" showIcon="true"
+                <app-calender [(ngModel)]="appointment.FromTime" [stepMinute]='30' (ngModelChange)="startDateChange()"
+                    [showTime]="true" [required]="true" name="startDateTime" showIcon="true"
                     [title]="'Start Date'|translate"></app-calender>
             </div>
             <div class="lg:col-6 sm:col-12 ">
-                <app-calender [showTime]="true" [required]="true" name="finishDateTime" showIcon="true"
+                <app-calender [(ngModel)]="appointment.ToTime" [stepMinute]='30' (ngModelChange)="finishDateChange()"
+                    [timeOnly]="true" [showTime]="true" [required]="true" name="finishDateTime" showIcon="true"
                     [title]="'Finish Date'|translate"></app-calender>
             </div>
             <div class="lg:col-6 sm:col-12 ">
-                <app-find-user multiple="true" name="Invited" [required]="true" title="Employee"></app-find-user>
+                <app-dropdown [(ngModel)]="appointment.Employee" optionLabel="user_name" optionValue="user_name" [required]="true" name="recurrence" [filter]="false"
+                    title="Employee" [data]="users" [showColor]="false"></app-dropdown>
 
             </div>
             <div class="col-12">
-                <app-text-area name="notes" [title]="'Notes'|translate"></app-text-area>
+                <app-text-area name="notes" [(ngModel)]="appointment.Notes" [title]="'Notes'|translate"></app-text-area>
+            </div>
+        </div>
+        <div class="grid">
+            <div class="col-12 py-4">
+                <span class="text-3xl ont-semibold font-bold">
+                    Services </span>
             </div>
         </div>
     </form>

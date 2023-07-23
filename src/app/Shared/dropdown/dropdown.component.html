@@ -4,8 +4,8 @@
         <span *ngIf="required && !selectedStatus" style="color: var(--danger) !important">*</span>
     </div>
     <p-dropdown [options]="data" [filter]="filter" [name]="title" appendTo="body" [required]="required"
-        [(ngModel)]="selectedStatus" [disabled]="disabled" [optionLabel]="optionLabel" [filterBy]="optionLabel"
-        placeholder="{{'Enter'|translate}} {{placeholder?placeholder:title}}" styleClass="dropdown-select">
+        [(ngModel)]="selectedStatus" [disabled]="disabled" [optionLabel]="optionLabel" [filterBy]="optionLabel" 
+        placeholder="{{'Choose'|translate}} {{placeholder?placeholder:title}}" styleClass="dropdown-select">
         <ng-template pTemplate="selectedItem">
             <div  >
                 {{selectedStatus[optionLabel] |translate}}

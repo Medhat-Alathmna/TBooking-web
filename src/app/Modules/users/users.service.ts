@@ -13,12 +13,18 @@ export class UsersService {
   createUser(user:UserInfo): Observable<UserInfo> {    
     let body = { 
       user_name: user.user_name,
+      register_id: user.id,
       password: user.password ,
       phone: user.phone ,
       address: user?.address ,
-      role: user.role ,
+      // role: 'User' ,
       email: user.email 
       }
     return this.api.post<UserInfo>(`Register`, body);
+  }
+
+  getUsers(): Observable<UserInfo[]>{
+    return this.api.get<UserInfo[]>(`Register`);
+
   }
 }

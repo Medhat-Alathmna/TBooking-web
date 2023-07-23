@@ -67,7 +67,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
       }
 
         localStorage.setItem('userAuth', JSON.stringify(user))
-        this.router?.navigate(['/']);
+        this.router?.navigate(['/calender']);
       
   
 

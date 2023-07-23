@@ -110,7 +110,7 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
         
         // console.log( arg?.event);
         
-        this.Appointment=arg?.event
+        // this.Appointment=arg?.event
         this.detailMode=true
         this.showSppoSidebar=true
 
@@ -136,8 +136,8 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
         title: this.Appointments[index].First_Name,
         start: new Date(this.Appointments[index].FromTime),
         end: new Date(this.Appointments[index].ToTime),
-        backgroundColor:'#ff9200',
-        borderColor: '#ff9200',
+        backgroundColor:"hsl(" + Math.random() * 360 + ", 100%, 75%)",
+        borderColor: "hsl(" + Math.random() * 360 + ", 100%, 75%)",
       })
       
     }
@@ -191,8 +191,9 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
     this.calendar.getApi().today()
   }
   openAppoDeatils(){
-    this.showSppoSidebar=true
     this.detailMode=false
+
+    this.showSppoSidebar=true
   }
 
 }

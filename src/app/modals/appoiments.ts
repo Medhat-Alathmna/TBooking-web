@@ -4,14 +4,16 @@ export class Appointment {
     id: string;
     Customer_Id: string;
     FK_user: any;
-    First_Name: string;
-    Middle_Name: string;
-    Last_Name: string;
-    Phone: string;
-    Address: string;
-    Deposit: number;
-    FromTime: string|Date;
-    ToTime: string|Date;
+    First_Name?: string;
+    Middle_Name?: string;
+    Last_Name?: string;
+    Phone?: string;
+    Address?: string;
+    Notes?: string;
+    Deposit?: number;
+    Employee?: number;
+    FromTime?: Date |any;
+    ToTime?: Date |any;
 
     public constructor(params?: Appointment) {
         Object.assign(this, params);

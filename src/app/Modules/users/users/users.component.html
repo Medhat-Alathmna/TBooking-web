@@ -26,41 +26,50 @@
                 </div>
             </ng-template>
             <ng-template pTemplate="header">
-                <tr >
+                <tr>
                     <th style="width: 30vw">Users</th>
                     <th style="width: 30vw">Email</th>
-                    <th >Role</th>
+                    <th>Role</th>
                     <th>Status</th>
+                    <th>Last Login</th>
                     <th style="width: 10% !important">Actions</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-ser let-i="rowIndex">
                 <tr>
                     <td style="width: 30vw">
-                        <span class="text-xl text-primary  bold">
-                            {{ser.name}}
+                        <span (click)="showUserDeatil(ser)" class="text-xl text-primary pointer font-bold">
+                            {{ser.user_name}}
                         </span>
                     </td>
                     <td style="width: 30vw">
-                        <span class="text-xl text-primary  bold">
+                        <span  (click)="showUserDeatil(ser)" class="text-xl text-primary pointer ">
                             {{ser.email}}
                         </span>
                     </td>
                     <td>
-                        <span class="text-xl text-primary  bold">
-                            {{ser.role}}
+                        <span class="text-xl text-primary ">
+                            <!-- {{ser.role.name}}  --> User
                         </span>
                     </td>
                     <td>
                         <span class="text-xl text-primary  bold">
-                            <span *ngIf="ser.status =='Active' " class="Active">Active</span>
-                            <span *ngIf="ser.status=='InActive' " class="InActive">InActive</span>
+                            <span *ngIf="ser.is_activated ==true " class="Active">Active</span>
+                            <span *ngIf="ser.is_activated==false " class="InActive">InActive</span>
+                        </span>
+                    </td>
+                    <td>
+                        <span *ngIf="ser?.Last_LoginDate" class="text-xl text-primary  bold">
+                            {{ ser?.last_logindate | date: 'dd/MM/yyyy ' }}
+                        </span>
+                        <span *ngIf="!ser?.Last_LoginDate" class="text-xl text-primary  bold">
+                           Not logged in yet
                         </span>
                     </td>
                     <td style="width: 10%">
-                        <button pButton pRipple icon="pi pi-pencil text-base" 
+                        <button (click)="showUserDeatil(ser)" pButton pRipple icon="pi pi-pencil text-base"
                             class="p-button-sm  p-button-primary mr-1"></button>
-                        <button pButton pRipple icon="pi pi-trash text-base"
+                        <button  pButton pRipple icon="pi pi-trash text-base"
                             class="p-button-sm mr-1 p-button-danger "></button>
                     </td>
                 </tr>
@@ -78,4 +87,5 @@
     <div *ngIf="tabSelected=='roles'" class="grid"></div>
 </div>
 
-<app-add-edit-user *ngIf='showUserSidebar' [selectedUser]="selectedUser" [detailMode]="detailMode" [(display)]="showUserSidebar"></app-add-edit-user>
+<app-add-edit-user *ngIf='showUserSidebar' (refreshLish)="getUsers()" [selectedUser]="selectedUser"
+    [detailMode]="detailMode" [(display)]="showUserSidebar"></app-add-edit-user>

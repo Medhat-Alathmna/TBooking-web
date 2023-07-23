@@ -32,10 +32,13 @@ export class AddEditUserComponent implements OnInit {
   @Input() display: boolean = false
   @Input() detailMode: boolean = false
   @Output() displayChange: EventEmitter<boolean> = new EventEmitter();
+  @Output() refreshLish: EventEmitter<boolean> = new EventEmitter();
 
   constructor(private userService:UsersService) { }
 
   ngOnInit(): void {
+    console.log( this.selectedUser);
+    
     this.selectedUser.role=this.roles[0]
   }
 
@@ -46,12 +49,12 @@ export class AddEditUserComponent implements OnInit {
     }, 300);
   }
   createUser(){
+    console.log(this.selectedUser);
     const subscription = this.userService.createUser(this.selectedUser).subscribe((data) => {
       if (!isSet(data)) {
         return
       }
-      console.log(data);
-      
+      this.refreshLish.emit(true)
       this.display = false
       subscription.unsubscribe()
     }, error => {
