@@ -32,12 +32,11 @@ export class AppMenuComponent   implements OnInit {
     initModules() {
         this.model = [
             { label: 'Home',  icon: 'pi pi-home text-color', routerLink: ['/'] },
-            { label: 'Dashboard',  icon: 'icon-statistics text-color', routerLink: ['/dashboard'] },
-            { label: 'Appointments', icon: 'icon-tasks text-color', routerLink: ['/calender'] },
+            // { label: 'Dashboard',  icon: 'icon-statistics text-color', routerLink: ['/dashboard'] },
+            { label: 'Appointments', icon: 'pi pi-calendar-plus text-color', routerLink: ['/calender'] },
+            { label: 'Orders',  icon: 'icon-news text-color', routerLink: ['/orders'] },
             { label: 'Users',  icon: 'icon-business-meeting text-color', routerLink: ['/users'] },
             { label: 'Moblie',  icon: 'pi pi-mobile text-color', routerLink: ['/mobile'] },
-            { label: 'News',  icon: 'icon-news text-color', routerLink: ['/news'] },
-            { label: 'My Space',  icon: 'pi pi-tags text-color', routerLink: ['/mySpace'] },
             
         ];
         this.menuService.menuData = this.model
