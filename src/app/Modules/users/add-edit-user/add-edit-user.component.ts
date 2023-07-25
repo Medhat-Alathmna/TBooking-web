@@ -54,6 +54,8 @@ export class AddEditUserComponent implements OnInit {
       if (!isSet(data)) {
         return
       }
+      console.log(data);
+      
       this.refreshLish.emit(true)
       this.display = false
       subscription.unsubscribe()

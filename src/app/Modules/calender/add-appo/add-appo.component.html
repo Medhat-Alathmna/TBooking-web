@@ -51,8 +51,8 @@
             </div>
             <div class="flex align-items-center justify-content-center mx-2 ">
 
-                <button pButton [disabled]="form?.invalid || !appointment.First_Name ||!appointment.Middle_Name ||
-                     ! appointment.Last_Name || !appointment.Phone ||!appointment.FromTime " pRipple type="button"
+                <button pButton [disabled]="form?.invalid || !appointment?.firstName ||!appointment?.middleName ||
+                     ! appointment?.lastName || !appointment?.phone ||!appointment?.fromDate " pRipple type="button"
                     [label]="'Save'|translate" icon="pi pi-check " (click)="addAppominet()"
                     class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
 
@@ -66,25 +66,25 @@
                 <span class="text-3xl ont-semibold font-bold">Customer Details </span>
             </div>
             <div class="lg:col-4 sm:col-6">
-                <app-input [(ngModel)]="appointment.First_Name" name="title" title="First Name"
+                <app-input [(ngModel)]="appointment.firstName" name="title" title="First Name"
                     [required]="true"></app-input>
             </div>
             <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="appointment.Middle_Name" name="title" title="Middle Name"
+                <app-input [(ngModel)]="appointment.middleName" name="title" title="Middle Name"
                     [required]="true"></app-input>
             </div>
             <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="appointment.Last_Name" name="title" title="Last Name"
+                <app-input [(ngModel)]="appointment.lastName" name="title" title="Last Name"
                     [required]="true"></app-input>
             </div>
             <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="appointment.Phone" name="title" title="Phone" [required]="true"></app-input>
+                <app-input [(ngModel)]="appointment.phone" name="title" title="Phone" [required]="true"></app-input>
             </div>
             <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="appointment.Address" name="title" title="Address"></app-input>
+                <app-input [(ngModel)]="appointment.address" name="title" title="Address"></app-input>
             </div>
             <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="appointment.Deposit" name="title" title="Deposit / JOD"
+                <app-input [(ngModel)]="appointment.deposit" name="title" title="Deposit / JOD"
                     type="number"></app-input>
             </div>
         </div>
@@ -94,22 +94,25 @@
                     Appointment Details </span>
             </div>
             <div class="lg:col-6 sm:col-12 ">
-                <app-calender [(ngModel)]="appointment.FromTime" [stepMinute]='30' (ngModelChange)="startDateChange()"
+                <app-calender [(ngModel)]="appointment.fromDate" [stepMinute]='30' (ngModelChange)="startDateChange()"
                     [showTime]="true" [required]="true" name="startDateTime" showIcon="true"
                     [title]="'Start Date'|translate"></app-calender>
             </div>
             <div class="lg:col-6 sm:col-12 ">
-                <app-calender [(ngModel)]="appointment.ToTime" [stepMinute]='30' (ngModelChange)="finishDateChange()"
+                <app-calender [(ngModel)]="appointment.toDate" [stepMinute]='30' (ngModelChange)="finishDateChange()"
                     [timeOnly]="true" [showTime]="true" [required]="true" name="finishDateTime" showIcon="true"
                     [title]="'Finish Date'|translate"></app-calender>
             </div>
             <div class="lg:col-6 sm:col-12 ">
-                <app-dropdown [(ngModel)]="appointment.Employee" optionLabel="user_name" optionValue="user_name" [required]="true" name="recurrence" [filter]="false"
+                <app-dropdown [(ngModel)]="appointment.employee" optionLabel="username" optionValue="username" [required]="true" name="recurrence" [filter]="false"
                     title="Employee" [data]="users" [showColor]="false"></app-dropdown>
 
             </div>
+            <div class="lg:col-6 sm:col-12 ">
+                <app-input [(ngModel)]="appointment.number" name="title" title="Appointment Number" [required]="true"></app-input>
+            </div>
             <div class="col-12">
-                <app-text-area name="notes" [(ngModel)]="appointment.Notes" [title]="'Notes'|translate"></app-text-area>
+                <app-text-area name="notes" [(ngModel)]="appointment.notes" [title]="'Notes'|translate"></app-text-area>
             </div>
         </div>
         <div class="grid">

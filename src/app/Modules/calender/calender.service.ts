@@ -7,28 +7,36 @@ import { Appointment } from 'src/app/modals/appoiments';
   providedIn: 'root'
 })
 export class CalenderService {
-
+  userAuth =JSON.parse(localStorage.getItem('userAuth'))?.user
   constructor(private api: ApiService) { }
 
-  getAppominets(): Observable<Appointment[]> {
-    return this.api.get<Appointment[]>('/CustomerAppo');
+  getAppominets(): Observable<any[]> {
+    return this.api.get<any[]>('appointments');
   }
-  addAppominets(appointment:Appointment,userID): Observable<Appointment> {
-    let body ={
-      FK_Emp:1,
-      First_Name:appointment.First_Name,
-      Middle_Name:appointment.Middle_Name,
-      Last_Name:appointment.Last_Name,
-      Phone:appointment.Phone,
-      FromTime:appointment.FromTime,
-      ToTime:appointment.ToTime,
-      Deposit:appointment.Deposit,
-      Address:appointment?.Address,
-      Inserted_By:userID,
-      
+  addAppominets(appointment:Appointment): Observable<Appointment> {
+    let body={
+      data:{
+        address:appointment?.address,
+        deposit:appointment?.deposit,
+        fromDate:appointment.fromDate,
+        toDate:appointment.toDate,
+        notes:appointment?.notes,
+        number:appointment.number,
+        customer:{
+          firstName:appointment.firstName,
+          middleName:appointment.middleName,
+          lastName:appointment.lastName,
+        },
+        phone:appointment.phone,
+        employee:appointment.employee.id,
+        appoBy:this.userAuth.id,
+      }
     }
-    console.log(body);
-    
-    return this.api.post<Appointment>('/CustomerAppo',body);
+    return this.api.post<Appointment>('/appointments',body);
+  }
+
+  retreiveAppo(id): Observable<any[]>{
+    return this.api.get<any[]>(`appointments/${id}`);
+
   }
 }

@@ -3,10 +3,10 @@ import { isSet } from "../core/base/base.component";
 
 
 export class Services {
-    Service_Id: string;
-    service_ar: any;
-    service_en: string;
-    Insert_By: string;
+    price:number
+    en:any
+    ar:any
+    id:string
 
     public constructor(params?: Services) {
         Object.assign(this, params);

@@ -24,6 +24,8 @@ export interface HttpOptions {
   providedIn: 'root'
 })
 export class ApiService {
+  user=JSON.parse(localStorage.getItem('userAuth'))
+
   private readonly apiUrl
   private bearerToken;
   
@@ -32,12 +34,8 @@ export class ApiService {
     if (url.charAt(url.length - 1) === '/') {
       url = url.slice(0, url.length - 1);
     }
-    this.apiUrl = url;
-
-    this.bearerToken = this.authService?.getAuthData()?.token_data
-
-
-
+    this.apiUrl = url;    
+    this.bearerToken = this.user?.jwt
   }
 
 

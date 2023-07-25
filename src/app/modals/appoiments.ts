@@ -2,18 +2,22 @@ import { isSet } from "../core/base/base.component";
 
 export class Appointment {
     id: string;
-    Customer_Id: string;
-    FK_user: any;
-    First_Name?: string;
-    Middle_Name?: string;
-    Last_Name?: string;
-    Phone?: string;
-    Address?: string;
-    Notes?: string;
-    Deposit?: number;
-    Employee?: number;
-    FromTime?: Date |any;
-    ToTime?: Date |any;
+    firstName:string;
+    middleName:string;
+    lastName:string;
+    phone?: string;
+    address?: string;
+    notes?: string;
+    deposit?: number;
+    employee?: any;
+    fromDate?: Date |any;
+    toDate?: Date |any;
+    number?: any;
+    customer:{
+        firstName:string;
+    middleName:string;
+    lastName:string;
+    }
 
     public constructor(params?: Appointment) {
         Object.assign(this, params);

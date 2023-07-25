@@ -40,7 +40,7 @@
             </div>
             <div *ngIf="!detailMode" class="flex align-items-center justify-content-center mx-2 ">
 
-                <button pButton [disabled]="form?.invalid || !selectedUser.user_name ||!selectedUser.email || ! selectedUser.password || !selectedUser.confirmPassword ||!selectedUser.phone"
+                <button pButton [disabled]="form?.invalid || !selectedUser.username ||!selectedUser.email || ! selectedUser.password || !selectedUser.confirmPassword "
                 pRipple type="button" [label]="'Save'|translate" icon="pi pi-check " (click)="createUser()"
                     class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
 
@@ -54,7 +54,7 @@
                 <span class="text-3xl ont-semibold font-bold">User Details </span>
             </div>
             <div class="lg:col-6 sm:col-12">
-                <app-input [(ngModel)]="selectedUser.user_name" name="title" title="User Name" [required]="true"></app-input>
+                <app-input [(ngModel)]="selectedUser.username" name="title" title="User Name" [required]="true"></app-input>
             </div>
             <div class="lg:col-6 sm:col-12">
                 <app-input type="email" [(ngModel)]="selectedUser.email" name="title" title="Email" [required]="true"></app-input>
@@ -65,13 +65,13 @@
             <div class="lg:col-6 sm:col-12">
                 <app-input *ngIf="!detailMode" type="text" [(ngModel)]="selectedUser.confirmPassword" name="title" title="Confirm Password" [required]="true"></app-input>
             </div>
-            <div class="lg:col-4 sm:col-6">
+            <div class="lg:col-6 sm:col-12">
                 <app-input type="text" [(ngModel)]="selectedUser.phone" name="title" title="Phone" [required]="true"></app-input>
             </div>
-            <div class="lg:col-4 sm:col-6">
+            <!-- <div class="lg:col-4 sm:col-6">
                 <app-input type="text" [(ngModel)]="selectedUser.address" name="title" title="Address" [required]="false"></app-input>
-            </div>
-            <div class="lg:col-4 sm:col-6">
+            </div> -->
+            <div class="lg:col-6 sm:col-12">
                 <app-dropdown [(ngModel)]="selectedUser.role" [required]="true" name="recurrence" [filter]="false"
                     title="Role" [data]="roles" [showColor]="false"></app-dropdown>
             </div>

@@ -5,12 +5,13 @@ export class UserInfo {
   address?: string
   phone: string
   ext: string
-  user_name: string
+  username: string
   email: string
   title: string
   password: string
   confirmPassword: string
   role: string
+  blocked: string
 
   public constructor(params?: UserInfo) {
     Object.assign(this, params);

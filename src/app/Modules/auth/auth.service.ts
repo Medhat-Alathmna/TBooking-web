@@ -10,26 +10,20 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class AuthService {
-
   constructor(private httpClient: HttpClient) {
 
   }
-  authData = new BehaviorSubject<UserToken>(JSON.parse(localStorage.getItem('authData')));
-  authDataEmitter: Observable<UserToken> = this.authData.asObservable();
+
 
   public login(username: string, password: string): Observable<UserToken> {
 
-    return this.httpClient.post<UserToken>(`${environment.apiUrl}/login`,{
-      user_name: username,
+    return this.httpClient.post<UserToken>(`${environment.apiUrl}/auth/local`,{
+      identifier: username,
       password: password
     });
   }
-  getAuthData() {
 
-    return this.authData.value
-  }
   clearAuthData() {
     localStorage.removeItem('authData')
-    this.authData.next(null)
   }
 }

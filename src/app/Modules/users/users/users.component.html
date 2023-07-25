@@ -39,7 +39,7 @@
                 <tr>
                     <td style="width: 30vw">
                         <span (click)="showUserDeatil(ser)" class="text-xl text-primary pointer font-bold">
-                            {{ser.user_name}}
+                            {{ser.username}}
                         </span>
                     </td>
                     <td style="width: 30vw">
@@ -54,8 +54,8 @@
                     </td>
                     <td>
                         <span class="text-xl text-primary  bold">
-                            <span *ngIf="ser.is_activated ==true " class="Active">Active</span>
-                            <span *ngIf="ser.is_activated==false " class="InActive">InActive</span>
+                            <span *ngIf="ser.blocked ==false " class="Active">Active</span>
+                            <span *ngIf="ser.blocked==true " class="InActive">InActive</span>
                         </span>
                     </td>
                     <td>

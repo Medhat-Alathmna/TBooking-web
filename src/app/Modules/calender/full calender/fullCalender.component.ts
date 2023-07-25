@@ -18,7 +18,7 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
   constructor(public translates: TranslateService, 
     public messageService: MessageService,private calenderService:CalenderService) { super(messageService, translates) }
 
-  Appointments:Appointment[]=[]
+  Appointments:any=[]
   selectedViewType = this.trans('Monthly')
   tabSelected = 'calender'
   showSppoSidebar:boolean=false
@@ -105,44 +105,51 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
       selectable: true,
       locale: this.lang,
       eventClick: (arg) => {
-
-        console.log(arg?.event);
-        
-        // console.log( arg?.event);
-        
-        // this.Appointment=arg?.event
-        this.detailMode=true
-        this.showSppoSidebar=true
-
+        this.getAppointment(arg?.event.id)
       },
     }
     this.getActions()
     this.getCalender()
   }
 
-  getCalender() {
+  getAppointment(id){
     this.loading = true
-    const subscription = this.calenderService.getAppominets().subscribe((results: Appointment[]) => {
+    const subscription = this.calenderService.retreiveAppo(id).subscribe((results: any) => {
       this.loading = false
       if (!isSet(results)) {
         return
       }
-      this.Appointments = Appointment.cloneManyObjects(results) 
-      
+      this.detailMode=true
+      this.showSppoSidebar=true
+      this.Appointment=results.data.attributes
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+      console.log(error);
+      subscription.unsubscribe()
+    })
+  }
+  getCalender() {
+    this.loading = true
+    const subscription = this.calenderService.getAppominets().subscribe((results: any[]) => {
+      this.loading = false
+      if (!isSet(results)) {
+        return
+      }
+      console.log(results);
+      this.Appointments = results
       this.calendarOptions.events = []
-    for (let index = 0; index < this.Appointments?.length; index++) {
+    for (let index = 0; index < this.Appointments.data?.length; index++) {
       this.calendarOptions.events.push({
-        id: this.Appointments[index].id,
-        title: this.Appointments[index].First_Name,
-        start: new Date(this.Appointments[index].FromTime),
-        end: new Date(this.Appointments[index].ToTime),
+        id: this.Appointments.data[index].id,
+        // title: this.Appointments.data.attributes[index].first_Name,
+        title: 'Medhat',
+        start:new Date( this.Appointments.data[index].attributes.fromDate),
+        end: new Date(this.Appointments.data[index].attributes.toDate),
         backgroundColor:"hsl(" + Math.random() * 360 + ", 100%, 75%)",
         borderColor: "hsl(" + Math.random() * 360 + ", 100%, 75%)",
       })
-      
     }
-    // console.log(this.datePipe.transform( this.Appointments[index].ToTime, 'dd-MM-yyyy hh:mm a'));
-
       subscription.unsubscribe()
     }, error => {
       this.loading = false
@@ -191,6 +198,7 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
     this.calendar.getApi().today()
   }
   openAppoDeatils(){
+    this.Appointment=null
     this.detailMode=false
 
     this.showSppoSidebar=true

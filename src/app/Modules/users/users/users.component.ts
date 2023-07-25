@@ -52,6 +52,8 @@ export class UsersComponent extends BaseComponent implements OnInit {
       if (!isSet(results)) {
         return
       }
+      console.log(results);
+      
       this.users = UserInfo.cloneManyObjects(results)
       subscription.unsubscribe()
     }, error => {

@@ -17,7 +17,7 @@ export class AppTopBarComponent extends BaseComponent implements OnDestroy, OnIn
 
     subscription: Subscription;
     items: MenuItem[];
-    user = {displayName:this.userAuth[0].User_Name,photo:null}
+    user = {displayName:this.userAuth.username,photo:null}
     currentLogo: any
     constructor(public app: AppComponent, public appMain: AppMainComponent,
         private sanitizer: DomSanitizer,

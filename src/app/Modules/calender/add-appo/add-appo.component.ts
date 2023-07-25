@@ -42,7 +42,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
 
   closeCurrentTime = startOfHour(addMinutes(new Date(), Math.round(new Date().getMinutes() / 30) * 30));
 
-  @Input() appointment: Appointment
+  @Input() appointment :Appointment 
   @Input() display: boolean = false
   @Input() detailMode: boolean = false
   @Output() displayChange: EventEmitter<boolean> = new EventEmitter();
@@ -53,15 +53,26 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
      private datePipe: DatePipe, private userServices: UsersService) { super(messageService, translates) }
 
   ngOnInit(): void {
+    console.log(this.appointment);
+
     if (!this.detailMode || !this.appointment) {
       this.appointment = new Appointment
-      this.appointment.FromTime = this.closeCurrentTime
-      this.appointment.ToTime = this.closeCurrentTime
+      this.appointment.fromDate = this.closeCurrentTime
+      this.appointment.toDate = this.closeCurrentTime
+      this.appointment.deposit = 0
+    }else{      
+      this.appointment=Appointment.cloneObject(this.appointment)
+      this.appointment.firstName= this.appointment?.customer?.firstName
+      this.appointment.middleName= this.appointment?.customer?.middleName
+      this.appointment.lastName= this.appointment?.customer?.lastName
+
     }
     this.getUsers()
+
   }
 
   onHide() {
+    
     this.display = false
     setTimeout(() => {
       this.displayChange.emit(false)
@@ -69,22 +80,23 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   }
 
   startDateChange() {
-    this.appointment.ToTime = this.appointment.FromTime
+    this.appointment.toDate = this.appointment.fromDate
   }
 
   finishDateChange() {
-    if (this.appointment.ToTime.getTime() < this.appointment.FromTime.getTime()) {
+    if (this.appointment.toDate.getTime() < this.appointment.fromDate.getTime()) {
       setTimeout(() => {
-        this.appointment.ToTime = this.appointment.FromTime
+        this.appointment.toDate = this.appointment.fromDate
       }, 2000);
       return this.errorMessage('Start Date Cant be greater than Finish Date')
     }
 
   }
   addAppominet() {
-    this.appointment.FromTime = this.datePipe.transform(this.appointment.FromTime, 'yyyy-MM-dd  h:mm:ssZZZZZ')
-    this.appointment.ToTime = this.datePipe.transform(this.appointment.ToTime, 'yyyy-MM-dd  h:mm:ssZZZZZ')
-    const subscription = this.calenderService.addAppominets(this.appointment, this.userAuth[0].Register_Id).subscribe((data) => {
+    this.appointment.deposit=!this.appointment.deposit?0:this.appointment.deposit
+    this.appointment.fromDate =  new Date(this.appointment.fromDate).toISOString()
+    this.appointment.toDate =  new Date(this.appointment.toDate).toISOString()
+    const subscription = this.calenderService.addAppominets(this.appointment).subscribe((data) => {
       if (!isSet(data)) {
         return
       }

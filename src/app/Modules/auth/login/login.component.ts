@@ -58,25 +58,13 @@ export class LoginComponent extends BaseComponent implements OnInit {
   login() {
     if (!this.password || !this.user) return this.errorMessage('Rejected', 'Please Insert reqiure Info')
     this.loading = true
-    this.authService.login(this.user, this.password).subscribe((user: UserToken) => {
+    this.authService.login(this.user, this.password).subscribe((user: any) => {
       this.loading = false
-      console.log(user[0]);
-      
-      if (user[0]?.msg_Str == 'faild') {
-        return 
-      }
-
         localStorage.setItem('userAuth', JSON.stringify(user))
         this.router?.navigate(['/calender']);
-      
-  
-
-
-
     }, error => {
       this.loading = false
       console.log(error);
-      
     })
   }
   changeLang(lang) {
