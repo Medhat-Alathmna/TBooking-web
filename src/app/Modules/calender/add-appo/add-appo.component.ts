@@ -150,6 +150,21 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     })
   }
+  updateAppominet() {
+    this.appointment.id=this.id
+    this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
+    this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
+    const subscription = this.calenderService.updateAppointemt(this.appointment).subscribe((data) => {
+      if (!isSet(data)) {
+        return
+      }
+      this.refreshLish.emit(true)
+      this.display = false
+      subscription.unsubscribe()
+    }, error => {
+      subscription.unsubscribe()
+    })
+  }
 
   getUsers() {
     const subscription = this.userServices.getUsers().subscribe((data) => {
@@ -219,7 +234,8 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     });
   }
   deleteAppo(){
-    const subscription = this.calenderService.deleteAppointment(this.id).subscribe((data) => {
+    this.appointment.id=this.id
+    const subscription = this.calenderService.hideAppointment(this.appointment).subscribe((data) => {
       if (!isSet(data)) {
         return
       }

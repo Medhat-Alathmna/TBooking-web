@@ -55,7 +55,7 @@
                     [model]="acions"></p-menu>
                 <button pButton [disabled]="form?.invalid || !appointment?.firstName ||!appointment?.middleName ||
                      ! appointment?.lastName || !appointment?.phone ||!appointment?.fromDate " pRipple type="button"
-                    [label]="'Save'|translate" icon="pi pi-check " (click)="addAppominet()"
+                    [label]="'Save'|translate" icon="pi pi-check " (click)="detailMode?updateAppominet():addAppominet()"
                     class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
 
 

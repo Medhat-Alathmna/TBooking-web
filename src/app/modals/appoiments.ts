@@ -13,6 +13,7 @@ export class Appointment {
     services?: any;
     employee?: any;
     approved?: boolean;
+    hide?: boolean;
     fromDate?: Date |any;
     createdAt?: Date |any;
     toDate?: Date |any;

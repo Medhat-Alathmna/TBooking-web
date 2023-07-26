@@ -11,10 +11,10 @@ export class CalenderService {
   constructor(private api: ApiService) { }
 
   getApprovedAppominets(): Observable<any[]> {
-    return this.api.get<any[]>('appointments?populate=*&filters[approved][$eq]=true');
+    return this.api.get<any[]>('appointments?populate=*&filters[approved][$eq]=true&filters[hide][$eq]=false');
   }
   getUnApprovedAppominets(): Observable<any[]> {
-    return this.api.get<any[]>('appointments?populate=*&filters[approved][$eq]=false');
+    return this.api.get<any[]>('appointments?populate=*&filters[approved][$eq]=false&filters[hide][$eq]=false');
   }
   addAppominets(appointment:Appointment): Observable<Appointment> {
     let body={
@@ -34,9 +34,12 @@ export class CalenderService {
         services:appointment.services,
         employee:appointment?.employee?.id,
         approved:false,
+        hide:false,
         appoBy:this.userAuth.id,
-      }
+      }      
     }
+    console.log(body);
+    
     return this.api.post<Appointment>('/appointments',body);
   }
   approvedAction(appointment:Appointment): Observable<Appointment> {
@@ -48,11 +51,37 @@ export class CalenderService {
     return this.api.put<Appointment>(`/appointments/${appointment.id}`,body);
   }
 
+  updateAppointemt(appointment:Appointment): Observable<Appointment> {
+    let body={
+      data:{
+        address:appointment?.address,
+        deposit:appointment?.deposit,
+        fromDate:appointment.fromDate,
+        toDate:appointment.toDate,
+        notes:appointment?.notes,
+        number:appointment.number,
+        customer:{
+          firstName:appointment.firstName,
+          middleName:appointment.middleName,
+          lastName:appointment.lastName,
+        },
+        phone:appointment.phone,
+        services:appointment.services,
+        employee:appointment?.employee?.id,
+      }
+    }
+    return this.api.put<Appointment>(`/appointments/${appointment.id}`,body);
+  }
+
   retreiveAppo(id): Observable<any[]>{
     return this.api.get<any[]>(`appointments/${id}?populate=*`);
 
   }
-  deleteAppointment(id): Observable<any> {
-    return this.api.delete<any>(`appointments/${id}`);
-  }
+  hideAppointment(appointment:Appointment): Observable<any> {
+    let body={
+      data:{
+        hide:true,
+      }
+    }
+    return this.api.put<Appointment>(`/appointments/${appointment.id}`,body);  }
 }
