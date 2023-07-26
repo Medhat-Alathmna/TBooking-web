@@ -16,6 +16,7 @@ import { CalenderComponent } from 'src/app/Shared/calender/calender.component';
 import { FindUserComponent } from 'src/app/Shared/find-user/find-user.component';
 import { TextAreaComponent } from 'src/app/Shared/text-area/text-area.component';
 import { EntityViewerComponent } from 'src/app/Shared/entity-viewer/entity-viewer.component';
+import { MultiSelectComponent } from 'src/app/Shared/multi-select/multi-select.component';
 
 
 FullCalendarModule.registerPlugins([
@@ -41,6 +42,7 @@ export const routes: Routes = [
     SidebarComponent,
     CalenderComponent,
     FindUserComponent,
+    MultiSelectComponent,
     TextAreaComponent,
     EntityViewerComponent,
     InputComponent,

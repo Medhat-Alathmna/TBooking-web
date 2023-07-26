@@ -1,6 +1,7 @@
 <app-loading *ngIf="loading" display="full"></app-loading>
 <p-toast position="top-right"></p-toast>
-<p-confirmDialog appendTo="body"></p-confirmDialog>
+<p-confirmDialog containerStyleClass="vw" acceptButtonStyleClass="p-button-danger" acceptIcon="pi pi-trash"
+    rejectButtonStyleClass="p-button-text" appendTo="body"></p-confirmDialog>
 <app-sidebar [display]="display" (displayChange)="onHide()">
     <div header>
         <div class="flex justify-content-between flex-wrap ">
@@ -12,30 +13,27 @@
                 <div class="flex align-items-center justify-content-center border-break"></div>
                 <div class="flex-initial flex align-items-center justify-content-center px-3">
                     <i class="pi pi-calendar text-100 text-3xl " [class]="'css.mr-2'|translate"></i>
-                    <entity-viewer [entity]="{type:'text',title:'CREATION DATE' | translate,value:'21-7-2023 12:00'}"
+                    <entity-viewer
+                        [entity]="{type:'text',title:'CREATION DATE' | translate,value:this.appointment.createdAt}"
                         [darkMode]="true"></entity-viewer>
                 </div>
                 <div class="flex align-items-center justify-content-center border-break"></div>
 
                 <div class="flex-initial flex align-items-center justify-content-center px-3">
                     <span [class]="'css.mr-2'|translate">
-                        <i class="pi pi-calendar text-100 text-3xl "></i>
+                        <i *ngIf="appointment.approved" class="pi pi-check-circle text-100 text-3xl "></i>
+                        <i *ngIf="!appointment.approved" class="pi pi-times-circle text-100 text-3xl "></i>
                     </span>
-                    <entity-viewer [entity]="{type:'text',title:'DATE'| translate,value:'21-7-2023'}"
+                    <entity-viewer
+                        [entity]="{type:'text',title:'Approved'| translate,value:appointment.approved?'Yes':'No'}"
                         [darkMode]="true"></entity-viewer>
                 </div>
-                <div class="flex align-items-center justify-content-center border-break"></div>
-                <div class="flex-initial flex align-items-center justify-content-center px-3">
-                    <span [class]="'css.mr-2'|translate">
-                        <i class="pi pi-clock text-100 text-3xl "></i>
-                    </span>
-                    <entity-viewer [entity]="{type:'text',title:'TIME'| translate,value:'12:00 PM - 2:00 PM'}"
-                        [darkMode]="true"></entity-viewer>
-                </div>
+
                 <div class="flex align-items-center justify-content-center border-break"></div>
 
                 <div class="flex-initial flex align-items-center justify-content-center px-3">
-                    <entity-viewer [entity]="{type:'user',title:'CREATED BY'|translate,value:'Medhat'}"
+                    <entity-viewer
+                        [entity]="{type:'user',title:'CREATED BY'|translate,value:appointment?.appoBy?.data?.attributes?.username}"
                         [darkMode]="true"></entity-viewer>
                 </div>
             </div>
@@ -50,7 +48,11 @@
                 </div>
             </div>
             <div class="flex align-items-center justify-content-center mx-2 ">
-
+                <button *ngIf="detailMode" (click)="menu.toggle($event)" pButton pRipple type="button"
+                    icon="pi pi-ellipsis-v"
+                    class="p-button-rounded mr-2 p-button-secondary p-button-lg p-button-text btn-white "></button>
+                <p-menu #menu id="meetingActinos" styleClass="meetingActinos" [popup]="true" appendTo="body"
+                    [model]="acions"></p-menu>
                 <button pButton [disabled]="form?.invalid || !appointment?.firstName ||!appointment?.middleName ||
                      ! appointment?.lastName || !appointment?.phone ||!appointment?.fromDate " pRipple type="button"
                     [label]="'Save'|translate" icon="pi pi-check " (click)="addAppominet()"
@@ -66,25 +68,25 @@
                 <span class="text-3xl ont-semibold font-bold">Customer Details </span>
             </div>
             <div class="lg:col-4 sm:col-6">
-                <app-input [(ngModel)]="appointment.firstName" name="title" title="First Name"
+                <app-input [(ngModel)]="appointment.firstName" name="firstName" title="First Name"
                     [required]="true"></app-input>
             </div>
             <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="appointment.middleName" name="title" title="Middle Name"
+                <app-input [(ngModel)]="appointment.middleName" name="middleName" title="Middle Name"
                     [required]="true"></app-input>
             </div>
             <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="appointment.lastName" name="title" title="Last Name"
+                <app-input [(ngModel)]="appointment.lastName" name="lastName" title="Last Name"
                     [required]="true"></app-input>
             </div>
             <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="appointment.phone" name="title" title="Phone" [required]="true"></app-input>
+                <app-input [(ngModel)]="appointment.phone" name="phone" title="Phone" [required]="true"></app-input>
             </div>
             <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="appointment.address" name="title" title="Address"></app-input>
+                <app-input [(ngModel)]="appointment.address" name="address" title="Address"></app-input>
             </div>
             <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="appointment.deposit" name="title" title="Deposit / JOD"
+                <app-input [(ngModel)]="appointment.deposit" name="deposit" title="Deposit / JOD"
                     type="number"></app-input>
             </div>
         </div>
@@ -95,32 +97,32 @@
             </div>
             <div class="lg:col-6 sm:col-12 ">
                 <app-calender [(ngModel)]="appointment.fromDate" [stepMinute]='30' (ngModelChange)="startDateChange()"
-                    [showTime]="true" [required]="true" name="startDateTime" showIcon="true"
+                    [showTime]="true" [required]="true" name="fromDate" showIcon="true"
                     [title]="'Start Date'|translate"></app-calender>
             </div>
             <div class="lg:col-6 sm:col-12 ">
                 <app-calender [(ngModel)]="appointment.toDate" [stepMinute]='30' (ngModelChange)="finishDateChange()"
-                    [timeOnly]="true" [showTime]="true" [required]="true" name="finishDateTime" showIcon="true"
+                    [timeOnly]="true" [showTime]="true" [required]="true" name="toDate" showIcon="true"
                     [title]="'Finish Date'|translate"></app-calender>
             </div>
-            <div class="lg:col-6 sm:col-12 ">
-                <app-dropdown [(ngModel)]="appointment.employee" optionLabel="username" optionValue="username" [required]="true" name="recurrence" [filter]="false"
-                    title="Employee" [data]="users" [showColor]="false"></app-dropdown>
-
+            <div class="lg:col-6 sm:col-12 " *ngIf="appointment.approved">
+                <!-- {{appointment.employee.data| json}} -->
+                <app-dropdown [(ngModel)]="appointment.employee" optionLabel="username" optionValue="username"
+                    [required]="true" name="employee" [filter]="false" title="Employee" [data]="users"></app-dropdown>
             </div>
             <div class="lg:col-6 sm:col-12 ">
-                <app-input [(ngModel)]="appointment.number" name="title" title="Appointment Number" [required]="true"></app-input>
+                <app-input [(ngModel)]="appointment.number" name="title" title="Appointment Number"
+                    [required]="true"></app-input>
+            </div>
+            <div class="lg:col-12 sm:col-12">
+                <app-multi-select [(ngModel)]="appointment.services" name="servcies" title="Services"
+                    [optionLabel]="lang" price="price" [statues]="services"></app-multi-select>
             </div>
             <div class="col-12">
                 <app-text-area name="notes" [(ngModel)]="appointment.notes" [title]="'Notes'|translate"></app-text-area>
             </div>
         </div>
-        <div class="grid">
-            <div class="col-12 py-4">
-                <span class="text-3xl ont-semibold font-bold">
-                    Services </span>
-            </div>
-        </div>
+
     </form>
 
 

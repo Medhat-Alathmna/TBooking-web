@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { CalenderComponent } from 'src/app/Shared/calender/calender.component';
 import { EntityViewerComponent } from 'src/app/Shared/entity-viewer/entity-viewer.component';
 import { FindUserComponent } from 'src/app/Shared/find-user/find-user.component';
@@ -17,6 +17,9 @@ import { DropdownComponent } from 'src/app/Shared/dropdown/dropdown.component';
 import { startOfHour, addMinutes, format } from 'date-fns';
 import { DatePipe } from '@angular/common';
 import { UsersService } from '../../users/users.service';
+import * as moment from 'moment';
+import { MobileService } from '../../mobile/mobile.service';
+import { MultiSelectComponent } from 'src/app/Shared/multi-select/multi-select.component';
 
 
 @Component({
@@ -33,46 +36,86 @@ import { UsersService } from '../../users/users.service';
     DropdownComponent,
     EntityViewerComponent,
     TextAreaComponent,
+    MultiSelectComponent,
     LoadingComponent,
   ],
 })
 export class AddAppoComponent extends BaseComponent implements OnInit {
 
-  users: any[] = []
+  users: any = []
+  acions: any = []
+  services: any = []
+  selectEmployee: any
 
   closeCurrentTime = startOfHour(addMinutes(new Date(), Math.round(new Date().getMinutes() / 30) * 30));
 
-  @Input() appointment :Appointment 
+  @Input() appointment: Appointment | any
+  @Input() id: any
   @Input() display: boolean = false
   @Input() detailMode: boolean = false
   @Output() displayChange: EventEmitter<boolean> = new EventEmitter();
   @Output() refreshLish: EventEmitter<boolean> = new EventEmitter();
 
   constructor(public translates: TranslateService,
-    public messageService: MessageService, private calenderService: CalenderService,
-     private datePipe: DatePipe, private userServices: UsersService) { super(messageService, translates) }
+    public messageService: MessageService, private cd: ChangeDetectorRef, private calenderService: CalenderService,
+    private confirmationService: ConfirmationService, private mobileService: MobileService,
+    private datePipe: DatePipe, private userServices: UsersService) { super(messageService, translates) }
 
   ngOnInit(): void {
-    console.log(this.appointment);
 
+    // this.appointment.employee= this.appointment?.employee.data.attributes
+    this.getUsers()
+    this.listServices()
     if (!this.detailMode || !this.appointment) {
       this.appointment = new Appointment
       this.appointment.fromDate = this.closeCurrentTime
       this.appointment.toDate = this.closeCurrentTime
       this.appointment.deposit = 0
-    }else{      
-      this.appointment=Appointment.cloneObject(this.appointment)
-      this.appointment.firstName= this.appointment?.customer?.firstName
-      this.appointment.middleName= this.appointment?.customer?.middleName
-      this.appointment.lastName= this.appointment?.customer?.lastName
+    } else {
+
+      this.appointment = Appointment.cloneObject(this.appointment)
+      this.appointment.firstName = this.appointment?.customer?.firstName
+      this.appointment.middleName = this.appointment?.customer?.middleName
+      this.appointment.lastName = this.appointment?.customer?.lastName
+      this.appointment.fromDate = new Date(this.appointment.fromDate)
+      this.appointment.toDate = new Date(this.appointment.toDate)
+      this.appointment.createdAt = moment(this.appointment.createdAt).format('YYYY-MM-DD HH:ss')
+      this.appointment.services = this.appointment.services.data
+
+      this.selectEmployee = this.appointment.employee.data
+
+      this.acions = [
+        {
+          label: this.appointment.approved ? 'Convert to Unapproved' : 'Convert to Approved',
+          icon: 'pi pi-refresh',
+          command: () => {            
+            this.convertApprove()
+          }
+        },
+        {
+          label: 'Convert to Order',
+          icon: 'icon-news',
+          command: () => {
+          }
+        },
+        {
+          label: 'Delete',
+          icon: 'pi pi-times',
+          command: () => {
+            this.confirm1Delete()
+          }
+        }
+      ]
 
     }
-    this.getUsers()
+
+
+    console.log(this.selectEmployee);
 
   }
 
   onHide() {
-    
+
     this.display = false
     setTimeout(() => {
       this.displayChange.emit(false)
@@ -93,9 +136,9 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
 
   }
   addAppominet() {
-    this.appointment.deposit=!this.appointment.deposit?0:this.appointment.deposit
-    this.appointment.fromDate =  new Date(this.appointment.fromDate).toISOString()
-    this.appointment.toDate =  new Date(this.appointment.toDate).toISOString()
+    this.appointment.deposit = !this.appointment.deposit ? 0 : this.appointment.deposit
+    this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
+    this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
     const subscription = this.calenderService.addAppominets(this.appointment).subscribe((data) => {
       if (!isSet(data)) {
         return
@@ -113,8 +156,76 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       if (!isSet(data)) {
         return
       }
-console.log(data);
-      this.users=data
+      this.users = data
+
+      // this.users.map(user => {
+      //   if (user.id == this.appointment.employee.data.id) {
+      //     this.selectEmployee={username:this.appointment.employee.data.attributes.username,id:this.appointment.employee.data.id}
+      //     this.selectEmployee = this.appointment.employee.data.attributes
+      //   }
+      // })
+      console.log(this.selectEmployee);
+
+      subscription.unsubscribe()
+    }, error => {
+      subscription.unsubscribe()
+    })
+  }
+
+  listServices() {
+    this.loading = true
+    const subscription = this.mobileService.getServices().subscribe((results: any) => {
+      this.loading = false
+      if (!isSet(results)) {
+        return
+      }
+      results.data.map(item => {
+        this.services.push({ id: item?.id, ar: item?.attributes?.ar, en: item?.attributes?.en, price: item?.attributes?.price })
+
+      })
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+      console.log(error);
+      subscription.unsubscribe()
+    })
+  }
+
+  convertApprove() {
+    this.appointment.id=this.id
+    this.appointment.approved = !this.appointment.approved
+    this.loading = true
+    const subscription = this.calenderService.approvedAction(this.appointment).subscribe((results: any) => {
+      this.loading = false
+      if (!isSet(results)) {
+        return
+      }
+      // this.successMessage('This appontment has been converted')
+      this.refreshLish.emit(true)
+
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+      console.log(error);
+      subscription.unsubscribe()
+    })
+  }
+  confirm1Delete() {
+    this.confirmationService.confirm({
+        message: 'Are you sure that you want to delete this Appontment ?',
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {this.deleteAppo()},
+    });
+  }
+  deleteAppo(){
+    const subscription = this.calenderService.deleteAppointment(this.id).subscribe((data) => {
+      if (!isSet(data)) {
+        return
+      }
+      // this.successMessage('The Appontment deleted successfully')
+      this.display=false
+      this.refreshLish.emit(true)
       subscription.unsubscribe()
     }, error => {
       subscription.unsubscribe()

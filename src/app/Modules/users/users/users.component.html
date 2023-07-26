@@ -28,10 +28,9 @@
             <ng-template pTemplate="header">
                 <tr>
                     <th style="width: 30vw">Users</th>
-                    <th style="width: 30vw">Email</th>
+                    <th style="width: 40vw">Email</th>
                     <th>Role</th>
                     <th>Status</th>
-                    <th>Last Login</th>
                     <th style="width: 10% !important">Actions</th>
                 </tr>
             </ng-template>
@@ -47,23 +46,15 @@
                             {{ser.email}}
                         </span>
                     </td>
-                    <td>
+                    <td style="width: 10vw"> 
                         <span class="text-xl text-primary ">
-                            <!-- {{ser.role.name}}  --> User
+                            {{ser.role.name}} 
                         </span>
                     </td>
-                    <td>
+                    <td style="width: 5vw">
                         <span class="text-xl text-primary  bold">
                             <span *ngIf="ser.blocked ==false " class="Active">Active</span>
                             <span *ngIf="ser.blocked==true " class="InActive">InActive</span>
-                        </span>
-                    </td>
-                    <td>
-                        <span *ngIf="ser?.Last_LoginDate" class="text-xl text-primary  bold">
-                            {{ ser?.last_logindate | date: 'dd/MM/yyyy ' }}
-                        </span>
-                        <span *ngIf="!ser?.Last_LoginDate" class="text-xl text-primary  bold">
-                           Not logged in yet
                         </span>
                     </td>
                     <td style="width: 10%">

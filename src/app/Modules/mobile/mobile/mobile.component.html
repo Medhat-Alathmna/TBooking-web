@@ -1,6 +1,6 @@
 <app-loading *ngIf="loading" display="full"></app-loading>
 <p-toast position="top-right"></p-toast>
-<p-confirmDialog appendTo="body"></p-confirmDialog>
+<p-confirmDialog containerStyleClass="vw" acceptButtonStyleClass="p-button-danger" acceptIcon="pi pi-trash"  rejectButtonStyleClass="p-button-text" appendTo="body"></p-confirmDialog>
 <div style="height:calc(100vh - 68px) ;" class="  pt-0 card ">
     <p-tabMenu class="col-12" [model]="tabIndex" [activeItem]="tabIndex[0]"></p-tabMenu>
     <div *ngIf="tabSelected=='service'" class=" grid col-12">
@@ -52,7 +52,7 @@
                     <td style="width: 10%">
                         <button pButton pRipple icon="pi pi-pencil text-base" (click)="showServices(ser)"
                             class="p-button-sm  p-button-primary mr-1"></button>
-                        <button pButton pRipple icon="pi pi-power-off text-base"
+                        <button pButton (click)="confirm1Delete(ser.id)" pRipple icon="pi pi-trash text-base"
                             class="p-button-sm  p-button-danger mr-1 "></button>
                     </td>
                 </tr>

@@ -35,4 +35,7 @@ export class MobileService {
     }
     return this.api.put<any>(`services/${service.id}`, body);
   }
+  deleteService(id): Observable<any> {
+    return this.api.delete<any>(`services/${id}`);
+  }
 }

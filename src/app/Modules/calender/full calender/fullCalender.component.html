@@ -44,38 +44,46 @@
         <div height="carddH?.offsetHeight+60">
             <div class="card p-0">
                 <p-tabView>
-                    <p-tabPanel header="{{'Upcoming Appointments'|translate}}">
-                        <div style="max-height: 68vh;" class="overflow-y-auto">
-
+                    <p-tabPanel header="{{'Approved Appointments'|translate}}">
+                        <div style="max-height: 68vh;" class="overflow-y-auto" *ngFor="let appo of Appointments.data">
                             <div class="mb-3 font-semibold text-lg text-500">
-                                <div class="block">
-                                    <i [class]="'css.mr-2' | translate" style.color="green"
+                                <div class="block pointer" (click)="getAppointment(appo.id)">
+                                    <i [class]="'css.mr-2' | translate" style="color: green;"
                                         class="pi pi-circle-fill"></i>
-                                    <span>Yasmeen Abd alazeez</span>
+                                    <span>{{appo.attributes?.customer?.firstName}} {{appo.attributes?.customer?.middleName}} {{appo.attributes?.customer?.lastName}}</span>
                                 </div>
-
-                                <div [class]="'css.ml-4' | translate" class="mt-1 text-lg">
-                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-shopping-bag"
-                                        tooltipPosition="bottom" pTooltip="Services" value="Make Up"></p-tag>
-                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-user" pTooltip="Employment"
-                                        tooltipPosition="bottom" value="Mohammed Jamal"></p-tag>
-                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-clock" tooltipPosition="bottom"
-                                        pTooltip="Time" value="9:00 -> 12:00"></p-tag>
+                                <div [class]="'css.ml-4 ' | translate " style="justify-content: space-around; display: flex;padding-top: 10px">
+                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-tag" showDelay="1000" hideDelay="1000"
+                                        tooltipPosition="bottom" pTooltip="Appointment No."  [value]="appo.attributes?.number"></p-tag>
+                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-user" pTooltip="Employment" showDelay="1000" hideDelay="1000"
+                                        tooltipPosition="bottom" [value]="appo?.attributes?.employee?.data?.attributes?.username"></p-tag>
+                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-clock" tooltipPosition="bottom" showDelay="1000" hideDelay="1000"
+                                        pTooltip="Time" [value]="appo.attributes.fromDate+'->' +appo.attributes.toDate"></p-tag>
 
                                 </div>
                             </div>
-                            <div style="padding-top: 50%;" class="font-semibold text-xl text-center" translate>
-                                <i class="pi pi-exclamation-circle text-xl mx-2"></i>
-                                No Upcoming Appointments
-                            </div>
-
                         </div>
                     </p-tabPanel>
 
-                    <p-tabPanel header="{{'Previous Appointments'|translate}}">
-                        <div style="max-height: 68vh;" class="overflow-y-auto">
-                        </div>
+                    <p-tabPanel header="{{'Unapproved Appointments'|translate}}">
+                        <div style="max-height: 68vh;" class="overflow-y-auto" *ngFor="let appo of unapprovedAppoit">
+                            <div class="mb-3 font-semibold text-lg text-500">
+                                <div class="block pointer" (click)="getAppointment(appo.id)">
+                                    <i [class]="'css.mr-2' | translate" style="color: black;"
+                                        class="pi pi-circle-fill"></i>
+                                    <span>{{appo.attributes?.customer?.firstName}} {{appo.attributes?.customer?.middleName}} {{appo.attributes?.customer?.lastName}}</span>
+                                </div>
+                                <div [class]="'css.ml-4 ' | translate " style="justify-content: space-around; display: flex;padding-top: 10px">
+                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-tag" showDelay="1000" hideDelay="1000"
+                                        tooltipPosition="bottom" pTooltip="Appointment No."  [value]="appo.attributes?.number"></p-tag>
+                                    <!-- <p-tag styleClass="tag-secondary mx-2" icon="pi pi-user" pTooltip="Employment" showDelay="1000" hideDelay="1000"
+                                        tooltipPosition="bottom" [value]="appo?.attributes?.employee?.data?.attributes?.username"></p-tag> -->
+                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-clock" tooltipPosition="bottom" showDelay="1000" hideDelay="1000"
+                                        pTooltip="Time" [value]="appo.attributes.fromDate+'->' +appo.attributes.toDate"></p-tag>
 
+                                </div>
+                            </div>
+                        </div>
                     </p-tabPanel>
                 </p-tabView>
 
@@ -92,7 +100,6 @@
 
 </div>
 <div *ngIf="tabSelected=='employees'" style="height:calc(100vh - 68px) ;" class="grid card">
-
     <div>
         <p-table [value]="employ" dataKey="name" [tableStyle]="{ 'min-width': '60rem' }">
             <ng-template pTemplate="header">
@@ -111,7 +118,6 @@
                     </td>
                     <td>{{ product.name }}</td>
                     <td><p-tag [value]="product.status" severity="success"></p-tag></td>
-
 
                 </tr>
             </ng-template>
@@ -160,6 +166,6 @@
     </p-table>
 </div>
 </div>
-        <app-add-appo *ngIf="showSppoSidebar" (refreshLish)="getCalender()"
-         [appointment]="Appointment" [detailMode]="detailMode" [(display)]="showSppoSidebar"></app-add-appo>
+        <app-add-appo *ngIf="showSppoSidebar" (refreshLish)="getCalender();getunApprovedAppo()"
+         [appointment]="Appointment" [id]="id" [detailMode]="detailMode" [(display)]="showSppoSidebar"></app-add-appo>
 

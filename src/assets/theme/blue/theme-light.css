@@ -1547,7 +1547,7 @@ p-listbox.ng-dirty.ng-invalid>.p-listbox {
 .p-multiselect.p-multiselect-chip .p-multiselect-token {
   padding: 0.25rem 0.5rem;
   margin-right: 0.5rem;
-  background: var(--primary-color);
+  background: var(--primary-danger);
   color: #FFFFFF !;
   border-radius: 6px;
 }

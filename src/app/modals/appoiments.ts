@@ -9,8 +9,12 @@ export class Appointment {
     address?: string;
     notes?: string;
     deposit?: number;
+    appoBy?: any;
+    services?: any;
     employee?: any;
+    approved?: boolean;
     fromDate?: Date |any;
+    createdAt?: Date |any;
     toDate?: Date |any;
     number?: any;
     customer:{

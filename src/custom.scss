@@ -58,18 +58,18 @@ input::placeholder {
 
 }
 .p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight span {
-  color: #fff  !important;
+  color: var(--primary-color) !important;
+  
 
 }
 .p-tag-icon, .p-tag-value, .p-tag-icon.pi{
-  color: #fff !important;
-}
+  color: var(--primary-color) !important;}
 .p-multiselect-token-label {
-  color:  var(--surface-a)  !important;
+  color: var(--primary-color) !important;
   
 }
 .p-multiselect-token-icon {
-  color:  var(--surface-a)  !important;
+  color: var(--primary-color) !important;
 
 }
 .inputSwitch-sm{

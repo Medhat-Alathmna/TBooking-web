@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import { MobileService } from '../mobile.service';
 import { TranslateService } from '@ngx-translate/core';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Services } from 'src/app/modals/service';
+
 
 @Component({
   selector: 'app-mobile',
@@ -32,7 +33,7 @@ export class MobileComponent extends BaseComponent implements OnInit {
       }
     }
   ]
-  constructor(public translates: TranslateService, public messageService: MessageService, private mobileService: MobileService,) { super(messageService, translates) }
+  constructor(public translates: TranslateService, public messageService: MessageService, private mobileService: MobileService,private confirmationService: ConfirmationService) { super(messageService, translates) }
 
   ngOnInit(): void {
     this.listServices()
@@ -95,9 +96,27 @@ export class MobileComponent extends BaseComponent implements OnInit {
     })
   }
 
-
-
-
+  confirm1Delete(id) {
+    this.confirmationService.confirm({
+        message: 'Are you sure that you want to delete this service ?',
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {this.deleteSerive(id) ;console.log(id);
+        },
+    });
+  }
+  deleteSerive(id){
+    const subscription = this.mobileService.deleteService(id).subscribe((data) => {
+      if (!isSet(data)) {
+        return
+      }
+      this.successMessage('The service deleted successfully')
+      this.listServices()
+      subscription.unsubscribe()
+    }, error => {
+      subscription.unsubscribe()
+    })
+  }
 
 
 }

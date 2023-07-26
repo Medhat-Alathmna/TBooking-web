@@ -55,6 +55,11 @@
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
       "inversedBy": "appointments"
+    },
+    "approved": {
+      "type": "boolean",
+      "default": false,
+      "required": true
     }
   }
 }

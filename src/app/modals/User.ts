@@ -10,7 +10,7 @@ export class UserInfo {
   title: string
   password: string
   confirmPassword: string
-  role: string
+  role: any
   blocked: string
 
   public constructor(params?: UserInfo) {

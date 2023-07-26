@@ -10,6 +10,7 @@ import { AddEditUserComponent } from './add-edit-user/add-edit-user.component';
 import { CalenderComponent } from 'src/app/Shared/calender/calender.component';
 import { SidebarComponent } from 'src/app/Shared/sidebar/sidebar.component';
 import { DropdownComponent } from 'src/app/Shared/dropdown/dropdown.component';
+import { EntityViewerComponent } from 'src/app/Shared/entity-viewer/entity-viewer.component';
 
 
 export const routes: Routes = [
@@ -27,6 +28,7 @@ export const routes: Routes = [
     InputComponent,
     SidebarComponent,
     CalenderComponent,
+    EntityViewerComponent,
     AddEditUserComponent,
     DropdownComponent,
     LoadingComponent

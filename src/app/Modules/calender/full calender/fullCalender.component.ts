@@ -19,7 +19,9 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
     public messageService: MessageService,private calenderService:CalenderService) { super(messageService, translates) }
 
   Appointments:any=[]
+  unapprovedAppoit:any=[]
   selectedViewType = this.trans('Monthly')
+  id
   tabSelected = 'calender'
   showSppoSidebar:boolean=false
   detailMode:boolean=false
@@ -110,9 +112,11 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
     }
     this.getActions()
     this.getCalender()
+    this.getunApprovedAppo()
   }
 
   getAppointment(id){
+    this.id=id
     this.loading = true
     const subscription = this.calenderService.retreiveAppo(id).subscribe((results: any) => {
       this.loading = false
@@ -131,25 +135,50 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
   }
   getCalender() {
     this.loading = true
-    const subscription = this.calenderService.getAppominets().subscribe((results: any[]) => {
+    const subscription = this.calenderService.getApprovedAppominets().subscribe((results: any) => {
       this.loading = false
       if (!isSet(results)) {
         return
       }
-      console.log(results);
       this.Appointments = results
       this.calendarOptions.events = []
     for (let index = 0; index < this.Appointments.data?.length; index++) {
       this.calendarOptions.events.push({
         id: this.Appointments.data[index].id,
-        // title: this.Appointments.data.attributes[index].first_Name,
-        title: 'Medhat',
+        title: this.Appointments?.data[index]?.attributes?.employee?.data?.attributes?.username,
+        // title: 'Medhat',
         start:new Date( this.Appointments.data[index].attributes.fromDate),
         end: new Date(this.Appointments.data[index].attributes.toDate),
         backgroundColor:"hsl(" + Math.random() * 360 + ", 100%, 75%)",
         borderColor: "hsl(" + Math.random() * 360 + ", 100%, 75%)",
-      })
+      }
+      
+      )
+      this.Appointments.data[index].attributes.fromDate=moment( this.Appointments.data[index].attributes.fromDate).format('hh:mm A')
+      this.Appointments.data[index].attributes.toDate=moment( this.Appointments.data[index].attributes.toDate).format('hh:mm A')
     }
+    console.log(this.Appointments);
+
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+      console.log(error);
+      subscription.unsubscribe()
+    })
+  }
+  getunApprovedAppo(){
+    this.loading = true
+    const subscription = this.calenderService.getUnApprovedAppominets().subscribe((results: any) => {
+      this.loading = false
+      if (!isSet(results)) {
+        return
+      }
+      console.log(results);
+      this.unapprovedAppoit = results.data
+      for (let index = 0; index < this.unapprovedAppoit?.length; index++) {
+        this.unapprovedAppoit[index].attributes.fromDate=moment( this.unapprovedAppoit[index].attributes.fromDat).format('hh:mm A')
+        this.unapprovedAppoit[index].attributes.toDate=moment( this.unapprovedAppoit[index].attributes.toDate).format('hh:mm A')
+      }
       subscription.unsubscribe()
     }, error => {
       this.loading = false

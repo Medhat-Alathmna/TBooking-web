@@ -11,16 +11,12 @@
                 {{selectedStatus[optionLabel] |translate}}
             </div>
         </ng-template>
-        <ng-template let-statue pTemplate="item">
+        <ng-template let-statue pTemplate="item" *ngIf="data">
             <div class="my-2">
                 
                 <span [style.color]="statue== selectedStatus ?'#fff':null" translate> {{statue[optionLabel]}} 
-
-
                 </span>
-
             </div>
-
         </ng-template>
     </p-dropdown>
 </div>

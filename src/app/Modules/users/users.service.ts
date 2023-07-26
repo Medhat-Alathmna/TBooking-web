@@ -10,21 +10,25 @@ export class UsersService {
 
   constructor(private api: ApiService) { }
 
-  createUser(user:UserInfo): Observable<UserInfo> {    
-    let body = { 
+  createUser(user: UserInfo,selectRold): Observable<UserInfo> {
+    let body = {
       username: user.username,
-      password: user.password ,
-      phone: user.phone ,
-      role: 'Authenticated' ,
-      email: user.email 
-      }
-      console.log(body);
-      
+      password: user.password,
+      phone: user.phone,
+      role: {
+        connect: [{ id: selectRold.id }]
+      },
+      email: user.email
+    }
+    console.log(body);
+
     return this.api.post<UserInfo>(`users`, body);
   }
 
-  getUsers(): Observable<any[]>{
-    return this.api.get<any[]>(`users`);
-
+  getUsers(): Observable<any[]> {
+    return this.api.get<any[]>(`users?populate=*`);
+  }
+  getRoles(): Observable<any[]> {
+    return this.api.get<any[]>(`users-permissions/roles`);
   }
 }
