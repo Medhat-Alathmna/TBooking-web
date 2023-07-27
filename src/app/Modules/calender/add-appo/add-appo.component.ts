@@ -45,7 +45,7 @@ import { InputMaskComponent } from 'src/app/Shared/input-mask/input-mask.compone
 export class AddAppoComponent extends BaseComponent implements OnInit {
 
   users: any = []
-  acions: any = []
+  acions: any[] = []
   services: any = []
   selectEmployee: any
   body:string
@@ -120,7 +120,9 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
           }
         }
       ]
-
+      if (!this.appointment.approved) {
+        this.acions.splice(2,1)
+      }
     }
 
 

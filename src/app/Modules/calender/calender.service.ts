@@ -10,11 +10,11 @@ export class CalenderService {
   userAuth =JSON.parse(localStorage.getItem('userAuth'))?.user
   constructor(private api: ApiService) { }
 
-  getApprovedAppominets(): Observable<any[]> {
-    return this.api.get<any[]>('appointments?populate=*&filters[approved][$eq]=true&filters[hide][$eq]=false');
+  getApprovedAppominetsCalender(): Observable<any[]> {
+    return this.api.get<any[]>(`appointments?populate=*&filters[approved][$eq]=true&filters[hide][$eq]=false`);
   }
-  getUnApprovedAppominets(): Observable<any[]> {
-    return this.api.get<any[]>('appointments?populate=*&filters[approved][$eq]=false&filters[hide][$eq]=false');
+  getUnApprovedAppominets(currentDate): Observable<any[]> {
+    return this.api.get<any[]>(`appointments?populate=*&filters[approved][$eq]=false&filters[hide][$eq]=false&filters[fromDate][$gte]=${currentDate}`);
   }
   addAppominets(appointment:Appointment): Observable<Appointment> {
     let body={
@@ -35,7 +35,7 @@ export class CalenderService {
         employee:appointment?.employee?.id,
         approved:false,
         hide:false,
-        appoBy:this.userAuth.id,
+        appoBy:this.userAuth.username,
       }      
     }
     console.log(body);

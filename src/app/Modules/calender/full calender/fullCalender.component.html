@@ -42,47 +42,70 @@
         <div height="carddH?.offsetHeight+60">
             <div class="card p-0">
                 <p-tabView>
-                    <p-tabPanel header="{{'Approved Appointments'|translate}}">
+                    <p-tabPanel>
+                        <ng-template pTemplate="header">
+                            <span>{{'Approved Appointments'|translate}}</span>
+                            <p-badge class="ml-2" [value]="Appointments?.data?.length"></p-badge>
+
+                        </ng-template>
                         <div style="max-height: 68vh;" class="overflow-y-auto" *ngFor="let appo of Appointments.data">
                             <div class="mb-3 font-semibold text-lg text-500">
                                 <div class="block pointer" (click)="getAppointment(appo.id)">
                                     <i [class]="'css.mr-2' | translate" style="color: green;"
                                         class="pi pi-circle-fill"></i>
-                                    <span>{{appo.attributes?.customer?.firstName}} {{appo.attributes?.customer?.middleName}} {{appo.attributes?.customer?.lastName}}</span>
+                                    <span>{{appo.attributes?.customer?.firstName}}
+                                        {{appo.attributes?.customer?.middleName}}
+                                        {{appo.attributes?.customer?.lastName}}</span>
                                 </div>
-                                <div [class]="'css.ml-4 ' | translate " style="justify-content: space-around; display: flex;padding-top: 10px">
-                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-tag" showDelay="1000" hideDelay="1000"
-                                        tooltipPosition="bottom" pTooltip="Appointment No."  [value]="appo.attributes?.number"></p-tag>
-                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-user" pTooltip="Employment" showDelay="1000" hideDelay="1000"
-                                        tooltipPosition="bottom" [value]="appo?.attributes?.employee?.data?.attributes?.username"></p-tag>
-                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-clock" tooltipPosition="bottom" showDelay="1000" hideDelay="1000"
-                                        pTooltip="Time" [value]="appo.attributes.fromDate+'->' +appo.attributes.toDate"></p-tag>
+                                <div [class]="'css.ml-4 ' | translate "
+                                    style="justify-content: space-around; display: flex;padding-top: 10px">
+                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-tag" showDelay="1000"
+                                        hideDelay="1000" tooltipPosition="bottom" pTooltip="Appointment No."
+                                        [value]="appo.attributes?.number"></p-tag>
+                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-user" pTooltip="Employment"
+                                        showDelay="1000" hideDelay="1000" tooltipPosition="bottom"
+                                        [value]="appo?.attributes?.employee?.data?.attributes?.username"></p-tag>
+                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-clock" tooltipPosition="bottom"
+                                        showDelay="1000" hideDelay="1000" pTooltip="Time"
+                                        [value]="appo.attributes.fromDate+'->' +appo.attributes.toDate"></p-tag>
 
                                 </div>
                             </div>
                         </div>
                     </p-tabPanel>
 
-                    <p-tabPanel header="{{'Unapproved Appointments'|translate}}">
+                    <p-tabPanel>
+                        <ng-template pTemplate="header">
+                            <span>{{'Unapproved Appointments'|translate}}</span>
+                            <p-badge class="pl-1" [value]="unapprovedAppoit?.length"></p-badge>
+                        </ng-template>
                         <div style="max-height: 68vh;" class="overflow-y-auto" *ngFor="let appo of unapprovedAppoit">
                             <div class="mb-3 font-semibold text-lg text-500">
                                 <div class="block pointer" (click)="getAppointment(appo.id)">
                                     <i [class]="'css.mr-2' | translate" style="color: black;"
                                         class="pi pi-circle-fill"></i>
-                                    <span>{{appo.attributes?.customer?.firstName}} {{appo.attributes?.customer?.middleName}} {{appo.attributes?.customer?.lastName}}</span>
+                                    <span>{{appo.attributes?.customer?.firstName}}
+                                        {{appo.attributes?.customer?.middleName}}
+                                        {{appo.attributes?.customer?.lastName}}</span>
                                 </div>
-                                <div [class]="'css.ml-4 ' | translate " style="justify-content: space-around; display: flex;padding-top: 10px">
-                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-tag" showDelay="1000" hideDelay="1000"
-                                        tooltipPosition="bottom" pTooltip="Appointment No."  [value]="appo.attributes?.number"></p-tag>
+                                <div [class]="'css.ml-4 ' | translate "
+                                    style="justify-content: space-around; display: flex;padding-top: 10px">
+                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-tag" showDelay="1000"
+                                        hideDelay="1000" tooltipPosition="bottom" pTooltip="Appointment No."
+                                        [value]="appo.attributes?.number"></p-tag>
                                     <!-- <p-tag styleClass="tag-secondary mx-2" icon="pi pi-user" pTooltip="Employment" showDelay="1000" hideDelay="1000"
                                         tooltipPosition="bottom" [value]="appo?.attributes?.employee?.data?.attributes?.username"></p-tag> -->
-                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-clock" tooltipPosition="bottom" showDelay="1000" hideDelay="1000"
-                                        pTooltip="Time" [value]="appo.attributes.fromDate+'->' +appo.attributes.toDate"></p-tag>
+                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-clock" tooltipPosition="bottom"
+                                        showDelay="1000" hideDelay="1000" pTooltip="Time"
+                                        [value]="appo.attributes.fromDate+'->' +appo.attributes.toDate"></p-tag>
 
                                 </div>
                             </div>
                         </div>
                     </p-tabPanel>
+                    <i class="pi pi-exclamation-circle" showDelay="1000" tooltipPosition="bottom"
+                        pTooltip="This are Appointments for a current day" style="font-size: 1.5rem"></i>
+
                 </p-tabView>
 
             </div>
@@ -143,9 +166,8 @@
                     <td>{{ order.fromDate }} ->{{order.endDate}} </td>
                     <td>{{ order.service }} </td>
                     <td>{{ order.subService }} </td>
-                    <td> 
-                        <i class="pi"
-                            [ngClass]="{ 'text-green-500 pi-check-circle': order.verified,
+                    <td>
+                        <i class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': order.verified,
                              'text-red-500 pi-times-circle': !order.verified }"></i>
                     </td>
 
@@ -164,6 +186,5 @@
     </p-table>
 </div>
 </div>
-        <app-add-appo *ngIf="showSppoSidebar" (refreshLish)="getCalender();getunApprovedAppo()"
-         [appointment]="Appointment" [id]="id" [detailMode]="detailMode" [(display)]="showSppoSidebar"></app-add-appo>
-
+<app-add-appo *ngIf="showSppoSidebar" (refreshLish)="getCalender();getunApprovedAppo()" [appointment]="Appointment"
+    [id]="id" [detailMode]="detailMode" [(display)]="showSppoSidebar"></app-add-appo>

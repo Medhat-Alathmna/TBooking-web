@@ -46,12 +46,6 @@
       "relation": "oneToMany",
       "target": "api::service.service"
     },
-    "appoBy": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "appointment"
-    },
     "employee": {
       "type": "relation",
       "relation": "manyToOne",
@@ -71,6 +65,9 @@
     "deletedBy": {
       "type": "string",
       "private": true
+    },
+    "appoBy": {
+      "type": "string"
     }
   }
 }

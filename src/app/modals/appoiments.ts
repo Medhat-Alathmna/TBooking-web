@@ -1,13 +1,13 @@
 import { isSet } from "../core/base/base.component";
 
 export class Appointment {
-    id: string;
-    firstName:string;
-    middleName:string;
-    lastName:string;
-    phone?: string;
-    address?: string;
-    notes?: string;
+    id: any;
+    firstName:any;
+    middleName:any;
+    lastName:any;
+    phone?: any;
+    address?: any;
+    notes?: any;
     deposit?: number;
     appoBy?: any;
     services?: any;
@@ -19,9 +19,9 @@ export class Appointment {
     toDate?: Date |any;
     number?: any;
     customer:{
-        firstName:string;
-    middleName:string;
-    lastName:string;
+        firstName:any;
+    middleName:any;
+    lastName:any;
     }
 
     public constructor(params?: Appointment) {
