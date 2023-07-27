@@ -81,7 +81,12 @@ export class CalenderService {
     let body={
       data:{
         hide:true,
+        deletedBy:this.userAuth.username
       }
     }
-    return this.api.put<Appointment>(`/appointments/${appointment.id}`,body);  }
+    return this.api.put<Appointment>(`/appointments/${appointment.id}`,body); 
+   }
+   getEmployee(): Observable<any[]> {
+    return this.api.get<any[]>(`users?populate=*&filters[hide][$eq]=false`);
+  }
 }

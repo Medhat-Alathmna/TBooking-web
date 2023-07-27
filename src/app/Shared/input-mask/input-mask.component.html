@@ -1,0 +1,14 @@
+<div class="block">
+    <ng-container *ngIf="hideTitle!=true">
+        <div class="text-lg font-semibold mb-2">
+            {{title}}
+            <span *ngIf=" required && !value" style="color: var(--danger) !important">*</span>
+        </div>
+    </ng-container>
+
+
+        <p-inputMask mask="999-999-999-999" [(ngModel)]="value" placeholder="962-999-999-999"></p-inputMask>
+
+
+
+</div>

@@ -1,7 +1,7 @@
 <div class="block">
     <ng-container *ngIf="hideTitle!=true">
         <div class="text-lg font-semibold mb-2">
-            {{title}}
+            {{title}} <span class="text-sm px-2">{{title2}}</span> 
             <span *ngIf=" required && !value" style="color: var(--danger) !important">*</span>
         </div>
     </ng-container>

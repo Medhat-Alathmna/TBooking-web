@@ -1,6 +1,5 @@
 <app-loading *ngIf="loading" display="full"></app-loading>
 <p-toast position="top-right"></p-toast>
-<p-confirmDialog appendTo="body"></p-confirmDialog>
 <div style="height:calc(100vh - 68px) ;" class="  pt-0 card ">
     <p-tabMenu class="col-12" [model]="tabIndex" [activeItem]="tabIndex[0]"></p-tabMenu>
     <div *ngIf="tabSelected=='users'" class=" grid col-12">
@@ -60,8 +59,8 @@
                     <td style="width: 10%">
                         <button (click)="showUserDeatil(ser)" pButton pRipple icon="pi pi-pencil text-base"
                             class="p-button-sm  p-button-primary mr-1"></button>
-                        <button  pButton pRipple icon="pi pi-trash text-base"
-                            class="p-button-sm mr-1 p-button-danger "></button>
+                        <!-- <button  pButton pRipple icon="pi pi-trash text-base"
+                            class="p-button-sm mr-1 p-button-danger "></button> -->
                     </td>
                 </tr>
             </ng-template>

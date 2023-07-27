@@ -21,6 +21,13 @@
     },
     "ar": {
       "type": "string"
+    },
+    "hide": {
+      "type": "boolean",
+      "default": false
+    },
+    "deletedBy": {
+      "type": "string"
     }
   }
 }

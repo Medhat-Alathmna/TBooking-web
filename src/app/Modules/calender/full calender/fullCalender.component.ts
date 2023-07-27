@@ -15,71 +15,71 @@ import { Appointment } from 'src/app/modals/appoiments';
 })
 export class FullCalenderComponent extends BaseComponent implements OnInit {
 
-  constructor(public translates: TranslateService, 
-    public messageService: MessageService,private calenderService:CalenderService) { super(messageService, translates) }
+  constructor(public translates: TranslateService,
+    public messageService: MessageService, private calenderService: CalenderService) { super(messageService, translates) }
 
-  Appointments:any=[]
-  unapprovedAppoit:any=[]
+  Appointments: any = []
+  unapprovedAppoit: any = []
   selectedViewType = this.trans('Monthly')
   id
   tabSelected = 'calender'
-  showSppoSidebar:boolean=false
-  detailMode:boolean=false
+  showSppoSidebar: boolean = false
+  detailMode: boolean = false
   viewTypes = []
   employ: any = [
     {
-    name: 'Leena',
-    status:'Active',
-    appo: [
-      {
-        id: 1,
-        name: 'samar',
-        dateTime: '20 / 7 / 2023',
-        fromDate: '9:00',
-        endDate: '11:30',
-        service: 'Hair Cut',
-        subService: 'Small Hair Cut',
-        verified:true
-      },
-      {
-        id: 2,
-        name: 'Hanan',
-        dateTime: '20 / 7 / 2023',
-        fromDate: '9:30',
-        endDate: '11:30',
-        service: 'Massage',
-        subService: 'Full Time Massage',
-        verified:false
-      },
-    ]
-  },
+      name: 'Leena',
+      status: 'Active',
+      appo: [
+        {
+          id: 1,
+          name: 'samar',
+          dateTime: '20 / 7 / 2023',
+          fromDate: '9:00',
+          endDate: '11:30',
+          service: 'Hair Cut',
+          subService: 'Small Hair Cut',
+          verified: true
+        },
+        {
+          id: 2,
+          name: 'Hanan',
+          dateTime: '20 / 7 / 2023',
+          fromDate: '9:30',
+          endDate: '11:30',
+          service: 'Massage',
+          subService: 'Full Time Massage',
+          verified: false
+        },
+      ]
+    },
     {
-    name: 'Am Myaar',
-    status:'Active',
-    appo: [
-      {
-        id: 1,
-        name: 'SOsO',
-        dateTime: '21 / 7 / 2023',
-        fromDate: '9:00',
-        endDate: '11:30',
-        service: 'Hair Cut',
-        subService: 'Small Hair Cut',
-        verified:false
-      },
-      {
-        id: 2,
-        name: 'Sleena',
-        dateTime: '21 / 7 / 2023',
-        fromDate: '9:30',
-        endDate: '11:30',
-        service: 'Massage',
-        subService: 'Full Time Massage',
-        verified:true
-      },
-    ]
-  }
-]
+      name: 'Am Myaar',
+      status: 'Active',
+      appo: [
+        {
+          id: 1,
+          name: 'SOsO',
+          dateTime: '21 / 7 / 2023',
+          fromDate: '9:00',
+          endDate: '11:30',
+          service: 'Hair Cut',
+          subService: 'Small Hair Cut',
+          verified: false
+        },
+        {
+          id: 2,
+          name: 'Sleena',
+          dateTime: '21 / 7 / 2023',
+          fromDate: '9:30',
+          endDate: '11:30',
+          service: 'Massage',
+          subService: 'Full Time Massage',
+          verified: true
+        },
+      ]
+    }
+  ]
   currentDate = moment(new Date(), 'MM-DD').locale(this.lang).format('Do MMM -dddd');
   calendarOptions: CalendarOptions
   tabIndex = [
@@ -115,17 +115,17 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
     this.getunApprovedAppo()
   }
 
-  getAppointment(id){
-    this.id=id
+  getAppointment(id) {
+    this.id = id
     this.loading = true
     const subscription = this.calenderService.retreiveAppo(id).subscribe((results: any) => {
       this.loading = false
       if (!isSet(results)) {
         return
       }
-      this.detailMode=true
-      this.showSppoSidebar=true
-      this.Appointment=results.data.attributes
+      this.detailMode = true
+      this.showSppoSidebar = true
+      this.Appointment = results.data.attributes
       subscription.unsubscribe()
     }, error => {
       this.loading = false
@@ -142,22 +142,23 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
       }
       this.Appointments = results
       this.calendarOptions.events = []
-    for (let index = 0; index < this.Appointments.data?.length; index++) {
-      this.calendarOptions.events.push({
-        id: this.Appointments.data[index].id,
-        title: this.Appointments?.data[index]?.attributes?.employee?.data?.attributes?.username,
-        // title: 'Medhat',
-        start:new Date( this.Appointments.data[index].attributes.fromDate),
-        end: new Date(this.Appointments.data[index].attributes.toDate),
-        backgroundColor:"hsl(" + Math.random() * 360 + ", 100%, 75%)",
-        borderColor: "hsl(" + Math.random() * 360 + ", 100%, 75%)",
+      for (let index = 0; index < this.Appointments.data?.length; index++) {
+        this.calendarOptions.events.push({
+          id: this.Appointments.data[index].id,
+          title: this.Appointments?.data[index]?.attributes?.employee?.data?.attributes?.username ?
+           this.Appointments?.data[index]?.attributes?.employee?.data?.attributes?.username : 'No Employee yet',
+          // title: 'Medhat',
+          start: new Date(this.Appointments.data[index].attributes.fromDate),
+          end: new Date(this.Appointments.data[index].attributes.toDate),
+          backgroundColor: "hsl(" + Math.random() * 360 + ", 100%, 75%)",
+          borderColor: "hsl(" + Math.random() * 360 + ", 100%, 75%)",
+        }
+
+        )
+        this.Appointments.data[index].attributes.fromDate = moment(this.Appointments.data[index].attributes.fromDate).format('hh:mm A')
+        this.Appointments.data[index].attributes.toDate = moment(this.Appointments.data[index].attributes.toDate).format('hh:mm A')
       }
-      
-      )
-      this.Appointments.data[index].attributes.fromDate=moment( this.Appointments.data[index].attributes.fromDate).format('hh:mm A')
-      this.Appointments.data[index].attributes.toDate=moment( this.Appointments.data[index].attributes.toDate).format('hh:mm A')
-    }
-    console.log(this.Appointments);
+      console.log(this.Appointments);
 
       subscription.unsubscribe()
     }, error => {
@@ -166,7 +167,7 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     })
   }
-  getunApprovedAppo(){
+  getunApprovedAppo() {
     this.loading = true
     const subscription = this.calenderService.getUnApprovedAppominets().subscribe((results: any) => {
       this.loading = false
@@ -176,8 +177,8 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
       console.log(results);
       this.unapprovedAppoit = results.data
       for (let index = 0; index < this.unapprovedAppoit?.length; index++) {
-        this.unapprovedAppoit[index].attributes.fromDate=moment( this.unapprovedAppoit[index].attributes.fromDat).format('hh:mm A')
-        this.unapprovedAppoit[index].attributes.toDate=moment( this.unapprovedAppoit[index].attributes.toDate).format('hh:mm A')
+        this.unapprovedAppoit[index].attributes.fromDate = moment(this.unapprovedAppoit[index].attributes.fromDat).format('hh:mm A')
+        this.unapprovedAppoit[index].attributes.toDate = moment(this.unapprovedAppoit[index].attributes.toDate).format('hh:mm A')
       }
       subscription.unsubscribe()
     }, error => {
@@ -226,11 +227,11 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
   getCurrentDay() {
     this.calendar.getApi().today()
   }
-  openAppoDeatils(){
-    this.Appointment=null
-    this.detailMode=false
+  openAppoDeatils() {
+    this.Appointment = null
+    this.detailMode = false
 
-    this.showSppoSidebar=true
+    this.showSppoSidebar = true
   }
 
 }

@@ -1,32 +1,37 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import {InputTextModule} from 'primeng/inputtext';
+import {ButtonModule} from 'primeng/button';
+import {InputNumberModule} from 'primeng/inputnumber';
+import { InputMaskModule } from 'primeng/inputmask';
 
 @Component({
-  selector: 'app-input',
-  templateUrl: './input.component.html',
-  styleUrls: ['./input.component.scss'],
+  selector: 'app-input-mask',
+  templateUrl: './input-mask.component.html',
+  styleUrls: ['./input-mask.component.scss'],
   standalone:true,
-  imports:[InputTextModule,CommonModule,FormsModule,TranslateModule],
+  imports:[InputTextModule,CommonModule,FormsModule,TranslateModule,ButtonModule,InputMaskModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: InputComponent,
+      useExisting: InputMaskComponent,
       multi: true
     }]
 })
-export class InputComponent implements ControlValueAccessor {
+
+export class InputMaskComponent implements ControlValueAccessor {
   
   @Input() title: string
-  @Input() title2: string
-  @Input() type: string='text'
   @Input() class: string
   @Input() required: boolean=false
   @Input() placeholder: string
   @Input() hideTitle: boolean
   @Input() disabled: boolean
+  @Input() numberInput: boolean=false
+
+  @Output() clickBtn: EventEmitter<any> = new EventEmitter();
 
   constructor() { }
   innervalue
@@ -63,5 +68,7 @@ export class InputComponent implements ControlValueAccessor {
   public validate(c: FormControl) {
     return c.errors;
   }
-
+  clickBtn_(){
+this.clickBtn.emit('')
+  }
 }

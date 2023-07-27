@@ -20,6 +20,7 @@ import { UsersService } from '../../users/users.service';
 import * as moment from 'moment';
 import { MobileService } from '../../mobile/mobile.service';
 import { MultiSelectComponent } from 'src/app/Shared/multi-select/multi-select.component';
+import { InputMaskComponent } from 'src/app/Shared/input-mask/input-mask.component';
 
 
 @Component({
@@ -36,6 +37,7 @@ import { MultiSelectComponent } from 'src/app/Shared/multi-select/multi-select.c
     DropdownComponent,
     EntityViewerComponent,
     TextAreaComponent,
+    InputMaskComponent,
     MultiSelectComponent,
     LoadingComponent,
   ],
@@ -46,7 +48,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   acions: any = []
   services: any = []
   selectEmployee: any
-
+  body:string
   closeCurrentTime = startOfHour(addMinutes(new Date(), Math.round(new Date().getMinutes() / 30) * 30));
 
   @Input() appointment: Appointment | any
@@ -71,6 +73,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       this.appointment.fromDate = this.closeCurrentTime
       this.appointment.toDate = this.closeCurrentTime
       this.appointment.deposit = 0
+      this.appointment.phone=962
     } else {
 
       this.appointment = Appointment.cloneObject(this.appointment)
@@ -96,6 +99,17 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
           label: 'Convert to Order',
           icon: 'icon-news',
           command: () => {
+          }
+        },
+        {
+          label: 'Send Notification',
+          icon: 'pi pi-whatsapp',
+          command: () => {
+            this.appointment.fromDate = moment(this.appointment.fromDate).format('YYYY-MM-DD HH:ss A')
+            this.body=`مركز الجمال الفاخر يشعركم انه تم تأكيد موعدكم بتاريخ  ${this.appointment.fromDate} , يرجى الإلتزام بالموعد حتى لا نفتح رؤوسكم , و شكرا`
+
+            window.open(`https://web.whatsapp.com/send?phone=${this.appointment.phone}&text=${this.body}`, "_blank")
+
           }
         },
         {
@@ -167,7 +181,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   }
 
   getUsers() {
-    const subscription = this.userServices.getUsers().subscribe((data) => {
+    const subscription = this.calenderService.getEmployee().subscribe((data) => {
       if (!isSet(data)) {
         return
       }

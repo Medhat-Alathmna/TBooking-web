@@ -79,6 +79,14 @@
       "relation": "oneToMany",
       "target": "api::appointment.appointment",
       "mappedBy": "employee"
+    },
+    "hide": {
+      "type": "boolean",
+      "default": false
+    },
+    "deletedBy": {
+      "type": "string",
+      "private": true
     }
   }
 }

@@ -11,8 +11,8 @@ export class UserInfo {
   password: string
   confirmPassword: string
   role: any
-  blocked: string
-
+  blocked: boolean
+  createdAt:any
   public constructor(params?: UserInfo) {
     Object.assign(this, params);
 }

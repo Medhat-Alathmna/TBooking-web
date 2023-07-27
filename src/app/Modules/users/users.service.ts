@@ -8,6 +8,8 @@ import { UserInfo } from 'src/app/modals/User';
 })
 export class UsersService {
 
+  userAuth =JSON.parse(localStorage.getItem('userAuth'))?.user
+
   constructor(private api: ApiService) { }
 
   createUser(user: UserInfo,selectRold): Observable<UserInfo> {
@@ -20,15 +22,42 @@ export class UsersService {
       },
       email: user.email
     }
-    console.log(body);
-
     return this.api.post<UserInfo>(`users`, body);
   }
 
+  updateUser(user,selectRold): Observable<UserInfo>{
+    let body={
+        email:user.email,
+        username:user.username, 
+        phone: user.phone,
+        role: selectRold.id 
+      
+    }
+    return this.api.put<UserInfo>(`/users/${user.id}`,body);
+
+  }
+
   getUsers(): Observable<any[]> {
-    return this.api.get<any[]>(`users?populate=*`);
+    return this.api.get<any[]>(`users?populate=*&filters[hide][$eq]=false`);
   }
   getRoles(): Observable<any[]> {
     return this.api.get<any[]>(`users-permissions/roles`);
   }
+  hideUser(user:any): Observable<any> {
+    let body={
+        hide:true,
+        deletedBy:this.userAuth.username
+      
+    }
+    return this.api.put<any>(`/users/${user.id}`,body);
+    }
+  userStatus(user:UserInfo): Observable<UserInfo> {
+    let body={
+        blocked:user.blocked,
+      
+    }
+    return this.api.put<UserInfo>(`/users/${user.id}`,body);
+    }
+
+
 }

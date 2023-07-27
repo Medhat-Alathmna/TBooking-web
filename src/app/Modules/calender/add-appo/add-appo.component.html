@@ -57,13 +57,12 @@
                      ! appointment?.lastName || !appointment?.phone ||!appointment?.fromDate " pRipple type="button"
                     [label]="'Save'|translate" icon="pi pi-check " (click)="detailMode?updateAppominet():addAppominet()"
                     class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
-
-
             </div>
         </div>
     </div>
     <form #form="ngForm" body class="px-5 ">
         <div class="grid ">
+            {{body}}
             <div class="col-12 pb-4">
                 <span class="text-3xl ont-semibold font-bold">Customer Details </span>
             </div>
@@ -80,7 +79,9 @@
                     [required]="true"></app-input>
             </div>
             <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="appointment.phone" name="phone" title="Phone" [required]="true"></app-input>
+                <app-input-mask name="phone" [(ngModel)]="appointment.phone"
+                  [required]="true"
+                title="Phone"></app-input-mask>
             </div>
             <div class="lg:col-4 sm:col-6 ">
                 <app-input [(ngModel)]="appointment.address" name="address" title="Address"></app-input>

@@ -17,6 +17,7 @@ import { FindUserComponent } from 'src/app/Shared/find-user/find-user.component'
 import { TextAreaComponent } from 'src/app/Shared/text-area/text-area.component';
 import { EntityViewerComponent } from 'src/app/Shared/entity-viewer/entity-viewer.component';
 import { MultiSelectComponent } from 'src/app/Shared/multi-select/multi-select.component';
+import { InputMaskComponent } from 'src/app/Shared/input-mask/input-mask.component';
 
 
 FullCalendarModule.registerPlugins([
@@ -44,6 +45,7 @@ export const routes: Routes = [
     FindUserComponent,
     MultiSelectComponent,
     TextAreaComponent,
+    InputMaskComponent,
     EntityViewerComponent,
     InputComponent,
     LoadingComponent

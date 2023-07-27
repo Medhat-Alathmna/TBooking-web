@@ -106,11 +106,10 @@ export class MobileComponent extends BaseComponent implements OnInit {
     });
   }
   deleteSerive(id){
-    const subscription = this.mobileService.deleteService(id).subscribe((data) => {
+    const subscription = this.mobileService.hideServies(id).subscribe((data) => {
       if (!isSet(data)) {
         return
       }
-      this.successMessage('The service deleted successfully')
       this.listServices()
       subscription.unsubscribe()
     }, error => {

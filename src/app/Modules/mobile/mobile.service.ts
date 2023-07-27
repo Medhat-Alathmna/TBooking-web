@@ -7,11 +7,13 @@ import { Services } from 'src/app/modals/service';
   providedIn: 'root'
 })
 export class MobileService {
+  userAuth =JSON.parse(localStorage.getItem('userAuth'))?.user
+
 
   constructor(private api: ApiService) { }
 
   getServices(): Observable<any[]> {
-    return this.api.get<any[]>('/services');
+    return this.api.get<any[]>('/services?filters[hide][$eq]=false');
   }
 
   createService(service: Services): Observable<any> {
@@ -35,7 +37,13 @@ export class MobileService {
     }
     return this.api.put<any>(`services/${service.id}`, body);
   }
-  deleteService(id): Observable<any> {
-    return this.api.delete<any>(`services/${id}`);
-  }
+  hideServies(id): Observable<any> {
+    let body={
+      data:{
+        hide:true,
+        deletedBy:this.userAuth.username
+      }
+    }
+    return this.api.put<Services>(`/services/${id}`,body); 
+   }
 }
