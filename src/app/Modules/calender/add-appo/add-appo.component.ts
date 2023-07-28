@@ -48,7 +48,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   acions: any[] = []
   services: any = []
   selectEmployee: any
-  body:string
+  body: string
   closeCurrentTime = startOfHour(addMinutes(new Date(), Math.round(new Date().getMinutes() / 30) * 30));
 
   @Input() appointment: Appointment | any
@@ -73,7 +73,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       this.appointment.fromDate = this.closeCurrentTime
       this.appointment.toDate = this.closeCurrentTime
       this.appointment.deposit = 0
-      this.appointment.phone=962
+      this.appointment.phone = 962
     } else {
 
       this.appointment = Appointment.cloneObject(this.appointment)
@@ -89,10 +89,11 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
 
       this.acions = [
         {
-          label: this.appointment.approved ? 'Convert to Unapproved' : 'Convert to Approved',
+          label: this.appointment.approved ? 'Cancel the Appointment' : 'Convert to Approved',
           icon: 'pi pi-refresh',
-          command: () => {            
-            this.convertApprove()
+          command: () => {
+            this.appointment.approved ? this.confirmCancel() : this.convertApprove()
+
           }
         },
         {
@@ -106,7 +107,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
           icon: 'pi pi-whatsapp',
           command: () => {
             this.appointment.fromDate = moment(this.appointment.fromDate).format('YYYY-MM-DD HH:ss A')
-            this.body=`مركز الجمال الفاخر يشعركم انه تم تأكيد موعدكم بتاريخ  ${this.appointment.fromDate} , يرجى الإلتزام بالموعد حتى لا نفتح رؤوسكم , و شكرا`
+            this.body = `مركز الجمال الفاخر يشعركم انه تم تأكيد موعدكم بتاريخ  ${this.appointment.fromDate} , يرجى الإلتزام بالموعد حتى لا نفتح رؤوسكم , و شكرا`
 
             window.open(`https://web.whatsapp.com/send?phone=${this.appointment.phone}&text=${this.body}`, "_blank")
 
@@ -121,7 +122,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
         }
       ]
       if (!this.appointment.approved) {
-        this.acions.splice(2,1)
+        this.acions.splice(1, 2)
       }
     }
 
@@ -167,7 +168,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     })
   }
   updateAppominet() {
-    this.appointment.id=this.id
+    this.appointment.id = this.id
     this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
     const subscription = this.calenderService.updateAppointemt(this.appointment).subscribe((data) => {
@@ -223,7 +224,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   }
 
   convertApprove() {
-    this.appointment.id=this.id
+    this.appointment.id = this.id
     this.appointment.approved = !this.appointment.approved
     this.loading = true
     const subscription = this.calenderService.approvedAction(this.appointment).subscribe((results: any) => {
@@ -243,23 +244,51 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   }
   confirm1Delete() {
     this.confirmationService.confirm({
-        message: 'Are you sure that you want to delete this Appontment ?',
-        header: 'Confirmation',
-        icon: 'pi pi-exclamation-triangle',
-        accept: () => {this.deleteAppo()},
+      message: 'Are you sure that you want to delete this Appontment ?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => { this.deleteAppo() },
     });
   }
-  deleteAppo(){
-    this.appointment.id=this.id
+  deleteAppo() {
+    this.appointment.id = this.id
     const subscription = this.calenderService.hideAppointment(this.appointment).subscribe((data) => {
       if (!isSet(data)) {
         return
       }
       // this.successMessage('The Appontment deleted successfully')
-      this.display=false
+      this.display = false
       this.refreshLish.emit(true)
       subscription.unsubscribe()
     }, error => {
+      subscription.unsubscribe()
+    })
+  }
+  confirmCancel() {
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to cancel this Appontment ?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => { this.cancelAppointment() },
+    });
+  }
+
+  cancelAppointment() {
+    this.appointment.id = this.id
+    this.appointment.status = 'Cancel'
+    this.loading = true
+    const subscription = this.calenderService.cancelAction(this.appointment).subscribe((results: any) => {
+      this.loading = false
+      if (!isSet(results)) {
+        return
+      }
+      // this.successMessage('This appontment has been converted')
+      this.refreshLish.emit(true)
+
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+      console.log(error);
       subscription.unsubscribe()
     })
   }

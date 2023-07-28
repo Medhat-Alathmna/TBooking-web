@@ -103,6 +103,35 @@
                             </div>
                         </div>
                     </p-tabPanel>
+                    <p-tabPanel>
+                        <ng-template pTemplate="header">
+                            <span>{{'Completed Appointments'|translate}}</span>
+                            <p-badge class="pl-1" [value]="unapprovedAppoit?.length"></p-badge>
+                        </ng-template>
+                        <div style="max-height: 68vh;" class="overflow-y-auto" *ngFor="let appo of unapprovedAppoit">
+                            <div class="mb-3 font-semibold text-lg text-500">
+                                <div class="block pointer" (click)="getAppointment(appo.id)">
+                                    <i [class]="'css.mr-2' | translate" style="color: black;"
+                                        class="pi pi-circle-fill"></i>
+                                    <span>{{appo.attributes?.customer?.firstName}}
+                                        {{appo.attributes?.customer?.middleName}}
+                                        {{appo.attributes?.customer?.lastName}}</span>
+                                </div>
+                                <div [class]="'css.ml-4 ' | translate "
+                                    style="justify-content: space-around; display: flex;padding-top: 10px">
+                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-tag" showDelay="1000"
+                                        hideDelay="1000" tooltipPosition="bottom" pTooltip="Appointment No."
+                                        [value]="appo.attributes?.number"></p-tag>
+                                    <!-- <p-tag styleClass="tag-secondary mx-2" icon="pi pi-user" pTooltip="Employment" showDelay="1000" hideDelay="1000"
+                                        tooltipPosition="bottom" [value]="appo?.attributes?.employee?.data?.attributes?.username"></p-tag> -->
+                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-clock" tooltipPosition="bottom"
+                                        showDelay="1000" hideDelay="1000" pTooltip="Time"
+                                        [value]="appo.attributes.fromDate+'->' +appo.attributes.toDate"></p-tag>
+
+                                </div>
+                            </div>
+                        </div>
+                    </p-tabPanel>
                     <i class="pi pi-exclamation-circle" showDelay="1000" tooltipPosition="bottom"
                         pTooltip="This are Appointments for a current day" style="font-size: 1.5rem"></i>
 
@@ -120,71 +149,9 @@
     </div>
 
 </div>
-<div *ngIf="tabSelected=='employees'" style="height:calc(100vh - 68px) ;" class="grid card">
-    <div>
-        <p-table [value]="employ" dataKey="name" [tableStyle]="{ 'min-width': '60rem' }">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th style="width: 5rem"></th>
-                    <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
-                    <th pSortableColumn="inventoryStatus">Status <p-sortIcon field="inventoryStatus"></p-sortIcon></th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-product let-expanded="expanded">
-                <tr>
-                    <td>
-                        <button type="button" pButton pRipple [pRowToggler]="product"
-                            class="p-button-text p-button-rounded p-button-plain"
-                            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
-                    </td>
-                    <td>{{ product.name }}</td>
-                    <td><p-tag [value]="product.status" severity="success"></p-tag></td>
-
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="rowexpansion" let-product>
-                <tr>
-                    <td colspan="7">
-                        <div class="p-3">
-                            <p-table [value]="product.appo" dataKey="id">
-                                <ng-template pTemplate="header">
-                <tr>
-                    <th pSortableColumn="id">Id <p-sortIcon field="price"></p-sortIcon></th>
-                    <th pSortableColumn="customer">Customer Name<p-sortIcon field="customer"></p-sortIcon></th>
-                    <th pSortableColumn="date">Date Appoiment<p-sortIcon field="date"></p-sortIcon></th>
-                    <th pSortableColumn="amount">Time <p-sortIcon field="amount"></p-sortIcon></th>
-                    <th pSortableColumn="status">Service <p-sortIcon field="status"></p-sortIcon></th>
-                    <th pSortableColumn="status">Sub Service <p-sortIcon field="status"></p-sortIcon></th>
-                    <th pSortableColumn="status">verified <p-sortIcon field="status"></p-sortIcon></th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-order>
-                <tr>
-                    <td>{{ order.id }}</td>
-                    <td>{{ order.name }}</td>
-                    <td>{{ order.dateTime }}</td>
-                    <td>{{ order.fromDate }} ->{{order.endDate}} </td>
-                    <td>{{ order.service }} </td>
-                    <td>{{ order.subService }} </td>
-                    <td>
-                        <i class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': order.verified,
-                             'text-red-500 pi-times-circle': !order.verified }"></i>
-                    </td>
-
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="emptymessage">
-                <tr>
-                    <td colspan="6">There are no order for this product yet.</td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </div>
-    </td>
-    </tr>
-    </ng-template>
-    </p-table>
+<div *ngIf="tabSelected=='appointments'" >
+    <app-appointments></app-appointments>
 </div>
-</div>
+
 <app-add-appo *ngIf="showSppoSidebar" (refreshLish)="getCalender();getunApprovedAppo()" [appointment]="Appointment"
     [id]="id" [detailMode]="detailMode" [(display)]="showSppoSidebar"></app-add-appo>

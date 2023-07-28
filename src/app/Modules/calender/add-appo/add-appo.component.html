@@ -30,7 +30,16 @@
                 </div>
 
                 <div class="flex align-items-center justify-content-center border-break"></div>
+                <div class="flex-initial flex align-items-center justify-content-center px-3">
+                    <span [class]="'css.mr-2'|translate">
+                        <i class="pi pi-tags text-100 text-3xl "></i>
+                    </span>
+                    <entity-viewer
+                        [entity]="{type:'text',title:'Status'| translate,value:appointment.status}"
+                        [darkMode]="true"></entity-viewer>
+                </div>
 
+                <div class="flex align-items-center justify-content-center border-break"></div>
                 <div class="flex-initial flex align-items-center justify-content-center px-3">
                     <entity-viewer
                         [entity]="{type:'user',title:'CREATED BY'|translate,value:appointment?.appoBy}"

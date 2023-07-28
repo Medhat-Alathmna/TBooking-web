@@ -68,6 +68,16 @@
     },
     "appoBy": {
       "type": "string"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "Completed",
+        "Canceled",
+        "Draft"
+      ],
+      "default": "Draft",
+      "required": true
     }
   }
 }

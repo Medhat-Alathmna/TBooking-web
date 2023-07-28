@@ -18,13 +18,18 @@
     "status": {
       "type": "string"
     },
-    "appointment": {
-      "type": "json"
+    "totalPrice": {
+      "type": "decimal",
+      "required": true
     },
-    "orderPrice": {
+    "appointment": {
       "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::service.service"
+      "relation": "oneToOne",
+      "target": "api::appointment.appointment"
+    },
+    "services": {
+      "type": "json",
+      "required": true
     }
   }
 }

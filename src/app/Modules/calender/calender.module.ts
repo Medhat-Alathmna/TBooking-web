@@ -18,6 +18,7 @@ import { TextAreaComponent } from 'src/app/Shared/text-area/text-area.component'
 import { EntityViewerComponent } from 'src/app/Shared/entity-viewer/entity-viewer.component';
 import { MultiSelectComponent } from 'src/app/Shared/multi-select/multi-select.component';
 import { InputMaskComponent } from 'src/app/Shared/input-mask/input-mask.component';
+import { AppointmentsComponent } from './appointments/appointments.component';
 
 
 FullCalendarModule.registerPlugins([
@@ -32,7 +33,7 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [FullCalenderComponent, ],
+  declarations: [FullCalenderComponent, AppointmentsComponent, ],
   imports: [
     CommonModule,
     FullCalendarModule,

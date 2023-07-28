@@ -37,6 +37,12 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
       }
     },
     {
+      label: 'Appointments',
+      command: event => {
+        this.tabSelected = 'appointments'
+      }
+    },
+    {
       label: 'Employees',
       command: event => {
         this.tabSelected = 'employees'

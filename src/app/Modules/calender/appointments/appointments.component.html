@@ -1,0 +1,66 @@
+    <div style="height:calc(100vh - 68px) ;" class="grid card">
+    <p-table  #kt [value]="appointments" [scrollable]="true" [tableStyle]="{'width.%': 100}" scrollHeight="80vh"  [rowHover]="true">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <div>
+                    <h5 class="m-0 primary">Appointments Manager</h5>
+                    <label class="text-600 ">
+                        In total there are <label class="text-primary font-bold ">
+                            {{appointments ? appointments.length : 0 }}</label> Appointments .
+                    </label>
+                </div>
+                
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header" >
+            <tr>
+                <th >Appointment No.</th>
+                <th>Customer</th>
+                <th>Status</th>
+                <th>Create Date</th>
+                <th>Approved</th>
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-appo let-i="rowIndex">
+            <tr>
+                <td >
+                    <span  class="text-xl text-primary pointer font-bold">
+                        {{appo.attributes.number ?appo.attributes.number:'No Number' }}
+                    </span>
+                </td>
+                <td >
+                    <span   class="text-xl text-primary pointer ">
+                        {{appo.attributes.customer.firstName }}   {{appo.attributes.customer.middleName }} {{appo.attributes.customer.lastName }}
+                    </span>
+                </td>
+               
+                <td>
+                    <span class="text-xl text-primary  bold">
+                        <span *ngIf="appo.attributes.status" [class]="appo.attributes.status">{{appo.attributes.status}}</span>
+                        <!-- <span *ngIf="appo.attributes.status=='Cancel' " class="InActive">Cancel</span>
+                        <span *ngIf="appo.attributes.status=='Draft' " class="Active">Draft</span> -->
+                    </span>
+                </td>
+                <td>
+                    <span class="text-xl text-primary ">
+                        {{appo.attributes.updatedAt| date:'YYYY-MM-dd  HH:mm'}}
+                    </span>
+                </td>
+                <td>
+                    <span *ngIf="appo.attributes.approved==true " class="Completed">Approved</span>
+                    <span *ngIf="appo.attributes.approved==false " class="Canceled">UnApproved</span>
+                </td>
+                <td >
+                    <button  pButton pRipple icon="pi pi-pencil text-base"
+                        class="p-button-sm  p-button-primary mr-1"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="4">No Appointments .</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

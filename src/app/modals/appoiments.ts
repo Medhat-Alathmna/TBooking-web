@@ -11,6 +11,7 @@ export class Appointment {
     deposit?: number;
     appoBy?: any;
     services?: any;
+    status?: any;
     employee?: any;
     approved?: boolean;
     hide?: boolean;

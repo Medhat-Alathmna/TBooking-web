@@ -16,6 +16,9 @@ export class CalenderService {
   getUnApprovedAppominets(currentDate): Observable<any[]> {
     return this.api.get<any[]>(`appointments?populate=*&filters[approved][$eq]=false&filters[hide][$eq]=false&filters[fromDate][$gte]=${currentDate}`);
   }
+  getAllApointemnts(): Observable<any[]> {
+    return this.api.get<any[]>(`appointments?populate=*&filters[hide][$eq]=false`);
+  }
   addAppominets(appointment:Appointment): Observable<Appointment> {
     let body={
       data:{
@@ -46,6 +49,14 @@ export class CalenderService {
     let body={
       data:{
         approved:appointment.approved,
+      }
+    }
+    return this.api.put<Appointment>(`/appointments/${appointment.id}`,body);
+  }
+  cancelAction(appointment:Appointment): Observable<Appointment> {
+    let body={
+      data:{
+        status:appointment.status,
       }
     }
     return this.api.put<Appointment>(`/appointments/${appointment.id}`,body);
