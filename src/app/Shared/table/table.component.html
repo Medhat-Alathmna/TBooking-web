@@ -1,0 +1,200 @@
+<p-table #dt appendTo="body" [columns]="columns" [value]="data" styleClass="shadow-1 border-round p-datatable-striped "
+    dataKey="id" [reorderableColumns]="reorderableColumns" [scrollable]="scrollable" [scrollHeight]="scrollHeight"
+    (onRowReorder)="onChangeReorderColumn($event)" class="border-round" rowExpandMode="single" [rowHover]="true"
+    [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} entries"
+    (onPage)="getList(($event?.first/rowNum)+1)" [paginator]="paginator" [rows]="rowNum" [loading]="lodaing">
+    <ng-container *ngIf="caption">
+        <ng-template pTemplate="caption">
+
+            <div class="flex justify-content-between flex-wrap ">
+                <div class=" justify-content-between flex-wrap ">
+                    <span class="text-xl font-semibold ">
+                        <div class="flex text-primary">
+                            {{caption?.title}}
+                            <div class="mx-2">
+                                <ng-content select="[captionTitle]"></ng-content>
+                            </div>
+                        </div>
+
+                        <span *ngIf="caption?.subTitle">
+                            : <label [style.color]="caption?.color">{{caption?.subTitle}}</label>
+                        </span>
+                    </span>
+                    <div class="text-600 text-lg font-semibold mt-1">
+                        {{'In total there are'}} <label class="text-primary font-bold ">{{data?.length}}</label>
+                        <label *ngIf="caption?.title2;else titleDefult">
+                            {{ caption?.title2 }}.
+
+                        </label>
+                        <ng-template #titleDefult>
+                            {{ caption?.title }}.
+                        </ng-template>
+                    </div>
+                </div>
+
+                <div class="flex">
+                    <ng-content select="[toolBarBtns]"></ng-content>
+
+                    <div *ngIf="clearAllFillterBtn==true" class="mt-1">
+                        <button pButton pRipple (click)="clearAllFillter()" icon="pi pi-filter-slash"
+                            label="Clear Filters" type="button" label="Clear Filters"
+                            class=" p-button-raised p-button-outlined"></button>
+                    </div>
+
+                    <div *ngIf="hideSearch==false" class="justify-content-between ">
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                placeholder="{{'Search'}}" />
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+        </ng-template>
+    </ng-container>
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th *ngIf="expandedTable==true" style="width: 2rem" [class]="rowClass"></th>
+            <th *ngFor="let col of columns" [class.hidden]="col?.display=='none'" style="min-width: 205px;"
+                [class]="rowClass" pReorderableColumn>
+                {{col?.header}}
+                <p-columnFilter #fitlerField [showApplyButton]="false" [showClearButton]="false"
+                    [ngClass]="fillterFildes[col?.field]?.status?'active-filter':null" type="text" field="vendor"
+                    matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
+                    [showAddButton]="false">
+                    <ng-template pTemplate="filter">
+
+                        <p-dropdown [disabled]="fillterFildes[col?.field]?.status"
+                            [options]="!col.type|| col.type=='str'?queryTypes.types2:queryTypes.types1"
+                            [showClear]="true" [(ngModel)]="fillterFildes[col?.field].type"
+                            placeholder='Select filter Type' optionValue="value" optionLabel="type">
+                            <ng-template let-item pTemplate="item">
+                                <span>{{item.type}}</span>
+                            </ng-template>
+                        </p-dropdown>
+                        <div class="mt-3">
+                            <input *ngIf="!col.type || col.type=='str'" [disabled]="fillterFildes[col?.field]?.status"
+                                [(ngModel)]="fillterFildes[col?.field].value" type="text" pInputText>
+
+                            <p-inputNumber *ngIf="col?.type=='int'" [minFractionDigits]="2"
+                                [disabled]="fillterFildes[col?.field]?.status" mode="decimal"
+                                [(ngModel)]="fillterFildes[col?.field].value" [allowEmpty]="true">
+                            </p-inputNumber>
+
+                            <p-calendar *ngIf="col?.type=='date'" [disabled]="fillterFildes[col?.field]?.status"
+                                dateFormat="dd/mm/yy" [showIcon]="true" yearNavigator=true yearRange='2018:2025'
+                                [(ngModel)]="fillterFildes[col?.field].value">
+                            </p-calendar>
+                        </div>
+                        <div class="grid mt-2">
+                            <div class="col-6">
+                                <button pButton label='Clear' class="p-button-outlined"
+                                    (click)="fitlerField.overlayVisible=false;fillterFildes[col?.field].value=null;fillterFildes[col?.field].status=flase;clearFillter(fillterFildes[col?.field])"
+                                    type="button">
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                <button pButton
+                                    [disabled]="!fillterFildes[col?.field].type||fillterFildes[col?.field].value==null"
+                                    label='Apply'
+                                    (click)="fitlerField.overlayVisible=false;fillterFildes[col?.field].name=col?.field;fillterFildes[col?.field].status=true;getList(null,fillterFildes[col?.field],true)"
+                                    type="button">
+                                </button>
+
+                            </div>
+                        </div>
+                    </ng-template>
+
+                </p-columnFilter>
+                <!-- <p-sortIcon *ngIf="col?.filter!=false" [field]="col?.field"></p-sortIcon> -->
+                <span class="ml-2 font-lg pointer" [ngClass]="sortField==col?.field?'active-sort':null"
+                    (click)="customSort(col?.field)">
+                    <i class="pi pi-sort-alt"></i>
+                </span>
+            </th>
+            <th *ngFor="let col of actionsColumns" [class]="rowClass">
+                {{col?.header}}
+            </th>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-item let-columns="columns" let-index="rowIndex" let-expanded="expanded">
+        <tr [pReorderableRow]="index">
+            <td *ngIf="expandedTable==true">
+                <button type="button" pButton pRipple [pRowToggler]="item" (click)="onExpandedColumn(item)"
+                    class="p-button-text p-button-rounded p-button-plain "
+                    [icon]="expanded ? 'pi pi-chevron-down' : currentLang=='en'?'pi pi-chevron-right':'pi pi-chevron-left'"></button>
+            </td>
+            <td *ngFor="let col of columns;let i =index" [class.hidden]="col?.display=='none'" class="font-semibold">
+                <div class="flex">
+                    <span *ngIf="i==0 && reorderableColumns==true" [class]="'mr-4'"
+                        class="pi pi-bars  text-lg text-primary font-semibold"
+                        [pTooltip]="recoderDone==true?'':'Change Order'" life="1500" pReorderableRowHandle></span>
+
+
+
+                    <div *ngIf="!col.type || col.type=='str' || col.type=='date' || col.type=='int'" class="">
+                        <div *ngIf="item[col.field]!=null"> {{minString(item[col.field],150)}}</div>
+                        <div *ngIf="item[col.field]==null">__</div>
+
+                    </div>
+
+
+
+                    <div *ngIf="col.type=='switch'">
+                        <p-inputSwitch [disabled]="item[col.disabled]" [(ngModel)]="item[col.field]"
+                            (onChange)="onChangeInputSwitch(item)"></p-inputSwitch>
+
+                    </div>
+                    <div *ngIf="col.type=='boolean'">
+                        <i class="pi text-lg"
+                            [ngClass]="{'true-icon pi-check-circle': item[col.field], 'false-icon pi-times-circle': !item[col.field]}"></i>
+
+
+                    </div>
+
+
+                </div>
+            </td>
+            <td *ngFor="let action of actionsColumns" (mouseenter)="selectedItem=item">
+                <div style="position: relative;">
+                    <label *ngIf="item?.new_alerts" style="    position: absolute;
+              top: -4%;
+    right: 7%;
+                font-size: large;
+                z-index: 999;
+                background: var(--pink-700);
+                border-radius: 50%;
+                padding: 4px;"> </label>
+
+                    <ng-container *ngTemplateOutlet="actionsTemplate[action.key]"></ng-container>
+                </div>
+
+            </td>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="rowexpansion" let-item>
+        <tr>
+            <td colspan="10">
+                <div class="w-12">
+                    <ng-content select="[expandContent]"></ng-content>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="6" class="text-center font-semibold">
+
+                <div class="text-center">
+                    <i class="pi pi-info-circle mx-1"></i>
+                    No data to preview
+                </div>
+
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

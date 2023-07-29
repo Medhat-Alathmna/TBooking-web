@@ -78,6 +78,10 @@
       ],
       "default": "Draft",
       "required": true
+    },
+    "isOrderd": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

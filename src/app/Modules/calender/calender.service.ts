@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/core/api.service';
+import { isSet } from 'src/app/core/base/base.component';
 import { Appointment } from 'src/app/modals/appoiments';
+import * as moment from 'moment';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class CalenderService {
+
+  queryFilters: any[] = [];
+
   userAuth =JSON.parse(localStorage.getItem('userAuth'))?.user
   constructor(private api: ApiService) { }
 
@@ -100,4 +106,52 @@ export class CalenderService {
    getEmployee(): Observable<any[]> {
     return this.api.get<any[]>(`users?populate=*&filters[hide][$eq]=false`);
   }
+
+  getlist(moduleName: string, pageNum?: number, rows?: number, query?: any): Observable<any[]>{
+    if (!isSet(pageNum)) {
+      pageNum = 1
+    }
+    let filter = ''
+    if (typeof query == 'object' || this.queryFilters?.length) {
+      filter = this.handleQuery(query)
+    } else filter = isSet(query) ? query : ''
+    return this.api.get<any[]>(`${moduleName}?populate=*&pagination[pageSize]=${rows}&pagination[page]=${pageNum}${filter}`);
+
+  }
+
+  handleQuery(query: any) {
+   let sum_querirs
+   let querirs_
+    if (isSet(query)) {
+      const clone = { ...query }
+      if (this.queryFilters.some(elem => elem.name === query.name)) {
+        this.queryFilters.map(item => {
+          if (item.name == query.name) {
+            item.value = query.value
+          }
+        })
+      } else this.queryFilters.push(clone)
+    }
+    if (isSet(this.queryFilters)) {
+      const querirs = [...this.queryFilters];
+      const length: number = querirs.length - 1;
+      for (let index = 0; index < querirs.length; index++) {
+        if (querirs[index].name == 'creationdate') {
+          querirs[index].value = moment(querirs[index].value).format('YYYY-MM-DD')
+        }
+        if (isSet(querirs[index].type)) {
+          querirs[index] = `&filters[${querirs[index].name}][${querirs[index].type}]=${querirs[index].value}`;
+          querirs_[index] = index != length ? querirs_[index] + '&' : querirs_[index];
+        } 
+      }
+      let sumquerirs = '';
+      for (let index = 0; index < querirs.length; index++) {
+        sum_querirs = sumquerirs + querirs[index];
+      }
+      return '&' + sum_querirs
+
+    } else return ''
+  }
+  
+ 
 }
