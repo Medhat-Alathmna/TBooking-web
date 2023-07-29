@@ -16,14 +16,11 @@ export class CalenderService {
   userAuth =JSON.parse(localStorage.getItem('userAuth'))?.user
   constructor(private api: ApiService) { }
 
-  getApprovedAppominetsCalender(): Observable<any[]> {
-    return this.api.get<any[]>(`appointments?populate=*&filters[approved][$eq]=true&filters[hide][$eq]=false`);
+  getCalender(): Observable<any[]> {
+    return this.api.get<any[]>(`appointments?populate=*&filters[approved][$eq]=true&filters[hide][$eq]=false&filters[status][$eq]=Draft`);
   }
-  getUnApprovedAppominets(currentDate): Observable<any[]> {
-    return this.api.get<any[]>(`appointments?populate=*&filters[approved][$eq]=false&filters[hide][$eq]=false&filters[fromDate][$gte]=${currentDate}`);
-  }
-  getAllApointemnts(): Observable<any[]> {
-    return this.api.get<any[]>(`appointments?populate=*&filters[hide][$eq]=false`);
+  getTodayAppominets(currentDate): Observable<any[]> {
+    return this.api.get<any[]>(`appointments?populate=*&filters[hide][$eq]=false&filters[fromDate][$gte]=${currentDate}`);
   }
   addAppominets(appointment:Appointment): Observable<Appointment> {
     let body={
@@ -115,7 +112,7 @@ export class CalenderService {
     if (typeof query == 'object' || this.queryFilters?.length) {
       filter = this.handleQuery(query)
     } else filter = isSet(query) ? query : ''
-    return this.api.get<any[]>(`${moduleName}?populate=*&pagination[pageSize]=${rows}&pagination[page]=${pageNum}${filter}`);
+    return this.api.get<any[]>(`${moduleName}?populate=*&pagination[pageSize]=${rows}&pagination[page]=${pageNum}&filters[hide][$eq]=false${filter}`);
 
   }
 
@@ -141,7 +138,6 @@ export class CalenderService {
         }
         if (isSet(querirs[index].type)) {
           querirs[index] = `&filters[${querirs[index].name}][${querirs[index].type}]=${querirs[index].value}`;
-          querirs_[index] = index != length ? querirs_[index] + '&' : querirs_[index];
         } 
       }
       let sumquerirs = '';

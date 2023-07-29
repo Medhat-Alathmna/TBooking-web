@@ -189,6 +189,8 @@ if (filter?.value instanceof Date) {
     this.inputSwitchChange.emit(item)
   }
   onChangeReorderColumn(evnent) {
+    console.log(evnent);
+    
     this.recoderDone = true
     this.reorderColumn.emit(evnent)
   }

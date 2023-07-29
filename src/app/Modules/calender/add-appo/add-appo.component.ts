@@ -70,7 +70,9 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     this.listServices()
     if (!this.detailMode || !this.appointment) {
       this.appointment = new Appointment
-      this.appointment.fromDate = this.closeCurrentTime
+      setTimeout(() => {
+        this.appointment.fromDate = this.closeCurrentTime
+      }, 100);
       this.appointment.toDate = this.closeCurrentTime
       this.appointment.deposit = 0
       this.appointment.phone = 962

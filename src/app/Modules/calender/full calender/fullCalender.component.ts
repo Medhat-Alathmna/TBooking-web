@@ -21,7 +21,8 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
   Appointments: any = []
   approvedAppointments: any = []
   unapprovedAppoit: any = []
-  selectedViewType = this.trans('Monthly')
+  completedAppoit: any = []
+  selectedViewType = this.trans('Timely')
   id
   tabSelected = 'calender'
   showSppoSidebar: boolean = false
@@ -53,7 +54,7 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
   @ViewChild('calendar') calendar: FullCalendarComponent;
   ngOnInit(): void {
     this.calendarOptions = {
-      initialView: 'dayGridMonth',
+      initialView: 'timeGridDay',
       headerToolbar: false,
       height: '100%',
       editable: true,
@@ -65,7 +66,7 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
     }
     this.getActions()
     this.getCalender()
-    this.getunApprovedAppo()
+    this.getTodayAppo()
   }
 
   getAppointment(id) {
@@ -88,19 +89,19 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
   }
   getCalender() {
     this.loading = true
-    const subscription = this.calenderService.getApprovedAppominetsCalender().subscribe((results: any) => {
+    const subscription = this.calenderService.getCalender().subscribe((results: any) => {
       this.loading = false
       if (!isSet(results)) {
         return
       }
       this.Appointments = results
-     
+
       this.calendarOptions.events = []
       for (let index = 0; index < this.Appointments.data?.length; index++) {
         this.calendarOptions.events.push({
           id: this.Appointments.data[index].id,
           title: this.Appointments?.data[index]?.attributes?.employee?.data?.attributes?.username ?
-           this.Appointments?.data[index]?.attributes?.employee?.data?.attributes?.username : 'No Employee yet',
+            this.Appointments?.data[index]?.attributes?.employee?.data?.attributes?.username : 'No Employee yet',
           // title: 'Medhat',
           start: new Date(this.Appointments.data[index].attributes.fromDate),
           end: new Date(this.Appointments.data[index].attributes.toDate),
@@ -109,7 +110,7 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
         },
 
         )
-    
+
 
         this.Appointments.data[index].attributes.fromDate = moment(this.Appointments.data[index].attributes.fromDate).format('hh:mm A')
         this.Appointments.data[index].attributes.toDate = moment(this.Appointments.data[index].attributes.toDate).format('hh:mm A')
@@ -118,7 +119,6 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
       // const result =  this.Appointments.data.filter(x=>{x.attributes.fromDate==currentDate;console.log(x);
       // })
       // console.log(result);
-      console.log(this.Appointments);
 
       subscription.unsubscribe()
     }, error => {
@@ -127,21 +127,28 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     })
   }
-  getunApprovedAppo() {
-    const currentDate =moment(new Date().toISOString()).format('YYYY-MM-DD')
+  getTodayAppo() {
+    const currentDate = moment(new Date().toISOString()).format('YYYY-MM-DD')
 
     this.loading = true
-    const subscription = this.calenderService.getUnApprovedAppominets(currentDate).subscribe((results: any) => {
+    const subscription = this.calenderService.getTodayAppominets(currentDate).subscribe((results: any) => {
       this.loading = false
       if (!isSet(results)) {
         return
       }
       console.log(results);
-      this.unapprovedAppoit = results.data
-      for (let index = 0; index < this.unapprovedAppoit?.length; index++) {
-        this.unapprovedAppoit[index].attributes.fromDate = moment(this.unapprovedAppoit[index].attributes.fromDat).format('hh:mm A')
-        this.unapprovedAppoit[index].attributes.toDate = moment(this.unapprovedAppoit[index].attributes.toDate).format('hh:mm A')
+      const objects: any[] = results.data
+
+
+      for (let index = 0; index < results.data?.length; index++) {
+        results.data[index].attributes.fromDate = moment(results.data[index].attributes.fromDat).format('hh:mm A')
+        results.data[index].attributes.toDate = moment(results.data[index].attributes.toDate).format('hh:mm A')
       }
+      this.unapprovedAppoit = objects.filter(x => x.attributes.approved == false)
+      this.approvedAppointments = objects.filter(x => x.attributes.approved == true && x.attributes.status === 'Draft')
+      this.completedAppoit = objects.filter(x => x.attributes.status == 'Completed')
+      console.log(this.approvedAppointments);
+
       subscription.unsubscribe()
     }, error => {
       this.loading = false
@@ -152,6 +159,13 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
   getActions() {
     setTimeout(() => {
       this.viewTypes = [
+        {
+          label: this.trans('Timely'),
+          command: () => {
+            this.selectedViewType = this.trans('Timely')
+            this.calendar.getApi().changeView('timeGridDay')
+          }
+        },
         {
           label: this.trans('Monthly'),
           command: () => {
@@ -167,15 +181,7 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
 
             this.calendar.getApi().changeView('timeGridWeek')
           }
-        },
-        {
-          label: this.trans('Timely'),
-          command: () => {
-            this.selectedViewType = this.trans('Timely')
-
-            this.calendar.getApi().changeView('timeGridDay')
-          }
-        },
+        }
 
       ]
     });

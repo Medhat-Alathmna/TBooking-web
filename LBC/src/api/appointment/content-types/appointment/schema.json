@@ -59,8 +59,7 @@
     },
     "hide": {
       "type": "boolean",
-      "default": false,
-      "private": true
+      "default": false
     },
     "deletedBy": {
       "type": "string",

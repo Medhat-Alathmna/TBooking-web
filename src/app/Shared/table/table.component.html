@@ -135,16 +135,8 @@
 
 
                     <div *ngIf="!col.type || col.type=='str' || col.type=='date' || col.type=='int'" class="">
-                        <div *ngIf="item[col.field]!=null"> {{minString(item[col.field],150)}}</div>
-                        <div *ngIf="item[col.field]==null">__</div>
-
-                    </div>
-
-
-
-                    <div *ngIf="col.type=='switch'">
-                        <p-inputSwitch [disabled]="item[col.disabled]" [(ngModel)]="item[col.field]"
-                            (onChange)="onChangeInputSwitch(item)"></p-inputSwitch>
+                        <div *ngIf="item.attributes[col.field]!=null"> {{minString(item.attributes[col.field],150)}}</div>
+                        <div *ngIf="item.attributes[col.field]==null">__</div>
 
                     </div>
                     <div *ngIf="col.type=='boolean'">

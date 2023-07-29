@@ -19,6 +19,7 @@ import { EntityViewerComponent } from 'src/app/Shared/entity-viewer/entity-viewe
 import { MultiSelectComponent } from 'src/app/Shared/multi-select/multi-select.component';
 import { InputMaskComponent } from 'src/app/Shared/input-mask/input-mask.component';
 import { AppointmentsComponent } from './appointments/appointments.component';
+import { TableComponent } from 'src/app/Shared/table/table.component';
 
 
 FullCalendarModule.registerPlugins([
@@ -48,6 +49,7 @@ export const routes: Routes = [
     TextAreaComponent,
     InputMaskComponent,
     EntityViewerComponent,
+    TableComponent,
     InputComponent,
     LoadingComponent
   ]
