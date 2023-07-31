@@ -2,36 +2,8 @@
 
 <div *ngIf="tabSelected=='calender'" class="grid ">
     <div class="lg:col-8 sm:col-12 ">
-        <div #carddH style="height: 70vh;" class="card p-0 ">
-            <div class="flex justify-content-between flex-wrap p-3">
-                <div class="flex align-items-center justify-content-center  ">
-                    <div (click)="getCurrentDay()" class="flex align-items-center justify-content-center  ">
-                        <button pButton pRipple type="button" [label]="'Today'|translate"
-                            class=" p-button-outlined p-button-secondary2 "></button>
-                    </div>
-                    <div class="flex align-items-center justify-content-center mx-3 font-semibold text-700">
-                        <span class="text-2xl">{{currentDate}}</span>
-                    </div>
-                    <div style="direction: initial;" class="flex align-items-center justify-content-center  ">
-                        <button pButton pRipple type="button" icon="pi pi-chevron-left " (click)="getNext()"
-                            class=" p-button-text p-button-secondary"></button>
-                        <button pButton pRipple type="button" icon="pi pi-chevron-right" (click)="getPrev()"
-                            class=" p-button-text p-button-secondary"></button>
-
-                    </div>
-                </div>
-                <div class="flex align-items-center justify-content-center  ">
-                    <div class="flex align-items-center justify-content-center ">
-                        <button pButton pRipple type="button" [label]="selectedViewType| translate"
-                            icon='pi pi-chevron-down {{"css.ml-2"|translate}} ' iconPos="right"
-                            class=" p-button-outlined p-button-secondary2 "
-                            (click)="calendarMenu.toggle($event)"></button>
-                        <p-menu #calendarMenu [popup]="true" [model]="viewTypes"></p-menu>
-
-                    </div>
-
-                </div>
-            </div>
+        <div #carddH style="height: 80vh;" class="card p-0 ">
+          
 
             <full-calendar #calendar [options]="calendarOptions"></full-calendar>
         </div>
@@ -66,8 +38,8 @@
                                         showDelay="1000" hideDelay="1000" tooltipPosition="bottom"
                                         [value]="appo?.attributes?.employee?.data?.attributes?.username"></p-tag>
                                     <p-tag styleClass="tag-secondary mx-2" icon="pi pi-clock" tooltipPosition="bottom"
-                                        showDelay="1000" hideDelay="1000" pTooltip="Time"
-                                        [value]="appo.attributes.fromDate+'->' +appo.attributes.toDate"></p-tag>
+                                        showDelay="1000" hideDelay="1000" pTooltip="Start Time"
+                                        [value]="appo.attributes.fromDate"></p-tag>
 
                                 </div>
                             </div>
@@ -96,8 +68,8 @@
                                     <!-- <p-tag styleClass="tag-secondary mx-2" icon="pi pi-user" pTooltip="Employment" showDelay="1000" hideDelay="1000"
                                         tooltipPosition="bottom" [value]="appo?.attributes?.employee?.data?.attributes?.username"></p-tag> -->
                                     <p-tag styleClass="tag-secondary mx-2" icon="pi pi-clock" tooltipPosition="bottom"
-                                        showDelay="1000" hideDelay="1000" pTooltip="Time"
-                                        [value]="appo.attributes.fromDate+'->' +appo.attributes.toDate"></p-tag>
+                                        showDelay="1000" hideDelay="1000" pTooltip="Start Time"
+                                        [value]="appo.attributes.fromDate"></p-tag>
 
                                 </div>
                             </div>
@@ -111,9 +83,9 @@
                         <div style="max-height: 68vh;" class="overflow-y-auto" *ngFor="let appo of completedAppoit">
                             <div class="mb-3 font-semibold text-lg text-500">
                                 <div class="block pointer" (click)="getAppointment(appo.id)">
-                                    <i [class]="'css.mr-2' | translate" style="color: black;"
-                                        class="pi pi-circle-fill"></i>
-                                    <span>{{appo.attributes?.customer?.firstName}}
+                                    <i [class]="'css.mr-2' | translate" style="color: rgb(0, 255, 21);"
+                                        class="pi pi-check-circle"></i>
+                                    <span >{{appo.attributes?.customer?.firstName}}
                                         {{appo.attributes?.customer?.middleName}}
                                         {{appo.attributes?.customer?.lastName}}</span>
                                 </div>
@@ -122,11 +94,9 @@
                                     <p-tag styleClass="tag-secondary mx-2" icon="pi pi-tag" showDelay="1000"
                                         hideDelay="1000" tooltipPosition="bottom" pTooltip="Appointment No."
                                         [value]="appo.attributes?.number"></p-tag>
-                                    <!-- <p-tag styleClass="tag-secondary mx-2" icon="pi pi-user" pTooltip="Employment" showDelay="1000" hideDelay="1000"
-                                        tooltipPosition="bottom" [value]="appo?.attributes?.employee?.data?.attributes?.username"></p-tag> -->
-                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-clock" tooltipPosition="bottom"
-                                        showDelay="1000" hideDelay="1000" pTooltip="Time"
-                                        [value]="appo.attributes.fromDate+'->' +appo.attributes.toDate"></p-tag>
+                                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-user" pTooltip="Employment" showDelay="1000" hideDelay="1000"
+                                        tooltipPosition="bottom" [value]="appo?.attributes?.employee?.data?.attributes?.username"></p-tag>
+                                 
 
                                 </div>
                             </div>

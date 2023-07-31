@@ -14,6 +14,9 @@ import { Filter } from 'src/app/modals/filter';
 export class AppointmentsComponent extends BaseComponent implements OnInit {
 
   appointments:any=[]
+  showSppoSidebar: boolean = false
+  Appointment: any
+  id
  rowNum: any = 10
  currentPage: any = 1
  total
@@ -33,7 +36,26 @@ export class AppointmentsComponent extends BaseComponent implements OnInit {
     public messageService: MessageService, private calenderService:CalenderService) {super(messageService,translates) }
 
   ngOnInit(): void {
-    this.getAppointment(1)
+    this.clearAllFillter()
+  }
+  
+  getAppointment(id) {
+    console.log(id);
+    this.id=id
+    this.loading = true
+    const subscription = this.calenderService.retreiveAppo(id).subscribe((results: any) => {
+      this.loading = false
+      if (!isSet(results)) {
+        return
+      }
+      this.showSppoSidebar = true
+      this.Appointment = results.data.attributes
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+      console.log(error);
+      subscription.unsubscribe()
+    })
   }
   clearAllFillter() {
     this.fillterFildes = {
@@ -41,9 +63,9 @@ export class AppointmentsComponent extends BaseComponent implements OnInit {
       status: new Filter(),
     }
     this.calenderService.queryFilters = []
-    this.getAppointment(1, null, false)
+    this.getAppointments(1, null, false)
   }
-  getAppointment(pageNum?: number, query?: any, reset?: boolean) {
+  getAppointments(pageNum?: number, query?: any, reset?: boolean) {
     this.loading = true
     const subscription = this.calenderService.getlist('appointments',pageNum,10,query).subscribe((results: any) => {
       this.loading = false
@@ -65,7 +87,6 @@ export class AppointmentsComponent extends BaseComponent implements OnInit {
           this.appointments[index] = null
         }
       }
-
       //
       if (!isSet(pageNum)) {
         this.appointments.map((item, index) => {

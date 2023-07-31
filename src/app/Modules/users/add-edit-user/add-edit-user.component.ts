@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { DropdownComponent } from 'src/app/Shared/dropdown/dropdown.component';
 import { InputComponent } from 'src/app/Shared/input/input.component';
 import { LoadingComponent } from 'src/app/Shared/loading/loading.component';
 import { SidebarComponent } from 'src/app/Shared/sidebar/sidebar.component';
@@ -23,7 +22,6 @@ import { ConfirmationService } from 'primeng/api';
     PrimengComponentsModule,
     InputComponent,
     SidebarComponent,
-    DropdownComponent,
     EntityViewerComponent,
     LoadingComponent,
   ],

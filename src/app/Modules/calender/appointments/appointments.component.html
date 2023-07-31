@@ -1,5 +1,9 @@
+<app-loading *ngIf="loading" display="full"></app-loading>
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog containerStyleClass="vw" acceptButtonStyleClass="p-button-danger" acceptIcon="pi pi-trash"
+    rejectButtonStyleClass="p-button-text" appendTo="body"></p-confirmDialog>
 <div style="height:calc(100vh - 68px) ;" class="grid card">
-    <p-table #kt [value]="appointments" [rowHover]="true" (onPage)="getAppointment(($event?.first/rowNum)+1)"
+    <p-table #kt [value]="appointments" [rowHover]="true" (onPage)="getAppointments(($event?.first/rowNum)+1)"
         [paginator]="true" [rows]='rowNum' currentPageReportTemplate="Showing {first} to {last} entries"
         [scrollable]="true" [tableStyle]="{'width.%': 100}" scrollHeight="80vh">
         <ng-template pTemplate="caption" dataKey="id">
@@ -35,7 +39,7 @@
                             </div>
                             <div class="col-6">
                                 <button pButton [disabled]="!fillterFildes.number.value" label='Apply'
-                                    (click)="fillterFildes.number.name='number';fillterFildes.number.status=true;fillterFildes.number.type='$contains';getAppointment(1,fillterFildes?.number)"
+                                    (click)="fillterFildes.number.name='number';fillterFildes.number.status=true;fillterFildes.number.type='$contains';getAppointments(1,fillterFildes?.number)"
                                     type="button">
                                 </button>
                             </div>
@@ -67,7 +71,7 @@
                                 </div>
                                 <div class="col-6">
                                     <button pButton label='Apply'
-                                        (click)="fillterFildes.status.name='status';fillterFildes.status.status=true;fillterFildes.status.type='$contains';getAppointment(1,fillterFildes?.status)"
+                                        (click)="fillterFildes.status.name='status';fillterFildes.status.status=true;fillterFildes.status.type='$contains';getAppointments(1,fillterFildes?.status)"
                                         type="button">
                                     </button>
                                 </div>
@@ -83,7 +87,7 @@
         <ng-template pTemplate="body" let-appo let-i="rowIndex">
             <tr>
                 <td>
-                    <span class="text-xl text-primary pointer font-bold">
+                    <span class="text-xl text-primary pointer font-bold" (click)="getAppointment(appo.id)">
                         {{appo?.attributes?.number ? appo?.attributes?.number:'No Number' }}
                     </span>
                 </td>
@@ -122,3 +126,5 @@
         </ng-template>
     </p-table>
 </div>
+<app-add-appo *ngIf="showSppoSidebar" (refreshLish)="getAppointments(1, null, false)" [appointment]="Appointment"
+   [id]="id"  [detailMode]="true" [(display)]="showSppoSidebar"></app-add-appo>

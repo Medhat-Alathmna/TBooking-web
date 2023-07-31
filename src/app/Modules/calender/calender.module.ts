@@ -16,7 +16,6 @@ import { CalenderComponent } from 'src/app/Shared/calender/calender.component';
 import { FindUserComponent } from 'src/app/Shared/find-user/find-user.component';
 import { TextAreaComponent } from 'src/app/Shared/text-area/text-area.component';
 import { EntityViewerComponent } from 'src/app/Shared/entity-viewer/entity-viewer.component';
-import { MultiSelectComponent } from 'src/app/Shared/multi-select/multi-select.component';
 import { InputMaskComponent } from 'src/app/Shared/input-mask/input-mask.component';
 import { AppointmentsComponent } from './appointments/appointments.component';
 import { TableComponent } from 'src/app/Shared/table/table.component';
@@ -45,7 +44,6 @@ export const routes: Routes = [
     SidebarComponent,
     CalenderComponent,
     FindUserComponent,
-    MultiSelectComponent,
     TextAreaComponent,
     InputMaskComponent,
     EntityViewerComponent,

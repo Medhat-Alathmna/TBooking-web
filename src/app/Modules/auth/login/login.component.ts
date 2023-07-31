@@ -60,8 +60,10 @@ export class LoginComponent extends BaseComponent implements OnInit {
     this.loading = true
     this.authService.login(this.user, this.password).subscribe((user: any) => {
       this.loading = false
+      location.reload()
+
         localStorage.setItem('userAuth', JSON.stringify(user))
-        this.router?.navigate(['/calender']);
+          this.router?.navigate(['/calender']);
     }, error => {
       this.loading = false
       console.log(error);

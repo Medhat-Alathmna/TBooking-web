@@ -38,7 +38,7 @@ export class UsersService {
   }
 
   getUsers(): Observable<any[]> {
-    return this.api.get<any[]>(`users?populate=*&filters[hide][$eq]=false`);
+    return this.api.get<any[]>(`users?populate=role&filters[hide][$eq]=false`);
   }
   getRoles(): Observable<any[]> {
     return this.api.get<any[]>(`users-permissions/roles`);

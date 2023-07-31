@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -13,14 +13,13 @@ import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import { Appointment } from 'src/app/modals/appoiments';
 import { PrimengComponentsModule } from 'src/app/primeng-components.module';
 import { CalenderService } from '../calender.service';
-import { DropdownComponent } from 'src/app/Shared/dropdown/dropdown.component';
 import { startOfHour, addMinutes, format } from 'date-fns';
 import { DatePipe } from '@angular/common';
 import { UsersService } from '../../users/users.service';
 import * as moment from 'moment';
 import { MobileService } from '../../mobile/mobile.service';
-import { MultiSelectComponent } from 'src/app/Shared/multi-select/multi-select.component';
 import { InputMaskComponent } from 'src/app/Shared/input-mask/input-mask.component';
+import { ModalComponent } from 'src/app/Shared/modal/modal.component';
 
 
 @Component({
@@ -34,11 +33,10 @@ import { InputMaskComponent } from 'src/app/Shared/input-mask/input-mask.compone
     InputComponent,
     SidebarComponent,
     CalenderComponent,
-    DropdownComponent,
     EntityViewerComponent,
     TextAreaComponent,
+    ModalComponent,
     InputMaskComponent,
-    MultiSelectComponent,
     LoadingComponent,
   ],
 })
@@ -48,7 +46,12 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   acions: any[] = []
   services: any = []
   selectEmployee: any
+  selectServices: any = []
+  showAddValue: boolean = false
   body: string
+  title: string
+  newValue: any
+  employeeMode: boolean = false
   closeCurrentTime = startOfHour(addMinutes(new Date(), Math.round(new Date().getMinutes() / 30) * 30));
 
   @Input() appointment: Appointment | any
@@ -57,6 +60,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   @Input() detailMode: boolean = false
   @Output() displayChange: EventEmitter<boolean> = new EventEmitter();
   @Output() refreshLish: EventEmitter<boolean> = new EventEmitter();
+  @ViewChild('MultiSelect') MultiSelect: ElementRef;
 
   constructor(public translates: TranslateService,
     public messageService: MessageService, private cd: ChangeDetectorRef, private calenderService: CalenderService,
@@ -85,10 +89,17 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       this.appointment.fromDate = new Date(this.appointment.fromDate)
       this.appointment.toDate = new Date(this.appointment.toDate)
       this.appointment.createdAt = moment(this.appointment.createdAt).format('YYYY-MM-DD HH:ss')
-      this.appointment.services = this.appointment.services.data
+      this.appointment.services.data.map(item => {
+        this.selectServices.push({ id: item?.id, ar: item?.attributes?.ar, en: item?.attributes?.en, price: item?.attributes?.price })
 
-      this.selectEmployee = this.appointment.employee.data
-
+      })      
+      if (this.selectEmployee = this.appointment.employee) {
+        this.selectEmployee = this.appointment?.employee?.data?.attributes
+        this.employeeMode = true
+      }
+      if (!this.selectEmployee) {
+        this.employeeMode = false
+      }
       this.acions = [
         {
           label: this.appointment.approved ? 'Cancel the Appointment' : 'Convert to Approved',
@@ -129,9 +140,51 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     }
 
 
-    console.log(this.selectEmployee);
 
   }
+  getTotalPrice() {
+    let totalAmount = 0
+    this.selectServices?.map(x => {
+      totalAmount += x.price
+    })
+    return totalAmount
+  }
+  showAddNewServ() {
+    this.title = 'Add New Services'
+    this.showAddValue = true
+    this.newValue = null
+  }
+  // addNewValue() {
+  //   if (!isSet(this.selectServices)) {
+  //     this.selectServices=[]
+  //   }
+  //   this.selectServices.push(this.newValue)
+  //   this.showAddValue = false
+  // }
+  selectEmployees(event) {
+    console.log(event);
+
+    this.selectEmployee = event
+    this.showAddValue = false
+    this.employeeMode = true
+
+  }
+  selectService() {
+    if (!isSet(this.selectServices)) {
+      this.selectServices = []
+    }
+    const existServ = this.selectServices.find(x => x.id == this.newValue.id)
+    if (existServ) {
+      this.errorMessage('This Service Already Selected')
+      return
+    }
+    this.selectServices.push(this.newValue)
+    this.showAddValue = false
+  }
+  deleteValue(index) {
+    this.selectServices.splice(index, 1)
+  }
+
 
   onHide() {
 
@@ -158,14 +211,19 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     this.appointment.deposit = !this.appointment.deposit ? 0 : this.appointment.deposit
     this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
+    this.appointment.services = this.selectServices
+    this.loading = true
     const subscription = this.calenderService.addAppominets(this.appointment).subscribe((data) => {
       if (!isSet(data)) {
         return
       }
       this.refreshLish.emit(true)
       this.display = false
+      this.loading = false
+
       subscription.unsubscribe()
     }, error => {
+      this.loading = false
       subscription.unsubscribe()
     })
   }
@@ -173,17 +231,24 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     this.appointment.id = this.id
     this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
+    this.appointment.services = this.selectServices
+    this.appointment.employee = this.selectEmployee
+
+    this.loading = true
     const subscription = this.calenderService.updateAppointemt(this.appointment).subscribe((data) => {
       if (!isSet(data)) {
         return
       }
+      this.loading = false
       this.refreshLish.emit(true)
       this.display = false
       subscription.unsubscribe()
     }, error => {
+      this.loading = false
       subscription.unsubscribe()
     })
   }
+
 
   getUsers() {
     const subscription = this.calenderService.getEmployee().subscribe((data) => {
@@ -191,15 +256,6 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
         return
       }
       this.users = data
-
-      // this.users.map(user => {
-      //   if (user.id == this.appointment.employee.data.id) {
-      //     this.selectEmployee={username:this.appointment.employee.data.attributes.username,id:this.appointment.employee.data.id}
-      //     this.selectEmployee = this.appointment.employee.data.attributes
-      //   }
-      // })
-      console.log(this.selectEmployee);
-
       subscription.unsubscribe()
     }, error => {
       subscription.unsubscribe()
@@ -254,15 +310,20 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   }
   deleteAppo() {
     this.appointment.id = this.id
+    this.loading = true
     const subscription = this.calenderService.hideAppointment(this.appointment).subscribe((data) => {
       if (!isSet(data)) {
         return
       }
+      this.loading = false
+
       // this.successMessage('The Appontment deleted successfully')
       this.display = false
       this.refreshLish.emit(true)
       subscription.unsubscribe()
     }, error => {
+      this.loading = false
+
       subscription.unsubscribe()
     })
   }
@@ -277,14 +338,17 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
 
   cancelAppointment() {
     this.appointment.id = this.id
-    this.appointment.status = 'Cancel'
+    this.appointment.status = 'Canceled'
     this.loading = true
     const subscription = this.calenderService.cancelAction(this.appointment).subscribe((results: any) => {
       this.loading = false
       if (!isSet(results)) {
         return
       }
+      this.loading = false
+
       // this.successMessage('This appontment has been converted')
+      this.display = false
       this.refreshLish.emit(true)
 
       subscription.unsubscribe()

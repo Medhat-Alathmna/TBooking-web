@@ -6,6 +6,7 @@ import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import * as moment from 'moment';
 import { CalenderService } from '../calender.service';
 import { Appointment } from 'src/app/modals/appoiments';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -16,7 +17,7 @@ import { Appointment } from 'src/app/modals/appoiments';
 export class FullCalenderComponent extends BaseComponent implements OnInit {
 
   constructor(public translates: TranslateService,
-    public messageService: MessageService, private calenderService: CalenderService) { super(messageService, translates) }
+    public messageService: MessageService,private datePipe: DatePipe, private calenderService: CalenderService) { super(messageService, translates) }
 
   Appointments: any = []
   approvedAppointments: any = []
@@ -50,12 +51,16 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
       }
     }
   ]
-  @Input() Appointment: any
+   Appointment: any
   @ViewChild('calendar') calendar: FullCalendarComponent;
   ngOnInit(): void {
     this.calendarOptions = {
       initialView: 'timeGridDay',
-      headerToolbar: false,
+      headerToolbar: {
+        left: 'prev,next',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay' // user can switch between the two
+      },
       height: '100%',
       editable: true,
       selectable: true,
@@ -115,11 +120,6 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
         this.Appointments.data[index].attributes.fromDate = moment(this.Appointments.data[index].attributes.fromDate).format('hh:mm A')
         this.Appointments.data[index].attributes.toDate = moment(this.Appointments.data[index].attributes.toDate).format('hh:mm A')
       }
-      // const currentDate =moment(new Date().toISOString()).format('YYYY-MM-DD')
-      // const result =  this.Appointments.data.filter(x=>{x.attributes.fromDate==currentDate;console.log(x);
-      // })
-      // console.log(result);
-
       subscription.unsubscribe()
     }, error => {
       this.loading = false
@@ -128,7 +128,10 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
     })
   }
   getTodayAppo() {
-    const currentDate = moment(new Date().toISOString()).format('YYYY-MM-DD')
+    
+    const currentDate = moment(new Date()).format('YYYY-MM-DDT00:00')
+    console.log(new Date().toISOString());
+    console.log(currentDate);
 
     this.loading = true
     const subscription = this.calenderService.getTodayAppominets(currentDate).subscribe((results: any) => {
@@ -138,16 +141,13 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
       }
       console.log(results);
       const objects: any[] = results.data
-
-
       for (let index = 0; index < results.data?.length; index++) {
-        results.data[index].attributes.fromDate = moment(results.data[index].attributes.fromDat).format('hh:mm A')
-        results.data[index].attributes.toDate = moment(results.data[index].attributes.toDate).format('hh:mm A')
+        results.data[index].attributes.fromDate= this.datePipe.transform(results.data[index].attributes.fromDate, 'hh:mm A')
       }
       this.unapprovedAppoit = objects.filter(x => x.attributes.approved == false)
       this.approvedAppointments = objects.filter(x => x.attributes.approved == true && x.attributes.status === 'Draft')
       this.completedAppoit = objects.filter(x => x.attributes.status == 'Completed')
-      console.log(this.approvedAppointments);
+      console.log(this.completedAppoit);
 
       subscription.unsubscribe()
     }, error => {

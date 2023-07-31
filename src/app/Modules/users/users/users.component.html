@@ -37,23 +37,23 @@
                 <tr>
                     <td style="width: 30vw">
                         <span (click)="showUserDeatil(ser)" class="text-xl text-primary pointer font-bold">
-                            {{ser.username}}
+                            {{ser?.username}}
                         </span>
                     </td>
                     <td style="width: 30vw">
                         <span  (click)="showUserDeatil(ser)" class="text-xl text-primary pointer ">
-                            {{ser.email}}
+                            {{ser?.email}}
                         </span>
                     </td>
                     <td style="width: 10vw"> 
                         <span class="text-xl text-primary ">
-                            {{ser.role.name}} 
+                            {{ser?.role?.name}} 
                         </span>
                     </td>
                     <td style="width: 5vw">
                         <span class="text-xl text-primary  bold">
-                            <span *ngIf="ser.blocked ==false " class="Active">Active</span>
-                            <span *ngIf="ser.blocked==true " class="InActive">InActive</span>
+                            <span *ngIf="ser?.blocked ==false " class="Active">Active</span>
+                            <span *ngIf="ser?.blocked==true " class="InActive">InActive</span>
                         </span>
                     </td>
                     <td style="width: 10%">

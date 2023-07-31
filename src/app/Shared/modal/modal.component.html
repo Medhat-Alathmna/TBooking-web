@@ -1,0 +1,10 @@
+<p-dialog [header]="title" [styleClass]="class" [(visible)]="display"  [breakpoints]="{'960px': '100vw'}" modal="true" (onHide)="onHide()" appendTo="body"
+    [draggable]="false" [resizable]="false">
+
+    <div class="mt-2">
+        <ng-content select="[body]"></ng-content>
+    </div>
+    <p-footer *ngIf="footer">
+        <ng-content select="[footer]"></ng-content>
+    </p-footer>
+</p-dialog>

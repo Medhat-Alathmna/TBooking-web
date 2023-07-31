@@ -39,8 +39,7 @@ import { OrdersModule } from './Modules/orders/orders.module';
                 path: 'login', loadChildren: () => AuthModule,
                 canActivate: [GuestGuard]
             },
-            { path: '**', redirectTo: '/notfound' },
-            { path: '**', redirectTo: '' },
+            { path: '**', redirectTo: 'calender' },
         ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' })
     ],
     exports: [RouterModule]

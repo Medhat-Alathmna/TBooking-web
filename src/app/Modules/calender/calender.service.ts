@@ -101,7 +101,7 @@ export class CalenderService {
     return this.api.put<Appointment>(`/appointments/${appointment.id}`,body); 
    }
    getEmployee(): Observable<any[]> {
-    return this.api.get<any[]>(`users?populate=*&filters[hide][$eq]=false`);
+    return this.api.get<any[]>(`users?populate=role&filters[hide][$eq]=false`);
   }
 
   getlist(moduleName: string, pageNum?: number, rows?: number, query?: any): Observable<any[]>{
