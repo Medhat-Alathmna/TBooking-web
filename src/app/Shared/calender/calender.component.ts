@@ -31,6 +31,7 @@ export class CalenderComponent implements ControlValueAccessor {
    @Input() showIcon: boolean =false
    @Input() showTime: boolean =false
    @Input() timeOnly: boolean =false
+   @Input() disabled: boolean =false
  
    private onTouchedCallback: () => void = () => {};
    private onChangeCallback: (_: any) => void = () => {};

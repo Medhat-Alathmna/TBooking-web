@@ -132,7 +132,9 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
     const currentDate = moment(new Date()).format('YYYY-MM-DDT00:00')
     console.log(new Date().toISOString());
     console.log(currentDate);
-
+    this.unapprovedAppoit =[]
+    this.approvedAppointments =[]
+    this.completedAppoit =[]
     this.loading = true
     const subscription = this.calenderService.getTodayAppominets(currentDate).subscribe((results: any) => {
       this.loading = false
@@ -144,9 +146,10 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
       for (let index = 0; index < results.data?.length; index++) {
         results.data[index].attributes.fromDate= this.datePipe.transform(results.data[index].attributes.fromDate, 'hh:mm A')
       }
+     
       this.unapprovedAppoit = objects.filter(x => x.attributes.approved == false)
       this.approvedAppointments = objects.filter(x => x.attributes.approved == true && x.attributes.status === 'Draft')
-      this.completedAppoit = objects.filter(x => x.attributes.status == 'Completed')
+      this.completedAppoit = objects.filter(x => x.attributes.status === 'Completed')
       console.log(this.completedAppoit);
 
       subscription.unsubscribe()

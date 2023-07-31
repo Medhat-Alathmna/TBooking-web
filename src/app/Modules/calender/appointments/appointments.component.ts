@@ -19,7 +19,7 @@ export class AppointmentsComponent extends BaseComponent implements OnInit {
   id
  rowNum: any = 10
  currentPage: any = 1
- total
+total 
  status=[
   {label:'Completed'},
   {label:'Draft'},

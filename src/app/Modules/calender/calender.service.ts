@@ -100,19 +100,30 @@ export class CalenderService {
     }
     return this.api.put<Appointment>(`/appointments/${appointment.id}`,body); 
    }
+  completeAppointment(appointment:Appointment): Observable<any> {
+    let body={
+      data:{
+        status:'Completed'
+      }
+    }
+    return this.api.put<Appointment>(`/appointments/${appointment.id}`,body); 
+   }
    getEmployee(): Observable<any[]> {
     return this.api.get<any[]>(`users?populate=role&filters[hide][$eq]=false`);
   }
 
-  getlist(moduleName: string, pageNum?: number, rows?: number, query?: any): Observable<any[]>{
+  getlist(moduleName: string, pageNum?: number, rows?: number, query?: any,pop?): Observable<any[]>{
     if (!isSet(pageNum)) {
       pageNum = 1
+    }
+    if (!isSet(pop)) {
+      pop = '*'
     }
     let filter = ''
     if (typeof query == 'object' || this.queryFilters?.length) {
       filter = this.handleQuery(query)
     } else filter = isSet(query) ? query : ''
-    return this.api.get<any[]>(`${moduleName}?populate=*&pagination[pageSize]=${rows}&pagination[page]=${pageNum}&filters[hide][$eq]=false${filter}`);
+    return this.api.get<any[]>(`${moduleName}?populate=${pop}&pagination[pageSize]=${rows}&pagination[page]=${pageNum}&filters[hide][$eq]=false${filter}`);
 
   }
 

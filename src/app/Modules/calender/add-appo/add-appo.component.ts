@@ -20,6 +20,7 @@ import * as moment from 'moment';
 import { MobileService } from '../../mobile/mobile.service';
 import { InputMaskComponent } from 'src/app/Shared/input-mask/input-mask.component';
 import { ModalComponent } from 'src/app/Shared/modal/modal.component';
+import { OrdersService } from '../../orders/orders.service';
 
 
 @Component({
@@ -64,8 +65,8 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
 
   constructor(public translates: TranslateService,
     public messageService: MessageService, private cd: ChangeDetectorRef, private calenderService: CalenderService,
-    private confirmationService: ConfirmationService, private mobileService: MobileService,
-    private datePipe: DatePipe, private userServices: UsersService) { super(messageService, translates) }
+    private confirmationService: ConfirmationService, private mobileService: MobileService,private orderService:OrdersService
+   ) { super(messageService, translates) }
 
   ngOnInit(): void {
 
@@ -113,6 +114,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
           label: 'Convert to Order',
           icon: 'icon-news',
           command: () => {
+            this.addOrder()
           }
         },
         {
@@ -327,6 +329,18 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     })
   }
+  completeAppointment() {
+    this.appointment.id = this.id
+    const subscription = this.calenderService.completeAppointment(this.appointment).subscribe((data) => {
+      if (!isSet(data)) {
+        return
+      }
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+      subscription.unsubscribe()
+    })
+  }
   confirmCancel() {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to cancel this Appontment ?',
@@ -346,15 +360,38 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
         return
       }
       this.loading = false
-
-      // this.successMessage('This appontment has been converted')
       this.display = false
       this.refreshLish.emit(true)
-
       subscription.unsubscribe()
     }, error => {
       this.loading = false
       console.log(error);
+      subscription.unsubscribe()
+    })
+  }
+
+  addOrder(){
+    this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
+    this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
+    this.appointment.services = this.selectServices
+
+    this.display = true
+    const subscription = this.orderService.addOrder(this.appointment,'0023',this.getTotalPrice(),this.id).subscribe((data) => {
+      if (!isSet(data)) {
+        return
+      }
+      console.log(data);
+      
+      this.completeAppointment()
+      this.display = false
+      this.loading = false
+      this.refreshLish.emit(true)
+
+      subscription.unsubscribe()
+    }, error => {
+      console.log(error);
+      
+      this.loading = false
       subscription.unsubscribe()
     })
   }

@@ -1,13 +1,19 @@
 
+<app-loading *ngIf="loading" display="full"></app-loading>
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog containerStyleClass="vw" acceptButtonStyleClass="p-button-danger" acceptIcon="pi pi-trash"
+    rejectButtonStyleClass="p-button-text" appendTo="body"></p-confirmDialog>
 <div class="grid card" style="height:calc(100vh - 68px) ;">
-    <p-table #kt [value]="orders" [scrollable]="true" scrollHeight="80vh" class="col-12" [rowHover]="true">
+    <p-table #kt [value]="orders"  (onPage)="getOrders(($event?.first/rowNum)+1)"
+    [paginator]="true" [rows]='rowNum' currentPageReportTemplate="Showing {first} to {last} entries"
+    [scrollable]="true" [tableStyle]="{'width.%': 100}" scrollHeight="80vh">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
                 <div>
                     <h5 class="m-0 primary">Orders Manager</h5>
                     <label class="text-600 ">
                         In total there are <label class="text-primary font-bold ">
-                            {{orders ? orders.length : 0 }}</label> Users .
+                            {{orders ? orders.length : 0 }}</label> Orders .
                     </label>
                 </div>
                 <!-- <div class="table-header inputgroup-stopwords block ">
@@ -25,7 +31,7 @@
                 <th style="width: 30vw">Order No.</th>
                 <th style="width: 30vw">Customer</th>
                 <th>Appointment No.</th>
-                <th>Status</th>
+                <th>Total Price</th>
                 <th>Creation Date</th>
                 <th style="width: 10% !important">Actions</th>
             </tr>
@@ -33,33 +39,32 @@
         <ng-template pTemplate="body" let-ser let-i="rowIndex">
             <tr>
                 <td style="width: 30vw">
-                    <span (click)="showUserDeatil(ser)" class="text-xl text-primary pointer font-bold">
-                        {{ser.user_name}}
+                    <span (click)="getOrder(ser)" class="text-xl text-primary pointer font-bold">
+                        {{ser.attributes.orderNo}}
                     </span>
                 </td>
                 <td style="width: 30vw">
-                    <span  (click)="showUserDeatil(ser)" class="text-xl text-primary pointer ">
-                        {{ser.email}}
+                    <span  (click)="getOrder(ser)" class="text-xl text-primary pointer ">
+                        {{ser.attributes.appointment.data.attributes.customer.firstName}}
+                        {{ser.attributes.appointment.data.attributes.customer.middleName}}
+                        {{ser.attributes.appointment.data.attributes.customer.lastName}}
                     </span>
                 </td>
                 <td>
                     <span class="text-xl text-primary ">
-                        <!-- {{ser.role.name}}  --> User
+                        {{ser.attributes.appointment.data.attributes.number}}
                     </span>
                 </td>
                 <td>
                     <span class="text-xl text-primary  bold">
-                        <span *ngIf="ser.is_activated ==true " class="Active">Active</span>
-                        <span *ngIf="ser.is_activated==false " class="InActive">InActive</span>
+                        <span>{{ser?.attributes.totalPrice}} / JOD</span>
                     </span>
                 </td>
                 <td>
-                    <span *ngIf="ser?.Last_LoginDate" class="text-xl text-primary  bold">
-                        {{ ser?.last_logindate | date: 'dd/MM/yyyy ' }}
+                    <span class="text-xl text-primary  bold">
+                        {{ ser?.attributes.createdAt| date: 'dd/MM/yyyy hh:mm' }}
                     </span>
-                    <span *ngIf="!ser?.Last_LoginDate" class="text-xl text-primary  bold">
-                       Not logged in yet
-                    </span>
+                   
                 </td>
                 <td style="width: 10%">
                     <button (click)="showUserDeatil(ser)" pButton pRipple icon="pi pi-pencil text-base"
@@ -76,3 +81,7 @@
         </ng-template>
     </p-table>
 </div>
+
+
+ <app-add-edit-order *ngIf="showOrderSidebar" (refreshLish)="getOrders(1,null,false)" [selectedOrder]="selectedOrder"
+    [id]="id" [detailMode]="detailMode" [(display)]="showOrderSidebar"></app-add-edit-order>

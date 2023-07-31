@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { InputComponent } from 'src/app/Shared/input/input.component';
 import { LoadingComponent } from 'src/app/Shared/loading/loading.component';
 import { PrimengComponentsModule } from 'src/app/primeng-components.module';
+import { AddEditOrderComponent } from './add-edit-order/add-edit-order.component';
 
 
 
@@ -16,13 +17,15 @@ export const routes: Routes = [
 
 @NgModule({
   declarations: [
-    OrdersComponent
+    OrdersComponent,
+    
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
     PrimengComponentsModule,
     TranslateModule,
+    AddEditOrderComponent,
     InputComponent,
     LoadingComponent
   ]
