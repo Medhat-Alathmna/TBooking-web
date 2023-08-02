@@ -42,7 +42,7 @@
                     </td>
                     <td style="width: 30vw">
                         <span  (click)="showUserDeatil(ser)" class="text-xl text-primary pointer ">
-                            {{ser?.email}}
+                            {{minString(ser?.email,15)}}
                         </span>
                     </td>
                     <td style="width: 10vw"> 

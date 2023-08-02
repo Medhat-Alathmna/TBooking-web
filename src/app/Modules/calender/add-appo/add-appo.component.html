@@ -185,3 +185,15 @@
             icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
     </div>
 </app-modal>
+<app-modal [(display)]="toOrderDialog" title="Convert To Order" class="modal-sm">
+    <div body>
+        <app-input [(ngModel)]="orderNo" name="orderNo" title="Order Number"
+                    type="text"></app-input>
+    </div>
+    <div footer>
+        <button (click)="toOrderDialog=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"
+            icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
+        <button (click)="addOrder()" pButton pRipple type="button" label=" {{'Save' |translate}}"
+            class="p-button-primary"></button>
+    </div>
+</app-modal>

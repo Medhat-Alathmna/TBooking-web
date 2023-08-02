@@ -49,7 +49,9 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   selectEmployee: any
   selectServices: any = []
   showAddValue: boolean = false
+  toOrderDialog: boolean = false
   body: string
+  orderNo: string
   title: string
   newValue: any
   employeeMode: boolean = false
@@ -81,6 +83,8 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       this.appointment.toDate = this.closeCurrentTime
       this.appointment.deposit = 0
       this.appointment.phone = 962
+      this.appointment.number = moment(new Date ()).format('YY-MM-D')+'-00'
+
     } else {
 
       this.appointment = Appointment.cloneObject(this.appointment)
@@ -101,20 +105,21 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       if (!this.selectEmployee) {
         this.employeeMode = false
       }
+
       this.acions = [
         {
           label: this.appointment.approved ? 'Cancel the Appointment' : 'Convert to Approved',
           icon: 'pi pi-refresh',
           command: () => {
             this.appointment.approved ? this.confirmCancel() : this.convertApprove()
-
           }
         },
         {
           label: 'Convert to Order',
           icon: 'icon-news',
           command: () => {
-            this.addOrder()
+            this.orderNo = moment(new Date ()).format('YY-MM-D')+'-00'
+            this.toOrderDialog=true
           }
         },
         {
@@ -123,9 +128,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
           command: () => {
             this.appointment.fromDate = moment(this.appointment.fromDate).format('YYYY-MM-DD HH:ss A')
             this.body = `مركز الجمال الفاخر يشعركم انه تم تأكيد موعدكم بتاريخ  ${this.appointment.fromDate} , يرجى الإلتزام بالموعد حتى لا نفتح رؤوسكم , و شكرا`
-
             window.open(`https://web.whatsapp.com/send?phone=${this.appointment.phone}&text=${this.body}`, "_blank")
-
           }
         },
         {
@@ -156,13 +159,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     this.showAddValue = true
     this.newValue = null
   }
-  // addNewValue() {
-  //   if (!isSet(this.selectServices)) {
-  //     this.selectServices=[]
-  //   }
-  //   this.selectServices.push(this.newValue)
-  //   this.showAddValue = false
-  // }
+
   selectEmployees(event) {
     console.log(event);
 
@@ -293,6 +290,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
         return
       }
       // this.successMessage('This appontment has been converted')
+      this.display=false
       this.refreshLish.emit(true)
 
       subscription.unsubscribe()
@@ -375,8 +373,8 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
     this.appointment.services = this.selectServices
 
-    this.display = true
-    const subscription = this.orderService.addOrder(this.appointment,'0023',this.getTotalPrice(),this.id).subscribe((data) => {
+    this.loading = true
+    const subscription = this.orderService.addOrder(this.appointment,this.orderNo,this.getTotalPrice(),this.id).subscribe((data) => {
       if (!isSet(data)) {
         return
       }

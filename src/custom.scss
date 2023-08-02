@@ -515,6 +515,64 @@ p-inputnumber,
     display: none;
   }
 }
+.Completed{
+  background: #c8e6c9;
+  color: #256029;
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 0.25em 0.5rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .3px
+}
+.Paid {
+  background: #c8e6c9;
+  color: #256029;
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 0.25em 0.5rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .3px
+}
+.Canceled  {
+  background: #ffcdd2;
+  color: #c63737;
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 0.25em 0.5rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .3px
+
+}
+.Unpaid  {
+  background: #f8fde1;
+  color: #9faa01;
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 0.25em 0.5rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .3px
+
+}
+.Draft  {
+  background: #ffc1f5;
+  color: #9900ff;
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 0.25em 0.5rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .3px
+
+}
 
 // @media  screen and (width: 1536px) {
 //   body{

@@ -16,14 +16,6 @@
                             {{orders ? orders.length : 0 }}</label> Orders .
                     </label>
                 </div>
-                <!-- <div class="table-header inputgroup-stopwords block ">
-                    <div class="p-inputgroup inputgroup-stopwords">
-                        <div>
-                            <button type="button" (click)="showUserSide()" label="Add Order" pRipple pButton
-                                icon="pi pi-plus" class="p-button-success "></button>
-                        </div>
-                    </div>
-                </div> -->
             </div>
         </ng-template>
         <ng-template pTemplate="header">
@@ -31,7 +23,7 @@
                 <th style="width: 30vw">Order No.</th>
                 <th style="width: 30vw">Customer</th>
                 <th>Appointment No.</th>
-                <th>Total Price</th>
+                <th>Status</th>
                 <th>Creation Date</th>
                 <th style="width: 10% !important">Actions</th>
             </tr>
@@ -57,7 +49,7 @@
                 </td>
                 <td>
                     <span class="text-xl text-primary  bold">
-                        <span>{{ser?.attributes.totalPrice}} / JOD</span>
+                        <span [class]="ser.attributes?.status">{{ser?.attributes.status}}</span>
                     </span>
                 </td>
                 <td>
@@ -69,14 +61,12 @@
                 <td style="width: 10%">
                     <button (click)="showUserDeatil(ser)" pButton pRipple icon="pi pi-pencil text-base"
                         class="p-button-sm  p-button-primary mr-1"></button>
-                    <button  pButton pRipple icon="pi pi-trash text-base"
-                        class="p-button-sm mr-1 p-button-danger "></button>
                 </td>
             </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td colspan="4">No Services .</td>
+                <td colspan="4">No Orders .</td>
             </tr>
         </ng-template>
     </p-table>

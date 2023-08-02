@@ -13,7 +13,7 @@ import { Filter } from 'src/app/modals/filter';
 })
 export class AppointmentsComponent extends BaseComponent implements OnInit {
 
-  appointments:any=[]
+  appointments:any
   showSppoSidebar: boolean = false
   Appointment: any
   id
