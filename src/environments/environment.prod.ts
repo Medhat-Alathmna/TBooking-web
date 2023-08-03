@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://luxury.tamimysoft.com/api'
+  apiUrl: 'https://refined-compassion-80cf94fdcb.strapiapp.com/api'
+
 };
