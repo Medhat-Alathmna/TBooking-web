@@ -34,8 +34,8 @@ export class AppMenuComponent   implements OnInit {
             { label: 'Home',  icon: 'pi pi-home text-color', routerLink: ['/'] },
             // { label: 'Dashboard',  icon: 'icon-statistics text-color', routerLink: ['/dashboard'] },
             { label: 'Appointments', icon: 'pi pi-calendar-plus text-color', routerLink: ['/calender'] },
-            { label: 'Orders',  icon: 'icon-news text-color', routerLink: ['/orders'] },
-            { label: 'Users',  icon: 'icon-business-meeting text-color', routerLink: ['/users'] },
+            { label: 'Orders',  icon: 'pi pi-money-bill text-color', routerLink: ['/orders'] },
+            { label: 'Users',  icon: 'pi pi-users text-color', routerLink: ['/users'] },
             { label: 'Moblie',  icon: 'pi pi-mobile text-color', routerLink: ['/mobile'] },
             
         ];

@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { CalenderService } from '../calender.service';
 import { Appointment } from 'src/app/modals/appoiments';
 import { DatePipe } from '@angular/common';
+import { CalendarModule } from 'primeng/calendar';
 
 
 @Component({
@@ -17,7 +18,7 @@ import { DatePipe } from '@angular/common';
 export class FullCalenderComponent extends BaseComponent implements OnInit {
 
   constructor(public translates: TranslateService,
-    public messageService: MessageService,private datePipe: DatePipe, private calenderService: CalenderService) { super(messageService, translates) }
+    public messageService: MessageService, private datePipe: DatePipe, private calenderService: CalenderService) { super(messageService, translates) }
 
   Appointments: any = []
   approvedAppointments: any = []
@@ -28,8 +29,9 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
   tabSelected = 'calender'
   showSppoSidebar: boolean = false
   detailMode: boolean = false
+  selectDateMode: boolean = false
   viewTypes = []
-  currentDate = moment(new Date(), 'MM-DD').locale(this.lang).format('Do MMM -dddd');
+  selectDate = new Date()
   calendarOptions: CalendarOptions
   tabIndex = [
     {
@@ -51,16 +53,18 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
       }
     }
   ]
-   Appointment: any
+  Appointment: any
   @ViewChild('calendar') calendar: FullCalendarComponent;
   ngOnInit(): void {
     this.calendarOptions = {
       initialView: 'timeGridDay',
+
       headerToolbar: {
-        left: 'prev,next',
+        left: 'prev,next today',
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay' // user can switch between the two
       },
+      titleFormat: { year: 'numeric', day: 'numeric', month: 'numeric', },
       height: '100%',
       editable: true,
       selectable: true,
@@ -69,11 +73,13 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
         this.getAppointment(arg?.event.id)
       },
     }
-    this.getActions()
     this.getCalender()
     this.getTodayAppo()
   }
-
+  moveToDay() {
+    this.calendar.getApi().gotoDate(new Date(this.selectDate))
+    this.selectDateMode = false
+  }
   getAppointment(id) {
     this.id = id
     this.loading = true
@@ -128,14 +134,14 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
     })
   }
   getTodayAppo() {
-    
+
     const currentDate = moment(new Date()).format('YYYY-MM-DDT00:00')
     console.log(new Date().toISOString());
     console.log(currentDate);
-    this.unapprovedAppoit =[]
-    this.approvedAppointments =[]
-    this.completedAppoit =[]
-   
+    this.unapprovedAppoit = []
+    this.approvedAppointments = []
+    this.completedAppoit = []
+
     this.loading = true
     const subscription = this.calenderService.getTodayAppominets(currentDate).subscribe((results: any) => {
       this.loading = false
@@ -143,12 +149,12 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
         return
       }
       console.log(results);
-      let objects: any[]=[]
-       objects = results.data
+      let objects: any[] = []
+      objects = results.data
       for (let index = 0; index < results.data?.length; index++) {
-        results.data[index].attributes.fromDate= this.datePipe.transform(results.data[index].attributes.fromDate, 'hh:mm A')
+        results.data[index].attributes.fromDate = this.datePipe.transform(results.data[index].attributes.fromDate, 'hh:mm A')
       }
-     
+
       this.unapprovedAppoit = objects.filter(x => x.attributes.approved == false)
       this.approvedAppointments = objects.filter(x => x.attributes.approved == true && x.attributes.status === 'Draft')
       this.completedAppoit = objects.filter(x => x.attributes.status === 'Completed')
@@ -161,45 +167,7 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     })
   }
-  getActions() {
-    setTimeout(() => {
-      this.viewTypes = [
-        {
-          label: this.trans('Timely'),
-          command: () => {
-            this.selectedViewType = this.trans('Timely')
-            this.calendar.getApi().changeView('timeGridDay')
-          }
-        },
-        {
-          label: this.trans('Monthly'),
-          command: () => {
 
-            this.selectedViewType = this.trans('Monthly')
-            this.calendar.getApi().changeView('dayGridMonth')
-          }
-        },
-        {
-          label: this.trans('Weekly'),
-          command: () => {
-            this.selectedViewType = this.trans('Weekly')
-
-            this.calendar.getApi().changeView('timeGridWeek')
-          }
-        }
-
-      ]
-    });
-  }
-  getNext() {
-    this.calendar.getApi().next()
-  }
-  getPrev() {
-    this.calendar.getApi().prev()
-  }
-  getCurrentDay() {
-    this.calendar.getApi().today()
-  }
   openAppoDeatils() {
     this.Appointment = null
     this.detailMode = false

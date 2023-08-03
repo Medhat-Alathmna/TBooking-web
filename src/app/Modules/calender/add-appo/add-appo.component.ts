@@ -116,7 +116,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
         },
         {
           label: 'Convert to Order',
-          icon: 'icon-news',
+          icon: 'pi pi-money-bill',
           command: () => {
             this.orderNo = moment(new Date ()).format('YY-MM-D')+'-00'
             this.toOrderDialog=true
@@ -162,11 +162,10 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
 
   selectEmployees(event) {
     console.log(event);
-
     this.selectEmployee = event
     this.showAddValue = false
     this.employeeMode = true
-
+this.changeEmployee()
   }
   selectService() {
     if (!isSet(this.selectServices)) {
@@ -290,8 +289,40 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
         return
       }
       // this.successMessage('This appontment has been converted')
-      this.display=false
-      this.refreshLish.emit(true)
+      this.acions = [
+        {
+          label: this.appointment.approved ? 'Cancel the Appointment' : 'Convert to Approved',
+          icon: 'pi pi-refresh',
+          command: () => {
+            this.appointment.approved ? this.confirmCancel() : this.convertApprove()
+          }
+        },
+        {
+          label: 'Convert to Order',
+          icon: 'pi pi-money-bill',
+          command: () => {
+            this.orderNo = moment(new Date ()).format('YY-MM-D')+'-00'
+            this.toOrderDialog=true
+          }
+        },
+        {
+          label: 'Send Notification',
+          icon: 'pi pi-whatsapp',
+          command: () => {
+            this.appointment.fromDate = moment(this.appointment.fromDate).format('YYYY-MM-DD HH:ss A')
+            this.body = `مركز الجمال الفاخر يشعركم انه تم تأكيد موعدكم بتاريخ  ${this.appointment.fromDate} , يرجى الإلتزام بالموعد حتى لا نفتح رؤوسكم , و شكرا`
+            window.open(`https://web.whatsapp.com/send?phone=${this.appointment.phone}&text=${this.body}`, "_blank")
+          }
+        },
+        {
+          label: 'Delete',
+          icon: 'pi pi-times',
+          command: () => {
+            this.confirm1Delete()
+          }
+        }
+      ]
+            this.refreshLish.emit(true)
 
       subscription.unsubscribe()
     }, error => {
@@ -316,14 +347,28 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
         return
       }
       this.loading = false
-
-      // this.successMessage('The Appontment deleted successfully')
       this.display = false
       this.refreshLish.emit(true)
       subscription.unsubscribe()
     }, error => {
       this.loading = false
-
+      subscription.unsubscribe()
+    })
+  }
+  
+  changeEmployee() {
+    this.appointment.employee = this.selectEmployee
+    this.appointment.id = this.id
+    this.loading = true
+    const subscription = this.calenderService.changeEmployee(this.appointment).subscribe((data) => {
+      if (!isSet(data)) {
+        return
+      }
+      this.loading = false
+      this.refreshLish.emit(true)
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
       subscription.unsubscribe()
     })
   }
@@ -378,13 +423,10 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       if (!isSet(data)) {
         return
       }
-      console.log(data);
-      
       this.completeAppointment()
       this.display = false
       this.loading = false
       this.refreshLish.emit(true)
-
       subscription.unsubscribe()
     }, error => {
       console.log(error);

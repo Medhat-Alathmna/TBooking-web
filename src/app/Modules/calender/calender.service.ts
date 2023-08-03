@@ -100,6 +100,14 @@ export class CalenderService {
     }
     return this.api.put<Appointment>(`/appointments/${appointment.id}`,body); 
    }
+  changeEmployee(appointment:Appointment): Observable<any> {
+    let body={
+      data:{
+        employee:appointment?.employee?.id,
+      }
+    }
+    return this.api.put<Appointment>(`/appointments/${appointment.id}`,body); 
+   }
   completeAppointment(appointment:Appointment): Observable<any> {
     let body={
       data:{

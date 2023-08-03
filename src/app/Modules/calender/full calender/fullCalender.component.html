@@ -3,7 +3,12 @@
 <div *ngIf="tabSelected=='calender'" class="grid ">
     <div class="lg:col-8 sm:col-12 ">
         <div #carddH style="height: 80vh;" class="card p-0 ">
-
+            <div class="col-12" *ngIf="selectDateMode" style="text-align: center;"> 
+                <p-calendar dateFormat="mm-dd-yy" style="display: inline-block;" [(ngModel)]="selectDate" (onSelect)="moveToDay()"
+                    [inputStyleClass]="'css.dir-ltr'|translate" [showTime]="showTime" [stepMinute]="stepMinute"
+                    [showIcon]="true" appendTo="body" type="text"> </p-calendar>
+                </div>
+                <i (click)="selectDateMode=true" class="pi pi-calendar text-primary test pointer" style="font-size: 1.7rem"></i>
 
             <full-calendar #calendar [options]="calendarOptions"></full-calendar>
         </div>
@@ -21,7 +26,7 @@
 
                         </ng-template>
                         <div style="max-height: 68vh;" class="overflow-y-auto">
-                            <div class="mb-3 font-semibold text-lg text-500"  *ngFor="let appo of approvedAppointments">
+                            <div class="mb-3 font-semibold text-lg text-500" *ngFor="let appo of approvedAppointments">
                                 <div class="block pointer" (click)="getAppointment(appo.id)">
                                     <i [class]="'css.mr-2' | translate" style="color: green;"
                                         class="pi pi-circle-fill"></i>
@@ -44,9 +49,9 @@
                                 </div>
                             </div>
                             <div style="padding-top: 50%;" *ngIf="!approvedAppointments?.length"
-                            class="font-semibold text-xl text-center" translate>
-                            No Approved Appointments
-                        </div>
+                                class="font-semibold text-xl text-center" translate>
+                                No Approved Appointments
+                            </div>
                         </div>
                     </p-tabPanel>
 
@@ -88,7 +93,7 @@
                             <span>{{'Completed Appointments'|translate}}</span>
                             <p-badge class="pl-1" [value]="completedAppoit?.length"></p-badge>
                         </ng-template>
-                        <div style="max-height: 68vh;" class="overflow-y-auto" >
+                        <div style="max-height: 68vh;" class="overflow-y-auto">
                             <div class="mb-3 font-semibold text-lg text-500" *ngFor="let appo of completedAppoit">
                                 <div class="block pointer" (click)="getAppointment(appo.id)">
                                     <i [class]="'css.mr-2' | translate" style="color: rgb(0, 255, 21);"

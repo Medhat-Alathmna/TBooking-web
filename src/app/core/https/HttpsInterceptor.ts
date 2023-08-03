@@ -32,6 +32,8 @@ export class HttpsInterceptor extends BaseComponent implements HttpInterceptor {
                   }
                   if (request.method == 'PUT') {
                      if (event.status == 200) {
+                        console.log(event);
+                        
                         this.successMessage(isSet(event?.body?.message) ? event?.body?.message : this.trans('Entry Updated Successfully'))
                      }
                   }
