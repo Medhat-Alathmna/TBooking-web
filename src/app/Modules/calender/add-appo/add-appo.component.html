@@ -177,7 +177,7 @@
 
 <app-modal [(display)]="showAddValue" [title]="title" class="modal-sm">
     <div body>
-        <p-dropdown appendTo="body" [filter]="true" [options]="services" [(ngModel)]="newValue" placeholder="Select a Services" (onChange)="selectService()"
+        <p-dropdown appendTo="body" [filter]="true" class="text-xl" [options]="services" [(ngModel)]="newValue" placeholder="Select a Services" (onChange)="selectService()"
             [optionLabel]="lang"></p-dropdown>
     </div>
     <div footer>

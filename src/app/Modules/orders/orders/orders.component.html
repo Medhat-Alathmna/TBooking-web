@@ -20,10 +20,91 @@
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th style="width: 30vw">Order No.</th>
+                <th style="width: 30vw">Order No.
+                    <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
+                    [ngClass]="fillterFildes?.orderNo?.status?'status-filter':null" type="text" field="id"
+                    matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
+                    [showAddButton]="false">
+                    <ng-template pTemplate="filter">
+                        <div class="mt-3">
+                            <input [disabled]="fillterFildes?.orderNo?.status" [(ngModel)]="fillterFildes.orderNo.value"
+                                type="text" pInputText>
+                        </div>
+                        <div class="grid mt-2">
+                            <div class="col-6">
+                                <button pButton label='Clear' class="p-button-outlined"
+                                    (click)="fillterFildes.orderNo.value=null;fillterFildes.orderNo.status=flase;clearAllFillter()"
+                                    type="button">
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                <button pButton [disabled]="!fillterFildes.orderNo.value" label='Apply'
+                                    (click)="fillterFildes.orderNo.name='orderNo';fillterFildes.orderNo.status=true;fillterFildes.orderNo.type='$contains';getOrders(1,fillterFildes?.orderNo)"
+                                    type="button">
+                                </button>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-columnFilter>
+            </th>
                 <th style="width: 30vw">Customer</th>
-                <th>Appointment No.</th>
-                <th>Status</th>
+                <th>Appointment No.
+                    <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
+                    [ngClass]="fillterFildes?.number?.status?'status-filter':null" type="text" field="id"
+                    matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
+                    [showAddButton]="false">
+                    <ng-template pTemplate="filter">
+                        <div class="mt-3">
+                            <input [disabled]="fillterFildes?.number?.status" [(ngModel)]="fillterFildes.number.value"
+                                type="text" pInputText>
+                        </div>
+                        <div class="grid mt-2">
+                            <div class="col-6">
+                                <button pButton label='Clear' class="p-button-outlined"
+                                    (click)="fillterFildes.number.value=null;fillterFildes.number.status=flase;clearAllFillter()"
+                                    type="button">
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                <button pButton [disabled]="!fillterFildes.number.value" label='Apply'
+                                    (click)="fillterFildes.number.name='number';fillterFildes.number.parent='[appointment]';fillterFildes.number.status=true;fillterFildes.number.type='$contains';getOrders(1,fillterFildes?.number)"
+                                    type="button">
+                                </button>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-columnFilter>
+                </th>
+                <th>Status
+                    <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
+                        [ngClass]="fillterFildes?.status?.status?'status-filter':null" type="text" field="id"
+                        matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
+                        [showAddButton]="false">
+                        <ng-template pTemplate="filter">
+                            <p-dropdown [disabled]="fillterFildes?.status?.status" [options]="status"
+                                [showClear]="true" [(ngModel)]="fillterFildes.status.value"
+                                placeholder='Select Status' optionValue="label" optionLabel="label">
+                                <ng-template let-item pTemplate="item">
+                                    <span [class]="item.label">{{item.label}}</span>
+                                </ng-template>
+                            </p-dropdown>
+                            <div class="grid mt-2">
+                                <div class="col-6">
+                                    <button pButton label='Clear' class="p-button-outlined"
+                                        (click)="fillterFildes.status.value=null;fillterFildes.status.status=flase;clearAllFillter()"
+                                        type="button">
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button pButton label='Apply'
+                                        (click)="fillterFildes.status.name='status';fillterFildes.status.status=true;fillterFildes.status.type='$eq';getOrders(1,fillterFildes?.status)"
+                                        type="button">
+                                    </button>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-columnFilter>
+                </th>
                 <th>Creation Date</th>
                 <th style="width: 10% !important">Actions</th>
             </tr>
@@ -37,24 +118,24 @@
                 </td>
                 <td style="width: 30vw">
                     <span  (click)="getOrder(ser)" class="text-xl text-primary pointer ">
-                        {{ser.attributes.appointment.data.attributes.customer.firstName}}
-                        {{ser.attributes.appointment.data.attributes.customer.middleName}}
-                        {{ser.attributes.appointment.data.attributes.customer.lastName}}
+                        {{ser.attributes?.appointment.data.attributes?.customer.firstName}}
+                        {{ser.attributes?.appointment.data.attributes?.customer.middleName}}
+                        {{ser.attributes?.appointment.data.attributes?.customer.lastName}}
                     </span>
                 </td>
                 <td>
                     <span class="text-xl text-primary ">
-                        {{ser.attributes.appointment.data.attributes.number}}
+                        {{ser.attributes?.appointment.data.attributes?.number}}
                     </span>
                 </td>
                 <td>
                     <span class="text-xl text-primary  bold">
-                        <span [class]="ser.attributes?.status">{{ser?.attributes.status}}</span>
+                        <span [class]="ser.attributes?.status">{{ser?.attributes?.status}}</span>
                     </span>
                 </td>
                 <td>
                     <span class="text-xl text-primary  bold">
-                        {{ ser?.attributes.createdAt| date: 'dd/MM/yyyy hh:mm' }}
+                        {{ ser?.attributes?.createdAt| date: 'dd/MM/yyyy hh:mm' }}
                     </span>
                    
                 </td>

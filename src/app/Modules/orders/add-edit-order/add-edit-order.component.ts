@@ -102,6 +102,10 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
   }
 
   updateOrder() {
+    if (this.getTotalPrice().total < 0) {
+      this.errorMessage('Total Price can not be less than 0')
+      return
+    }
     this.selectedOrder.status = this.getTotalPrice().total == 0 ? "Paid" : "Unpaid"
     this.loading = true
     const subscription = this.orderService.updateOrder(this.selectedOrder).subscribe((data) => {

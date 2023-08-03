@@ -148,7 +148,8 @@ export class CalenderService {
           querirs[index].value = moment(querirs[index].value).format('YYYY-MM-DD')
         }
         if (isSet(querirs[index].type)) {
-          querirs[index] = `&filters[${querirs[index].name}][${querirs[index].type}]=${querirs[index].value}`;
+        const  parent=isSet(querirs[index].parent)?querirs[index].parent:''
+          querirs[index] = `&filters${parent}[${querirs[index].name}][${querirs[index].type}]=${querirs[index].value}`;
         } 
       }
       let sumquerirs = '';

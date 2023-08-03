@@ -32,6 +32,7 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
   selectRold
   roles: any[] = []
   acions: any = []
+  roleMode:boolean=false
 
   @Input() selectedUser: UserInfo
   @Input() display: boolean = false
@@ -47,7 +48,8 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
     // this.selectedUser.role=this.roles[0]
     if (this.detailMode) {
       this.selectedUser.createdAt = moment(this.selectedUser.createdAt).format('YYYY-MM-DD HH:ss')
-
+     this.selectRold= this.selectedUser.role
+      this.roleMode = true
     }
     this.acions = [
       {
@@ -76,17 +78,17 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
     }, 300);
   }
   createUser() {
-    console.log(this.selectedUser);
+    this.loading = true
     const subscription = this.userService.createUser(this.selectedUser, this.selectRold).subscribe((data) => {
       if (!isSet(data)) {
         return
       }
-      console.log(data);
-
+      this.loading = false
       this.refreshLish.emit(true)
       this.display = false
       subscription.unsubscribe()
     }, error => {
+      this.loading = false
       subscription.unsubscribe()
     })
   }
@@ -99,11 +101,6 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
         return
       }
       this.roles = results.roles
-      if (this.detailMode) {
-        this.selectRold = this.roles.find(role => { role.name == this.selectedUser.role.name })
-        console.log(this.selectRold);
-
-      }
       subscription.unsubscribe()
     }, error => {
       this.loading = false
@@ -164,5 +161,12 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
     }, error => {
       subscription.unsubscribe()
     })
+  }
+  selectRole(event) {
+    console.log(event);
+
+    this.selectRold = event
+    this.roleMode = true
+
   }
 }

@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import { OrdersService } from '../orders.service';
 import { CalenderService } from '../../calender/calender.service';
+import { Filter } from 'src/app/modals/filter';
 
 @Component({
   selector: 'app-orders',
@@ -18,6 +19,17 @@ export class OrdersComponent extends BaseComponent implements OnInit {
   total
   showOrderSidebar:boolean=false
   selectedOrder
+  fillterFildes = {
+    orderNo: new Filter(),
+    status: new Filter(),
+    number: new Filter(),
+  }
+  status=[
+    {label:'Paid'},
+    {label:'Unpaid'},
+    {label:'Draft'},
+    {label:'Canceled'}
+  ]
 
   @ViewChild('kt') table: any;
 
@@ -26,7 +38,7 @@ export class OrdersComponent extends BaseComponent implements OnInit {
     private calenderService:CalenderService,) {super(messageService, translates) }
 
   ngOnInit(): void {
-    this.getOrders(1,null,false)
+    this.clearAllFillter()
   }
   getOrders(pageNum?: number, query?: any, reset?: boolean) {
     this.loading = true
@@ -86,5 +98,15 @@ export class OrdersComponent extends BaseComponent implements OnInit {
     
     this.selectedOrder=order
     this.showOrderSidebar=true
+  }
+
+  clearAllFillter() {
+    this.fillterFildes = {
+      orderNo: new Filter(),
+      status: new Filter(),
+      number: new Filter(),
+    }
+    this.calenderService.queryFilters = []
+    this.getOrders(1, null, false)
   }
 }
