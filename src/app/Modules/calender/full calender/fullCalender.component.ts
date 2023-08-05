@@ -35,23 +35,17 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
   calendarOptions: CalendarOptions
   tabIndex = [
     {
-      label: 'Calender',
+      label: this.trans('Calender'),
       command: event => {
         this.tabSelected = 'calender'
       }
     },
     {
-      label: 'Appointments',
+      label: this.trans('Appointments'),
       command: event => {
         this.tabSelected = 'appointments'
       }
     },
-    {
-      label: 'Employees',
-      command: event => {
-        this.tabSelected = 'employees'
-      }
-    }
   ]
   Appointment: any
   @ViewChild('calendar') calendar: FullCalendarComponent;
@@ -67,6 +61,7 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
       titleFormat: { year: 'numeric', day: 'numeric', month: 'numeric', },
       height: '100%',
       editable: true,
+      direction:this.lang=='ar'?'rtl':'ltr',
       selectable: true,
       locale: this.lang,
       eventClick: (arg) => {
@@ -148,7 +143,6 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
       if (!isSet(results)) {
         return
       }
-      console.log(results);
       let objects: any[] = []
       objects = results.data
       for (let index = 0; index < results.data?.length; index++) {

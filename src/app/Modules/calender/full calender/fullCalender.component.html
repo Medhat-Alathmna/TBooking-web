@@ -8,7 +8,7 @@
                     [inputStyleClass]="'css.dir-ltr'|translate" [showTime]="showTime" [stepMinute]="stepMinute"
                     [showIcon]="true" appendTo="body" type="text"> </p-calendar>
                 </div>
-                <i (click)="selectDateMode=true" class="pi pi-calendar text-primary test pointer" style="font-size: 1.7rem"></i>
+                <i (click)="selectDateMode=!selectDateMode" [style.padding-right]="lang=='ar'?'21px':''" class="pi pi-calendar text-primary test pointer " style="font-size: 1.7rem"></i>
 
             <full-calendar #calendar [options]="calendarOptions"></full-calendar>
         </div>

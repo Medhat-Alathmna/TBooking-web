@@ -169,5 +169,7 @@ export class CalenderService {
     } else return ''
   }
   
- 
+  // getNotifications(): Observable<any[]> {
+  //   return this.api.get<any[]>(`notifications`);
+  // }
 }

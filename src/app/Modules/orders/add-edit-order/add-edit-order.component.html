@@ -31,6 +31,13 @@
                 </div>
             </div>
             <div class="flex align-items-center justify-content-center mx-2 ">
+                <button *ngIf="selectedOrder.attributes.status != 'Canceled'"
+                 (click)="tt.toggle($event)" pButton pRipple type="button"
+                icon="pi pi-whatsapp"
+                class="p-button-rounded mr-2 p-button-secondary p-button-lg p-button-text btn-white "></button>
+                <p-menu #tt  [popup]="true" appendTo="body"
+                [model]="notfiItems"></p-menu>
+
                 <button *ngIf="selectedOrder.attributes.status != 'Canceled'" (click)="menu.toggle($event)" pButton pRipple type="button" icon="pi pi-ellipsis-v"
                     class="p-button-rounded mr-2 p-button-secondary p-button-lg p-button-text btn-white "></button>
                 <p-menu #menu id="meetingActinos" styleClass="meetingActinos" [popup]="true" appendTo="body"
@@ -72,7 +79,7 @@
             </div>
             <div class="lg:col-4 sm:col-6 ">
                 <app-input [disabled]="true" [(ngModel)]="selectedOrder.attributes.appointment.data.attributes.deposit"
-                    name="deposit" title="Deposit / JOD" type="number"></app-input>
+                    name="deposit" title="{{'Deposit'|translate}} / {{jod}}" type="number"></app-input>
             </div>
         </div>
         <div>
@@ -97,7 +104,7 @@
                             name="toDate" showIcon="true" [title]="'Finish Date'|translate"></app-calender>
                     </div>
                 </div>
-                <div class="col-6 " style=" border-left-style: outset">
+                <div [class]="lang=='en'?'col-6 leftLine':'leftRight col-6'" >
                     <div class="flex justify-content-between flex-wrap mx-2 mt-2">
                         <div class="flex align-items-center justify-content-center  ">
                             <div class="text-2xl font-semibold ">
@@ -114,7 +121,7 @@
                                 <div class="pi pi-circle-fill text-primary text-xs pt-2"></div>
                                 <div class=" text-base font-semibold mx-2">
                                     <span class=" text-xl font-bold"> {{item[lang]}} </span>
-                                    <span class="  font-bold">/ {{item.price}} JOD </span>
+                                    <span class="  font-bold">/ {{item.price}} {{jod}} </span>
                                 </div>
                             </div>
                             <div class="flex align-items-center justify-content-center  ">
@@ -123,23 +130,23 @@
                             </div>
                         </div>
                         <div class="text-xl text-primary font-bold mt-3 col-12" style="display: table-footer-group">
-                            <!-- <div style="display: flex;justify-content: space-evenly"><span>Total:</span> <span class="mx-1">{{getTotalPrice()}} JOD</span> </div>
-                                <div style="display: flex;justify-content: space-evenly"><span>Deposit:</span> <span class="mx-1">{{selectedOrder.attributes.appointment.data.attributes.deposit}} JOD</span> </div> -->
+                            <!-- <div style="display: flex;justify-content: space-evenly"><span>Total:</span> <span class="mx-1">{{getTotalPrice()}} {{jod}}</span> </div>
+                                <div style="display: flex;justify-content: space-evenly"><span>Deposit:</span> <span class="mx-1">{{selectedOrder.attributes.appointment.data.attributes.deposit}} {{jod}}</span> </div> -->
                             <table>
                                 <tr>
-                                    <th class="px-5">Services Price:</th>
-                                    <th>{{getTotalPrice().totalServicesAmount}} JOD</th>
+                                    <th class="px-5">{{'Services Price'|translate}}:</th>
+                                    <th>{{getTotalPrice().totalServicesAmount}} {{jod}}</th>
                                 </tr>
                                 <tr>
-                                    <th class="px-5 py-2">Deposit:</th>
-                                    <th>{{selectedOrder.attributes.appointment.data.attributes.deposit}} JOD</th>
+                                    <th class="px-5 py-2" translate> {{'Deposit'|translate}}:</th>
+                                    <th>{{selectedOrder.attributes.appointment.data.attributes.deposit}} {{jod}}</th>
                                 </tr>
                                 <tr>
-                                    <th class="px-5 py-2">Discount:</th>
+                                    <th class="px-5 py-2" translate> {{'Discount'|translate}}:</th>
                                     <th>
                                         <span class="pointer" *ngIf="!discountMode"
                                             (click)="discountMode=true;cashMode=false">
-                                            {{selectedOrder.discount}} JOD</span>
+                                            {{selectedOrder.discount}} {{jod}}</span>
                                         <span *ngIf="discountMode">
                                             <input [(ngModel)]="selectedOrder.discount" type="number"
                                                 (keydown)="onKeyEnter($event)"
@@ -149,11 +156,11 @@
                                     </th>
                                 </tr>
                                 <tr>
-                                    <th class="px-5 py-2">Cash:</th>
+                                    <th class="px-5 py-2" translate> {{'Cash'|translate}}:</th>
                                     <th>
                                         <span class="pointer" *ngIf="!cashMode"
                                             (click)="cashMode=true;discountMode=false">
-                                            {{selectedOrder.cash}} JOD</span>
+                                            {{selectedOrder.cash}} {{jod}}</span>
                                         <span *ngIf="cashMode">
                                             <input [(ngModel)]="selectedOrder.cash" type="number"
                                                 (keydown)="onKeyEnter($event)" placeholder="{{'Enter'|translate}} Cash"
@@ -164,8 +171,8 @@
                                 <p-divider></p-divider>
 
                                 <tr>
-                                    <th class="px-5">Total:</th>
-                                    <th>{{getTotalPrice().total}} JOD</th>
+                                    <th class="px-5">{{'Total'|translate}}:</th>
+                                    <th>{{getTotalPrice().total}} {{jod}}</th>
                                 </tr>
                             </table>
                         </div>

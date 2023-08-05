@@ -1,0 +1,20 @@
+<app-loading *ngIf="loading" display="full"></app-loading>
+<p-toast position="top-right"></p-toast>
+<div class="grid pt-2">
+    <div class=" md:col-12 md:col-4 lg:col-2 ">
+        <ng-container *ngIf="!loading">
+            <p-panelMenu #panelMenu [model]="items" (click)="activeMenu($event)"
+                [styleClass]="lang=='en'?'ContorlPanal-menu':'ContorlPanal-menu iconMenu-ar'"></p-panelMenu>
+                
+        </ng-container>
+    </div>
+    <div class="sm-col-12 md:col-8 lg:col-10">
+        <div class="card p-0  ">
+            <div *ngIf="selectedView =='Site Settings'" class="overflow-y-auto" style="height:calc( 82vh - 100px);">
+
+                
+            </div>
+            <app-notifications *ngIf="selectedView =='Notifications'" ></app-notifications>
+        </div>
+    </div>
+</div>

@@ -16,6 +16,7 @@ import { PrimengComponentsModule } from 'src/app/primeng-components.module';
 import { OrdersService } from '../orders.service';
 import { th } from 'date-fns/locale';
 import { Order } from 'src/app/modals/order';
+import { SettingsService } from '../../settings/settings.service';
 
 @Component({
   selector: 'app-add-edit-order',
@@ -38,6 +39,7 @@ import { Order } from 'src/app/modals/order';
 export class AddEditOrderComponent extends BaseComponent implements OnInit {
 
   acions: any[] = []
+  notfiItems: any = []
   discountMode: boolean = false
   cashMode: boolean = false
   body: string
@@ -47,9 +49,9 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
   @Output() displayChange: EventEmitter<boolean> = new EventEmitter();
   @Output() refreshLish: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(public translates: TranslateService,
-    public messageService: MessageService, private orderService: OrdersService,
-    private confirmationService: ConfirmationService,) { super(messageService, translates) }
+  constructor(public translate: TranslateService,
+    public messageService: MessageService, private orderService: OrdersService,private settingsService: SettingsService,
+    private confirmationService: ConfirmationService,) { super(messageService, translate) }
 
   ngOnInit(): void {
     this.selectedOrder.attributes.createdAt = moment(this.selectedOrder.attributes.createdAt).format('YYYY-MM-DD HH:ss')
@@ -59,13 +61,6 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
     this.selectedOrder.cash=!this.selectedOrder.attributes.cash?0:this.selectedOrder.attributes.cash
     this.acions = [
       {
-        label: 'Send Notification',
-        icon: 'pi pi-whatsapp',
-        command: () => {
-          window.open(`https://web.whatsapp.com/send?phone=${this.selectedOrder.attributes.appointment.data.attributes.phone}&text=${this.body}`, "_blank")
-        }
-      },
-      {
         label: 'Cancel the Order',
         icon: 'pi pi-trash',
         command: () => {
@@ -74,6 +69,7 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
       },
 
     ]
+    this.getNotfi()
   }
   onHide() {
 
@@ -157,5 +153,37 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => { this.cancelOrder();this.draftAppointment() },
     });
+  }
+  replaceValuesStrings(body) {
+    var startDate = moment(this.selectedOrder.attributes.appointment.data.attributes.fromDate ).format('YYYY-MM-D')
+    var startTime = moment(this.selectedOrder.attributes.appointment.data.attributes.fromDate ).format('HH-MM A')
+    var customer = this.selectedOrder.attributes.appointment.data.attributes.customer.firstName + ' ' + this.selectedOrder.attributes.appointment.data.attributes.customer.middleName + ' ' + this.selectedOrder.attributes.appointment.data.attributes.customer.lastName
+    var number = this.selectedOrder.attributes.orderNo
+    var notes = this.selectedOrder.attributes.notes
+    var cash = this.selectedOrder.cash
+    var discount = this.selectedOrder.discount
+    var employee = this.selectedOrder.attributes.appointment.data.attributes.employee
+    var mapObj = { $date: startDate, $time: startTime, $customer: customer, $number: number, $notes: notes, $employee: employee,$discount:discount+' دينار',$cash:cash+' دينار' };
+    return body= this.multiReplace(body, mapObj)
+  }
+  getNotfi() {
+    const subscription = this.settingsService.getNotifications().subscribe((results: any) => {
+      if (!isSet(results)) {
+        return
+      }
+      var arr=results.data.filter(x => x.attributes.type == 'Orders')
+      arr.map(notf => {
+        this.notfiItems.push({
+          label: notf.attributes.title, command: () => {
+            var body =this.replaceValuesStrings(notf.attributes.body)
+            window.open(`https://web.whatsapp.com/send?phone=${this.selectedOrder.attributes.appointment.data.attributes.phone}&text=${body}`, "_blank")
+          }
+        })
+      })
+      subscription.unsubscribe()
+    }, error => {
+      console.log(error);
+      subscription.unsubscribe()
+    })
   }
 }

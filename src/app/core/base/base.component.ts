@@ -17,6 +17,7 @@ export class BaseComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   public loading = false;
   lang = localStorage.getItem('currentLang')
+  jod=this.trans('JOD')
   userAuth =JSON.parse(localStorage.getItem('userAuth'))?.user
 
   fileTypes = ['image/png', 'application/pdf', 'application/vnd.ms-excel', "image/jpeg", ".doc", '.docx', '.ppt', '.pptx', '.xls', '.xlsx', '.csv', '.mp4', '.mov', '.wmv', '.avi', '.mkv']
@@ -80,7 +81,17 @@ export class BaseComponent implements OnInit, OnDestroy {
   trans(key: any): any {
     return this.translates?.instant(key)
   }
-
+  
+  multiReplace(text, replacements) {
+    for (const oldStr in replacements) {
+      if (replacements.hasOwnProperty(oldStr)) {
+        const newStr = replacements[oldStr];
+        const regex = new RegExp(oldStr.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+        text = text.replace(regex, newStr);
+      }
+    }
+    return text;
+  }
  
 }
 export const isSet = (value: any): boolean => {

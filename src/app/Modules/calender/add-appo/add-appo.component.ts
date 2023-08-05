@@ -21,6 +21,8 @@ import { MobileService } from '../../mobile/mobile.service';
 import { InputMaskComponent } from 'src/app/Shared/input-mask/input-mask.component';
 import { ModalComponent } from 'src/app/Shared/modal/modal.component';
 import { OrdersService } from '../../orders/orders.service';
+import { SettingsService } from '../../settings/settings.service';
+import { th } from 'date-fns/locale';
 
 
 @Component({
@@ -48,6 +50,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   services: any = []
   selectEmployee: any
   selectServices: any = []
+  notfiItems: any = []
   showAddValue: boolean = false
   toOrderDialog: boolean = false
   body: string
@@ -66,9 +69,9 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   @ViewChild('MultiSelect') MultiSelect: ElementRef;
 
   constructor(public translates: TranslateService,
-    public messageService: MessageService, private cd: ChangeDetectorRef, private calenderService: CalenderService,
-    private confirmationService: ConfirmationService, private mobileService: MobileService,private orderService:OrdersService
-   ) { super(messageService, translates) }
+    public messageService: MessageService, private cd: ChangeDetectorRef, private calenderService: CalenderService, private settingsService: SettingsService,
+    private confirmationService: ConfirmationService, private mobileService: MobileService, private orderService: OrdersService
+  ) { super(messageService, translates) }
 
   ngOnInit(): void {
 
@@ -83,7 +86,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       this.appointment.toDate = this.closeCurrentTime
       this.appointment.deposit = 0
       this.appointment.phone = 962
-      this.appointment.number = moment(new Date ()).format('YY-MM-D')+'-00'
+      this.appointment.number = moment(new Date()).format('YY-MM-D') + '-00'
 
     } else {
 
@@ -97,7 +100,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       this.appointment.services.data.map(item => {
         this.selectServices.push({ id: item?.id, ar: item?.attributes?.ar, en: item?.attributes?.en, price: item?.attributes?.price })
 
-      })      
+      })
       if (this.selectEmployee = this.appointment.employee) {
         this.selectEmployee = this.appointment?.employee?.data?.attributes
         this.employeeMode = true
@@ -105,6 +108,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       if (!this.selectEmployee) {
         this.employeeMode = false
       }
+      this.getNotfi()
 
       this.acions = [
         {
@@ -118,19 +122,11 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
           label: 'Convert to Order',
           icon: 'pi pi-money-bill',
           command: () => {
-            this.orderNo = moment(new Date ()).format('YY-MM-D')+'-00'
-            this.toOrderDialog=true
+            this.orderNo = moment(new Date()).format('YY-MM-D') + '-00'
+            this.toOrderDialog = true
           }
         },
-        {
-          label: 'Send Notification',
-          icon: 'pi pi-whatsapp',
-          command: () => {
-            this.appointment.fromDate = moment(this.appointment.fromDate).format('YYYY-MM-DD HH:ss A')
-            this.body = `مركز الجمال الفاخر يشعركم انه تم تأكيد موعدكم بتاريخ  ${this.appointment.fromDate} , يرجى الإلتزام بالموعد حتى لا نفتح رؤوسكم , و شكرا`
-            window.open(`https://web.whatsapp.com/send?phone=${this.appointment.phone}&text=${this.body}`, "_blank")
-          }
-        },
+  
         {
           label: 'Delete',
           icon: 'pi pi-times',
@@ -161,11 +157,10 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   }
 
   selectEmployees(event) {
-    console.log(event);
     this.selectEmployee = event
     this.showAddValue = false
     this.employeeMode = true
-this.changeEmployee()
+    this.changeEmployee()
   }
   selectService() {
     if (!isSet(this.selectServices)) {
@@ -301,17 +296,8 @@ this.changeEmployee()
           label: 'Convert to Order',
           icon: 'pi pi-money-bill',
           command: () => {
-            this.orderNo = moment(new Date ()).format('YY-MM-D')+'-00'
-            this.toOrderDialog=true
-          }
-        },
-        {
-          label: 'Send Notification',
-          icon: 'pi pi-whatsapp',
-          command: () => {
-            this.appointment.fromDate = moment(this.appointment.fromDate).format('YYYY-MM-DD HH:ss A')
-            this.body = `مركز الجمال الفاخر يشعركم انه تم تأكيد موعدكم بتاريخ  ${this.appointment.fromDate} , يرجى الإلتزام بالموعد حتى لا نفتح رؤوسكم , و شكرا`
-            window.open(`https://web.whatsapp.com/send?phone=${this.appointment.phone}&text=${this.body}`, "_blank")
+            this.orderNo = moment(new Date()).format('YY-MM-D') + '-00'
+            this.toOrderDialog = true
           }
         },
         {
@@ -322,7 +308,7 @@ this.changeEmployee()
           }
         }
       ]
-            this.refreshLish.emit(true)
+      this.refreshLish.emit(true)
 
       subscription.unsubscribe()
     }, error => {
@@ -355,7 +341,7 @@ this.changeEmployee()
       subscription.unsubscribe()
     })
   }
-  
+
   changeEmployee() {
     this.appointment.employee = this.selectEmployee
     this.appointment.id = this.id
@@ -413,13 +399,13 @@ this.changeEmployee()
     })
   }
 
-  addOrder(){
+  addOrder() {
     this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
     this.appointment.services = this.selectServices
 
     this.loading = true
-    const subscription = this.orderService.addOrder(this.appointment,this.orderNo,this.getTotalPrice(),this.id).subscribe((data) => {
+    const subscription = this.orderService.addOrder(this.appointment, this.orderNo, this.getTotalPrice(), this.id).subscribe((data) => {
       if (!isSet(data)) {
         return
       }
@@ -430,10 +416,46 @@ this.changeEmployee()
       subscription.unsubscribe()
     }, error => {
       console.log(error);
-      
+
       this.loading = false
       subscription.unsubscribe()
     })
   }
+  getNotfi() {
+    const subscription = this.settingsService.getNotifications().subscribe((results: any) => {
+      if (!isSet(results)) {
+        return
+      }
+      console.log(results);
+      var arr=results.data.filter(x => x.attributes.type == 'Appointment')
+      arr.map(notf => {
+        this.notfiItems.push({
+          label: notf.attributes.title, command: () => {
+            var body =this.replaceValuesStrings(notf.attributes.body)
+            window.open(`https://web.whatsapp.com/send?phone=${this.appointment.phone}&text=${body}`, "_blank")
+          }
+        })
+      })
+      console.log(this.notfiItems);
+
+      subscription.unsubscribe()
+    }, error => {
+      console.log(error);
+      subscription.unsubscribe()
+    })
+  }
+
+  replaceValuesStrings(body) {
+    var startDate = moment(this.appointment.fromDate).format('YYYY-MM-D')
+    var startTime = moment(this.appointment.fromDate).format('HH-MM A')
+    var customer = this.appointment.firstName + ' ' + this.appointment.middleName + ' ' + this.appointment.lastName
+    var number = this.appointment.number
+    var notes = this.appointment.notes
+    var employee = this.appointment.employee
+    var mapObj = { $date: startDate, $time: startTime, $customer: customer, $number: number, $notes: notes, $employee: employee };
+    return body= this.multiReplace(body, mapObj)
+  }
+
+
 
 }

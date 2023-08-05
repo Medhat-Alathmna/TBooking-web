@@ -11,6 +11,7 @@ import { CalenderModule } from './Modules/calender/calender.module';
 import { GuestGuard } from './Modules/auth/guards/guest.guard';
 import { UsersModule } from './Modules/users/users.module';
 import { OrdersModule } from './Modules/orders/orders.module';
+import { SettingsModule } from './Modules/settings/settings.module';
 
 
 
@@ -29,6 +30,7 @@ import { OrdersModule } from './Modules/orders/orders.module';
                     { path: 'calender', loadChildren: () => CalenderModule },
                     { path: 'users', loadChildren: () => UsersModule },
                     { path: 'orders', loadChildren: () => OrdersModule },
+                    { path: 'settings', loadChildren: () => SettingsModule },
 
 
                         

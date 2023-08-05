@@ -19,10 +19,9 @@ export class AppTopBarComponent extends BaseComponent implements OnDestroy, OnIn
     items: MenuItem[];
     user = {displayName:this.userAuth.username,photo:null}
     currentLogo: any
-    constructor(public app: AppComponent, public appMain: AppMainComponent,
+    constructor(public app: AppComponent, public appMain: AppMainComponent, public translate: TranslateService,
         private sanitizer: DomSanitizer,
-        private translate: TranslateService, private route: ActivatedRoute, private router: Router,
-        @Inject(DOCUMENT) private document: Document) {
+        private route: ActivatedRoute, private router: Router,) {
         super(null, translate)
     }
     ngOnInit(): void {

@@ -55,6 +55,13 @@
                 </div>
             </div>
             <div class="flex align-items-center justify-content-center mx-2 ">
+                <button *ngIf="detailMode" (click)="tt.toggle($event)" pButton pRipple type="button"
+                    icon="pi pi-whatsapp"
+                    class="p-button-rounded mr-2 p-button-secondary p-button-lg p-button-text btn-white "></button>
+                <p-menu #tt id="meetingActinos" styleClass="meetingActinos" [popup]="true" appendTo="body"
+                    [model]="notfiItems"></p-menu>
+
+
                 <button *ngIf="detailMode" (click)="menu.toggle($event)" pButton pRipple type="button"
                     icon="pi pi-ellipsis-v"
                     class="p-button-rounded mr-2 p-button-secondary p-button-lg p-button-text btn-white "></button>
@@ -92,7 +99,7 @@
                 <app-input [(ngModel)]="appointment.address" name="address" title="Address"></app-input>
             </div>
             <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="appointment.deposit" name="deposit" title="Deposit / JOD"
+                <app-input [(ngModel)]="appointment.deposit" name="deposit" title="{{'Deposit'|translate}} / {{jod}}"
                     type="number"></app-input>
             </div>
         </div>
@@ -129,7 +136,7 @@
 
                             </div>
                 </div>
-                    <div class="col-6 " style=" border-left-style: outset">
+                    <div [class]="lang=='en'?'col-6 leftLine':'leftRight col-6'">
                         <div class="flex justify-content-between flex-wrap mx-2 mt-2">
                             <div class="flex align-items-center justify-content-center  ">
                                 <div class="text-2xl font-semibold ">

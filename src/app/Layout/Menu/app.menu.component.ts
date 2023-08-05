@@ -44,16 +44,7 @@ export class AppMenuComponent   implements OnInit {
     }
    
     navToContorlPanal() {
-        this.router?.navigateByUrl('controlPanel/generalsettings/branding')
-        this.activeControlPanel = true
-        this.activeTeamPanel = false
-
-    }
-    navToTeamPanal() {
-        this.router?.navigateByUrl('teams')
-        this.activeTeamPanel = true
-        this.activeControlPanel = false
-
+        this.router?.navigateByUrl('settings')
     }
 
     // initCustomModule() {

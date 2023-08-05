@@ -1,0 +1,79 @@
+::ng-deep .ContorlPanal-menu {
+    width: 100%;
+    position: relative;
+    padding: 0px !important;
+    height: 82vh;
+    border: 1px solid #dcd8d8 !important;
+    padding: 1px !important;
+    border-radius: 6px;
+    background-color: #fff;
+}
+
+::ng-deep .ContorlPanal-menu .p-menuitem-link {
+    padding: 13px !important;
+
+}
+::ng-deep  .p-panelmenu .p-panelmenu-content{
+border-left: none !important;
+border-right: none !important;
+
+}
+::ng-deep .ContorlPanal-menu .p-panelmenu-header>a .p-menuitem-icon {
+    font-size: 1.125rem;
+    position: absolute !important;
+    width: -webkit-fill-available !important;
+    text-align: end;
+}
+
+::ng-deep .ContorlPanal-menu .p-panelmenu-header>a .p-panelmenu-icon {
+    position: absolute !important;
+    font-size: 0.8rem !important;
+}
+
+::ng-deep .p-panelmenu .p-menuitem-text {
+    margin: 0 20px;
+    font-size: 1.1rem;
+
+}
+
+::ng-deep .p-panelmenu .p-panelmenu-header.p-highlight>a {
+    background: #fff !important;
+
+}
+::ng-deep  .p-panelmenu .p-panelmenu-header>a{
+    border-left: none !important;
+    border-right: none !important;
+    border-top: none !important;
+    border-radius: 0px !important;
+}
+::ng-deep .ContorlPanal-menu .active .p-panelmenu-header-link {
+    .p-menuitem-text {
+        color: var(--primary-color) !important
+    }
+
+    .p-menuitem-icon {
+        color: var(--primary-color) !important
+    }
+}
+
+
+::ng-deep .ContorlPanal-menu .active .p-menuitem-link  {
+    .p-menuitem-text {
+        color: var(--primary-color) !important
+    }
+    .p-menuitem-icon {
+        color: var(--primary-color) !important
+    }
+}
+
+
+
+
+
+::ng-deep .iconMenu-ar .p-panelmenu-header>a .p-panelmenu-icon {
+    position: absolute !important;
+    font-size: 0.8rem !important;
+    margin-left: 0.5rem;
+    margin-right: 0rem;
+
+}

@@ -1,0 +1,93 @@
+<app-loading *ngIf="loading" display="full"></app-loading>
+<p-toast position="top-right"></p-toast>
+<div class="overflow-y-auto" style="height:calc( 82vh - 100px);">
+    <p-tabMenu class="col-12" [model]="tabIndex" [activeItem]="tabIndex[0]"></p-tabMenu>
+
+    <div *ngIf="tabSelected =='appo'">
+        <p-accordion *ngFor="let body of appointments">
+            <p-accordionTab [header]="body.attributes.title">
+                <p>{{body.attributes.body}}</p>
+            </p-accordionTab>
+        </p-accordion>
+        <div class="col-6">
+            <button pButton pRipple type="button" icon="pi pi pi-plus " label="إضافة إشعار جديد" (click)="initNotfi('Appointment')"
+                class="p-button-rounded p-button-outlined p-button-secondary2 text-btn "></button>
+            <i class="pi pi-exclamation-circle pr-3 pointer" (click)="info=true" style="font-size: 1.5rem"></i>
+        </div>
+    </div>
+
+    <div *ngIf="tabSelected =='order'">
+        <p-accordion *ngFor="let body of orders">
+            <p-accordionTab [header]="body.attributes.title">
+                <p>{{body.attributes.body}}</p>
+            </p-accordionTab>
+        </p-accordion>
+        <div class="col-6">
+            <button pButton pRipple type="button" icon="pi pi pi-plus " label="إضافة إشعار جديد" (click)="initNotfi('Orders')"
+                class="p-button-rounded p-button-outlined p-button-secondary2 text-btn "></button>
+            <i class="pi pi-exclamation-circle pr-3 pointer" (click)="info=true" style="font-size: 1.5rem"></i>
+        </div>
+    </div>
+</div>
+
+<p-dialog header="إنشاء إشعار" [(visible)]="bodyDialog" [modal]="true" [style]="{ width: '50vw',height:'50vh' }"
+    [draggable]="false" [resizable]="false">
+    <div class="col-12">
+        <app-input name="title" title="عنوان الأشعار" [(ngModel)]="selectedBody.title" type="text"></app-input>
+
+    </div>
+    <div class="col-12">
+        <app-text-area name="body" title="موضوع الرسالة" [(ngModel)]="selectedBody.body"></app-text-area>
+
+    </div>
+    <ng-template pTemplate="footer">
+        <button (click)="bodyDialog=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"
+            icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
+        <button (click)="createNotfication()" pButton pRipple type="button" label=" {{'Save' |translate}}"
+            class="p-button-primary"></button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog header="طريقة ضبط الإشعار" [(visible)]="info" [modal]="true" [style]="{ width: '50vw',height:'50vh' }"
+    [draggable]="false" [resizable]="false">
+    <div class="col-12">
+        <ul>
+            <li>
+                يجب كتابة الكلمات الدلالية داخل النص تعبيرا عن القيم مثل في الحجزوات و الفواتير
+            </li>
+            <li>
+                الكلمات الدلالية
+                <ul class="pt-2">
+                    <li>
+                        <span>$date</span><span class="px-6">تاريخ بدأ الحجز</span>
+                    </li>
+                    <li>
+                        <span>$time</span><span class="px-6">وقت بدا الحجز بالنظام 12</span>
+                    </li>
+                    <li>
+                        <span>$customer</span><span class="px-6">اسم الزبون</span>
+                    </li>
+                    <li>
+                        <span>$number</span><span class="px-6">رقم الحجز</span>
+                    </li>
+                    <li>
+                        <span>$notes</span><span class="px-6">الملاحظات</span>
+                    </li>
+                    <li>
+                        <span>$cash</span><span class="px-6">المبلغ الكلي (الفاتوة)</span>
+                    </li>
+                    <li>
+                        <span>$discount</span><span class="px-6">الخصم (الفاتورة)</span>
+                    </li>
+                    <li>
+                        <span>$employee</span><span class="px-6">اسم الموظف او العامل</span>
+                    </li>
+                    <li>
+                        <span>$phone</span><span class="px-6">(ليس متوفر بعد)رقم هاتف المكان</span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+</p-dialog>

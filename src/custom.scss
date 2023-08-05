@@ -63,6 +63,9 @@ input::placeholder {
   
 
 }
+.p-accordion .p-accordion-header .p-accordion-header-link .p-accordion-toggle-icon{
+  -webkit-transform: scaleX(-1)
+}
 .p-tag-icon, .p-tag-value, .p-tag-icon.pi{
   color: var(--primary-color) !important;}
 .p-multiselect-token-label {

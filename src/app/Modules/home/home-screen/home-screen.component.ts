@@ -26,10 +26,10 @@ export class HomeScreenComponent extends BaseComponent implements OnInit {
   displayAddEditTask = false
   displayAddEditCalender = false
   displayCalenderDetails = false
-  constructor(private authService: AuthService, public translates: TranslateService,
+  constructor(private authService: AuthService, public translate: TranslateService,
     
     public messageService: MessageService) {
-    super(messageService, translates)
+    super(messageService, translate)
   }
   ngOnInit(): void {
 

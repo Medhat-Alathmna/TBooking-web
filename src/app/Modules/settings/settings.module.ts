@@ -1,0 +1,34 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { SettingsMainComponent } from './settings-main/settings-main.component';
+import { Routes, RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { LoadingComponent } from 'src/app/Shared/loading/loading.component';
+import { PrimengComponentsModule } from 'src/app/primeng-components.module';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { ModalComponent } from 'src/app/Shared/modal/modal.component';
+import { InputComponent } from 'src/app/Shared/input/input.component';
+import { TextAreaComponent } from 'src/app/Shared/text-area/text-area.component';
+
+
+export const routes: Routes = [
+  { path: '', component: SettingsMainComponent },
+
+];
+@NgModule({
+  declarations: [
+    SettingsMainComponent,
+    NotificationsComponent
+  ],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    PrimengComponentsModule,
+    TranslateModule,
+    ModalComponent,
+    InputComponent,
+    TextAreaComponent,
+    LoadingComponent
+  ]
+})
+export class SettingsModule { }
