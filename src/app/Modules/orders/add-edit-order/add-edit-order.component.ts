@@ -163,7 +163,8 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
     var cash = this.selectedOrder.cash
     var discount = this.selectedOrder.discount
     var employee = this.selectedOrder.attributes.appointment.data.attributes.employee
-    var mapObj = { $date: startDate, $time: startTime, $customer: customer, $number: number, $notes: notes, $employee: employee,$discount:discount+' دينار',$cash:cash+' دينار' };
+    var deposit=this.selectedOrder.attributes.appointment.data.attributes.deposit
+    var mapObj = { $date: startDate, $time: startTime, $customer: customer, $number: number, $notes: notes, $employee: employee,$discount:discount+' دينار',$cash:cash+' دينار' ,$deposit:deposit+' دينار'};
     return body= this.multiReplace(body, mapObj)
   }
   getNotfi() {

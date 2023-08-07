@@ -452,7 +452,8 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     var number = this.appointment.number
     var notes = this.appointment.notes
     var employee = this.appointment.employee
-    var mapObj = { $date: startDate, $time: startTime, $customer: customer, $number: number, $notes: notes, $employee: employee };
+    var deposit=this.appointment.deposit
+    var mapObj = { $date: startDate, $time: startTime, $customer: customer, $number: number, $notes: notes, $employee: employee ,$deposit:deposit };
     return body= this.multiReplace(body, mapObj)
   }
 
