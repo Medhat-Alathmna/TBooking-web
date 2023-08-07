@@ -1,16 +1,19 @@
 <app-loading *ngIf="loading" display="full"></app-loading>
 <p-toast position="top-right"></p-toast>
+<p-confirmDialog containerStyleClass="vw" acceptButtonStyleClass="p-button-danger" acceptIcon="pi pi-trash"
+    rejectButtonStyleClass="p-button-text" appendTo="body"></p-confirmDialog>
 <div class="overflow-y-auto" style="height:calc( 82vh - 100px);">
     <p-tabMenu class="col-12" [model]="tabIndex" [activeItem]="tabIndex[0]"></p-tabMenu>
 
     <div *ngIf="tabSelected =='appo'">
         <p-accordion *ngFor="let body of appointments">
             <p-accordionTab [header]="body.attributes.title">
-                <p>{{body.attributes.body}}</p>
+                <p (click)="showNotfi(body)">{{body.attributes.body}}</p>
             </p-accordionTab>
         </p-accordion>
         <div class="col-6">
-            <button pButton pRipple type="button" icon="pi pi pi-plus " label="إضافة إشعار جديد" (click)="initNotfi('Appointment')"
+            <button pButton pRipple type="button" icon="pi pi pi-plus " label="إضافة إشعار جديد"
+                (click)="initNotfi('Appointment')"
                 class="p-button-rounded p-button-outlined p-button-secondary2 text-btn "></button>
             <i class="pi pi-exclamation-circle pr-3 pointer" (click)="info=true" style="font-size: 1.5rem"></i>
         </div>
@@ -19,19 +22,20 @@
     <div *ngIf="tabSelected =='order'">
         <p-accordion *ngFor="let body of orders">
             <p-accordionTab [header]="body.attributes.title">
-                <p>{{body.attributes.body}}</p>
+                <p (click)="showNotfi(body)">{{body.attributes.body}}</p>
             </p-accordionTab>
         </p-accordion>
         <div class="col-6">
-            <button pButton pRipple type="button" icon="pi pi pi-plus " label="إضافة إشعار جديد" (click)="initNotfi('Orders')"
+            <button pButton pRipple type="button" icon="pi pi pi-plus " label="إضافة إشعار جديد"
+                (click)="initNotfi('Orders')"
                 class="p-button-rounded p-button-outlined p-button-secondary2 text-btn "></button>
             <i class="pi pi-exclamation-circle pr-3 pointer" (click)="info=true" style="font-size: 1.5rem"></i>
         </div>
     </div>
 </div>
 
-<p-dialog header="إنشاء إشعار" [(visible)]="bodyDialog" [modal]="true" [style]="{ width: '50vw',height:'50vh' }"
-    [draggable]="false" [resizable]="false">
+<p-dialog [header]='editMode?"تعديل إشعار":"إنشاء إشعار"' [(visible)]="bodyDialog" [modal]="true"
+    [style]="{ width: '50vw',height:'50vh' }" [draggable]="false" [resizable]="false">
     <div class="col-12">
         <app-input name="title" title="عنوان الأشعار" [(ngModel)]="selectedBody.title" type="text"></app-input>
 
@@ -43,8 +47,10 @@
     <ng-template pTemplate="footer">
         <button (click)="bodyDialog=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"
             icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
-        <button (click)="createNotfication()" pButton pRipple type="button" label=" {{'Save' |translate}}"
-            class="p-button-primary"></button>
+        <button (click)="editMode?updateNotifications():createNotfication()" pButton pRipple type="button"
+            label=" {{'Save' |translate}}" class="p-button-primary"></button>
+        <button (click)="confirmDelete()" pButton pRipple type="button"
+            label=" {{'Delete' |translate}}" class="p-button-danger"></button>
     </ng-template>
 </p-dialog>
 

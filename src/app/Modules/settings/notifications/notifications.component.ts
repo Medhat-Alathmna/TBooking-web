@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import { SettingsService } from '../settings.service';
 import { Notifications } from 'src/app/modals/notfi';
@@ -12,11 +12,13 @@ import { Notifications } from 'src/app/modals/notfi';
 })
 export class NotificationsComponent extends BaseComponent implements OnInit {
 
-  constructor(public translates: TranslateService, public messageService: MessageService, private settingsService: SettingsService) { super(messageService, translates) }
+  constructor(public translates: TranslateService, public messageService: MessageService,
+    private confirmationService: ConfirmationService, private settingsService: SettingsService) { super(messageService, translates) }
   appointments = []
   orders = []
   bodyDialog: boolean = false
   info: boolean = false
+  editMode: boolean = false
   selectedBody = new Notifications
   tabSelected='appo'
   tabIndex = [
@@ -38,7 +40,6 @@ export class NotificationsComponent extends BaseComponent implements OnInit {
   }
   getNotfi() {
     this.loading=true
-
     const subscription = this.settingsService.getNotifications().subscribe((results: any) => {
       if (!isSet(results)) {
         return
@@ -57,6 +58,7 @@ export class NotificationsComponent extends BaseComponent implements OnInit {
   }
   initNotfi(type) {
     this.selectedBody = new Notifications
+    this.editMode=false
     this.selectedBody.type=type
     this.bodyDialog = true
   }
@@ -64,6 +66,21 @@ export class NotificationsComponent extends BaseComponent implements OnInit {
   createNotfication() {
     this.loading=true
     const subscription = this.settingsService.createNotifications(this.selectedBody).subscribe((data) => {
+      if (!isSet(data)) {
+        return
+      }      
+      this.bodyDialog = false
+      this.loading = false
+      this.getNotfi()
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+      subscription.unsubscribe()
+    })
+  }
+  updateNotifications() {
+    this.loading=true
+    const subscription = this.settingsService.updateNotifications(this.selectedBody).subscribe((data) => {
       if (!isSet(data)) {
         return
       }
@@ -78,5 +95,42 @@ export class NotificationsComponent extends BaseComponent implements OnInit {
       this.loading = false
       subscription.unsubscribe()
     })
+  }
+  deleteNotifications() {
+    this.loading=true
+    const subscription = this.settingsService.deleteNotifications(this.selectedBody).subscribe((data) => {
+      if (!isSet(data)) {
+        return
+      }
+      console.log(data);
+      
+      this.bodyDialog = false
+      this.loading = false
+      this.getNotfi()
+
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+      subscription.unsubscribe()
+    })
+  }
+
+  showNotfi(notfi){
+    this.bodyDialog=true
+    this.editMode=true
+    this.selectedBody.title=notfi.attributes.title
+    this.selectedBody.body=notfi.attributes.body
+    this.selectedBody.type=notfi.attributes.type
+    this.selectedBody.id=notfi.id
+    console.log(this.selectedBody);
+
+  }
+  confirmDelete() {
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to Delete this Notification ?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => { this.deleteNotifications() },
+    });
   }
 }
