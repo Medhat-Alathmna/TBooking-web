@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   // apiUrl: 'http://luxury.tamimysoft.com/api'
-  apiUrl: 'https://refined-compassion-80cf94fdcb.strapiapp.com/api'
-  // apiUrl: 'http://localhost:1337/api'
+  // apiUrl: 'https://refined-compassion-80cf94fdcb.strapiapp.com/api'
+  apiUrl: 'http://localhost:1337/api'
 };
 
 /*

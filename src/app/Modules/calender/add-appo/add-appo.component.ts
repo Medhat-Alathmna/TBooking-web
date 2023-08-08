@@ -23,6 +23,7 @@ import { ModalComponent } from 'src/app/Shared/modal/modal.component';
 import { OrdersService } from '../../orders/orders.service';
 import { SettingsService } from '../../settings/settings.service';
 import { th } from 'date-fns/locale';
+import { Services } from 'src/app/modals/service';
 
 
 @Component({
@@ -47,9 +48,9 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
 
   users: any = []
   acions: any[] = []
-  services: any = []
+  services: Services[] = []
   selectEmployee: any
-  selectServices: any = []
+  selectServices: Services[] = []
   notfiItems: any = []
   showAddValue: boolean = false
   toOrderDialog: boolean = false
@@ -97,8 +98,14 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       this.appointment.fromDate = new Date(this.appointment.fromDate)
       this.appointment.toDate = new Date(this.appointment.toDate)
       this.appointment.createdAt = moment(this.appointment.createdAt).format('YYYY-MM-DD HH:ss')
-      this.appointment.services.data.map(item => {
-        this.selectServices.push({ id: item?.id, ar: item?.attributes?.ar, en: item?.attributes?.en, price: item?.attributes?.price })
+      this.appointment.services.map(item => {
+        this.selectServices.push(
+          {
+            id: item?.id,
+            ar: item?.ar,
+            en: item?.en,
+            price: item?.price
+          })
 
       })
       if (this.selectEmployee = this.appointment.employee) {
@@ -126,7 +133,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
             this.toOrderDialog = true
           }
         },
-  
+
         {
           label: 'Delete',
           icon: 'pi pi-times',
@@ -140,6 +147,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       }
     }
 
+console.log(this.appointment);
 
 
   }
@@ -171,7 +179,15 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       this.errorMessage('This Service Already Selected')
       return
     }
-    this.selectServices.push(this.newValue)
+
+    this.selectServices.push(Services.cloneObject({
+      id: this.newValue?.id,
+      ar: this.newValue.ar,
+      en: this.newValue.en,
+      price:0
+    }))
+    console.log(this.selectServices);
+
     this.showAddValue = false
   }
   deleteValue(index) {
@@ -205,6 +221,8 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
     this.appointment.services = this.selectServices
+    console.log(this.appointment.services);
+    
     this.loading = true
     const subscription = this.calenderService.addAppominets(this.appointment).subscribe((data) => {
       if (!isSet(data)) {
@@ -264,7 +282,6 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       }
       results.data.map(item => {
         this.services.push({ id: item?.id, ar: item?.attributes?.ar, en: item?.attributes?.en, price: item?.attributes?.price })
-
       })
       subscription.unsubscribe()
     }, error => {
@@ -309,7 +326,6 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
         }
       ]
       this.refreshLish.emit(true)
-
       subscription.unsubscribe()
     }, error => {
       this.loading = false
@@ -427,11 +443,11 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
         return
       }
       console.log(results);
-      var arr=results.data.filter(x => x.attributes.type == 'Appointment')
+      var arr = results.data.filter(x => x.attributes.type == 'Appointment')
       arr.map(notf => {
         this.notfiItems.push({
           label: notf.attributes.title, command: () => {
-            var body =this.replaceValuesStrings(notf.attributes.body)
+            var body = this.replaceValuesStrings(notf.attributes.body)
             window.open(`https://web.whatsapp.com/send?phone=${this.appointment.phone}&text=${body}`, "_blank")
           }
         })
@@ -452,9 +468,9 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     var number = this.appointment.number
     var notes = this.appointment.notes
     var employee = this.appointment.employee
-    var deposit=this.appointment.deposit
-    var mapObj = { $date: startDate, $time: startTime, $customer: customer, $number: number, $notes: notes, $employee: employee ,$deposit:deposit };
-    return body= this.multiReplace(body, mapObj)
+    var deposit = this.appointment.deposit
+    var mapObj = { $date: startDate, $time: startTime, $customer: customer, $number: number, $notes: notes, $employee: employee, $deposit: deposit };
+    return body = this.multiReplace(body, mapObj)
   }
 
 

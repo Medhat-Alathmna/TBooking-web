@@ -7,6 +7,7 @@ export class Order {
     cash:number;
     status:any;
     notes:any;
+    discountType:any;
 
 
     public constructor(params?: Order) {

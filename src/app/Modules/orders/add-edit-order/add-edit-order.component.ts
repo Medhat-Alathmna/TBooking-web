@@ -40,7 +40,7 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
 
   acions: any[] = []
   notfiItems: any = []
-  discountMode: boolean = false
+  discountMode: string = 'type'
   cashMode: boolean = false
   body: string
   @Input() selectedOrder: Order
@@ -50,15 +50,21 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
   @Output() refreshLish: EventEmitter<boolean> = new EventEmitter();
 
   constructor(public translate: TranslateService,
-    public messageService: MessageService, private orderService: OrdersService,private settingsService: SettingsService,
+    public messageService: MessageService, private orderService: OrdersService, private settingsService: SettingsService,
     private confirmationService: ConfirmationService,) { super(messageService, translate) }
 
   ngOnInit(): void {
     this.selectedOrder.attributes.createdAt = moment(this.selectedOrder.attributes.createdAt).format('YYYY-MM-DD HH:ss')
     this.selectedOrder.attributes.appointment.data.attributes.fromDate = new Date(this.selectedOrder.attributes.appointment.data.attributes.fromDate)
     this.selectedOrder.attributes.appointment.data.attributes.toDate = new Date(this.selectedOrder.attributes.appointment.data.attributes.toDate)
-    this.selectedOrder.discount=!this.selectedOrder.attributes.discount?0:this.selectedOrder.attributes.discount
-    this.selectedOrder.cash=!this.selectedOrder.attributes.cash?0:this.selectedOrder.attributes.cash
+    this.selectedOrder.discount = !this.selectedOrder.attributes.discount ? 0 : this.selectedOrder.attributes.discount
+    this.selectedOrder.cash = !this.selectedOrder.attributes.cash ? 0 : this.selectedOrder.attributes.cash
+    if (this.selectedOrder.attributes.discountType) {
+      this.selectedOrder.discountType=this.selectedOrder.attributes.discountType
+      this.discountMode='show'
+    }
+   console.log( this.selectedOrder);
+   
     this.acions = [
       {
         label: 'Cancel the Order',
@@ -70,6 +76,7 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
 
     ]
     this.getNotfi()
+ 
   }
   onHide() {
 
@@ -84,16 +91,22 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
     this.selectedOrder.attributes.services?.map(x => {
       totalServicesAmount += x.price
     })
-    total = totalServicesAmount - this.selectedOrder.discount - this.selectedOrder.cash - this.selectedOrder.attributes.appointment.data.attributes.deposit
+    if (this.selectedOrder.discountType == 'cash') {
+      total = totalServicesAmount - this.selectedOrder.discount - this.selectedOrder.cash - this.selectedOrder.attributes.appointment.data.attributes.deposit
+    } else {
+      const cash = totalServicesAmount  - this.selectedOrder.attributes.appointment.data.attributes.deposit
+      total = (cash * ((100 - this.selectedOrder.discount) / 100))-this.selectedOrder.cash
+    }
     return {
       totalServicesAmount, total
 
     }
   }
-  onKeyEnter(event) {
+  onKeyEnter(event,type?) {
     if (event.keyCode === 13) {
-      this.discountMode = false
-      this.cashMode = false
+      type=='cash'?this.cashMode = false:this.discountMode = 'show'
+
+      
     }
   }
 
@@ -151,32 +164,32 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
       message: 'Are you sure that you want to Cancel this Order ?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
-      accept: () => { this.cancelOrder();this.draftAppointment() },
+      accept: () => { this.cancelOrder(); this.draftAppointment() },
     });
   }
   replaceValuesStrings(body) {
-    var startDate = moment(this.selectedOrder.attributes.appointment.data.attributes.fromDate ).format('YYYY-MM-D')
-    var startTime = moment(this.selectedOrder.attributes.appointment.data.attributes.fromDate ).format('HH-MM A')
+    var startDate = moment(this.selectedOrder.attributes.appointment.data.attributes.fromDate).format('YYYY-MM-D')
+    var startTime = moment(this.selectedOrder.attributes.appointment.data.attributes.fromDate).format('HH-MM A')
     var customer = this.selectedOrder.attributes.appointment.data.attributes.customer.firstName + ' ' + this.selectedOrder.attributes.appointment.data.attributes.customer.middleName + ' ' + this.selectedOrder.attributes.appointment.data.attributes.customer.lastName
     var number = this.selectedOrder.attributes.orderNo
     var notes = this.selectedOrder.attributes.notes
     var cash = this.selectedOrder.cash
     var discount = this.selectedOrder.discount
     var employee = this.selectedOrder.attributes.appointment.data.attributes.employee
-    var deposit=this.selectedOrder.attributes.appointment.data.attributes.deposit
-    var mapObj = { $date: startDate, $time: startTime, $customer: customer, $number: number, $notes: notes, $employee: employee,$discount:discount+' دينار',$cash:cash+' دينار' ,$deposit:deposit+' دينار'};
-    return body= this.multiReplace(body, mapObj)
+    var deposit = this.selectedOrder.attributes.appointment.data.attributes.deposit
+    var mapObj = { $date: startDate, $time: startTime, $customer: customer, $number: number, $notes: notes, $employee: employee, $discount: discount + ' دينار', $cash: cash + ' دينار', $deposit: deposit + ' دينار' };
+    return body = this.multiReplace(body, mapObj)
   }
   getNotfi() {
     const subscription = this.settingsService.getNotifications().subscribe((results: any) => {
       if (!isSet(results)) {
         return
       }
-      var arr=results.data.filter(x => x.attributes.type == 'Orders')
+      var arr = results.data.filter(x => x.attributes.type == 'Orders')
       arr.map(notf => {
         this.notfiItems.push({
           label: notf.attributes.title, command: () => {
-            var body =this.replaceValuesStrings(notf.attributes.body)
+            var body = this.replaceValuesStrings(notf.attributes.body)
             window.open(`https://web.whatsapp.com/send?phone=${this.selectedOrder.attributes.appointment.data.attributes.phone}&text=${body}`, "_blank")
           }
         })

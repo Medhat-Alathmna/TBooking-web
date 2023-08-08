@@ -103,75 +103,80 @@
                     type="number"></app-input>
             </div>
         </div>
-        <div >
+        <div>
             <div class="col-12 py-4">
                 <span class="text-3xl ont-semibold font-bold">
                     Appointment Details </span>
             </div>
-            <div class="grid " >
+            <div class="grid ">
                 <div class="col-6">
                     <div>
                         <app-input [(ngModel)]="appointment.number" name="title" title="Appointment Number"
                             [required]="true"></app-input>
-                        </div>
-                        <div class="my-1">
+                    </div>
+                    <div class="my-1">
                         <app-calender [(ngModel)]="appointment.fromDate" [stepMinute]='30'
                             (ngModelChange)="startDateChange()" [showTime]="true" [required]="true" name="fromDate"
                             showIcon="true" [title]="'Start Date'|translate"></app-calender>
-                        </div>
-                        <div>
+                    </div>
+                    <div>
                         <app-calender [(ngModel)]="appointment.toDate" [stepMinute]='30'
                             (ngModelChange)="finishDateChange()" [timeOnly]="true" [showTime]="true" [required]="true"
                             name="toDate" showIcon="true" [title]="'Finish Date'|translate"></app-calender>
-                        </div>
-                            <div *ngIf="appointment.approved" class="block my-1">
-                                <ng-container >
-                                    <div class="text-lg font-semibold mb-2">
-                                        Employee
-                                    </div>
-                                </ng-container>
-                                <p-dropdown *ngIf="!employeeMode" [required]="true" appendTo="body" [filter]="true" [options]="users" placeholder="Select a Employee" (onChange)="selectEmployees($event.value)"
-                                optionLabel="username"></p-dropdown>
-                                <p-button *ngIf="employeeMode" [label]="selectEmployee?.username" [style]="{'width': '46vw'}" (click)="employeeMode=false" styleClass="p-button-outlined p-button-success"></p-button>
-
+                    </div>
+                    <div *ngIf="appointment.approved" class="block my-1">
+                        <ng-container>
+                            <div class="text-lg font-semibold mb-2">
+                                Employee
                             </div>
+                        </ng-container>
+                        <p-dropdown *ngIf="!employeeMode" [required]="true" appendTo="body" [filter]="true"
+                            [options]="users" placeholder="Select a Employee" (onChange)="selectEmployees($event.value)"
+                            optionLabel="username"></p-dropdown>
+                        <p-button *ngIf="employeeMode" [label]="selectEmployee?.username" [style]="{'width': '46vw'}"
+                            (click)="employeeMode=false" styleClass="p-button-outlined p-button-success"></p-button>
+
+                    </div>
                 </div>
-                    <div [class]="lang=='en'?'col-6 leftLine':'leftRight col-6'">
-                        <div class="flex justify-content-between flex-wrap mx-2 mt-2">
-                            <div class="flex align-items-center justify-content-center  ">
-                                <div class="text-2xl font-semibold ">
-                                    Services
-                                </div>
-                            </div>
-                            <div class="flex align-items-center justify-content-center  ">
-
-                                <button pButton pRipple type="button" icon="pi pi pi-plus "  (click)="showAddNewServ()" label=" New Service"
-                                    class="p-button-rounded p-button-outlined text-btn"></button>
+                <div [class]="lang=='en'?'col-6 leftLine':'leftRight col-6'">
+                    <div class="flex justify-content-between flex-wrap mx-2 mt-2">
+                        <div class="flex align-items-center justify-content-center  ">
+                            <div class="text-2xl font-semibold ">
+                                Services
                             </div>
                         </div>
-                        <div *ngIf="services" class="mt-3 mx-2" >
-                            <div *ngFor="let item of selectServices;let i =index " style=" border-bottom-style: outset"
-                                class="flex justify-content-between flex-wrap mb-2">
-                                <div class="flex align-items-center justify-content-center  ">
-                                    <div class="pi pi-circle-fill text-primary text-xs pt-2"></div>
-                                    <div class=" text-base font-semibold mx-2">
-                                         <span class="  font-bold"> {{item[lang]}} </span> 
-                                         <span class="  font-bold">/ {{item.price}} JOD </span> 
-                                    </div>
-                                </div>
-                                <div class="flex align-items-center justify-content-center  ">
-                                    <button pButton pRipple type="button" (click)="deleteValue(i)" icon="pi pi-trash "
-                                        class="p-button-rounded p-button-danger p-button-text  "></button>
-                                </div>
-                            </div>
-                            <div class="text-xl text-primary font-bold pt-2">
-                                <span>Total: {{getTotalPrice()}} JOD</span>
-                            </div>
+                        <div class="flex align-items-center justify-content-center  ">
+
+                            <button pButton pRipple type="button" icon="pi pi pi-plus " (click)="showAddNewServ()"
+                                label=" New Service" class="p-button-rounded p-button-outlined text-btn"></button>
                         </div>
                     </div>
+                    <div *ngIf="services" class="mt-3 mx-2">
+                        <div *ngFor="let item of selectServices;let i =index "
+                            class="flex justify-content-between flex-wrap mb-2">
+                            <div class=" text-base font-semibold "
+                                style="display: flex;align-items: center;justify-content: space-around;width: 16vw">
+                                <div class="pi pi-circle-fill text-primary text-xs pt-2"></div>
+                                <span class="  font-bold "> {{item[lang]}} </span>
+                                <span class="  font-bold">
+                                    <input type="number" name="price" 
+                                        pInputText [(ngModel)]="item.price" />
+                                        
+                                </span>
+                            </div>
+                            <div class="flex align-items-center justify-content-center  ">
+                                <button pButton pRipple type="button" (click)="deleteValue(i)" icon="pi pi-trash "
+                                    class="p-button-rounded p-button-danger p-button-text  "></button>
+                            </div>
+                        </div>
+                        <div class="text-xl text-primary font-bold pt-2">
+                            <span>Total: {{getTotalPrice()}} JOD</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-      
+
             <div class="col-12">
                 <app-text-area name="notes" [(ngModel)]="appointment.notes" [title]="'Notes'|translate"></app-text-area>
             </div>
@@ -184,8 +189,8 @@
 
 <app-modal [(display)]="showAddValue" [title]="title" class="modal-sm">
     <div body>
-        <p-dropdown appendTo="body" [filter]="true" class="text-xl" [options]="services" [(ngModel)]="newValue" placeholder="Select a Services" (onChange)="selectService()"
-            [optionLabel]="lang"></p-dropdown>
+        <p-dropdown appendTo="body" [filter]="true" class="text-xl" [options]="services" [(ngModel)]="newValue"
+            placeholder="Select a Services" (onChange)="selectService()" [optionLabel]="lang"></p-dropdown>
     </div>
     <div footer>
         <button (click)="showAddValue=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"
@@ -194,8 +199,7 @@
 </app-modal>
 <app-modal [(display)]="toOrderDialog" title="Convert To Order" class="modal-sm">
     <div body>
-        <app-input [(ngModel)]="orderNo" name="orderNo" title="Order Number"
-                    type="text"></app-input>
+        <app-input [(ngModel)]="orderNo" name="orderNo" title="Order Number" type="text"></app-input>
     </div>
     <div footer>
         <button (click)="toOrderDialog=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"

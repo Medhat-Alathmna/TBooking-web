@@ -13,7 +13,7 @@ export class CalenderService {
 
   queryFilters: any[] = [];
 
-  userAuth =JSON.parse(localStorage.getItem('userAuth'))?.user
+  userAuth = JSON.parse(localStorage.getItem('userAuth'))?.user
   constructor(private api: ApiService) { }
 
   getCalender(): Observable<any[]> {
@@ -22,105 +22,114 @@ export class CalenderService {
   getTodayAppominets(currentDate): Observable<any[]> {
     return this.api.get<any[]>(`appointments?populate=*&filters[hide][$eq]=false&filters[fromDate][$gte]=${currentDate}`);
   }
-  addAppominets(appointment:Appointment): Observable<Appointment> {
-    let body={
-      data:{
-        address:appointment?.address,
-        deposit:appointment?.deposit,
-        fromDate:appointment.fromDate,
-        toDate:appointment.toDate,
-        notes:appointment?.notes,
-        number:appointment.number,
-        customer:{
-          firstName:appointment.firstName,
-          middleName:appointment.middleName,
-          lastName:appointment.lastName,
+  addAppominets(appointment: Appointment): Observable<Appointment> {
+    let body = {
+      data: {
+        address: appointment?.address,
+        deposit: appointment?.deposit,
+        fromDate: appointment.fromDate,
+        toDate: appointment.toDate,
+        notes: appointment?.notes,
+        number: appointment.number,
+        customer: {
+          firstName: appointment.firstName,
+          middleName: appointment.middleName,
+          lastName: appointment.lastName,
         },
-        phone:appointment.phone,
-        services:appointment.services,
-        employee:appointment?.employee?.id,
-        approved:false,
-        hide:false,
-        appoBy:this.userAuth.username,
-      }      
-    }
-    console.log(body);
-    
-    return this.api.post<Appointment>('/appointments',body);
-  }
-  approvedAction(appointment:Appointment): Observable<Appointment> {
-    let body={
-      data:{
-        approved:appointment.approved,
+        phone: appointment.phone,
+        services: appointment.services.map(serv => {
+          return {
+            ar: serv.ar,
+            en: serv.en,
+            price: serv.price,
+          }
+        }),
+        employee: appointment?.employee?.id,
+        approved: false,
+        hide: false,
+        appoBy: this.userAuth.username,
       }
     }
-    return this.api.put<Appointment>(`/appointments/${appointment.id}`,body);
+    return this.api.post<Appointment>('/appointments', body);
   }
-  cancelAction(appointment:Appointment): Observable<Appointment> {
-    let body={
-      data:{
-        status:appointment.status,
+  approvedAction(appointment: Appointment): Observable<Appointment> {
+    let body = {
+      data: {
+        approved: appointment.approved,
       }
     }
-    return this.api.put<Appointment>(`/appointments/${appointment.id}`,body);
+    return this.api.put<Appointment>(`/appointments/${appointment.id}`, body);
+  }
+  cancelAction(appointment: Appointment): Observable<Appointment> {
+    let body = {
+      data: {
+        status: appointment.status,
+      }
+    }
+    return this.api.put<Appointment>(`/appointments/${appointment.id}`, body);
   }
 
-  updateAppointemt(appointment:Appointment): Observable<Appointment> {
-    let body={
-      data:{
-        address:appointment?.address,
-        deposit:appointment?.deposit,
-        fromDate:appointment.fromDate,
-        toDate:appointment.toDate,
-        notes:appointment?.notes,
-        number:appointment.number,
-        customer:{
-          firstName:appointment.firstName,
-          middleName:appointment.middleName,
-          lastName:appointment.lastName,
+  updateAppointemt(appointment: Appointment): Observable<Appointment> {
+    let body = {
+      data: {
+        address: appointment?.address,
+        deposit: appointment?.deposit,
+        fromDate: appointment.fromDate,
+        toDate: appointment.toDate,
+        notes: appointment?.notes,
+        number: appointment.number,
+        customer: {
+          firstName: appointment.firstName,
+          middleName: appointment.middleName,
+          lastName: appointment.lastName,
         },
-        phone:appointment.phone,
-        services:appointment.services,
-        employee:appointment?.employee?.id,
+        phone: appointment.phone,
+        services: appointment.services.map(serv => {
+          return {
+            ar: serv.ar,
+            en: serv.en,
+            price: serv.price,
+          }
+        }),        employee: appointment?.employee?.id,
       }
     }
-    return this.api.put<Appointment>(`/appointments/${appointment.id}`,body);
+    return this.api.put<Appointment>(`/appointments/${appointment.id}`, body);
   }
 
-  retreiveAppo(id): Observable<any[]>{
+  retreiveAppo(id): Observable<any[]> {
     return this.api.get<any[]>(`appointments/${id}?populate=*`);
 
   }
-  hideAppointment(appointment:Appointment): Observable<any> {
-    let body={
-      data:{
-        hide:true,
-        deletedBy:this.userAuth.username
+  hideAppointment(appointment: Appointment): Observable<any> {
+    let body = {
+      data: {
+        hide: true,
+        deletedBy: this.userAuth.username
       }
     }
-    return this.api.put<Appointment>(`/appointments/${appointment.id}`,body); 
-   }
-  changeEmployee(appointment:Appointment): Observable<any> {
-    let body={
-      data:{
-        employee:appointment?.employee?.id,
+    return this.api.put<Appointment>(`/appointments/${appointment.id}`, body);
+  }
+  changeEmployee(appointment: Appointment): Observable<any> {
+    let body = {
+      data: {
+        employee: appointment?.employee?.id,
       }
     }
-    return this.api.put<Appointment>(`/appointments/${appointment.id}`,body); 
-   }
-  completeAppointment(appointment:Appointment): Observable<any> {
-    let body={
-      data:{
-        status:'Completed'
+    return this.api.put<Appointment>(`/appointments/${appointment.id}`, body);
+  }
+  completeAppointment(appointment: Appointment): Observable<any> {
+    let body = {
+      data: {
+        status: 'Completed'
       }
     }
-    return this.api.put<Appointment>(`/appointments/${appointment.id}`,body); 
-   }
-   getEmployee(): Observable<any[]> {
+    return this.api.put<Appointment>(`/appointments/${appointment.id}`, body);
+  }
+  getEmployee(): Observable<any[]> {
     return this.api.get<any[]>(`users?populate=role&filters[hide][$eq]=false`);
   }
 
-  getlist(moduleName: string, pageNum?: number, rows?: number, query?: any,pop?): Observable<any[]>{
+  getlist(moduleName: string, pageNum?: number, rows?: number, query?: any, pop?): Observable<any[]> {
     if (!isSet(pageNum)) {
       pageNum = 1
     }
@@ -136,8 +145,8 @@ export class CalenderService {
   }
 
   handleQuery(query: any) {
-   let sum_querirs
-   let querirs_
+    let sum_querirs
+    let querirs_
     if (isSet(query)) {
       const clone = { ...query }
       if (this.queryFilters.some(elem => elem.name === query.name)) {
@@ -156,9 +165,9 @@ export class CalenderService {
           querirs[index].value = moment(querirs[index].value).format('YYYY-MM-DD')
         }
         if (isSet(querirs[index].type)) {
-        const  parent=isSet(querirs[index].parent)?querirs[index].parent:''
+          const parent = isSet(querirs[index].parent) ? querirs[index].parent : ''
           querirs[index] = `&filters${parent}[${querirs[index].name}][${querirs[index].type}]=${querirs[index].value}`;
-        } 
+        }
       }
       let sumquerirs = '';
       for (let index = 0; index < querirs.length; index++) {
@@ -168,7 +177,7 @@ export class CalenderService {
 
     } else return ''
   }
-  
+
   // getNotifications(): Observable<any[]> {
   //   return this.api.get<any[]>(`notifications`);
   // }

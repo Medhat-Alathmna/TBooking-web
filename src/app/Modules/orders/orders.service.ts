@@ -23,7 +23,7 @@ export class OrdersService {
         orderBy:this.userAuth.username,
         discount:0,
         cash:0,
-        totalPrice:totalPrice
+        totalPrice:totalPrice,
       }      
     }
     console.log(body);
@@ -35,6 +35,7 @@ export class OrdersService {
       data:{
         status:order.status,
         discount:order.discount,
+        discountType:order.discountType,
         cash:order.cash,
         notes:order.notes,
       }

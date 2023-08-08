@@ -31,24 +31,24 @@
                 </div>
             </div>
             <div class="flex align-items-center justify-content-center mx-2 ">
-                <button *ngIf="selectedOrder.attributes.status != 'Canceled'"
-                 (click)="tt.toggle($event)" pButton pRipple type="button"
-                icon="pi pi-whatsapp"
-                class="p-button-rounded mr-2 p-button-secondary p-button-lg p-button-text btn-white "></button>
-                <p-menu #tt  [popup]="true" appendTo="body"
-                [model]="notfiItems"></p-menu>
+                <button *ngIf="selectedOrder.attributes.status != 'Canceled'" (click)="tt.toggle($event)" pButton
+                    pRipple type="button" icon="pi pi-whatsapp"
+                    class="p-button-rounded mr-2 p-button-secondary p-button-lg p-button-text btn-white "></button>
+                <p-menu #tt [popup]="true" appendTo="body" [model]="notfiItems"></p-menu>
 
-                <button *ngIf="selectedOrder.attributes.status != 'Canceled'" (click)="menu.toggle($event)" pButton pRipple type="button" icon="pi pi-ellipsis-v"
+                <button *ngIf="selectedOrder.attributes.status != 'Canceled'" (click)="menu.toggle($event)" pButton
+                    pRipple type="button" icon="pi pi-ellipsis-v"
                     class="p-button-rounded mr-2 p-button-secondary p-button-lg p-button-text btn-white "></button>
                 <p-menu #menu id="meetingActinos" styleClass="meetingActinos" [popup]="true" appendTo="body"
                     [model]="acions"></p-menu>
-                <button pButton *ngIf="selectedOrder.attributes.status == 'Draft' || selectedOrder.attributes.status == 'Unpaid'" pRipple type="button"
-                    [label]="'Save'|translate" icon="pi pi-check " (click)="updateOrder()"
+                <button pButton
+                    *ngIf="selectedOrder.attributes.status == 'Draft' || selectedOrder.attributes.status == 'Unpaid'"
+                    pRipple type="button" [label]="'Save'|translate" icon="pi pi-check " (click)="updateOrder()"
                     class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
             </div>
         </div>
     </div>
-    <form #form="ngForm" body class="px-5 " >
+    <form #form="ngForm" body class="px-5 ">
         <div class="grid ">
             <div class="col-12 pb-4">
                 <span class="text-3xl ont-semibold font-bold">Customer Details </span>
@@ -104,7 +104,7 @@
                             name="toDate" showIcon="true" [title]="'Finish Date'|translate"></app-calender>
                     </div>
                 </div>
-                <div [class]="lang=='en'?'col-6 leftLine':'leftRight col-6'" >
+                <div [class]="lang=='en'?'col-6 leftLine':'leftRight col-6'">
                     <div class="flex justify-content-between flex-wrap mx-2 mt-2">
                         <div class="flex align-items-center justify-content-center  ">
                             <div class="text-2xl font-semibold ">
@@ -141,17 +141,36 @@
                                     <th class="px-5 py-2" translate> {{'Deposit'|translate}}:</th>
                                     <th>{{selectedOrder.attributes.appointment.data.attributes.deposit}} {{jod}}</th>
                                 </tr>
+                                <p-divider></p-divider>
                                 <tr>
                                     <th class="px-5 py-2" translate> {{'Discount'|translate}}:</th>
                                     <th>
-                                        <span class="pointer" *ngIf="!discountMode"
-                                            (click)="discountMode=true;cashMode=false">
-                                            {{selectedOrder.discount}} {{jod}}</span>
-                                        <span *ngIf="discountMode">
-                                            <input [(ngModel)]="selectedOrder.discount" type="number"
-                                                (keydown)="onKeyEnter($event)"
-                                                placeholder="{{'Enter'|translate}} discount" name="discount"
-                                                pInputText />
+                                        <span *ngIf="discountMode =='type'">
+                                            <i class="pointer pi pi-money-bill"
+                                                (click)="discountMode='price';cashMode=false;selectedOrder.discountType='cash'">
+                                            </i>
+                                            <span class="px-2">|</span>
+                                            <i class="pointer pi pi-percentage"
+                                                (click)="discountMode='price';cashMode=false;selectedOrder.discountType='percent'"></i>
+                                        </span>
+
+                                        <span *ngIf="discountMode =='price'">
+                                            <p-inputNumber [min]="0" *ngIf="selectedOrder.discountType == 'cash'" name="discount"
+                                                [(ngModel)]="selectedOrder.discount" (onFocus)="$event.target.select()"
+                                                (keydown)="onKeyEnter($event)" mode="decimal"
+                                                [minFractionDigits]="2"></p-inputNumber>
+
+                                            <p-inputNumber [min]="0" *ngIf="selectedOrder.discountType == 'percent'" prefix="%" name="discount"
+                                                (keydown)="onKeyEnter($event)" [(ngModel)]="selectedOrder.discount"
+                                                [max]="100"></p-inputNumber>
+                                        </span>
+                                        <span *ngIf="discountMode =='show'" (click)="discountMode ='type'">
+                                            <span *ngIf="selectedOrder.discountType =='cash'">
+                                                {{selectedOrder.discount}} {{jod}}
+                                            </span>
+                                            <span *ngIf="selectedOrder.discountType =='percent'">
+                                                {{selectedOrder.discount}} %
+                                            </span>
                                         </span>
                                     </th>
                                 </tr>
@@ -159,17 +178,16 @@
                                     <th class="px-5 py-2" translate> {{'Cash'|translate}}:</th>
                                     <th>
                                         <span class="pointer" *ngIf="!cashMode"
-                                            (click)="cashMode=true;discountMode=false">
+                                            (click)="cashMode=true">
                                             {{selectedOrder.cash}} {{jod}}</span>
                                         <span *ngIf="cashMode">
                                             <input [(ngModel)]="selectedOrder.cash" type="number"
-                                                (keydown)="onKeyEnter($event)" placeholder="{{'Enter'|translate}} Cash"
+                                                (keydown)="onKeyEnter($event,'cash')" placeholder="{{'Enter'|translate}} Cash"
                                                 name="Cash" pInputText />
                                         </span>
                                     </th>
                                 </tr>
                                 <p-divider></p-divider>
-
                                 <tr>
                                     <th class="px-5">{{'Total'|translate}}:</th>
                                     <th>{{getTotalPrice().total}} {{jod}}</th>
