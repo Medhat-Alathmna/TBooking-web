@@ -98,16 +98,10 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       this.appointment.fromDate = new Date(this.appointment.fromDate)
       this.appointment.toDate = new Date(this.appointment.toDate)
       this.appointment.createdAt = moment(this.appointment.createdAt).format('YYYY-MM-DD HH:ss')
-      this.appointment.services.map(item => {
-        this.selectServices.push(
-          {
-            id: item?.id,
-            ar: item?.ar,
-            en: item?.en,
-            price: item?.price
-          })
-
-      })
+      if (this.appointment.services) {
+        this.appointment?.services?.map(item => {
+          this.selectServices.push({id: item?.id,ar: item?.ar,en: item?.en,price: item?.price})})
+      }
       if (this.selectEmployee = this.appointment.employee) {
         this.selectEmployee = this.appointment?.employee?.data?.attributes
         this.employeeMode = true
@@ -119,14 +113,14 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
 
       this.acions = [
         {
-          label: this.appointment.approved ? 'Cancel the Appointment' : 'Convert to Approved',
+          label: this.appointment.approved ? this.trans('Cancel the Appointment') : this.trans('Convert to Approved'),
           icon: 'pi pi-refresh',
           command: () => {
             this.appointment.approved ? this.confirmCancel() : this.convertApprove()
           }
         },
         {
-          label: 'Convert to Order',
+          label: this.trans('Convert to Order'),
           icon: 'pi pi-money-bill',
           command: () => {
             this.orderNo = moment(new Date()).format('YY-MM-D') + '-00'
@@ -135,7 +129,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
         },
 
         {
-          label: 'Delete',
+          label:this.trans('Delete'),
           icon: 'pi pi-times',
           command: () => {
             this.confirm1Delete()
@@ -179,11 +173,11 @@ console.log(this.appointment);
       this.errorMessage('This Service Already Selected')
       return
     }
-
+    
     this.selectServices.push(Services.cloneObject({
       id: this.newValue?.id,
-      ar: this.newValue.ar,
-      en: this.newValue.en,
+      ar: this.newValue?.ar,
+      en: this.newValue?.en,
       price:0
     }))
     console.log(this.selectServices);
@@ -303,14 +297,14 @@ console.log(this.appointment);
       // this.successMessage('This appontment has been converted')
       this.acions = [
         {
-          label: this.appointment.approved ? 'Cancel the Appointment' : 'Convert to Approved',
+          label: this.appointment.approved ? this.trans('Cancel the Appointment') : this.trans('Convert to Approved'),
           icon: 'pi pi-refresh',
           command: () => {
             this.appointment.approved ? this.confirmCancel() : this.convertApprove()
           }
         },
         {
-          label: 'Convert to Order',
+          label: this.trans('Convert to Order'),
           icon: 'pi pi-money-bill',
           command: () => {
             this.orderNo = moment(new Date()).format('YY-MM-D') + '-00'
@@ -318,7 +312,7 @@ console.log(this.appointment);
           }
         },
         {
-          label: 'Delete',
+          label: this.trans('Delete'),
           icon: 'pi pi-times',
           command: () => {
             this.confirm1Delete()

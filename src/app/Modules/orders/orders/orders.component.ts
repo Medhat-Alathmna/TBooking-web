@@ -5,6 +5,7 @@ import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import { OrdersService } from '../orders.service';
 import { CalenderService } from '../../calender/calender.service';
 import { Filter } from 'src/app/modals/filter';
+import { Order } from 'src/app/modals/order';
 
 @Component({
   selector: 'app-orders',
@@ -48,23 +49,19 @@ export class OrdersComponent extends BaseComponent implements OnInit {
         return
       }
       console.log(results);
-      this.orders=results.data
+      const clone=results.data
       this.total=results.meta.pagination.total
-      if (reset) {
-        this.orders = Array(this.total).fill(0)
-      }
       if (!isSet(this.orders)) {
         this.orders = Array(this.total).fill(0)
       }
-
-      if (this.orders.length < this.rowNum) {
-        for (let index = this.orders.length; index < this.rowNum; index++) {
-          this.orders[index] = null
+      if (clone.length < this.rowNum) {
+        for (let index = clone.length; index < this.rowNum; index++) {
+          clone[index] = null
         }
       }
       //
       if (!isSet(pageNum)) {
-        this.orders.map((item, index) => {
+        clone.map((item, index) => {
           this.orders[index] = item
         })
 
@@ -72,7 +69,7 @@ export class OrdersComponent extends BaseComponent implements OnInit {
         const currentPage = pageNum * this.rowNum
         let cloneObjIndex = 0
         for (let index = currentPage - this.rowNum; index < currentPage; index++) {
-          this.orders[index] = this.orders[cloneObjIndex++]
+          this.orders[index] = clone[cloneObjIndex++]
         }
       }
       //

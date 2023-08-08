@@ -3,9 +3,9 @@ import { isSet } from "../core/base/base.component";
 
 
 export class Services {
-    price:number
-    en:any
-    ar:any
+    price?:number
+    en?:any
+    ar?:any
     id:string
 
     public constructor(params?: Services) {

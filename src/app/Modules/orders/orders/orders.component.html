@@ -10,17 +10,17 @@
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
                 <div>
-                    <h5 class="m-0 primary">Orders Manager</h5>
+                    <h5 class="m-0 primary" translate>Orders Manager</h5>
                     <label class="text-600 ">
                         In total there are <label class="text-primary font-bold ">
-                            {{orders ? orders.length : 0 }}</label> Orders .
+                            {{total }}</label> Orders .
                     </label>
                 </div>
             </div>
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th style="width: 30vw">Order No.
+                <th style="width: 30vw" translate>Order No.
                     <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
                     [ngClass]="fillterFildes?.orderNo?.status?'status-filter':null" type="text" field="id"
                     matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
@@ -47,8 +47,8 @@
                     </ng-template>
                 </p-columnFilter>
             </th>
-                <th style="width: 30vw">Customer</th>
-                <th>Appointment No.
+                <th style="width: 30vw" translate>Customer</th>
+                <th translate>Appointment No.
                     <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
                     [ngClass]="fillterFildes?.number?.status?'status-filter':null" type="text" field="id"
                     matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
@@ -75,7 +75,7 @@
                     </ng-template>
                 </p-columnFilter>
                 </th>
-                <th>Status
+                <th translate>Status
                     <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
                         [ngClass]="fillterFildes?.status?.status?'status-filter':null" type="text" field="id"
                         matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
@@ -105,8 +105,8 @@
                         </ng-template>
                     </p-columnFilter>
                 </th>
-                <th>Creation Date</th>
-                <th style="width: 10% !important">Actions</th>
+                <th translate>Creation Date</th>
+                <th style="width: 10% !important" translate>Actions</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-ser let-i="rowIndex">

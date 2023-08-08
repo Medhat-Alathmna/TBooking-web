@@ -3,13 +3,16 @@
 <p-confirmDialog containerStyleClass="vw" acceptButtonStyleClass="p-button-danger" acceptIcon="pi pi-trash"
     rejectButtonStyleClass="p-button-text" appendTo="body"></p-confirmDialog>
 <div style="height:calc(100vh - 68px) ;" class="grid card">
+
     <p-table #kt [value]="appointments" [rowHover]="true" (onPage)="getAppointments(($event?.first/rowNum)+1)"
         [paginator]="true" [rows]='rowNum' currentPageReportTemplate="Showing {first} to {last} entries"
+        [showCurrentPageReport]="true"
         [scrollable]="true" [tableStyle]="{'width.%': 100}" scrollHeight="80vh">
+
         <ng-template pTemplate="caption" dataKey="id">
             <div class="flex align-items-center justify-content-between">
                 <div>
-                    <h5 class="m-0 primary">Appointments Manager</h5>
+                    <h5 class="m-0 primary" translate>Appointments Manager</h5>
                     <label class="text-600 ">
                         In total there are <label class="text-primary font-bold ">
                             {{appointments ? total : 0 }}</label> Appointments .
@@ -20,7 +23,7 @@
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th>Appointment No.
+                <th translate>Appointment No.
                     <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
                     [ngClass]="fillterFildes?.number?.status?'status-filter':null" type="text" field="id"
                     matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
@@ -48,8 +51,8 @@
                 </p-columnFilter>
                 </th>
                
-                <th>Customer</th>
-                <th>Status
+                <th translate>Customer</th>
+                <th translate>Status
                     <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
                         [ngClass]="fillterFildes?.status?.status?'status-filter':null" type="text" field="id"
                         matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
@@ -79,9 +82,9 @@
                         </ng-template>
                     </p-columnFilter>
                 </th>
-                <th>Create Date</th>
-                <th>Approved</th>
-                <th>Actions</th>
+                <th translate> Creation Date</th>
+                <th translate>Approved</th>
+                <th translate>Actions</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-appo let-i="rowIndex">
@@ -110,8 +113,8 @@
                     </span>
                 </td>
                 <td>
-                    <span *ngIf="appo.attributes?.approved==true " class="Completed">Approved</span>
-                    <span *ngIf="appo.attributes?.approved==false " class="Canceled">UnApproved</span>
+                    <span *ngIf="appo.attributes?.approved==true " class="Completed" translate>Approved</span>
+                    <span *ngIf="appo.attributes?.approved==false " class="Canceled" translate>UnApproved</span>
                 </td>
                 <td>
                     <button pButton pRipple icon="pi pi-pencil text-base"
@@ -121,7 +124,7 @@
         </ng-template>
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td colspan="4">No Appointments .</td>
+                <td colspan="4" translate>No Appointments .</td>
             </tr>
         </ng-template>
     </p-table>

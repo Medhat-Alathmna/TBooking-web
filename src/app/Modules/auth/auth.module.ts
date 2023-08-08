@@ -10,14 +10,17 @@ import { FormsModule } from '@angular/forms';
 import {ToastModule} from 'primeng/toast';
 import { LoadingComponent } from 'src/app/Shared/loading/loading.component';
 import {MenuModule} from 'primeng/menu';
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 export const routes: Routes = [
   { path: '', component: LoginComponent },
+  { path: 'forget', component: ForgetPasswordComponent },
 
 ];
 
 @NgModule({
   declarations: [
-    LoginComponent
+    LoginComponent,
+    ForgetPasswordComponent
   ],
   imports: [
     CommonModule,

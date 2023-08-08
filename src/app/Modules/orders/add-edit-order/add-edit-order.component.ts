@@ -67,7 +67,7 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
    
     this.acions = [
       {
-        label: 'Cancel the Order',
+        label: this.trans('Cancel the Order'),
         icon: 'pi pi-trash',
         command: () => {
           this.confirm1Cancel()

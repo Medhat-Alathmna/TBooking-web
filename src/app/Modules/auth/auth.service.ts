@@ -26,4 +26,10 @@ export class AuthService {
   clearAuthData() {
     localStorage.removeItem('authData')
   }
+
+  sendEmail(email): Observable<any>{
+    let body={email}
+    return this.httpClient.post<any>(`${environment.apiUrl}/auth/forgot-password `, body);
+
+  }
 }

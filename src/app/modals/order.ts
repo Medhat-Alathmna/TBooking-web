@@ -8,6 +8,7 @@ export class Order {
     status:any;
     notes:any;
     discountType:any;
+    data:any;
 
 
     public constructor(params?: Order) {

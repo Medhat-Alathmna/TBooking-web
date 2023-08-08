@@ -5,6 +5,7 @@ import { MessageService } from 'primeng/api';
 import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import { CalenderService } from '../calender.service';
 import { Filter } from 'src/app/modals/filter';
+import { Appointment } from 'src/app/modals/appoiments';
 
 @Component({
   selector: 'app-appointments',
@@ -63,9 +64,9 @@ total
       status: new Filter(),
     }
     this.calenderService.queryFilters = []
-    this.getAppointments(1, null, false)
+    this.getAppointments(1, null)
   }
-  getAppointments(pageNum?: number, query?: any, reset?: boolean) {
+  getAppointments(pageNum?: number, query?: any) {
     this.loading = true
     const subscription = this.calenderService.getlist('appointments',pageNum,10,query).subscribe((results: any) => {
       this.loading = false
@@ -73,23 +74,19 @@ total
         return
       }
       console.log(results);
-      this.appointments=results.data
+      const clone=Appointment.cloneManyObjects(results.data)
       this.total=results.meta.pagination.total
-      if (reset) {
-        this.appointments = Array(this.total).fill(0)
-      }
       if (!isSet(this.appointments)) {
         this.appointments = Array(this.total).fill(0)
       }
-
-      if (this.appointments.length < this.rowNum) {
-        for (let index = this.appointments.length; index < this.rowNum; index++) {
-          this.appointments[index] = null
+      if (clone.length < this.rowNum) {
+        for (let index = clone.length; index < this.rowNum; index++) {
+          clone[index] = null
         }
       }
       //
       if (!isSet(pageNum)) {
-        this.appointments.map((item, index) => {
+        clone.map((item, index) => {
           this.appointments[index] = item
         })
 
@@ -97,7 +94,7 @@ total
         const currentPage = pageNum * this.rowNum
         let cloneObjIndex = 0
         for (let index = currentPage - this.rowNum; index < currentPage; index++) {
-          this.appointments[index] = this.appointments[cloneObjIndex++]
+          this.appointments[index] = clone[cloneObjIndex++]
         }
       }
       //
