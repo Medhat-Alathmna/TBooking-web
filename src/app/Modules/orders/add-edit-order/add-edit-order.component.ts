@@ -42,6 +42,7 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
   notfiItems: any = []
   discountMode: string = 'type'
   cashMode: boolean = false
+  iconLoading: boolean = false
   body: string
   @Input() selectedOrder: Order
   @Input() display: boolean = false
@@ -105,8 +106,6 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
   onKeyEnter(event,type?) {
     if (event.keyCode === 13) {
       type=='cash'?this.cashMode = false:this.discountMode = 'show'
-
-      
     }
   }
 
@@ -177,7 +176,9 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
     var discount = this.selectedOrder.discount
     var employee = this.selectedOrder.attributes.appointment.data.attributes.employee
     var deposit = this.selectedOrder.attributes.appointment.data.attributes.deposit
-    var mapObj = { $date: startDate, $time: startTime, $customer: customer, $number: number, $notes: notes, $employee: employee, $discount: discount + ' دينار', $cash: cash + ' دينار', $deposit: deposit + ' دينار' };
+    var mapObj = { $date: startDate, $time: startTime, $customer: customer, $number: number, $notes: notes, 
+      $employee: employee, $discount: discount + ' دينار',
+     $cash: cash + ' دينار', $deposit: deposit + ' دينار' ,$price:this.getTotalPrice().totalServicesAmount + ' دينار' };
     return body = this.multiReplace(body, mapObj)
   }
   getNotfi() {
@@ -200,4 +201,6 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     })
   }
+
+
 }

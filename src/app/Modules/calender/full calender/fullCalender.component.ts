@@ -61,7 +61,7 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
       titleFormat: { year: 'numeric', day: 'numeric', month: 'numeric', },
       height: '100%',
       editable: true,
-      direction:this.lang=='ar'?'rtl':'ltr',
+      direction: this.lang == 'ar' ? 'rtl' : 'ltr',
       selectable: true,
       locale: this.lang,
       eventClick: (arg) => {
@@ -101,13 +101,15 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
         return
       }
       this.Appointments = results
-
       this.calendarOptions.events = []
       for (let index = 0; index < this.Appointments.data?.length; index++) {
+        const customer = this.Appointments?.data[index]?.attributes?.customer.firstName + ' ' + this.Appointments?.data[index]?.attributes?.customer.middleName + ' ' + this.Appointments?.data[index]?.attributes?.customer.lastName
+        console.log(customer);
+
         this.calendarOptions.events.push({
           id: this.Appointments.data[index].id,
           title: this.Appointments?.data[index]?.attributes?.employee?.data?.attributes?.username ?
-            this.Appointments?.data[index]?.attributes?.employee?.data?.attributes?.username : 'No Employee yet',
+            this.Appointments?.data[index]?.attributes?.employee?.data?.attributes?.username + '  (' + customer + '  )' : 'No Employee yet',
           // title: 'Medhat',
           start: new Date(this.Appointments.data[index].attributes.fromDate),
           end: new Date(this.Appointments.data[index].attributes.toDate),
@@ -129,10 +131,7 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
     })
   }
   getTodayAppo() {
-
     const currentDate = moment(new Date()).format('YYYY-MM-DDT00:00')
-    console.log(new Date().toISOString());
-    console.log(currentDate);
     this.unapprovedAppoit = []
     this.approvedAppointments = []
     this.completedAppoit = []

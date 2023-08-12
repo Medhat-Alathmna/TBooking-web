@@ -5,6 +5,7 @@
             <span *ngIf=" required && !value" style="color: var(--danger) !important">*</span>
         </div>
     </ng-container>
+
     <input  [(ngModel)]="value" [class]="class" [required]="required" [disabled]="disabled" [type]="type"
          placeholder="{{'Enter'|translate}} {{title}}" [name]="title" pInputText />
 

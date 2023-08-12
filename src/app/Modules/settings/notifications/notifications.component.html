@@ -2,7 +2,7 @@
 <p-toast position="top-right"></p-toast>
 <p-confirmDialog containerStyleClass="vw" acceptButtonStyleClass="p-button-danger" acceptIcon="pi pi-trash"
     rejectButtonStyleClass="p-button-text" appendTo="body"></p-confirmDialog>
-<div class="overflow-y-auto" style="height:calc( 82vh - 100px);">
+<div class="overflow-y-auto" style="height:calc( 92vh - 100px);">
     <p-tabMenu class="col-12" [model]="tabIndex" [activeItem]="tabIndex[0]"></p-tabMenu>
 
     <div *ngIf="tabSelected =='appo'">
@@ -83,7 +83,10 @@
                         <span>$deposit</span><span class="px-6">العربون</span>
                     </li>
                     <li>
-                        <span>$cash</span><span class="px-6">المبلغ الكلي (الفاتوة)</span>
+                        <span>$cash</span><span class="px-6">المبلغ النقدي (الفاتوة)  </span>
+                    </li>
+                    <li>
+                        <span>$price</span><span class="px-6">سعر الخدمات </span>
                     </li>
                     <li>
                         <span>$discount</span><span class="px-6">الخصم (الفاتورة)</span>

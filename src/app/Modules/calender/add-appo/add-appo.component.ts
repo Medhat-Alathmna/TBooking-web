@@ -66,7 +66,10 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   @Input() display: boolean = false
   @Input() detailMode: boolean = false
   @Output() displayChange: EventEmitter<boolean> = new EventEmitter();
-  @Output() refreshLish: EventEmitter<boolean> = new EventEmitter();
+  @Output() refreshLish: EventEmitter<boolean> = new EventEmitter();  
+  blockNumber={number:null,name:null}
+
+  
   @ViewChild('MultiSelect') MultiSelect: ElementRef;
 
   constructor(public translates: TranslateService,
@@ -123,7 +126,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
           label: this.trans('Convert to Order'),
           icon: 'pi pi-money-bill',
           command: () => {
-            this.orderNo = moment(new Date()).format('YY-MM-D') + '-00'
+            this.orderNo = this.appointment.number
             this.toOrderDialog = true
           }
         },
@@ -138,6 +141,17 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       ]
       if (!this.appointment.approved) {
         this.acions.splice(1, 2)
+      }
+      if (this.appointment.status =='Canceled') {
+        this.acions = [
+          {
+            label: this.trans('Block this customer'),
+            icon: 'pi pi-minus-circle',
+            command: () => {
+         this.createForbidNumbers()
+            }
+          },
+        ]
       }
     }
 
@@ -170,18 +184,15 @@ console.log(this.appointment);
     }
     const existServ = this.selectServices.find(x => x.id == this.newValue.id)
     if (existServ) {
-      this.errorMessage('This Service Already Selected')
+      this.errorMessage(this.trans('This Service Already Selected'))
       return
     }
-    
     this.selectServices.push(Services.cloneObject({
       id: this.newValue?.id,
       ar: this.newValue?.ar,
       en: this.newValue?.en,
-      price:0
+      price:this.newValue?.price
     }))
-    console.log(this.selectServices);
-
     this.showAddValue = false
   }
   deleteValue(index) {
@@ -214,9 +225,7 @@ console.log(this.appointment);
     this.appointment.deposit = !this.appointment.deposit ? 0 : this.appointment.deposit
     this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
-    this.appointment.services = this.selectServices
-    console.log(this.appointment.services);
-    
+    this.appointment.services = this.selectServices    
     this.loading = true
     const subscription = this.calenderService.addAppominets(this.appointment).subscribe((data) => {
       if (!isSet(data)) {
@@ -225,7 +234,6 @@ console.log(this.appointment);
       this.refreshLish.emit(true)
       this.display = false
       this.loading = false
-
       subscription.unsubscribe()
     }, error => {
       this.loading = false
@@ -413,20 +421,17 @@ console.log(this.appointment);
     this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
     this.appointment.services = this.selectServices
-
     this.loading = true
     const subscription = this.orderService.addOrder(this.appointment, this.orderNo, this.getTotalPrice(), this.id).subscribe((data) => {
       if (!isSet(data)) {
         return
       }
-      this.completeAppointment()
       this.display = false
       this.loading = false
+      this.completeAppointment()
       this.refreshLish.emit(true)
       subscription.unsubscribe()
     }, error => {
-      console.log(error);
-
       this.loading = false
       subscription.unsubscribe()
     })
@@ -436,7 +441,6 @@ console.log(this.appointment);
       if (!isSet(results)) {
         return
       }
-      console.log(results);
       var arr = results.data.filter(x => x.attributes.type == 'Appointment')
       arr.map(notf => {
         this.notfiItems.push({
@@ -446,8 +450,6 @@ console.log(this.appointment);
           }
         })
       })
-      console.log(this.notfiItems);
-
       subscription.unsubscribe()
     }, error => {
       console.log(error);
@@ -463,10 +465,24 @@ console.log(this.appointment);
     var notes = this.appointment.notes
     var employee = this.appointment.employee
     var deposit = this.appointment.deposit
-    var mapObj = { $date: startDate, $time: startTime, $customer: customer, $number: number, $notes: notes, $employee: employee, $deposit: deposit };
+    var mapObj = { $date: startDate, $time: startTime, $customer: customer, $number: number, $notes: notes, $employee: employee, $deposit: deposit + ' دينار' , $price:this.getTotalPrice() + ' دينار'};
     return body = this.multiReplace(body, mapObj)
   }
 
-
+  createForbidNumbers() {
+    this.blockNumber.number=this.appointment.phone
+    this.blockNumber.name=this.appointment.customer.firstName+' '+this.appointment.customer.middleName+' '+this.appointment.customer.lastName
+    this.loading=true
+    const subscription = this.settingsService.createForbidNumbers(this.blockNumber).subscribe((data) => {
+      if (!isSet(data)) {
+        return
+      }      
+      this.loading = false
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+      subscription.unsubscribe()
+    })
+  }
 
 }

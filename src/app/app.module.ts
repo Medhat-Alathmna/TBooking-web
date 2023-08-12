@@ -69,8 +69,6 @@ import { AppComponent } from './app.component';
         { provide: LocationStrategy, useClass: PathLocationStrategy }
         , MenuService, ConfigService, DatePipe, MessageService, ConfirmationService,
         ConfigEnvironmentService,
-        [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
-       
     ],
     bootstrap: [AppComponent]
 })

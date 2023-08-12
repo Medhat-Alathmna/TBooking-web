@@ -9,6 +9,8 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { ModalComponent } from 'src/app/Shared/modal/modal.component';
 import { InputComponent } from 'src/app/Shared/input/input.component';
 import { TextAreaComponent } from 'src/app/Shared/text-area/text-area.component';
+import { ForbiddenNumbersComponent } from './forbidden-numbers/forbidden-numbers.component';
+import { InputMaskComponent } from 'src/app/Shared/input-mask/input-mask.component';
 
 
 export const routes: Routes = [
@@ -18,7 +20,8 @@ export const routes: Routes = [
 @NgModule({
   declarations: [
     SettingsMainComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    ForbiddenNumbersComponent
   ],
   imports: [
     CommonModule,
@@ -28,6 +31,7 @@ export const routes: Routes = [
     ModalComponent,
     InputComponent,
     TextAreaComponent,
+    InputMaskComponent,
     LoadingComponent
   ]
 })

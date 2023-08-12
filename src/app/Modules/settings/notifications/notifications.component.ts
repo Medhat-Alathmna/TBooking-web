@@ -45,10 +45,8 @@ export class NotificationsComponent extends BaseComponent implements OnInit {
         return
       }
       this.loading=false
-      console.log(results);
       this.appointments = results.data.filter(x => x.attributes.type == 'Appointment')
       this.orders = results.data.filter(x => x.attributes.type == 'Orders')
-
       subscription.unsubscribe()
     }, error => {
       this.loading=false

@@ -39,4 +39,21 @@ export class SettingsService {
   deleteNotifications(notfi: Notifications): Observable<Notifications[]> {
     return this.api.delete<Notifications[]>(`notifications/${notfi.id}`);
   }
+  deletenumber(number: any): Observable<Notifications[]> {
+    return this.api.delete<Notifications[]>(`forbidden-numbers/${number}`);
+  }
+
+
+  checkForbidNumbers(number): Observable<any[]> {
+    return this.api.get<any[]>(`forbidden-numbers?filters[number][$contains]=${number}`);
+  }
+  createForbidNumbers(forbid: any): Observable<any> {
+    let body = {
+      data: {
+        name: forbid.name,
+        number: forbid.number,
+      }
+    }
+    return this.api.post<any>(`forbidden-numbers`, body);
+  }
 }

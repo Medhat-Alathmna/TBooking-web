@@ -41,7 +41,7 @@ export class OrdersComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
     this.clearAllFillter()
   }
-  getOrders(pageNum?: number, query?: any, reset?: boolean) {
+  getOrders(pageNum?: number, query?: any) {
     this.loading = true
     const subscription = this.calenderService.getlist('orders',pageNum,10,query).subscribe((results: any) => {
       this.loading = false
@@ -104,6 +104,6 @@ export class OrdersComponent extends BaseComponent implements OnInit {
       number: new Filter(),
     }
     this.calenderService.queryFilters = []
-    this.getOrders(1, null, false)
+    this.getOrders(1, null)
   }
 }

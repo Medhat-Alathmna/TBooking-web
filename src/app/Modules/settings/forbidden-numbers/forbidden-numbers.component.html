@@ -1,0 +1,89 @@
+<app-loading *ngIf="loading" display="full"></app-loading>
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog containerStyleClass="vw" acceptButtonStyleClass="p-button-danger" acceptIcon="pi pi-trash"
+    rejectButtonStyleClass="p-button-text" appendTo="body"></p-confirmDialog>
+<div class="overflow-y-auto" style="height:calc( 92vh - 100px);">
+    <p-table #kt [value]="numbers" (onPage)="getNumbers(($event?.first/rowNum)+1)"
+    [paginator]="true" [rows]='rowNum'  currentPageReportTemplate="Showing {first} to {last} entries"
+    [scrollable]="true" [tableStyle]="{'width.%': 100}" scrollHeight="80vh">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <div>
+                    <h5 class="m-0 primary" translate>Forbidden Number Manager</h5>
+                    <label class="text-600 ">
+                        In total there are <label class="text-primary font-bold ">
+                            {{total }}</label> Number .
+                    </label>
+                </div>
+                <div>
+                    <button pButton pRipple (click)="initBody()" type="button" icon="pi pi pi-plus " label="إضافة رقم"
+                    
+                    class="p-button-rounded p-button-outlined p-button-secondary2 text-btn "></button>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 30vw" translate>Phone
+                 
+            </th>
+                <th style="width: 30vw" translate>Customer</th>
+                <th translate>Forbidden Date</th>
+                <th style="width: 10% !important" translate>Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-ser let-i="rowIndex">
+            <tr>
+                <td style="width: 30vw">
+                    <span  class="text-xl text-primary pointer font-bold">
+                        {{ser?.attributes?.number}}
+                    </span>
+                </td>
+                <td style="width: 30vw">
+                    <span   class="text-xl text-primary pointer ">
+                        {{ser?.attributes?.name}}
+
+                    </span>
+                </td>
+                <td>
+                    <span class="text-xl text-primary  bold">
+                        {{ ser?.attributes?.publishedAt| date: 'dd/MM/yyyy hh:mm a' }}
+                    </span>
+                   
+                </td>
+                <td style="width: 10%">
+                    <button  pButton pRipple icon="pi pi-pencil text-base"
+                        class="p-button-sm  p-button-primary mr-1"></button>
+                        <button pButton (click)="confirmDelete(ser.id)" pRipple icon="pi pi-trash text-base"
+                        class="p-button-sm  p-button-danger mr-1 "></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="4">No numbers .</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog header="{{'Add Number' | translate}}" [(visible)]="bodyDialog" [modal]="true"
+    [style]="{ width: '50vw',height:'50vh' }" [draggable]="false" [resizable]="false">
+    <form #form="ngForm" body class="px-5 ">
+
+    <div class="col-12">
+        <app-input name="title" [title]="'User Name'|translate" [(ngModel)]="selectedNumber.name" type="text"></app-input>
+    </div>
+    <div class="col-12">
+        <app-input-mask name="phone" [(ngModel)]="selectedNumber.number" [required]="true"
+        [title]="'Phone'|translate"></app-input-mask> 
+       </div>
+    </form>
+    <ng-template pTemplate="footer">
+        <button (click)="bodyDialog=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"
+            icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
+        <button [disabled]="form?.invalid" (click)="createForbidNumbers()" pButton pRipple type="button"
+            label=" {{'Save' |translate}}" class="p-button-primary"></button>
+       
+    </ng-template>
+</p-dialog>

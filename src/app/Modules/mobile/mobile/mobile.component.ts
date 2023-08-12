@@ -20,7 +20,7 @@ export class MobileComponent extends BaseComponent implements OnInit {
   services: any = []
   tabIndex = [
     {
-      label: 'Service',
+      label: this.trans('Services'),
       command: event => {
         this.tabSelected = 'service'
         this.listServices()
@@ -33,7 +33,8 @@ export class MobileComponent extends BaseComponent implements OnInit {
       }
     }
   ]
-  constructor(public translates: TranslateService, public messageService: MessageService, private mobileService: MobileService,private confirmationService: ConfirmationService) { super(messageService, translates) }
+  constructor(public translates: TranslateService, public messageService: MessageService,
+     private mobileService: MobileService,private confirmationService: ConfirmationService) { super(messageService, translates) }
 
   ngOnInit(): void {
     this.listServices()

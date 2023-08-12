@@ -6,9 +6,14 @@
         </div>
     </ng-container>
 
+        <span [class]=" lang =='ar'?'p-input-icon-left':'p-input-icon-right '" style="width: 100%;">
+            <i *ngIf="loading=='pros'" class='pi pi-spin pi-spinner'></i>
+            <i *ngIf="loading=='ok'" class="pi pi-check text-primary"></i>
+            <i *ngIf="loading=='no'" class="pi pi-info-circle" style="color: var(--danger) !important;" 
+            pTooltip="{{'This number is Forbidden'|translate}}"showDelay="500" tooltipPosition="bottom"></i> 
+            <p-inputMask mask="999-999-999-999"  (onComplete)="checkForbidenNumber($event)" [class]="loading=='no'?'ng-invalid ng-dirty':''" [(ngModel)]="value" placeholder="962-999-999-999"></p-inputMask>
 
-        <p-inputMask mask="999-999-999-999" [(ngModel)]="value" placeholder="962-999-999-999"></p-inputMask>
-
+            </span>
 
 
 </div>

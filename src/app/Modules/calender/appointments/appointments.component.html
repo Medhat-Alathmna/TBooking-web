@@ -1,7 +1,5 @@
 <app-loading *ngIf="loading" display="full"></app-loading>
 <p-toast position="top-right"></p-toast>
-<p-confirmDialog containerStyleClass="vw" acceptButtonStyleClass="p-button-danger" acceptIcon="pi pi-trash"
-    rejectButtonStyleClass="p-button-text" appendTo="body"></p-confirmDialog>
 <div style="height:calc(100vh - 68px) ;" class="grid card">
 
     <p-table #kt [value]="appointments" [rowHover]="true" (onPage)="getAppointments(($event?.first/rowNum)+1)"
