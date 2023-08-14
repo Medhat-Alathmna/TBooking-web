@@ -382,9 +382,10 @@ console.log(this.appointment);
       if (!isSet(data)) {
         return
       }
+      this.refreshLish.emit(true)
+      this.display = false
       subscription.unsubscribe()
     }, error => {
-      this.loading = false
       subscription.unsubscribe()
     })
   }
@@ -426,10 +427,8 @@ console.log(this.appointment);
       if (!isSet(data)) {
         return
       }
-      this.display = false
-      this.loading = false
       this.completeAppointment()
-      this.refreshLish.emit(true)
+      this.loading = false
       subscription.unsubscribe()
     }, error => {
       this.loading = false

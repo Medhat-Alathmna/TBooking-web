@@ -6,6 +6,8 @@ import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import { CalenderService } from '../calender.service';
 import { Filter } from 'src/app/modals/filter';
 import { Appointment } from 'src/app/modals/appoiments';
+import * as moment from 'moment';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-appointments',
@@ -14,35 +16,57 @@ import { Appointment } from 'src/app/modals/appoiments';
 })
 export class AppointmentsComponent extends BaseComponent implements OnInit {
 
-  appointments:any
+  appointments: any
   showSppoSidebar: boolean = false
   Appointment: any
   id
- rowNum: any = 10
- currentPage: any = 1
-total 
- status=[
-  {label:'Completed'},
-  {label:'Draft'},
-  {label:'Canceled'}
-]
- fillterFildes = {
-  number: new Filter(),
-  status: new Filter(),
-}
+  rowNum: any = 10
+  currentPage: any = 1
+  total
+  queryTypes = [
 
- @ViewChild('kt') table: any;
+    {
+      type: 'Not Equal',
+      value: '$ne'
+    },
+    {
+      type: 'Equal',
+      value: '$containsi'
+    },
+    {
+      type: 'Less than',
+      value: '$lte'
+    },
+    {
+      type: 'Greater Than',
+      value: '$gte'
+    },
+
+  ]
+  status = [
+    { label: 'Completed' },
+    { label: 'Draft' },
+    { label: 'Canceled' }
+  ]
+  fillterFildes = {
+    number: new Filter(),
+    status: new Filter(),
+    createdAt: new Filter(),
+    customer: new Filter(),
+  }
+
+  @ViewChild('kt') table: any;
 
   constructor(public translates: TranslateService,
-    public messageService: MessageService, private calenderService:CalenderService) {super(messageService,translates) }
+    public messageService: MessageService, private datePipe: DatePipe, private calenderService: CalenderService) { super(messageService, translates) }
 
   ngOnInit(): void {
     this.clearAllFillter()
   }
-  
+
   getAppointment(id) {
     console.log(id);
-    this.id=id
+    this.id = id
     this.loading = true
     const subscription = this.calenderService.retreiveAppo(id).subscribe((results: any) => {
       this.loading = false
@@ -62,20 +86,23 @@ total
     this.fillterFildes = {
       number: new Filter(),
       status: new Filter(),
+      createdAt: new Filter(),
+      customer: new Filter(),
     }
     this.calenderService.queryFilters = []
     this.getAppointments(1, null)
   }
   getAppointments(pageNum?: number, query?: any) {
+    isSet(this.fillterFildes.createdAt.value) ? this.fillterFildes.createdAt.value = this.datePipe.transform(this.fillterFildes.createdAt.value, 'yyyy-MM-dd') : null
     this.loading = true
-    const subscription = this.calenderService.getlist('appointments',pageNum,10,query).subscribe((results: any) => {
+    const subscription = this.calenderService.getlist('appointments', pageNum, 10, query).subscribe((results: any) => {
       this.loading = false
       if (!isSet(results)) {
         return
       }
-      console.log(results);
-      const clone=Appointment.cloneManyObjects(results.data)
-      this.total=results.meta.pagination.total
+      this.appointments=[]
+      const clone = Appointment.cloneManyObjects(results.data)
+      this.total = results.meta.pagination.total
       if (!isSet(this.appointments)) {
         this.appointments = Array(this.total).fill(0)
       }
@@ -84,12 +111,10 @@ total
           clone[index] = null
         }
       }
-      //
       if (!isSet(pageNum)) {
         clone.map((item, index) => {
           this.appointments[index] = item
         })
-
       } else {
         const currentPage = pageNum * this.rowNum
         let cloneObjIndex = 0
@@ -97,7 +122,6 @@ total
           this.appointments[index] = clone[cloneObjIndex++]
         }
       }
-      //
       if (!isSet(this.appointments?.next)) {
         this.appointments = this.appointments.filter(item => {
           return isSet(item)

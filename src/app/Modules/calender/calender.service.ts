@@ -45,7 +45,7 @@ export class CalenderService {
           }
         }),
         employee: appointment?.employee?.id,
-        approved: false,
+        approved: true,
         hide: false,
         appoBy: this.userAuth.username,
       }
@@ -166,7 +166,8 @@ export class CalenderService {
         }
         if (isSet(querirs[index].type)) {
           const parent = isSet(querirs[index].parent) ? querirs[index].parent : ''
-          querirs[index] = `&filters${parent}[${querirs[index].name}][${querirs[index].type}]=${querirs[index].value}`;
+          const customer = isSet(querirs[index].customer) ? querirs[index].customer : ''
+          querirs[index] = `filters${parent}${customer}[${querirs[index].name}][${querirs[index].type}]=${querirs[index].value}`;
         }
       }
       let sumquerirs = '';

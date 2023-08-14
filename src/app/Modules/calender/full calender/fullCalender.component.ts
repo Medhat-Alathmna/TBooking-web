@@ -104,22 +104,17 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
       this.calendarOptions.events = []
       for (let index = 0; index < this.Appointments.data?.length; index++) {
         const customer = this.Appointments?.data[index]?.attributes?.customer.firstName + ' ' + this.Appointments?.data[index]?.attributes?.customer.middleName + ' ' + this.Appointments?.data[index]?.attributes?.customer.lastName
-        console.log(customer);
-
         this.calendarOptions.events.push({
           id: this.Appointments.data[index].id,
           title: this.Appointments?.data[index]?.attributes?.employee?.data?.attributes?.username ?
-            this.Appointments?.data[index]?.attributes?.employee?.data?.attributes?.username + '  (' + customer + '  )' : 'No Employee yet',
+            this.Appointments?.data[index]?.attributes?.employee?.data?.attributes?.username + '  (' + customer + '  )' : 'No Employee yet' + '  (' + customer + '  )',
           // title: 'Medhat',
           start: new Date(this.Appointments.data[index].attributes.fromDate),
           end: new Date(this.Appointments.data[index].attributes.toDate),
-          backgroundColor: "hsl(" + Math.random() * 360 + ", 100%, 75%)",
-          borderColor: "hsl(" + Math.random() * 360 + ", 100%, 75%)",
+          backgroundColor:this.Appointments?.data[index]?.attributes.status=='Completed'?'#66FF99': "hsl(" + Math.random() * 360 + ", 100%, 75%)",
+          borderColor: this.Appointments?.data[index]?.attributes.status=='Completed'?'#66FF99': "hsl(" + Math.random() * 360 + ", 100%, 75%)",
         },
-
         )
-
-
         this.Appointments.data[index].attributes.fromDate = moment(this.Appointments.data[index].attributes.fromDate).format('hh:mm A')
         this.Appointments.data[index].attributes.toDate = moment(this.Appointments.data[index].attributes.toDate).format('hh:mm A')
       }

@@ -1,7 +1,7 @@
 export class Filter {
-    name: string;
+    name: any;
     value: any;
-    type: string;
+    type: any;
     parent?: string;
     status: boolean;
     }
