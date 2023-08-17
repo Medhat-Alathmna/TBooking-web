@@ -6,7 +6,7 @@ import { AppNotfoundComponent } from './Layout/NotFound/app.notfound.component';
 import { AuthModule } from './Modules/auth/auth.module';
 import { AuthGuard } from './Modules/auth/guards/auth.guard';
 import { HomeModule } from './Modules/home/home.module';
-import { MobileModule } from './Modules/mobile/mobile.module';
+import { MobileModule } from './Modules/mobile/services.module';
 import { CalenderModule } from './Modules/calender/calender.module';
 import { GuestGuard } from './Modules/auth/guards/guest.guard';
 import { UsersModule } from './Modules/users/users.module';

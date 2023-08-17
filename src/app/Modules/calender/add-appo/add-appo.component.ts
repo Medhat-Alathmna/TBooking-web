@@ -17,13 +17,14 @@ import { startOfHour, addMinutes, format } from 'date-fns';
 import { DatePipe } from '@angular/common';
 import { UsersService } from '../../users/users.service';
 import * as moment from 'moment';
-import { MobileService } from '../../mobile/mobile.service';
+import { MobileService } from '../../mobile/services.service';
 import { InputMaskComponent } from 'src/app/Shared/input-mask/input-mask.component';
 import { ModalComponent } from 'src/app/Shared/modal/modal.component';
 import { OrdersService } from '../../orders/orders.service';
 import { SettingsService } from '../../settings/settings.service';
 import { th } from 'date-fns/locale';
 import { Services } from 'src/app/modals/service';
+import { Products } from 'src/app/modals/products';
 
 
 @Component({
@@ -49,11 +50,14 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   users: any = []
   acions: any[] = []
   services: Services[] = []
+  Products: Products[] = []
   selectEmployee: any
   selectServices: Services[] = []
+  selectProducts: Products[] = []
   notfiItems: any = []
   showAddValue: boolean = false
   toOrderDialog: boolean = false
+  servType:any
   body: string
   orderNo: string
   title: string
@@ -82,6 +86,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     // this.appointment.employee= this.appointment?.employee.data.attributes
     this.getUsers()
     this.listServices()
+    this.getProducts(1,null)
     if (!this.detailMode || !this.appointment) {
       this.appointment = new Appointment
       setTimeout(() => {
@@ -166,10 +171,11 @@ console.log(this.appointment);
     })
     return totalAmount
   }
-  showAddNewServ() {
-    this.title = 'Add New Services'
+  showAddNewServ(type) {
+    this.title = type == 'ser'?this.trans('New Service'):this.trans('New Product')
     this.showAddValue = true
     this.newValue = null
+    this.servType=type
   }
 
   selectEmployees(event) {
@@ -187,10 +193,28 @@ console.log(this.appointment);
       this.errorMessage(this.trans('This Service Already Selected'))
       return
     }
+  
     this.selectServices.push(Services.cloneObject({
       id: this.newValue?.id,
       ar: this.newValue?.ar,
       en: this.newValue?.en,
+      price:this.newValue?.price
+    }))
+    this.showAddValue = false
+  }
+  selectProduct(){
+    if (!isSet(this.selectProducts)) {
+      this.selectProducts = []
+    }
+    const existServ = this.selectProducts.find(x => x.id == this.newValue.id)
+    if (existServ) {
+      this.errorMessage(this.trans('This Product Already Selected'))
+      return
+    }
+    this.selectProducts.push(Products.cloneObject({
+      id: this.newValue?.id,
+      name: this.newValue?.name,
+      stocks: 1,
       price:this.newValue?.price
     }))
     this.showAddValue = false
@@ -480,6 +504,27 @@ console.log(this.appointment);
       subscription.unsubscribe()
     }, error => {
       this.loading = false
+      subscription.unsubscribe()
+    })
+  }
+  getProducts(pageNum?: number, query?: any) {
+    this.loading = true
+    const subscription = this.calenderService.getlist('products', pageNum, 1000, query).subscribe((results: any) => {
+      this.loading = false
+      if (!isSet(results)) {
+        return
+      }
+      console.log(results);
+
+
+      results.data.map(item => {
+        this.Products.push({ id: item?.id, name: item?.attributes?.name, stocks: item?.attributes?.stocks, price: item?.attributes?.price })
+      })
+     
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+      console.log(error);
       subscription.unsubscribe()
     })
   }

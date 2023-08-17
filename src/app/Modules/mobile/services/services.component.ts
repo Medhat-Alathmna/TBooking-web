@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent, isSet } from 'src/app/core/base/base.component';
-import { MobileService } from '../mobile.service';
+import { MobileService } from '../services.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Services } from 'src/app/modals/service';
 
 
 @Component({
-  selector: 'app-mobile',
-  templateUrl: './mobile.component.html',
-  styleUrls: ['./mobile.component.scss']
+  selector: 'app-services',
+  templateUrl: './services.component.html',
+  styleUrls: ['./services.component.scss']
 })
 export class MobileComponent extends BaseComponent implements OnInit {
 
@@ -27,9 +27,9 @@ export class MobileComponent extends BaseComponent implements OnInit {
       }
     },
     {
-      label: 'Home',
+      label: this.trans('Products'),
       command: event => {
-        this.tabSelected = 'home'
+        this.tabSelected = 'products'
       }
     }
   ]

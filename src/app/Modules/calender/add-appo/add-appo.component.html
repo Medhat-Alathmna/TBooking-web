@@ -147,8 +147,10 @@
                         </div>
                         <div class="flex align-items-center justify-content-center  ">
 
-                            <button pButton pRipple type="button" icon="pi pi pi-plus " (click)="showAddNewServ()"
+                            <button pButton pRipple type="button" icon="pi pi pi-plus " (click)="showAddNewServ('ser')"
                                 [label]="'New Service'|translate" class="p-button-rounded p-button-outlined text-btn"></button>
+                            <button pButton pRipple type="button" icon="pi pi pi-plus " (click)="showAddNewServ('prod')"
+                                [label]="'New Product'|translate" class="p-button-rounded p-button-outlined text-btn mx-1"></button>
                         </div>
                     </div>
                     <div *ngIf="services" class="mt-3 mx-2">
@@ -161,6 +163,27 @@
                                 <span class="  font-bold">
                                     <input type="number" name="price{{i}}" pInputText [(ngModel)]="item.price" />
 
+                                </span>
+                            </div>
+                            <div class="flex align-items-center justify-content-center  ">
+                                <button pButton pRipple type="button" (click)="deleteValue(i)" icon="pi pi-trash "
+                                    class="p-button-rounded p-button-danger p-button-text  "></button>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div *ngIf="selectProducts" class="mt-3">
+                        <div *ngFor="let item of selectProducts;let i =index "
+                            class="flex justify-content-between flex-wrap mb-2">
+                            <div class=" text-base font-semibold "
+                                style="display: flex;align-items: center;justify-content: space-around">
+                                <div class="pi pi-circle-fill text-primary text-xs pt-2"></div>
+                                <span class="  font-bold "> {{item.name}} </span>
+                                <span class=" px-2 font-bold">
+                                    <input type="number" name="price{{i}}" pInputText [(ngModel)]="item.price" />
+                                </span>
+                                <span class="  font-bold">
+                                    <input type="number" name="stocks{{i}}" pInputText [(ngModel)]="item.stocks" />
                                 </span>
                             </div>
                             <div class="flex align-items-center justify-content-center  ">
@@ -188,15 +211,22 @@
 
 <app-modal [(display)]="showAddValue" [title]="title" class="modal-sm">
     <div body>
-        <p-dropdown appendTo="body" [filter]="true" class="text-xl" [options]="services" [(ngModel)]="newValue"
+        <p-dropdown *ngIf="servType == 'ser'" appendTo="body" [filter]="true" class="text-xl" [options]="services" [(ngModel)]="newValue"
             placeholder="Select a Services" name="newValue" (onChange)="selectService()"
             [optionLabel]="lang"></p-dropdown>
+
+        <p-dropdown *ngIf="servType != 'ser'" appendTo="body" [filter]="true" class="text-xl" [options]="Products" [(ngModel)]="newValue"
+            placeholder="Select a Product" name="newValue" (onChange)="selectProduct()"
+            optionLabel="name"></p-dropdown>
     </div>
     <div footer>
         <button (click)="showAddValue=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"
             icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
     </div>
 </app-modal>
+
+
+
 <app-modal [(display)]="toOrderDialog" title="Convert To Order" class="modal-sm">
     <div body>
         <app-input [(ngModel)]="orderNo" name="orderNo" title="Order Number" type="text"></app-input>

@@ -13,6 +13,7 @@ export class UserInfo {
   role: any
   blocked: boolean
   createdAt:any
+  data:any
   public constructor(params?: UserInfo) {
     Object.assign(this, params);
 }

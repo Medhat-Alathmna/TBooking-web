@@ -17,7 +17,7 @@ export class CalenderService {
   constructor(private api: ApiService) { }
 
   getCalender(): Observable<any[]> {
-    return this.api.get<any[]>(`appointments?populate=*&filters[approved][$eq]=true&filters[hide][$eq]=false&filters[status][$eq]=Draft&filters[status][$eq]=Completed`);
+    return this.api.get<any[]>(`appointments?populate=*&filters[approved][$eq]=true&filters[hide][$eq]=false&filters[status][$eq]=Completed&filters[status][$eq]=Draft`);
   }
   getTodayAppominets(currentDate): Observable<any[]> {
     return this.api.get<any[]>(`appointments?populate=*&filters[hide][$eq]=false&filters[fromDate][$gte]=${currentDate}`);

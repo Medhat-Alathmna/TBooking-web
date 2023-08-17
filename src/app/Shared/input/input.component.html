@@ -5,8 +5,13 @@
             <span *ngIf=" required && !value" style="color: var(--danger) !important">*</span>
         </div>
     </ng-container>
-
+    <div class="flex">
     <input  [(ngModel)]="value" [class]="class" [required]="required" [disabled]="disabled" [type]="type"
          placeholder="{{'Enter'|translate}} {{title}}" [name]="title" pInputText />
+         <p-button *ngIf="plus" [disabled]="disabled" (click)="op.toggle($event);number=0" icon="pi pi-plus" class="px-1"></p-button>
 
+         <p-overlayPanel #op>
+            <input  (keydown)="onKeyEnter($event)" onfocus="number" [(ngModel)]="number" type="number" pInputText>
+        </p-overlayPanel>
+    </div>
 </div>

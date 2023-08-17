@@ -67,7 +67,9 @@
 
 
 
-    <div *ngIf="tabSelected=='home'" class="grid"></div>
+    <div *ngIf="tabSelected=='products'" class="grid">
+        <app-products></app-products>
+    </div>
 </div>
 
 <p-dialog [header]="editMode?'Modify the service':'Create the service'" modal="true" [resizable]="false"
