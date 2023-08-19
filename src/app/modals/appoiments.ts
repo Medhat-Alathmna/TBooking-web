@@ -19,6 +19,7 @@ export class Appointment {
     createdAt?: Date |any;
     toDate?: Date |any;
     number?: any;
+    products?: any;
     customer:{
         firstName:any;
     middleName:any;

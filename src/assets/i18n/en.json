@@ -276,6 +276,8 @@
     "Add Service":"Add Service",
     "Price":"Price",
     "Stock":"Stock",
+    "Quantity":"Quantity",
+    "The Quantity must not be more than Stocks":"The Quantity must not be more than Stocks",
     "Stock Details ":"Stock Details ",
     "Product Details":"Product Details",
     "Product Name":"Product Name",

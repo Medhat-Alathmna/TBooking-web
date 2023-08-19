@@ -38,6 +38,7 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
   acions
   number
   @Input() selectedProduct :Products
+  @Input() id :any
   @Input() display: boolean = false
   @Input() detailMode: boolean = true
   @Output() displayChange: EventEmitter<boolean> = new EventEmitter();
@@ -47,6 +48,8 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
    {super(messageService, translates) }
 
   ngOnInit(): void {
+    console.log(this.selectedProduct);
+    
   }
 
   onHide() {
@@ -59,6 +62,21 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
   createProduct() {
     this.loading=true
     const subscription = this.productsService.createProduct(this.selectedProduct).subscribe((data) => {
+      if (!isSet(data)) {
+        return
+      }
+      this.loading=false
+      this.refreshLish.emit(true)
+      this.display = false
+      subscription.unsubscribe()
+    }, error => {
+      this.loading=false
+      subscription.unsubscribe()
+    })
+  }
+  updateProduct() {
+    this.loading=true
+    const subscription = this.productsService.updateProduct(this.selectedProduct,this.id).subscribe((data) => {
       if (!isSet(data)) {
         return
       }

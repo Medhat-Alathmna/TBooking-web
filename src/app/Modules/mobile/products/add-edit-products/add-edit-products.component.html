@@ -20,7 +20,7 @@
                     [model]="acions"></p-menu>
                 <button pButton
                 [disabled]="form?.invalid "
-                    pRipple type="button" [label]="'Save'|translate" icon="pi pi-check " (click)="createProduct()"
+                    pRipple type="button" [label]="'Save'|translate" icon="pi pi-check " (click)="detailMode?updateProduct():createProduct()"
                     class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
             </div>
         </div>

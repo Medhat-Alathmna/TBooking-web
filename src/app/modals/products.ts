@@ -8,7 +8,9 @@ export class Products {
     price: number;
     stocks?: number;
     buyPrice?: number;
+    qty?: number;
     brand?: any;
+    attributes?: any;
 
 
     public constructor(params?: Products) {

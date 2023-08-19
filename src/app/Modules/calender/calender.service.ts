@@ -4,6 +4,7 @@ import { ApiService } from 'src/app/core/api.service';
 import { isSet } from 'src/app/core/base/base.component';
 import { Appointment } from 'src/app/modals/appoiments';
 import * as moment from 'moment';
+import { Products } from 'src/app/modals/products';
 
 
 @Injectable({
@@ -42,6 +43,13 @@ export class CalenderService {
             ar: serv.ar,
             en: serv.en,
             price: serv.price,
+          }
+        }),
+        products: appointment.products.map((prod: Products) => {
+          return {
+            name: prod.name,
+            qty: prod.qty,
+            price: prod.price,
           }
         }),
         employee: appointment?.employee?.id,
@@ -90,7 +98,15 @@ export class CalenderService {
             en: serv.en,
             price: serv.price,
           }
-        }),        employee: appointment?.employee?.id,
+        }),
+        products: appointment.products.map((prod: Products) => {
+          return {
+            name: prod.name,
+            qty: prod.qty,
+            price: prod.price,
+          }
+        }),
+        employee: appointment?.employee?.id,
       }
     }
     return this.api.put<Appointment>(`/appointments/${appointment.id}`, body);
@@ -179,7 +195,12 @@ export class CalenderService {
     } else return ''
   }
 
-  // getNotifications(): Observable<any[]> {
-  //   return this.api.get<any[]>(`notifications`);
-  // }
+  updateProduct(product: Products,id): Observable<any> {
+    let body = {
+      data: {
+        stocks: product?.stocks-product.qty,
+      }
+    }
+    return this.api.put<any>(`products/${id}`, body);
+  }
 }

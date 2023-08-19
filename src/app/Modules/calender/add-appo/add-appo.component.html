@@ -62,12 +62,13 @@
                     [model]="notfiItems"></p-menu>
 
 
-                <button *ngIf="detailMode && this.appointment.status != 'Completed'" (click)="menu.toggle($event)" pButton pRipple type="button"
-                    icon="pi pi-ellipsis-v"
+                <button *ngIf="detailMode && this.appointment.status != 'Completed'" (click)="menu.toggle($event)"
+                    pButton pRipple type="button" icon="pi pi-ellipsis-v"
                     class="p-button-rounded mr-2 p-button-secondary p-button-lg p-button-text btn-white "></button>
                 <p-menu #menu id="meetingActinos" styleClass="meetingActinos" [popup]="true" appendTo="body"
                     [model]="acions"></p-menu>
-                <button *ngIf="this.appointment.status != 'Canceled' && this.appointment.status !='Completed'" pButton [disabled]="form?.invalid || !appointment?.firstName ||!appointment?.middleName ||
+                <button *ngIf="this.appointment.status != 'Canceled' && this.appointment.status !='Completed'" pButton
+                    [disabled]="form?.invalid || !appointment?.firstName ||!appointment?.middleName ||
                      ! appointment?.lastName || !appointment?.phone ||!appointment?.fromDate " pRipple type="button"
                     [label]="'Save'|translate" icon="pi pi-check " (click)="detailMode?updateAppominet():addAppominet()"
                     class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
@@ -96,7 +97,7 @@
                     [title]="'Phone'|translate"></app-input-mask>
             </div>
             <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="appointment.address" name="address"  [title]="'Address'|translate"></app-input>
+                <app-input [(ngModel)]="appointment.address" name="address" [title]="'Address'|translate"></app-input>
             </div>
             <div class="lg:col-4 sm:col-6 ">
                 <app-input [(ngModel)]="appointment.deposit" name="deposit" title="{{'Deposit'|translate}} / {{jod}}"
@@ -111,7 +112,7 @@
             <div class="grid ">
                 <div class="col-6">
                     <div>
-                        <app-input [(ngModel)]="appointment.number" name="title"  [title]="'Appointment No.'|translate"
+                        <app-input [(ngModel)]="appointment.number" name="title" [title]="'Appointment No.'|translate"
                             [required]="true"></app-input>
                     </div>
                     <div class="my-1">
@@ -131,8 +132,8 @@
                             </div>
                         </ng-container>
                         <p-dropdown *ngIf="!employeeMode" [required]="true" appendTo="body" [filter]="true"
-                            [options]="users" [placeholder]="'Select a Employee'|translate" (onChange)="selectEmployees($event.value)"
-                            optionLabel="username"></p-dropdown>
+                            [options]="users" [placeholder]="'Select a Employee'|translate"
+                            (onChange)="selectEmployees($event.value)" optionLabel="username"></p-dropdown>
                         <p-button *ngIf="employeeMode" [label]="selectEmployee?.username" [style]="{'width': '46vw'}"
                             (click)="employeeMode=false" styleClass="p-button-outlined p-button-success"></p-button>
 
@@ -141,16 +142,18 @@
                 <div [class]="lang=='en'?'col-6 leftLine':'leftRight col-6'">
                     <div class="flex justify-content-between flex-wrap mx-2 mt-2">
                         <div class="flex align-items-center justify-content-center  ">
-                            <div class="text-2xl font-semibold"translate>
+                            <div class="text-2xl font-semibold" translate>
                                 Services
                             </div>
                         </div>
                         <div class="flex align-items-center justify-content-center  ">
 
                             <button pButton pRipple type="button" icon="pi pi pi-plus " (click)="showAddNewServ('ser')"
-                                [label]="'New Service'|translate" class="p-button-rounded p-button-outlined text-btn"></button>
+                                [label]="'New Service'|translate"
+                                class="p-button-rounded p-button-outlined text-btn"></button>
                             <button pButton pRipple type="button" icon="pi pi pi-plus " (click)="showAddNewServ('prod')"
-                                [label]="'New Product'|translate" class="p-button-rounded p-button-outlined text-btn mx-1"></button>
+                                [label]="'New Product'|translate"
+                                class="p-button-rounded p-button-outlined text-btn mx-1"></button>
                         </div>
                     </div>
                     <div *ngIf="services" class="mt-3 mx-2">
@@ -166,33 +169,62 @@
                                 </span>
                             </div>
                             <div class="flex align-items-center justify-content-center  ">
-                                <button pButton pRipple type="button" (click)="deleteValue(i)" icon="pi pi-trash "
+                                <button pButton pRipple type="button" (click)="deleteValue(i,'serv')"
+                                    icon="pi pi-trash "
                                     class="p-button-rounded p-button-danger p-button-text  "></button>
                             </div>
                         </div>
-                       
+                        <p-divider *ngIf="selectProducts.length"></p-divider>
+
                     </div>
-                    <div *ngIf="selectProducts" class="mt-3">
-                        <div *ngFor="let item of selectProducts;let i =index "
-                            class="flex justify-content-between flex-wrap mb-2">
-                            <div class=" text-base font-semibold "
-                                style="display: flex;align-items: center;justify-content: space-around">
-                                <div class="pi pi-circle-fill text-primary text-xs pt-2"></div>
-                                <span class="  font-bold "> {{item.name}} </span>
-                                <span class=" px-2 font-bold">
-                                    <input type="number" name="price{{i}}" pInputText [(ngModel)]="item.price" />
-                                </span>
-                                <span class="  font-bold">
-                                    <input type="number" name="stocks{{i}}" pInputText [(ngModel)]="item.stocks" />
-                                </span>
-                            </div>
-                            <div class="flex align-items-center justify-content-center  ">
-                                <button pButton pRipple type="button" (click)="deleteValue(i)" icon="pi pi-trash "
-                                    class="p-button-rounded p-button-danger p-button-text  "></button>
-                            </div>
-                        </div>
+
+                    <div *ngIf="selectProducts?.length" class="mt-3">
+                        <p-table [value]="selectProducts" [tableStyle]="{'width.%': 100}">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th translate>Product Name</th>
+                                    <th translate>Price</th>
+                                    <th translate>Quantity</th>
+                                    <th translate>Total</th>
+                                    <th translate style="width: 10%;"></th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-product let-s="rowIndex">
+                                <tr>
+                                    <td>{{ product.name }}</td>
+                                    <td>
+                                        <span class=" px-2 font-bold">
+                                            <input type="number" [value]="product.price"
+                                                [ngModelOptions]="{standalone: true}" pInputText
+                                                [(ngModel)]="product.price" />
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="  font-bold">
+                                            <input type="number" name="qty{{s}}"
+                                                [pTooltip]="product.stocks ?' Stocks: ' +product.stocks:null"
+                                                showDelay="1000" hideDelay="1000" tooltipPosition="bottom"
+                                                (ngModelChange)="checkStock()" [max]="product.stocks" pInputText
+                                                [(ngModel)]="product.qty" />
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="  font-bold">
+                                            {{product.price*product.qty}} {{jod}}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="  font-bold">
+                                            <button pButton pRipple type="button" (click)="deleteValue(s,'prod')"
+                                                icon="pi pi-trash "
+                                                class="p-button-rounded p-button-danger p-button-text  "></button>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
                         <div class="text-xl text-primary font-bold pt-2">
-                            <span >{{'Price'|translate}}: {{getTotalPrice()}} {{jod}}</span>
+                            <span>{{'Price'|translate}}: {{getTotalPrice()}} {{jod}}</span>
                         </div>
                     </div>
                 </div>
@@ -211,12 +243,12 @@
 
 <app-modal [(display)]="showAddValue" [title]="title" class="modal-sm">
     <div body>
-        <p-dropdown *ngIf="servType == 'ser'" appendTo="body" [filter]="true" class="text-xl" [options]="services" [(ngModel)]="newValue"
-            placeholder="Select a Services" name="newValue" (onChange)="selectService()"
+        <p-dropdown *ngIf="servType == 'ser'" appendTo="body" [filter]="true" class="text-xl" [options]="services"
+            [(ngModel)]="newValue" placeholder="Select a Services" name="newValue" (onChange)="selectService()"
             [optionLabel]="lang"></p-dropdown>
 
-        <p-dropdown *ngIf="servType != 'ser'" appendTo="body" [filter]="true" class="text-xl" [options]="Products" [(ngModel)]="newValue"
-            placeholder="Select a Product" name="newValue" (onChange)="selectProduct()"
+        <p-dropdown *ngIf="servType != 'ser'" appendTo="body" [filter]="true" class="text-xl" [options]="Products"
+            [(ngModel)]="newValue" placeholder="Select a Product" name="newValue" (onChange)="selectProduct()"
             optionLabel="name"></p-dropdown>
     </div>
     <div footer>

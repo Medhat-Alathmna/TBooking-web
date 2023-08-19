@@ -14,6 +14,7 @@ export class ProductsComponent extends BaseComponent implements OnInit {
 
   selectedProduct: Products
   rowNum: any = 10
+  id: any
   currentPage: any = 1
   showProductSidebar: boolean = false
   detailMode: boolean = false
@@ -80,5 +81,13 @@ export class ProductsComponent extends BaseComponent implements OnInit {
   showProdSide(){
     this.selectedProduct=new Products
     this.showProductSidebar=true
+    this.detailMode=false
+  }
+  selectProd(prod:Products){
+    this.id=prod.id
+this.selectedProduct=prod.attributes
+this.showProductSidebar=true
+this.detailMode=true
+
   }
 }

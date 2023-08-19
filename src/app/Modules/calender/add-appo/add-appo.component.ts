@@ -57,7 +57,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   notfiItems: any = []
   showAddValue: boolean = false
   toOrderDialog: boolean = false
-  servType:any
+  servType: any
   body: string
   orderNo: string
   title: string
@@ -70,10 +70,10 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   @Input() display: boolean = false
   @Input() detailMode: boolean = false
   @Output() displayChange: EventEmitter<boolean> = new EventEmitter();
-  @Output() refreshLish: EventEmitter<boolean> = new EventEmitter();  
-  blockNumber={number:null,name:null}
+  @Output() refreshLish: EventEmitter<boolean> = new EventEmitter();
+  blockNumber = { number: null, name: null }
 
-  
+
   @ViewChild('MultiSelect') MultiSelect: ElementRef;
 
   constructor(public translates: TranslateService,
@@ -86,7 +86,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     // this.appointment.employee= this.appointment?.employee.data.attributes
     this.getUsers()
     this.listServices()
-    this.getProducts(1,null)
+    this.getProducts(1, null)
     if (!this.detailMode || !this.appointment) {
       this.appointment = new Appointment
       setTimeout(() => {
@@ -96,7 +96,6 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       this.appointment.deposit = 0
       this.appointment.phone = 962
       this.appointment.number = moment(new Date()).format('YY-MM-D') + '-00'
-
     } else {
 
       this.appointment = Appointment.cloneObject(this.appointment)
@@ -108,7 +107,11 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       this.appointment.createdAt = moment(this.appointment.createdAt).format('YYYY-MM-DD HH:ss')
       if (this.appointment.services) {
         this.appointment?.services?.map(item => {
-          this.selectServices.push({id: item?.id,ar: item?.ar,en: item?.en,price: item?.price})})
+          this.selectServices.push({ id: item?.id, ar: item?.ar, en: item?.en, price: item?.price })
+        })
+        this.appointment?.products?.map(item => {
+          this.selectProducts.push({ id: item?.id, name: item?.name, stocks: item?.stocks, price: item?.price, qty: item?.qty })
+        })
       }
       if (this.selectEmployee = this.appointment.employee) {
         this.selectEmployee = this.appointment?.employee?.data?.attributes
@@ -137,7 +140,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
         },
 
         {
-          label:this.trans('Delete'),
+          label: this.trans('Delete'),
           icon: 'pi pi-times',
           command: () => {
             this.confirm1Delete()
@@ -147,35 +150,40 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       if (!this.appointment.approved) {
         this.acions.splice(1, 2)
       }
-      if (this.appointment.status =='Canceled') {
+      if (this.appointment.status == 'Canceled') {
         this.acions = [
           {
             label: this.trans('Block this customer'),
             icon: 'pi pi-minus-circle',
             command: () => {
-         this.createForbidNumbers()
+              this.createForbidNumbers()
             }
           },
         ]
       }
     }
 
-console.log(this.appointment);
+    console.log(this.appointment);
 
 
   }
   getTotalPrice() {
-    let totalAmount = 0
+    let serviceAmount: number = 0
+    let productsAmount: number = 0
     this.selectServices?.map(x => {
-      totalAmount += x.price
+      serviceAmount += x.price
     })
-    return totalAmount
+    this.selectProducts?.map(x => {
+      productsAmount += x.price * x.qty
+    })
+    const total = serviceAmount + productsAmount
+    return total
   }
   showAddNewServ(type) {
-    this.title = type == 'ser'?this.trans('New Service'):this.trans('New Product')
+    this.title = type == 'ser' ? this.trans('New Service') : this.trans('New Product')
     this.showAddValue = true
     this.newValue = null
-    this.servType=type
+    this.servType = type
   }
 
   selectEmployees(event) {
@@ -193,16 +201,16 @@ console.log(this.appointment);
       this.errorMessage(this.trans('This Service Already Selected'))
       return
     }
-  
+
     this.selectServices.push(Services.cloneObject({
       id: this.newValue?.id,
       ar: this.newValue?.ar,
       en: this.newValue?.en,
-      price:this.newValue?.price
+      price: this.newValue?.price
     }))
     this.showAddValue = false
   }
-  selectProduct(){
+  selectProduct() {
     if (!isSet(this.selectProducts)) {
       this.selectProducts = []
     }
@@ -214,18 +222,32 @@ console.log(this.appointment);
     this.selectProducts.push(Products.cloneObject({
       id: this.newValue?.id,
       name: this.newValue?.name,
-      stocks: 1,
-      price:this.newValue?.price
+      stocks: this.newValue?.stocks,
+      qty: 1,
+      price: this.newValue?.price
     }))
     this.showAddValue = false
-  }
-  deleteValue(index) {
-    this.selectServices.splice(index, 1)
-  }
+    this.newValue=null
+    console.log(this.selectProducts);
 
+  }
+  deleteValue(index, type) {
+    type == 'serv' ? this.selectServices.splice(index, 1) : this.selectProducts.splice(index, 1)
+  }
+  checkStock() {
 
+    this.selectProducts.map(prod => {
+      if (prod.qty > prod.stocks) {
+        console.log('awe');
+        setTimeout(() => {
+          prod.qty = prod.stocks
+          this.errorMessage(this.trans('The Quantity must not be more than Stocks'))
+        }, 300);
+      }
+    })
+
+  }
   onHide() {
-
     this.display = false
     setTimeout(() => {
       this.displayChange.emit(false)
@@ -249,12 +271,21 @@ console.log(this.appointment);
     this.appointment.deposit = !this.appointment.deposit ? 0 : this.appointment.deposit
     this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
-    this.appointment.services = this.selectServices    
+    this.appointment.services = this.selectServices
+    this.appointment.products = this.selectProducts
     this.loading = true
     const subscription = this.calenderService.addAppominets(this.appointment).subscribe((data) => {
       if (!isSet(data)) {
         return
       }
+      if ( this.selectProducts.length) {
+        this.selectProducts.map(prod=>{
+          console.log(prod);
+          
+          this.updateProduct(prod,prod.id)
+        })
+      }
+    
       this.refreshLish.emit(true)
       this.display = false
       this.loading = false
@@ -270,6 +301,7 @@ console.log(this.appointment);
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
     this.appointment.services = this.selectServices
     this.appointment.employee = this.selectEmployee
+    this.appointment.products = this.selectProducts
 
     this.loading = true
     const subscription = this.calenderService.updateAppointemt(this.appointment).subscribe((data) => {
@@ -488,18 +520,18 @@ console.log(this.appointment);
     var notes = this.appointment.notes
     var employee = this.appointment.employee
     var deposit = this.appointment.deposit
-    var mapObj = { $date: startDate, $time: startTime, $customer: customer, $number: number, $notes: notes, $employee: employee, $deposit: deposit + ' دينار' , $price:this.getTotalPrice() + ' دينار'};
+    var mapObj = { $date: startDate, $time: startTime, $customer: customer, $number: number, $notes: notes, $employee: employee, $deposit: deposit + ' دينار', $price: this.getTotalPrice() + ' دينار' };
     return body = this.multiReplace(body, mapObj)
   }
 
   createForbidNumbers() {
-    this.blockNumber.number=this.appointment.phone
-    this.blockNumber.name=this.appointment.customer.firstName+' '+this.appointment.customer.middleName+' '+this.appointment.customer.lastName
-    this.loading=true
+    this.blockNumber.number = this.appointment.phone
+    this.blockNumber.name = this.appointment.customer.firstName + ' ' + this.appointment.customer.middleName + ' ' + this.appointment.customer.lastName
+    this.loading = true
     const subscription = this.settingsService.createForbidNumbers(this.blockNumber).subscribe((data) => {
       if (!isSet(data)) {
         return
-      }      
+      }
       this.loading = false
       subscription.unsubscribe()
     }, error => {
@@ -520,7 +552,20 @@ console.log(this.appointment);
       results.data.map(item => {
         this.Products.push({ id: item?.id, name: item?.attributes?.name, stocks: item?.attributes?.stocks, price: item?.attributes?.price })
       })
-     
+
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+      console.log(error);
+      subscription.unsubscribe()
+    })
+  }
+  updateProduct(prod,id){
+    const subscription = this.calenderService.updateProduct(prod,id).subscribe((results: any) => {
+      this.loading = false
+      if (!isSet(results)) {
+        return
+      }
       subscription.unsubscribe()
     }, error => {
       this.loading = false
