@@ -27,9 +27,10 @@ export class UsersService {
 
   updateUser(user,selectRold): Observable<UserInfo>{
     let body={
-        email:user.email,
-        username:user.username, 
-        phone: user.phone,
+        email:user?.email,
+        username:user?.username, 
+        password:user?.password, 
+        phone: user?.phone,
         role: selectRold.id 
       
     }

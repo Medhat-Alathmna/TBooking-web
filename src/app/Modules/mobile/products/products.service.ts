@@ -24,7 +24,7 @@ export class ProductsService {
     }
     return this.api.post<any>(`products`, body);
   }
-  updateProduct(product: Products,id): Observable<any> {
+  updateProduct(product: Products, id): Observable<any> {
     let body = {
       data: {
         name: product?.name,
@@ -38,5 +38,17 @@ export class ProductsService {
     }
     return this.api.put<any>(`products/${id}`, body);
   }
- 
+  getBrands(): Observable<any> {
+    return this.api.get<any>(`brands?sort[0]=createdAt:desc&pagination[pageSize]=1000&filters[hide][$eq]=false`);
+  }
+  createBrand(name): Observable<any> {
+    let body = { data: {name } }
+    return this.api.post<any>(`brands`, body);
+  }
+  updateBrand(name,id,type?): Observable<any>{
+    let body = { data: {name } }
+    let delet ={data:{hide:true}}
+    return this.api.put<any>(`brands/${id}`,type=='update'?body:delet);
+  }
+
 }

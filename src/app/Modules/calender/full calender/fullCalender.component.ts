@@ -28,6 +28,7 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
   id
   tabSelected = 'calender'
   showSppoSidebar: boolean = false
+  edpandMode: boolean = false
   detailMode: boolean = false
   selectDateMode: boolean = false
   viewTypes = []
@@ -74,6 +75,13 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
   moveToDay() {
     this.calendar.getApi().gotoDate(new Date(this.selectDate))
     this.selectDateMode = false
+  }
+  expnd(){
+    this.edpandMode= !this.edpandMode
+    setTimeout(() => {
+      this.calendar.getApi().today()
+    }, 0);
+
   }
   getAppointment(id) {
     this.id = id

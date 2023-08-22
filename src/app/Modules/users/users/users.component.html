@@ -10,7 +10,7 @@
             <ng-template pTemplate="caption">
                 <div class="flex align-items-center justify-content-between">
                     <div>
-                        <h5 class="m-0 primary">Users Manager</h5>
+                        <h5 class="m-0 primary" >{{'Users Manager'|translate}}</h5>
                         <label class="text-600 ">
                             In total there are <label class="text-primary font-bold ">
                                 {{users ? users.length : 0 }}</label> Users .
@@ -19,7 +19,7 @@
                     <div class="table-header inputgroup-stopwords block ">
                         <div class="p-inputgroup inputgroup-stopwords">
                             <div>
-                                <button type="button" (click)="showUserSide()" label="Add User" pRipple pButton
+                                <button type="button" (click)="showUserSide()" label="{{'Add User'|translate}}" pRipple pButton
                                     icon="pi pi-plus" class="p-button-success "></button>
                             </div>
                         </div>
@@ -28,11 +28,11 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th style="width: 30vw">Users</th>
-                    <th style="width: 40vw">Email</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th style="width: 10% !important">Actions</th>
+                    <th style="width: 30vw" translate>Users</th>
+                    <th style="width: 40vw" translate>Email</th>
+                    <th translate>Role</th>
+                    <th translate>Status</th>
+                    <th style="width: 10% !important" translate>Actions</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-ser let-i="rowIndex">
@@ -54,8 +54,8 @@
                     </td>
                     <td style="width: 5vw">
                         <span class="text-xl text-primary  bold">
-                            <span *ngIf="ser?.blocked ==false " class="Active">Active</span>
-                            <span *ngIf="ser?.blocked==true " class="InActive">InActive</span>
+                            <span *ngIf="ser?.blocked ==false " class="Active">{{'Active'|translate}}</span>
+                            <span *ngIf="ser?.blocked==true " class="InActive">{{'InActive'|translate}}</span>
                         </span>
                     </td>
                     <td style="width: 10%">
@@ -68,7 +68,7 @@
             </ng-template>
             <ng-template pTemplate="emptymessage">
                 <tr>
-                    <td colspan="4">No Services .</td>
+                    <td colspan="4">No Users .</td>
                 </tr>
             </ng-template>
         </p-table>
@@ -76,7 +76,6 @@
 
 
 
-    <div *ngIf="tabSelected=='roles'" class="grid"></div>
 </div>
 
 <app-add-edit-user *ngIf='showUserSidebar' (refreshLish)="getUsers()" [selectedUser]="selectedUser"

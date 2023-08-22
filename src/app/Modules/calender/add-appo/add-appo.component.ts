@@ -110,7 +110,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
           this.selectServices.push({ id: item?.id, ar: item?.ar, en: item?.en, price: item?.price })
         })
         this.appointment?.products?.map(item => {
-          this.selectProducts.push({ id: item?.id, name: item?.name, stocks: item?.stocks, price: item?.price, qty: item?.qty })
+          this.selectProducts.push({ id: item?.id, name: item?.name, stocks: item?.stocks, price: item?.price, qty: item?.qty ,brand:item.brand})
         })
       }
       if (this.selectEmployee = this.appointment.employee) {
@@ -182,7 +182,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   showAddNewServ(type) {
     this.title = type == 'ser' ? this.trans('New Service') : this.trans('New Product')
     this.showAddValue = true
-    this.newValue = null
+    this.newValue = ''
     this.servType = type
   }
 
@@ -190,7 +190,6 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     this.selectEmployee = event
     this.showAddValue = false
     this.employeeMode = true
-    this.changeEmployee()
   }
   selectService() {
     if (!isSet(this.selectServices)) {
@@ -214,28 +213,30 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     if (!isSet(this.selectProducts)) {
       this.selectProducts = []
     }
+    if (this.newValue.stocks == 0) {
+      this.errorMessage(this.trans('This Product Out of stock'))
+      return
+    }
     const existServ = this.selectProducts.find(x => x.id == this.newValue.id)
     if (existServ) {
       this.errorMessage(this.trans('This Product Already Selected'))
       return
-    }
+    }    
     this.selectProducts.push(Products.cloneObject({
       id: this.newValue?.id,
       name: this.newValue?.name,
       stocks: this.newValue?.stocks,
+      brand: this.newValue?.brand,
       qty: 1,
       price: this.newValue?.price
     }))
     this.showAddValue = false
     this.newValue=null
-    console.log(this.selectProducts);
-
   }
   deleteValue(index, type) {
     type == 'serv' ? this.selectServices.splice(index, 1) : this.selectProducts.splice(index, 1)
   }
   checkStock() {
-
     this.selectProducts.map(prod => {
       if (prod.qty > prod.stocks) {
         console.log('awe');
@@ -245,7 +246,6 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
         }, 300);
       }
     })
-
   }
   onHide() {
     this.display = false
@@ -265,7 +265,6 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       }, 2000);
       return this.errorMessage('Start Date Cant be greater than Finish Date')
     }
-
   }
   addAppominet() {
     this.appointment.deposit = !this.appointment.deposit ? 0 : this.appointment.deposit
@@ -273,6 +272,8 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
     this.appointment.services = this.selectServices
     this.appointment.products = this.selectProducts
+    this.appointment.employee = this.selectEmployee
+
     this.loading = true
     const subscription = this.calenderService.addAppominets(this.appointment).subscribe((data) => {
       if (!isSet(data)) {
@@ -285,7 +286,6 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
           this.updateProduct(prod,prod.id)
         })
       }
-    
       this.refreshLish.emit(true)
       this.display = false
       this.loading = false
@@ -416,22 +416,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     })
   }
 
-  changeEmployee() {
-    this.appointment.employee = this.selectEmployee
-    this.appointment.id = this.id
-    this.loading = true
-    const subscription = this.calenderService.changeEmployee(this.appointment).subscribe((data) => {
-      if (!isSet(data)) {
-        return
-      }
-      this.loading = false
-      this.refreshLish.emit(true)
-      subscription.unsubscribe()
-    }, error => {
-      this.loading = false
-      subscription.unsubscribe()
-    })
-  }
+  
   completeAppointment() {
     this.appointment.id = this.id
     const subscription = this.calenderService.completeAppointment(this.appointment).subscribe((data) => {
@@ -478,6 +463,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
     this.appointment.services = this.selectServices
+    this.appointment.products = this.selectProducts
     this.loading = true
     const subscription = this.orderService.addOrder(this.appointment, this.orderNo, this.getTotalPrice(), this.id).subscribe((data) => {
       if (!isSet(data)) {
@@ -550,7 +536,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
 
 
       results.data.map(item => {
-        this.Products.push({ id: item?.id, name: item?.attributes?.name, stocks: item?.attributes?.stocks, price: item?.attributes?.price })
+        this.Products.push({ id: item?.id, name: item?.attributes?.name, stocks: item?.attributes?.stocks, price: item?.attributes?.price,brand:item?.attributes?.brand?.data?.attributes })
       })
 
       subscription.unsubscribe()

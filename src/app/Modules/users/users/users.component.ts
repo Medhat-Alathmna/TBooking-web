@@ -26,17 +26,12 @@ export class UsersComponent extends BaseComponent implements OnInit {
 
   tabIndex = [
     {
-      label: 'Users',
+      label: this.trans('Users'),
       command: event => {
         this.tabSelected = 'users'
       }
     },
-    {
-      label: 'Roles',
-      command: event => {
-        this.tabSelected = 'roles'
-      }
-    }
+    
   ]
 
   constructor(public translates: TranslateService, public messageService: MessageService, private calenderService:CalenderService, private userService: UsersService) { super(messageService, translates) }

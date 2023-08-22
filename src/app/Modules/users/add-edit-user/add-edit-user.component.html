@@ -28,7 +28,7 @@
                 <div class="flex align-items-center justify-content-center border-break"></div>
 
                 <div class="flex-initial flex align-items-center justify-content-center px-3">
-                    <span class="text-3xl text-white ">Add New User </span>
+                    <span class="text-3xl text-white " translate>Add User </span>
 
                 </div>
             </div>
@@ -53,22 +53,22 @@
     <form #form="ngForm" body class="px-5 ">
         <div class="grid ">
             <div class="col-12 pb-4">
-                <span class="text-3xl ont-semibold font-bold">User Details </span>
+                <span class="text-3xl ont-semibold font-bold" translate>User Details </span>
             </div>
             <div class="lg:col-6 sm:col-12">
-                <app-input [(ngModel)]="selectedUser.username" name="username" title="User Name" [required]="true"></app-input>
+                <app-input [(ngModel)]="selectedUser.username" name="username" [title]="'User Name'|translate" [required]="true"></app-input>
             </div>
             <div class="lg:col-6 sm:col-12">
-                <app-input type="email" [(ngModel)]="selectedUser.email" name="email" title="Email" [required]="true"></app-input>
+                <app-input type="email" [(ngModel)]="selectedUser.email" name="email" [title]="'Email'|translate" [required]="true"></app-input>
             </div>
             <div class="lg:col-6 sm:col-12">
-                <app-input *ngIf="!detailMode" type="text" [(ngModel)]="selectedUser.password" name="password" title="Password" [required]="true"></app-input>
+                <app-input type="text" [(ngModel)]="selectedUser.password" name="password" [title]="'Password'|translate" [required]="true"></app-input>
             </div>
             <div class="lg:col-6 sm:col-12">
-                <app-input *ngIf="!detailMode" type="text" [(ngModel)]="selectedUser.confirmPassword" name="confirmPassword" title="Confirm Password" [required]="true"></app-input>
+                <app-input type="text" [(ngModel)]="selectedUser.confirmPassword" name="confirmPassword" [title]="'Confirm Password'|translate" [required]="true"></app-input>
             </div>
             <div class="lg:col-6 sm:col-12">
-                <app-input type="text" [(ngModel)]="selectedUser.phone" name="phone" title="Phone"></app-input>
+                <app-input type="text" [(ngModel)]="selectedUser.phone" [title]="'Phone'|translate" name="phone"></app-input>
             </div>
             <!-- <div class="lg:col-4 sm:col-6">
                 <app-input type="text" [(ngModel)]="selectedUser.address" name="title" title="Address" [required]="false"></app-input>
@@ -79,7 +79,7 @@
                     <div class="block my-1">
                         <ng-container >
                             <div class="text-lg font-semibold mb-2">
-                                Role
+                                {{'Role'|translate}}
                             </div>
                         </ng-container>
                         <p-dropdown *ngIf="!roleMode" [required]="true" appendTo="body" [filter]="true" [options]="roles" placeholder="Select a Role" (onChange)="selectRole($event.value)"

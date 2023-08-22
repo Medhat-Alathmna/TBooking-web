@@ -40,8 +40,39 @@
                     name="price" title="{{'Price'|translate}}" type="number"></app-input>
             </div>
             <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="selectedProduct.brand"
-                    name="brand" title="{{'Brand'|translate}}" type="text"></app-input>
+                <ng-container>
+                    <div class="text-lg font-semibold mb-2" translate>
+                        Brand
+                    </div>
+                </ng-container>
+                <p-dropdown [options]="brands" *ngIf="!brandMode" [ngModelOptions]="{standalone: true}" (onChange)="selectBrand($event)" [(ngModel)]="selectedProduct.brand"
+                 [filter]="true" appendTo="body" filterBy="name" optionLabel="name" placeholder="{{'Select a Brand'|translate}}">
+                    <ng-template pTemplate="selectedItem">
+                        <div class="flex align-items-center gap-2" *ngIf="selectedProduct.brand">
+                            <div>{{ selectedProduct?.brand?.name }}</div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-item pTemplate="item">
+                        <div class="grid">
+                            <div class="col-10" style=" margin-top: 10px;font-size: 17px">
+                                <span [innerHTML]="item.name"></span>
+                            </div>
+                            <div class="col-2" *ngIf="(item.id != 0) && item.id != -1">
+                                <button style="z-index: 10000; color: #000000;" pButton
+                                    pTooltip="Edit" tooltipPosition="bottom"
+                                    (click)="selectUpdateBrand(item);brandDialog=true"
+                                    class="p-button-text  ml-sm-1" type="button"
+                                    icon="fas fa-edit"></button>
+                                <button style="z-index: 10000" pButton
+                                    pTooltip="Delete" (click)="confirmCancel(item.id)"
+                                    tooltipPosition="bottom" class="p-button-text p-button-danger"
+                                    type="button" icon="fas fa-trash"></button>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <p-button *ngIf="brandMode" [label]="selectedProduct?.brand?.name" [style]="{'width': '31vw'}"
+                (click)="brandMode=false" styleClass="p-button-outlined p-button-success"></p-button>
             </div>
             <div class="col-12 pb-4 pt-2">
                 <span class="text-3xl ont-semibold font-bold" translate>Stock Details </span>
@@ -58,12 +89,19 @@
             <div class="lg:col-4 sm:col-6 ">
                 <app-input [(ngModel)]="selectedProduct.stocks" [number]="number" [plus]="true"
                     name="stocks" title="{{'Stock'|translate}}" type="number"></app-input>
-                   
             </div>
         </div>
-       
-
     </form>
-
-
 </app-sidebar>
+
+<app-modal [(display)]="brandDialog" [title]="headerDialog" class="modal-sm">
+    <div body>
+        <app-input [(ngModel)]="brandName" name="brandName" title="Brand" type="text"></app-input>
+    </div>''
+    <div footer>
+        <button (click)="brandDialog=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"
+            icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
+        <button  pButton pRipple type="button" label=" {{'Save' |translate}}" (click)="brandEdit?updateBrand('update'):createBrand()"
+            class="p-button-primary"></button>
+    </div>
+</app-modal>

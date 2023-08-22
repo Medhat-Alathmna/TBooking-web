@@ -1,21 +1,25 @@
 <p-tabMenu class="col-12" [model]="tabIndex" [activeItem]="tabIndex[0]"></p-tabMenu>
 
 <div *ngIf="tabSelected=='calender'" class="grid ">
-    <div class="lg:col-8 sm:col-12 ">
+    <div [class]="edpandMode?'lg:col-12 sm:col-12':'lg:col-8 sm:col-12' ">
         <div #carddH style="height: 80vh;" class="card p-0 ">
-            <div class="col-12" *ngIf="selectDateMode" style="text-align: center;"> 
-                <p-calendar dateFormat="mm-dd-yy" style="display: inline-block;" [(ngModel)]="selectDate" (onSelect)="moveToDay()"
-                    [inputStyleClass]="'css.dir-ltr'|translate" [showTime]="showTime" [stepMinute]="stepMinute"
-                    [showIcon]="true" appendTo="body" type="text"> </p-calendar>
-                </div>
-                <i (click)="selectDateMode=!selectDateMode" [style.padding-right]="lang=='ar'?'21px':''" class="pi pi-calendar text-primary test pointer " style="font-size: 1.7rem"></i>
+            <div class="col-12" *ngIf="selectDateMode" style="text-align: center;">
+                <p-calendar dateFormat="mm-dd-yy" style="display: inline-block;" [(ngModel)]="selectDate"
+                    (onSelect)="moveToDay()" [inputStyleClass]="'css.dir-ltr'|translate" [showTime]="showTime"
+                    [stepMinute]="stepMinute" [showIcon]="true" appendTo="body" type="text"> </p-calendar>
+            </div>
+            <i (click)="selectDateMode=!selectDateMode" [style.padding-right]="lang=='ar'?'21px':''"
+                class="pi pi-calendar text-primary test pointer " style="font-size: 1.7rem"></i>
 
+                <i  (click)="expnd()" [style.left]="lang=='ar'?'':'92%'"
+                class="pi pi-arrows-h text-primary test2 pointer " style="font-size: 1.7rem"></i>
             <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+           
         </div>
 
 
     </div>
-    <div class="lg:col-4 sm:col-12 lg:mt-0 sm:mt-7 ">
+    <div *ngIf="!edpandMode" class="lg:col-4 sm:col-12 lg:mt-0 sm:mt-7 ">
         <div height="carddH?.offsetHeight+60">
             <div class="card p-0">
                 <p-tabView>

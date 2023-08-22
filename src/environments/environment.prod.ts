@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://refined-compassion-80cf94fdcb.strapiapp.com/api'
+  apiUrl: 'https://lobster-app-ua5mr.ondigitalocean.app/api'
 
 };

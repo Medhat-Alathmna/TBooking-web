@@ -19,6 +19,7 @@ export class OrdersService {
         appointment:id,
         orderNo:orderNO,
         services:order.services,
+        products:order.products,
         status:'Draft',
         orderBy:this.userAuth.username,
         discount:0,

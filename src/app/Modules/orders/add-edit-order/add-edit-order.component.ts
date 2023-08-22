@@ -87,19 +87,24 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
     }, 300);
   }
   getTotalPrice() {
-    let totalServicesAmount = 0
     let total = 0
+    let serviceAmount: number = 0
+    let productsAmount: number = 0
     this.selectedOrder.attributes.services?.map(x => {
-      totalServicesAmount += x.price
+      serviceAmount += x.price
     })
+    this.selectedOrder.attributes.products?.map(x => {
+      productsAmount += x.price * x.qty
+    })
+    const products = serviceAmount + productsAmount
     if (this.selectedOrder.discountType == 'cash') {
-      total = totalServicesAmount - this.selectedOrder.discount - this.selectedOrder.cash - this.selectedOrder.attributes.appointment.data.attributes.deposit
+      total = products - this.selectedOrder.discount - this.selectedOrder.cash - this.selectedOrder.attributes.appointment.data.attributes.deposit
     } else {
-      const cash = totalServicesAmount  - this.selectedOrder.attributes.appointment.data.attributes.deposit
+      const cash = products  - this.selectedOrder.attributes.appointment.data.attributes.deposit
       total = (cash * ((100 - this.selectedOrder.discount) / 100))-this.selectedOrder.cash
     }
     return {
-      totalServicesAmount, total
+      products, total
 
     }
   }
@@ -178,7 +183,7 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
     var deposit = this.selectedOrder.attributes.appointment.data.attributes.deposit
     var mapObj = { $date: startDate, $time: startTime, $customer: customer, $number: number, $notes: notes, 
       $employee: employee, $discount: discount + ' دينار',
-     $cash: cash + ' دينار', $deposit: deposit + ' دينار' ,$price:this.getTotalPrice().totalServicesAmount + ' دينار' };
+     $cash: cash + ' دينار', $deposit: deposit + ' دينار' ,$price:this.getTotalPrice().products + ' دينار' };
     return body = this.multiReplace(body, mapObj)
   }
   getNotfi() {

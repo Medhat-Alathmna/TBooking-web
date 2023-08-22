@@ -125,7 +125,7 @@
                             (ngModelChange)="finishDateChange()" [timeOnly]="true" [showTime]="true" [required]="true"
                             name="toDate" showIcon="true" [title]="'Finish Date'|translate"></app-calender>
                     </div>
-                    <div *ngIf="appointment.approved" class="block my-1">
+                    <div class="block my-1">
                         <ng-container>
                             <div class="text-lg font-semibold mb-2" translate>
                                 Employee
@@ -134,7 +134,7 @@
                         <p-dropdown *ngIf="!employeeMode" [required]="true" appendTo="body" [filter]="true"
                             [options]="users" [placeholder]="'Select a Employee'|translate"
                             (onChange)="selectEmployees($event.value)" optionLabel="username"></p-dropdown>
-                        <p-button *ngIf="employeeMode" [label]="selectEmployee?.username" [style]="{'width': '46vw'}"
+                        <p-button *ngIf="employeeMode" [label]="selectEmployee?.username" [style]="{'width': '100%'}"
                             (click)="employeeMode=false" styleClass="p-button-outlined p-button-success"></p-button>
 
                     </div>
@@ -160,7 +160,7 @@
                         <div *ngFor="let item of selectServices;let i =index "
                             class="flex justify-content-between flex-wrap mb-2">
                             <div class=" text-base font-semibold "
-                                style="display: flex;align-items: center;justify-content: space-around;width: 16vw">
+                                style="display: flex;align-items: center;justify-content: space-around;width: 23vw">
                                 <div class="pi pi-circle-fill text-primary text-xs pt-2"></div>
                                 <span class="  font-bold "> {{item[lang]}} </span>
                                 <span class="  font-bold">
@@ -185,13 +185,14 @@
                                     <th translate>Product Name</th>
                                     <th translate>Price</th>
                                     <th translate>Quantity</th>
+                                    <th translate>Brand</th>
                                     <th translate>Total</th>
                                     <th translate style="width: 10%;"></th>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-product let-s="rowIndex">
                                 <tr>
-                                    <td>{{ product.name }}</td>
+                                    <td class=" px-2 font-bold">{{ product.name }}</td>
                                     <td>
                                         <span class=" px-2 font-bold">
                                             <input type="number" [value]="product.price"
@@ -210,9 +211,15 @@
                                     </td>
                                     <td>
                                         <span class="  font-bold">
+                                            {{product?.brand?.name}} 
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="  font-bold">
                                             {{product.price*product.qty}} {{jod}}
                                         </span>
                                     </td>
+                                  
                                     <td>
                                         <span class="  font-bold">
                                             <button pButton pRipple type="button" (click)="deleteValue(s,'prod')"

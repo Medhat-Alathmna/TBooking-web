@@ -50,6 +50,7 @@ export class CalenderService {
             name: prod.name,
             qty: prod.qty,
             price: prod.price,
+            brand: prod.brand,
           }
         }),
         employee: appointment?.employee?.id,
@@ -104,6 +105,7 @@ export class CalenderService {
             name: prod.name,
             qty: prod.qty,
             price: prod.price,
+            brand: prod.brand,
           }
         }),
         employee: appointment?.employee?.id,
@@ -121,14 +123,6 @@ export class CalenderService {
       data: {
         hide: true,
         deletedBy: this.userAuth.username
-      }
-    }
-    return this.api.put<Appointment>(`/appointments/${appointment.id}`, body);
-  }
-  changeEmployee(appointment: Appointment): Observable<any> {
-    let body = {
-      data: {
-        employee: appointment?.employee?.id,
       }
     }
     return this.api.put<Appointment>(`/appointments/${appointment.id}`, body);

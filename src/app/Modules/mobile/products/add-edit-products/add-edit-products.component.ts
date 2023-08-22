@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { CalenderComponent } from 'src/app/Shared/calender/calender.component';
 import { EntityViewerComponent } from 'src/app/Shared/entity-viewer/entity-viewer.component';
 import { InputMaskComponent } from 'src/app/Shared/input-mask/input-mask.component';
@@ -37,19 +37,28 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
 
   acions
   number
-  @Input() selectedProduct :Products
-  @Input() id :any
+  headerDialog
+  brandName: string
+  brands:any[] = []
+  brandDialog: boolean = false
+  brandMode: boolean = false
+  brandEdit: boolean = false
+  @Input() selectedProduct: Products
+  @Input() id: any
   @Input() display: boolean = false
   @Input() detailMode: boolean = true
   @Output() displayChange: EventEmitter<boolean> = new EventEmitter();
   @Output() refreshLish: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(public translates: TranslateService, public messageService: MessageService,private productsService:ProductsService)
-   {super(messageService, translates) }
+  constructor(public translates: TranslateService, public messageService: MessageService,
+      private confirmationService: ConfirmationService,private productsService: ProductsService) { super(messageService, translates) }
 
   ngOnInit(): void {
-    console.log(this.selectedProduct);
-    
+    this.getBrands()
+    if (!this.selectedProduct.stocks) {
+      this.selectedProduct.stocks=0
+     }
+
   }
 
   onHide() {
@@ -60,33 +69,116 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
     }, 300);
   }
   createProduct() {
-    this.loading=true
+    this.loading = true
     const subscription = this.productsService.createProduct(this.selectedProduct).subscribe((data) => {
       if (!isSet(data)) {
         return
       }
-      this.loading=false
+      this.loading = false
       this.refreshLish.emit(true)
       this.display = false
       subscription.unsubscribe()
     }, error => {
-      this.loading=false
+      this.loading = false
       subscription.unsubscribe()
     })
   }
   updateProduct() {
-    this.loading=true
-    const subscription = this.productsService.updateProduct(this.selectedProduct,this.id).subscribe((data) => {
+    this.loading = true
+    const subscription = this.productsService.updateProduct(this.selectedProduct, this.id).subscribe((data) => {
       if (!isSet(data)) {
         return
       }
-      this.loading=false
+      this.loading = false
       this.refreshLish.emit(true)
       this.display = false
       subscription.unsubscribe()
     }, error => {
-      this.loading=false
+      this.loading = false
       subscription.unsubscribe()
     })
+  }
+
+  selectBrand(event){
+    if (event.value.id == 0) {
+      this.brandDialog = true
+      this.brandName = null
+      this.selectedProduct.brand=null
+      this.brandEdit=false
+    }
+    this.brandMode=true
+    this.headerDialog=this.brandEdit?this.trans('Brand Modification'):this.trans('Brand Creation')
+  }
+
+  getBrands() {
+    
+    const subscription = this.productsService.getBrands().subscribe((results) => {
+      if (!isSet(results)) {
+        return
+      }
+      this.brands=[]
+      console.log(results);
+      this.brands.push({
+        id: 0, name: `<span class="font-bold text-primary">${this.trans('New Brand')}</span>`})
+      results.data.map(item => {
+        this.brands.push({
+          id: item?.id, name: item?.attributes?.name})
+      })
+      if (this.selectedProduct.brand) {
+        this.brandMode=true
+        this.selectedProduct.brand=this.selectedProduct.brand.data.attributes
+      }
+  
+        subscription.unsubscribe()
+    }, error => {
+      subscription.unsubscribe()
+    })
+  }
+  createBrand() {
+    this.loading = true
+    const subscription = this.productsService.createBrand(this.brandName).subscribe((data) => {
+      if (!isSet(data)) {
+        return
+      }
+      console.log(data);
+      
+      this.loading = false
+      this.brandDialog = false
+      this.brandMode=false
+
+      this.getBrands()
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+      subscription.unsubscribe()
+    })
+  }
+  updateBrand(type) {
+    this.loading = true
+    const subscription = this.productsService.updateBrand(this.brandName,this.selectedProduct.brand.id,type).subscribe((data) => {
+      if (!isSet(data)) {
+        return
+      }
+      console.log(data);
+      
+      this.loading = false
+      this.brandDialog = false
+      this.getBrands()
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+      subscription.unsubscribe()
+    })
+  }
+  selectUpdateBrand(value){
+    this.brandEdit=true
+    this.brandName=value.name
+  }
+  confirmCancel() {
+    this.confirmationService.confirm({
+      message: this.trans('Are you sure that you want to Delete this Entry ?'),
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => { this.updateBrand('delete') },
+    });
   }
 }
