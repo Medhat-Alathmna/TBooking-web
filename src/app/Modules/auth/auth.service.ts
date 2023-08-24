@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient,) {
 
   }
 
@@ -32,4 +32,5 @@ export class AuthService {
     return this.httpClient.post<any>(`${environment.apiUrl}/auth/forgot-password `, body);
 
   }
+
 }

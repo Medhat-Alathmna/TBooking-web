@@ -10,7 +10,8 @@ import { MenuService } from './app.menu.service';
     styleUrls: ['./app.menu.component.scss']
 
 })
-export class AppMenuComponent   implements OnInit {
+export class AppMenuComponent implements OnInit {
+    role =JSON.parse(localStorage.getItem('role'))
 
     model: any[];
     // menu-wrapper
@@ -39,7 +40,9 @@ export class AppMenuComponent   implements OnInit {
             { label: 'Services',  icon: 'pi pi-ticket text-color', routerLink: ['/mobile'] },            
         ];
         this.menuService.menuData = this.model
-
+        if (this.role.name != 'Admin') {
+            this.model.splice(2,2)
+        }
     }
    
     navToContorlPanal() {

@@ -20,10 +20,11 @@ export class OrdersService {
         orderNo:orderNO,
         services:order.services,
         products:order.products,
-        status:'Draft',
+        status:order.status,
+        discountType:order.discountType,
         orderBy:this.userAuth.username,
-        discount:0,
-        cash:0,
+        discount:order.discount,
+        cash:order.cash,
         totalPrice:totalPrice,
       }      
     }

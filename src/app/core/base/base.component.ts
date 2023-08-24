@@ -19,6 +19,7 @@ export class BaseComponent implements OnInit, OnDestroy {
   lang = localStorage.getItem('currentLang')
   jod=this.trans('JOD')
   userAuth =JSON.parse(localStorage.getItem('userAuth'))?.user
+  role =JSON.parse(localStorage.getItem('role'))
 
   fileTypes = ['image/png', 'application/pdf', 'application/vnd.ms-excel', "image/jpeg", ".doc", '.docx', '.ppt', '.pptx', '.xls', '.xlsx', '.csv', '.mp4', '.mov', '.wmv', '.avi', '.mkv']
 

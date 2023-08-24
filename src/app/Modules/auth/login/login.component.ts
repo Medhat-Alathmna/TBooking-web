@@ -8,6 +8,7 @@ import { ResponseBody } from 'src/app/modals/response';
 import { UserToken } from 'src/app/modals/UserToken';
 import { AuthService } from '../auth.service';
 import { MenuService } from 'src/app/Layout/Menu/app.menu.service';
+import { ApiService } from 'src/app/core/api.service';
 
 @Component({
   selector: 'app-login',
@@ -16,8 +17,9 @@ import { MenuService } from 'src/app/Layout/Menu/app.menu.service';
 })
 export class LoginComponent extends BaseComponent implements OnInit {
 
-  constructor(public translate: TranslateService, private authService: AuthService, 
-    public messageService: MessageService, private router: Router, private activatedRoute: ActivatedRoute, private route: ActivatedRoute,
+  constructor(public translate: TranslateService,
+    public messageService: MessageService, private authService: AuthService, private router: Router,
+     private route: ActivatedRoute,
 
     @Inject(DOCUMENT) private document: Document) {
     super(messageService, translate)
@@ -44,17 +46,17 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
   ]
   landingPage: any
-  primaryColor:any
+  primaryColor: any
   ngOnInit(): void {
     console.log(JSON.parse(localStorage.getItem('userAuth')));
 
     window.addEventListener('keydown', (event: KeyboardEvent) => {
-			if (event.keyCode === 13 ) {
-		this.login()
-			}
-		});
+      if (event.keyCode === 13) {
+        this.login()
+      }
+    });
   }
- 
+
   login() {
     if (!this.password || !this.user) return this.errorMessage('Rejected', 'Please Insert reqiure Info')
     this.loading = true
@@ -62,8 +64,10 @@ export class LoginComponent extends BaseComponent implements OnInit {
       this.loading = false
       location.reload()
 
-        localStorage.setItem('userAuth', JSON.stringify(user))
-          this.router?.navigate(['/calender']);
+      localStorage.setItem('userAuth', JSON.stringify(user))
+      setTimeout(() => {
+      }, 3000);
+      this.router?.navigate(['/calender']);
     }, error => {
       this.loading = false
       console.log(error);
@@ -79,4 +83,6 @@ export class LoginComponent extends BaseComponent implements OnInit {
     this.router.onSameUrlNavigation = 'reload';
     this.router?.navigate([this.router?.url], { relativeTo: this.route });
   }
+
+
 }

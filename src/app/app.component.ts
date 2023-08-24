@@ -3,6 +3,7 @@ import { PrimeNGConfig } from 'primeng/api';
 import { TranslateService } from "@ngx-translate/core";
 import { DOCUMENT } from '@angular/common';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
+import { CalenderService } from './Modules/calender/calender.service';
 
 @Component({
   selector: 'app-root',
@@ -21,10 +22,13 @@ export class AppComponent implements OnInit {
 
   ripple: boolean;
 
-  constructor(private primengConfig: PrimeNGConfig, private translate: TranslateService, private router: Router,
+  constructor(private primengConfig: PrimeNGConfig, private translate: TranslateService, private router: Router, private calenderService: CalenderService,
     @Inject(DOCUMENT) private document: Document) { }
 
   ngOnInit() {
+    if (!JSON.parse(localStorage.getItem('role'))) {
+      this.getMe()
+    }
     this.primengConfig.ripple = false;
     this.getLang()
     // this.getColors()
@@ -52,4 +56,16 @@ export class AppComponent implements OnInit {
 
 
   }
+  getMe() {
+    const subscription = this.calenderService.getMe().subscribe((user: any) => {
+      console.log(user);
+      localStorage.setItem('role', JSON.stringify(user.role))
+
+      subscription.unsubscribe()
+    }, error => {
+      console.log(error);
+      subscription.unsubscribe()
+    })
+  }
+
 }

@@ -1,3 +1,5 @@
+<app-loading *ngIf="loading" display="full"></app-loading>
+
 <p-tabMenu class="col-12" [model]="tabIndex" [activeItem]="tabIndex[0]"></p-tabMenu>
 
 <div *ngIf="tabSelected=='calender'" class="grid ">

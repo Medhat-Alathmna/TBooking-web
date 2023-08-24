@@ -57,12 +57,15 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   notfiItems: any = []
   showAddValue: boolean = false
   toOrderDialog: boolean = false
+  discountMode: string = 'type'
+  cashMode: boolean = false
   servType: any
   body: string
   orderNo: string
   title: string
   newValue: any
   employeeMode: boolean = false
+  showOrderSidebar: boolean = false
   closeCurrentTime = startOfHour(addMinutes(new Date(), Math.round(new Date().getMinutes() / 30) * 30));
 
   @Input() appointment: Appointment | any
@@ -135,6 +138,8 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
           icon: 'pi pi-money-bill',
           command: () => {
             this.orderNo = this.appointment.number
+            this.appointment.cash=0
+            this.appointment.discount=0
             this.toOrderDialog = true
           }
         },
@@ -167,7 +172,20 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
 
 
   }
+  // getTotalPrice() {
+  //   let serviceAmount: number = 0
+  //   let productsAmount: number = 0
+  //   this.selectServices?.map(x => {
+  //     serviceAmount += x.price
+  //   })
+  //   this.selectProducts?.map(x => {
+  //     productsAmount += x.price * x.qty
+  //   })
+  //   const total = serviceAmount + productsAmount
+  //   return total
+  // }
   getTotalPrice() {
+    let total = 0
     let serviceAmount: number = 0
     let productsAmount: number = 0
     this.selectServices?.map(x => {
@@ -176,8 +194,17 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     this.selectProducts?.map(x => {
       productsAmount += x.price * x.qty
     })
-    const total = serviceAmount + productsAmount
-    return total
+    const products = serviceAmount + productsAmount
+    if (this.appointment.discountType == 'cash') {
+      total = products - this.appointment.discount - this.appointment.cash - this.appointment.deposit
+    } else {
+      const cash = products  - this.appointment.deposit
+      total = (cash * ((100 - this.appointment.discount) / 100))-this.appointment.cash
+    }
+    return {
+      products, total
+
+    }
   }
   showAddNewServ(type) {
     this.title = type == 'ser' ? this.trans('New Service') : this.trans('New Product')
@@ -464,6 +491,10 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
     this.appointment.services = this.selectServices
     this.appointment.products = this.selectProducts
+    this.appointment.status = this.getTotalPrice().total == 0 ? "Paid" : "Unpaid"
+    if (!this.appointment.employee) {
+      this.errorMessage('Please choose Employee !')
+    }
     this.loading = true
     const subscription = this.orderService.addOrder(this.appointment, this.orderNo, this.getTotalPrice(), this.id).subscribe((data) => {
       if (!isSet(data)) {
@@ -558,6 +589,11 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       console.log(error);
       subscription.unsubscribe()
     })
+  }
+  onKeyEnter(event,type?) {
+    if (event.keyCode === 13) {
+      type=='cash'?this.cashMode = false:this.discountMode = 'show'
+    }
   }
 
 }

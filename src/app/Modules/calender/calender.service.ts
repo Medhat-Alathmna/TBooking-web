@@ -138,6 +138,9 @@ export class CalenderService {
   getEmployee(): Observable<any[]> {
     return this.api.get<any[]>(`users?populate=role&filters[hide][$eq]=false`);
   }
+  getMe(): Observable<any[]> {
+    return this.api.get<any[]>(`users/me?populate=role`);
+  }
 
   getlist(moduleName: string, pageNum?: number, rows?: number, query?: any, pop?): Observable<any[]> {
     if (!isSet(pageNum)) {

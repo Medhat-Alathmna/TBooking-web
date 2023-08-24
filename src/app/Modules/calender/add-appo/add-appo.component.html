@@ -231,7 +231,7 @@
                             </ng-template>
                         </p-table>
                         <div class="text-xl text-primary font-bold pt-2">
-                            <span>{{'Price'|translate}}: {{getTotalPrice()}} {{jod}}</span>
+                            <span>{{'Price'|translate}}: {{getTotalPrice().products}} {{jod}}</span>
                         </div>
                     </div>
                 </div>
@@ -269,6 +269,66 @@
 <app-modal [(display)]="toOrderDialog" title="Convert To Order" class="modal-sm">
     <div body>
         <app-input [(ngModel)]="orderNo" name="orderNo" title="Order Number" type="text"></app-input>
+        <table>
+            <tr>
+                <th class="px-5">{{'Services Price'|translate}}:</th>
+                <th>{{getTotalPrice().products}} {{jod}}</th>
+            </tr>
+            <tr>
+                <th class="px-5 py-2" translate> {{'Deposit'|translate}}:</th>
+                <th>{{appointment.deposit}} {{jod}}</th>
+            </tr>
+            <p-divider></p-divider>
+            <tr>
+                <th class="px-5 py-2" translate> {{'Discount'|translate}}:</th>
+                <th>
+                    <span *ngIf="discountMode =='type'">
+                        <i class="pointer pi pi-money-bill"
+                            (click)="discountMode='price';cashMode=false;appointment.discountType='cash'">
+                        </i>
+                        <span class="px-2">|</span>
+                        <i class="pointer pi pi-percentage"
+                            (click)="discountMode='price';cashMode=false;appointment.discountType='percent'"></i>
+                    </span>
+
+                    <span *ngIf="discountMode =='price'">
+                        <p-inputNumber [min]="0" *ngIf="appointment.discountType == 'cash'"
+                            name="discount" [(ngModel)]="appointment.discount"
+                            (onFocus)="$event.target.select()" (keydown)="onKeyEnter($event)"
+                            mode="decimal" [minFractionDigits]="2"></p-inputNumber>
+
+                        <p-inputNumber [min]="0" *ngIf="appointment.discountType == 'percent'"
+                            prefix="%" name="discount" (keydown)="onKeyEnter($event)"
+                            [(ngModel)]="appointment.discount" [max]="100"></p-inputNumber>
+                    </span>
+                    <span *ngIf="discountMode =='show'" (click)="discountMode ='type'">
+                        <span *ngIf="appointment.discountType =='cash'">
+                            {{appointment.discount}} {{jod}}
+                        </span>
+                        <span *ngIf="appointment.discountType =='percent'">
+                            {{appointment.discount}} %
+                        </span>
+                    </span>
+                </th>
+            </tr>
+            <tr>
+                <th class="px-5 py-2" translate> {{'Cash'|translate}}:</th>
+                <th>
+                    <span class="pointer" *ngIf="!cashMode" (click)="cashMode=true">
+                        {{appointment.cash}} {{jod}}</span>
+                    <span *ngIf="cashMode">
+                        <input [(ngModel)]="appointment.cash" type="number"
+                            (keydown)="onKeyEnter($event,'cash')"
+                            placeholder="{{'Enter'|translate}} Cash" name="Cash" pInputText />
+                    </span>
+                </th>
+            </tr>
+            <p-divider></p-divider>
+            <tr>
+                <th class="px-5">{{'Total'|translate}}:</th>
+                <th>{{getTotalPrice().total | number : '1.2-2'}} {{jod}}</th>
+            </tr>
+        </table>
     </div>
     <div footer>
         <button (click)="toOrderDialog=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"

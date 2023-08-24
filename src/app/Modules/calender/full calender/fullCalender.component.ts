@@ -51,6 +51,7 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
   Appointment: any
   @ViewChild('calendar') calendar: FullCalendarComponent;
   ngOnInit(): void {
+  
     this.calendarOptions = {
       initialView: 'timeGridDay',
 
