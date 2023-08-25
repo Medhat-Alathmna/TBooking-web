@@ -17,6 +17,7 @@ import { OrdersService } from '../orders.service';
 import { th } from 'date-fns/locale';
 import { Order } from 'src/app/modals/order';
 import { SettingsService } from '../../settings/settings.service';
+import { PayByComponent } from 'src/app/Shared/pay-by/pay-by.component';
 
 @Component({
   selector: 'app-add-edit-order',
@@ -34,6 +35,7 @@ import { SettingsService } from '../../settings/settings.service';
     ModalComponent,
     InputMaskComponent,
     LoadingComponent,
+    PayByComponent,
   ],
 })
 export class AddEditOrderComponent extends BaseComponent implements OnInit {
@@ -43,6 +45,7 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
   discountMode: string = 'type'
   cashMode: boolean = false
   iconLoading: boolean = false
+  payByMode: boolean = false
   body: string
   @Input() selectedOrder: Order
   @Input() display: boolean = false
@@ -65,7 +68,10 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
       this.discountMode='show'
     }
    console.log( this.selectedOrder);
-   
+    if (this.selectedOrder.attributes.pay_by) {
+      this.selectedOrder.pay_by=this.selectedOrder.attributes.pay_by.data.attributes
+      this.payByMode=true
+    }
     this.acions = [
       {
         label: this.trans('Cancel the Order'),

@@ -1,0 +1,43 @@
+<div class="block pt-3">
+        <!-- <th class="text-lg font-semibold mb-2" translate>
+            Payment Method
+        </th> -->
+            <p-dropdown [options]="bayPaies" *ngIf="!payByMode" [name]="payBy" [ngModelOptions]="{standalone: true}"
+                (onChange)="selectPayBy($event)" [(ngModel)]="payBy" [filter]="true" appendTo="body" filterBy="name"
+                optionLabel="name" placeholder="{{'Select a Payment Method'|translate}}">
+                <ng-template pTemplate="selectedItem">
+                    <div class="flex align-items-center gap-2" *ngIf="payBy">
+                        <div>{{ payBy?.name }}</div>
+                    </div>
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                    <div class="grid">
+                        <div class="col-10" style=" margin-top: 10px;font-size: 17px">
+                            <span [innerHTML]="item.name"></span>
+                        </div>
+                        <div class="col-2" *ngIf="(item.id != 0) && (item.id != -1) && role.name =='Admin'">
+                            <button style="z-index: 10000; color: #000000;" pButton pTooltip="Edit"
+                                tooltipPosition="bottom" (click)="selectUpdatePayBy(item);PayByDialog=true"
+                                class="p-button-text  ml-sm-1" type="button" icon="fas fa-edit"></button>
+                            <button style="z-index: 10000" pButton pTooltip="Delete" (click)="confirmCancel(item.id)"
+                                tooltipPosition="bottom" class="p-button-text p-button-danger" type="button"
+                                icon="fas fa-trash"></button>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+        <p-button *ngIf="payByMode" [label]="payBy?.name" [style]="{'width': '15vw'}"
+        (click)="payByMode=false" styleClass="p-button-outlined p-button-success"></p-button>
+  
+</div>
+<app-modal [(display)]="PayByDialog" [title]="headerDialog" class="modal-sm">
+    <div body>
+        <app-input [(ngModel)]="payBayName" name="payBayName" title=" {{'Payment Method' |translate}}" type="text"></app-input>
+    </div>
+    <div footer>
+        <button (click)="PayByDialog=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"
+            icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
+        <button pButton pRipple [icon]="loading?'pi pi-spin pi-spinner':''"
+         type="button" label=" {{'Save' |translate}}" class="p-button-primary" (click)="payByMode?updatePayBy('update'):createPayBy()"></button>
+    </div>
+</app-modal>

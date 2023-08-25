@@ -266,10 +266,10 @@
 
 
 
-<app-modal [(display)]="toOrderDialog" title="Convert To Order" class="modal-sm">
+<app-modal [(display)]="toOrderDialog" title="Convert To Order" class="modal-md">
     <div body>
         <app-input [(ngModel)]="orderNo" name="orderNo" title="Order Number" type="text"></app-input>
-        <table>
+        <table class="py-4">
             <tr>
                 <th class="px-5">{{'Services Price'|translate}}:</th>
                 <th>{{getTotalPrice().products}} {{jod}}</th>
@@ -329,6 +329,8 @@
                 <th>{{getTotalPrice().total | number : '1.2-2'}} {{jod}}</th>
             </tr>
         </table>
+        <app-pay-by *ngIf="toOrderDialog" [(ngModel)]="appointment.payBy"></app-pay-by>
+
     </div>
     <div footer>
         <button (click)="toOrderDialog=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"

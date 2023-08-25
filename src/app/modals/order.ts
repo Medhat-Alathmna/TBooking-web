@@ -6,6 +6,7 @@ export class Order {
     discount:number;
     cash:number;
     status:any;
+    pay_by:any;
     notes:any;
     discountType:any;
     data:any;

@@ -25,6 +25,7 @@ import { SettingsService } from '../../settings/settings.service';
 import { th } from 'date-fns/locale';
 import { Services } from 'src/app/modals/service';
 import { Products } from 'src/app/modals/products';
+import { PayByComponent } from 'src/app/Shared/pay-by/pay-by.component';
 
 
 @Component({
@@ -41,6 +42,7 @@ import { Products } from 'src/app/modals/products';
     EntityViewerComponent,
     TextAreaComponent,
     ModalComponent,
+    PayByComponent,
     InputMaskComponent,
     LoadingComponent,
   ],
@@ -495,6 +497,8 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     if (!this.appointment.employee) {
       this.errorMessage('Please choose Employee !')
     }
+    console.log(this.appointment.payBy);
+    
     this.loading = true
     const subscription = this.orderService.addOrder(this.appointment, this.orderNo, this.getTotalPrice(), this.id).subscribe((data) => {
       if (!isSet(data)) {

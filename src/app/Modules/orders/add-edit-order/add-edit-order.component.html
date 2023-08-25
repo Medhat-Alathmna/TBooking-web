@@ -254,7 +254,11 @@
                                 <th>{{getTotalPrice().total | number : '1.2-2'}} {{jod}}</th>
                             </tr>
                         </table>
+
+
                     </div>
+                    <app-pay-by [ngModelOptions]="{standalone: true}" [payByMode]="payByMode" [(ngModel)]="selectedOrder.pay_by"></app-pay-by>
+
                 </div>
             </div>
 

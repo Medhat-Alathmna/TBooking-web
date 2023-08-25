@@ -25,6 +25,7 @@ export class OrdersService {
         orderBy:this.userAuth.username,
         discount:order.discount,
         cash:order.cash,
+        pay_by:order?.payBy?.id,
         totalPrice:totalPrice,
       }      
     }
@@ -40,6 +41,7 @@ export class OrdersService {
         discountType:order.discountType,
         cash:order.cash,
         notes:order.notes,
+        pay_by:order?.pay_by?.id,
       }
     }
     return this.api.put<Order>(`/orders/${order.id}`,body);
