@@ -13,8 +13,9 @@ export class MobileService {
   constructor(private api: ApiService) { }
 
   getServices(): Observable<any[]> {
-    return this.api.get<any[]>('/services?filters[hide][$eq]=false');
+    return this.api.get<any[]>('/services?filters[hide][$eq]=false&pagination[pageSize]=1000');
   }
+
 
   createService(service: Services): Observable<any> {
     let body = {

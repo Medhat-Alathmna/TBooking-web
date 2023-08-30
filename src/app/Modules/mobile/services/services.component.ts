@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import { MobileService } from '../services.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Services } from 'src/app/modals/service';
+import { CalenderService } from '../../calender/calender.service';
 
 
 @Component({
@@ -18,6 +19,9 @@ export class MobileComponent extends BaseComponent implements OnInit {
   showServ: boolean = false
   Service = new Services
   services: any = []
+  rowNum: any = 10
+  currentPage: any = 1
+  total=0
   tabIndex = [
     {
       label: this.trans('Services'),
@@ -33,7 +37,10 @@ export class MobileComponent extends BaseComponent implements OnInit {
       }
     }
   ]
-  constructor(public translates: TranslateService, public messageService: MessageService,
+
+  @ViewChild('kt') table: any;
+
+  constructor(public translates: TranslateService, public messageService: MessageService, private calenderService:CalenderService,
      private mobileService: MobileService,private confirmationService: ConfirmationService) { super(messageService, translates) }
 
   ngOnInit(): void {
@@ -43,14 +50,46 @@ export class MobileComponent extends BaseComponent implements OnInit {
 
 
 
-  listServices() {
+  listServices(pageNum?: number, query?: any) {
     this.loading = true
-    const subscription = this.mobileService.getServices().subscribe((results: any[]) => {
+    const subscription = this.calenderService.getlist('services',pageNum,10,query).subscribe((results: any) => {
       this.loading = false
       if (!isSet(results)) {
         return
       }
-      this.services = results
+      const clone=results.data
+      this.total=results.meta.pagination.total
+      if (!isSet(this.services)) {
+        this.services = Array(this.total).fill(0)
+      }
+      if (clone.length < this.rowNum) {
+        for (let index = clone.length; index < this.rowNum; index++) {
+          clone[index] = null
+        }
+      }
+      //
+      if (!isSet(pageNum)) {
+        clone.map((item, index) => {
+          this.services[index] = item
+        })
+
+      } else {
+        const currentPage = pageNum * this.rowNum
+        let cloneObjIndex = 0
+        for (let index = currentPage - this.rowNum; index < currentPage; index++) {
+          this.services[index] = clone[cloneObjIndex++]
+        }
+      }
+      //
+      if (!isSet(this.services?.next)) {
+        this.services = this.services.filter(item => {
+          return isSet(item)
+        })
+      }
+      setTimeout(() => {
+        this.table.first = pageNum > 1 ? (pageNum - 1) * this.rowNum : 0
+      });
+
       subscription.unsubscribe()
     }, error => {
       this.loading = false
@@ -84,6 +123,7 @@ export class MobileComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     })
   }
+
   updateService() {
     const subscription = this.mobileService.updateService(this.Service).subscribe((data) => {
       if (!isSet(data)) {

@@ -12,6 +12,7 @@ import { GuestGuard } from './Modules/auth/guards/guest.guard';
 import { UsersModule } from './Modules/users/users.module';
 import { OrdersModule } from './Modules/orders/orders.module';
 import { SettingsModule } from './Modules/settings/settings.module';
+import { DashboardModule } from './Modules/dashboard/dashboard.module';
 
 
 
@@ -31,6 +32,7 @@ import { SettingsModule } from './Modules/settings/settings.module';
                     { path: 'users', loadChildren: () => UsersModule },
                     { path: 'orders', loadChildren: () => OrdersModule },
                     { path: 'settings', loadChildren: () => SettingsModule },
+                    { path: 'dashboard', loadChildren: () => DashboardModule },
 
 
                         

@@ -38,6 +38,7 @@ export class AppMenuComponent implements OnInit {
             { label: 'Orders',  icon: 'pi pi-money-bill text-color', routerLink: ['/orders'] },
             { label: 'Users',  icon: 'pi pi-users text-color', routerLink: ['/users'] },
             { label: 'Services',  icon: 'pi pi-ticket text-color', routerLink: ['/mobile'] },            
+            { label: 'Dashboard',  icon: 'pi pi-chart-pie text-color', routerLink: ['/dashboard'] },            
         ];
         this.menuService.menuData = this.model
         if (this.role.name != 'Admin') {
