@@ -68,7 +68,7 @@
                             </div>
                             <div class="col-6">
                                 <button pButton [disabled]="!fillterFildes.customer.value" label='Apply'
-                                    (click)="fillterFildes.customer.name='firstName';fillterFildes.customer.customer='[customer]';fillterFildes.customer.status=true;fillterFildes.customer.type='$containsi';getAppointments(1,fillterFildes?.customer)"
+                                    (click)="fillterFildes.customer.status=true;search(1,fillterFildes?.customer)"
                                     type="button">
                                 </button>
                             </div>
@@ -106,38 +106,38 @@
                         </ng-template>
                     </p-columnFilter>
                 </th>
-                <th translate> Creation Date
-                    <p-columnFilter #fitlercreatedAt [showApplyButton]="false" [showClearButton]="false"
-                    [ngClass]="fillterFildes?.createdAt?.status?'active-filter':null" type="date"
-                    field="createdAt" matchMode="equals" display="menu" [showMatchModes]="false"
+                <th translate> Appointment Date
+                    <p-columnFilter #fitlerfromDate [showApplyButton]="false" [showClearButton]="false"
+                    [ngClass]="fillterFildes?.fromDate?.status?'active-filter':null" type="date"
+                    field="fromDate" matchMode="equals" display="menu" [showMatchModes]="false"
                     [showOperator]="false" [showAddButton]="false">
                     <ng-template pTemplate="filter">
-                        <p-dropdown [disabled]="fillterFildes?.createdAt?.status"
-                            [options]="queryTypes" [showClear]="true"
-                            [(ngModel)]="fillterFildes.createdAt.type" placeholder='Select filter Type'
+                        <p-dropdown [disabled]="fillterFildes?.fromDate?.status"
+                            [options]="queryTypes"
+                            [(ngModel)]="fillterFildes.fromDate.type" placeholder='Select filter Type'
                             optionValue="value" optionLabel="type">
                             <ng-template let-item pTemplate="item">
                                 <span>{{item.type}}</span>
                             </ng-template>
                         </p-dropdown>
                         <div class="mt-3">
-                            <p-calendar [disabled]="fillterFildes?.createdAt?.status" dateFormat="dd-mm-yy"
+                            <p-calendar [disabled]="fillterFildes?.fromDate?.status" dateFormat="dd-mm-yy"
                                 [showIcon]="true" yearNavigator=true 
-                                [(ngModel)]="fillterFildes.createdAt.value">
+                                [(ngModel)]="fillterFildes.fromDate.value">
                             </p-calendar>
                         </div>
                         <div class="grid mt-2">
                             <div class="col-6">
                                 <button pButton label='Clear' class="p-button-outlined"
-                                    (click)="fitlercreatedAt.overlayVisible=false;fillterFildes.createdAt.value=null;fillterFildes.createdAt.status=flase;clearAllFillter()"
+                                    (click)="fitlerfromDate.overlayVisible=false;fillterFildes.fromDate.value=null;fillterFildes.fromDate.status=flase;clearAllFillter()"
                                     type="button">
                                 </button>
                             </div>
                             <div class="col-6">
                                 <button pButton
-                                    [disabled]="!fillterFildes.createdAt.type||!fillterFildes.createdAt.value"
+                                    [disabled]="!fillterFildes.fromDate.type||!fillterFildes.fromDate.value"
                                     label='Apply'
-                                    (click)="fillterFildes.createdAt.name='createdAt';fillterFildes.createdAt.status=true;getAppointments(1,fillterFildes?.createdAt)"
+                                    (click)="fillterFildes.fromDate.name='fromDate';fillterFildes.fromDate.status=true;getAppointments(1,fillterFildes?.fromDate)"
                                     type="button">
                                 </button>
 
@@ -173,7 +173,7 @@
                 </td>
                 <td>
                     <span class="text-xl text-primary ">
-                        {{appo.attributes?.createdAt| date:'YYYY-MM-dd hh:mm a'}}
+                        {{appo.attributes?.fromDate| date:'YYYY-MM-dd hh:mm a'}}
                     </span>
                 </td>
                 <td>

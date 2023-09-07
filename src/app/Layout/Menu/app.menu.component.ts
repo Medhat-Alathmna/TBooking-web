@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import { AppMainComponent } from '../Main/app.main.component';
 import { MenuService } from './app.menu.service';
+import { OrdersService } from 'src/app/Modules/orders/orders.service';
 
 @Component({
     selector: 'app-menu',
@@ -10,14 +11,14 @@ import { MenuService } from './app.menu.service';
     styleUrls: ['./app.menu.component.scss']
 
 })
-export class AppMenuComponent implements OnInit {
-    role =JSON.parse(localStorage.getItem('role'))
+export class AppMenuComponent extends BaseComponent implements OnInit {
+    
 
     model: any[];
     // menu-wrapper
-    constructor(public appMain: AppMainComponent, private router: Router,
+    constructor(public appMain: AppMainComponent, private router: Router,private orderService:OrdersService,
         private menuService: MenuService,
-) { 
+) { super(null)
         }
     lang = localStorage.getItem('currentLang')
     activeControlPanel = false
@@ -37,17 +38,39 @@ export class AppMenuComponent implements OnInit {
             { label: 'Appointments', icon: 'pi pi-calendar-plus text-color', routerLink: ['/calender'] },
             { label: 'Orders',  icon: 'pi pi-money-bill text-color', routerLink: ['/orders'] },
             { label: 'Users',  icon: 'pi pi-users text-color', routerLink: ['/users'] },
-            { label: 'Services',  icon: 'pi pi-ticket text-color', routerLink: ['/mobile'] },            
             { label: 'Dashboard',  icon: 'pi pi-chart-pie text-color', routerLink: ['/dashboard'] },            
+            { label: 'Services',  icon: 'pi pi-ticket text-color', routerLink: ['/mobile'] },            
         ];
         this.menuService.menuData = this.model
-        if (this.role.name != 'Admin') {
-            this.model.splice(2,2)
-        }
+       this.checkRole()
     }
    
     navToContorlPanal() {
         this.router?.navigateByUrl('settings')
+    }
+
+    checkRole(){
+    const sub=    this.orderService.checkRoleEmitter.subscribe(result=>{
+      const  role =JSON.parse(localStorage.getItem('role'))
+        console.log(result);
+        
+        this.model = [
+            { label: 'Home',  icon: 'pi pi-home text-color', routerLink: ['/'] },
+            // { label: 'Dashboard',  icon: 'icon-statistics text-color', routerLink: ['/dashboard'] },
+            { label: 'Appointments', icon: 'pi pi-calendar-plus text-color', routerLink: ['/calender'] },
+            { label: 'Orders',  icon: 'pi pi-money-bill text-color', routerLink: ['/orders'] },
+            { label: 'Users',  icon: 'pi pi-users text-color', routerLink: ['/users'] },
+            { label: 'Dashboard',  icon: 'pi pi-chart-pie text-color', routerLink: ['/dashboard'] },            
+            { label: 'Services',  icon: 'pi pi-ticket text-color', routerLink: ['/mobile'] },            
+        ];
+        this.menuService.menuData = this.model
+        console.log(role);
+        
+            if (role?.name != 'Admin') {
+                this.model.splice(2,3)
+            }
+        })
+        this.subscriptions.push(sub)
     }
 
     // initCustomModule() {

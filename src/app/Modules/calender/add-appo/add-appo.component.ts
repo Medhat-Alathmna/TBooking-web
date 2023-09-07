@@ -68,7 +68,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   newValue: any
   employeeMode: boolean = false
   showOrderSidebar: boolean = false
-  closeCurrentTime = startOfHour(addMinutes(new Date(), Math.round(new Date().getMinutes() / 30) * 30));
+  closeCurrentTime = startOfHour(addMinutes(new Date(), Math.round(new Date().getMinutes() / 15) * 15));
 
   @Input() appointment: Appointment | any
   @Input() id: any

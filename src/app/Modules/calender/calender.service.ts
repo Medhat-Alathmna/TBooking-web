@@ -141,6 +141,9 @@ export class CalenderService {
   getMe(): Observable<any[]> {
     return this.api.get<any[]>(`users/me?populate=role`);
   }
+  search(val): Observable<any> {
+    return this.api.get<any>(`/searchCustomers?search=${val}`);
+  }
 
   getlist(moduleName: string, pageNum?: number, rows?: number, query?: any, pop?): Observable<any[]> {
     if (!isSet(pageNum)) {

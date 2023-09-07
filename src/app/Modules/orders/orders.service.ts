@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ApiService } from 'src/app/core/api.service';
 import { Appointment } from 'src/app/modals/appoiments';
 import { Order } from 'src/app/modals/order';
@@ -10,6 +10,9 @@ import { Order } from 'src/app/modals/order';
 export class OrdersService {
 
   userAuth =JSON.parse(localStorage.getItem('userAuth'))?.user
+
+  public checkRole: BehaviorSubject<any> = new BehaviorSubject<boolean>(null);
+	public checkRoleEmitter: Observable<any> = this.checkRole.asObservable();
 
 
   constructor(private api: ApiService) { }
@@ -63,4 +66,7 @@ export class OrdersService {
     }
     return this.api.put<any>(`/appointments/${appointment.id}`,body); 
    }
+   search(val): Observable<any> {
+        return this.api.get<any>(`/searchCustomer?search=${val}`);
+      }
 }

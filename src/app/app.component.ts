@@ -4,6 +4,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { DOCUMENT } from '@angular/common';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { CalenderService } from './Modules/calender/calender.service';
+import { OrdersService } from './Modules/orders/orders.service';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +23,7 @@ export class AppComponent implements OnInit {
 
   ripple: boolean;
 
-  constructor(private primengConfig: PrimeNGConfig, private translate: TranslateService, private router: Router, private calenderService: CalenderService,
+  constructor(private primengConfig: PrimeNGConfig, private translate: TranslateService, private router: Router, private calenderService: CalenderService,private orderService:OrdersService,
     @Inject(DOCUMENT) private document: Document) { }
 
   ngOnInit() {
@@ -60,6 +61,7 @@ export class AppComponent implements OnInit {
     const subscription = this.calenderService.getMe().subscribe((user: any) => {
       console.log(user);
       localStorage.setItem('role', JSON.stringify(user.role))
+      this.orderService.checkRole.next(true)
 
       subscription.unsubscribe()
     }, error => {

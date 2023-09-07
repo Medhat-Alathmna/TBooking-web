@@ -51,7 +51,7 @@ export class AppointmentsComponent extends BaseComponent implements OnInit {
   fillterFildes = {
     number: new Filter(),
     status: new Filter(),
-    createdAt: new Filter(),
+    fromDate: new Filter(),
     customer: new Filter(),
   }
 
@@ -86,14 +86,14 @@ export class AppointmentsComponent extends BaseComponent implements OnInit {
     this.fillterFildes = {
       number: new Filter(),
       status: new Filter(),
-      createdAt: new Filter(),
+      fromDate: new Filter(),
       customer: new Filter(),
     }
     this.calenderService.queryFilters = []
     this.getAppointments(1, null)
   }
   getAppointments(pageNum?: number, query?: any) {
-    isSet(this.fillterFildes.createdAt.value) ? this.fillterFildes.createdAt.value = this.datePipe.transform(this.fillterFildes.createdAt.value, 'yyyy-MM-dd') : null
+    isSet(this.fillterFildes.fromDate.value) ? this.fillterFildes.fromDate.value = this.datePipe.transform(this.fillterFildes.fromDate.value, 'yyyy-MM-dd') : null
     this.loading = true
     const subscription = this.calenderService.getlist('appointments', pageNum, 10, query).subscribe((results: any) => {
       this.loading = false
@@ -134,6 +134,22 @@ export class AppointmentsComponent extends BaseComponent implements OnInit {
     }, error => {
       this.loading = false
       console.log(error);
+      subscription.unsubscribe()
+    })
+  }
+
+  search() {
+    this.loading = true
+    const subscription = this.calenderService.search(this.fillterFildes.customer.value).subscribe((data: any) => {
+      this.loading = false
+      if (!isSet(data)) {
+        return
+      }
+    
+      subscription.unsubscribe()
+    }, error => {
+      console.log(error);
+      this.loading = false
       subscription.unsubscribe()
     })
   }

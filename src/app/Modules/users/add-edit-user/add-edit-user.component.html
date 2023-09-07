@@ -42,7 +42,7 @@
                             <button *ngIf="!detailMode" pButton [disabled]="form?.invalid || !selectedUser.username ||!selectedUser.email || ! selectedUser.password || !selectedUser.confirmPassword || !selectRold" pRipple type="button"
                             [label]="'Save'|translate" icon="pi pi-check " (click)="createUser()"
                             class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
-                            <button *ngIf="detailMode" pButton [disabled]="form?.invalid || !selectedUser.username ||!selectedUser.email  || !selectRold" pRipple type="button"
+                            <button *ngIf="detailMode" pButton [disabled]=" !selectedUser.username ||!selectedUser.email  || !selectRold" pRipple type="button"
                             [label]="'Save'|translate" icon="pi pi-check " (click)="updateUser()"
                             class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
                     </div>

@@ -237,7 +237,7 @@
                                 </th>
                             </tr>
                             <tr>
-                                <th class="px-5 py-2" translate> {{'Cash'|translate}}:</th>
+                                <th class="px-5 py-2" translate> {{'Paid'|translate}}:</th>
                                 <th>
                                     <span class="pointer" *ngIf="!cashMode" (click)="cashMode=true">
                                         {{selectedOrder.cash}} {{jod}}</span>
@@ -250,7 +250,7 @@
                             </tr>
                             <p-divider></p-divider>
                             <tr>
-                                <th class="px-5">{{'Total'|translate}}:</th>
+                                <th class="px-5 text-danger">{{'Unpaid'|translate}}:</th>
                                 <th>{{getTotalPrice().total | number : '1.2-2'}} {{jod}}</th>
                             </tr>
                         </table>

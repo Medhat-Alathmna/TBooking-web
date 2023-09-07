@@ -1,1 +1,99 @@
-<div class="grid card h-screen"></div>
+<app-loading *ngIf="loading" display="full"></app-loading>
+<div class="grid layout-dashboard relative">
+    <!-- <div class="col-6 card">
+        <h5> {{"Total of today's orders"| translate}}</h5>
+        <p-chart type="bar" [data]="toDayChart" [options]="basicOptions"></p-chart>
+    </div> -->
+    <div class="col-12 lg:col-6">
+        <div class="grid flex-column grid-nogutter">
+            <div class="col-12">
+                <div class="card cardColor">
+                    <h5>{{"Total of today's orders"| translate}}</h5>
+                    <p-chart type="bar" *ngIf="results" [data]="toDayChart" [options]="basicOptions"
+                        height="51vh"></p-chart>
+                    <div style="height:51vh" *ngIf="!results" class="text-center">
+                        <h4 style="padding-top: 21vh;">
+                            <i class="mx-2 pi pi-exclamation-circle text-xl font-bold"
+                                style=" color:var(--danger)  !important;"></i>
+                            No Data to View Chart
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 lg:col-6">
+        <div class="grid flex-column grid-nogutter">
+            <div class="col-12">
+                <div class="card cardColor">
+                    <h5>{{"Today's Cash"| translate}}</h5>
+                    <p-chart type="bar" *ngIf="results" [data]="todayCashChart" [options]="basicOptions"
+                        height="51vh"></p-chart>
+                    <div style="height:51vh" *ngIf="!results" class="text-center">
+                        <h4 style="padding-top: 21vh;">
+                            <i class="mx-2 pi pi-exclamation-circle text-xl font-bold"
+                                style=" color:var(--danger)  !important;"></i>
+                            No Data to View Chart
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 lg:col-6">
+        <div class="grid flex-column grid-nogutter">
+            <div class="col-12">
+                <div class="card cardColor">
+                    <h5>{{"Orders Status"| translate}}</h5>
+                    <p-chart type="bar" *ngIf="results" [data]="orderStutsChart" [options]="basicOptions"
+                        height="51vh"></p-chart>
+                    <div style="height:51vh" *ngIf="!results" class="text-center">
+                        <h4 style="padding-top: 21vh;">
+                            <i class="mx-2 pi pi-exclamation-circle text-xl font-bold"
+                                style=" color:var(--danger)  !important;"></i>
+                            No Data to View Chart
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+    <div class="w-screen">
+    <div style="right: 5vw;top: 80vh;" class="fixed">
+        <p-speedDial buttonClassName="dashbored-btn" showIcon="pi pi-filter " [model]="items"></p-speedDial>
+    </div>
+</div>
+<app-modal [(display)]="dashboardDatesDialog" class="modal-sm">
+    <div body>
+        <div class="grid">
+            <div class=" col-6 mt-3">
+                <div class="p-inputgroup">
+                    <span class="p-float-label">
+                        <p-calendar dateFormat="dd-mm-yy"  [(ngModel)]="fromDate" appendTo="body" [style]="{width: '100%'}" [showIcon]="true"
+                            yearNavigator=true>
+                        </p-calendar>
+                        <label for="vat-input">From Date</label>
+                    </span>
+                </div>
+            </div>
+            <div class=" col-6 mt-3">
+                <div class="p-inputgroup">
+                    <span class="p-float-label">
+                        <p-calendar dateFormat="dd-mm-yy" appendTo="body"  [(ngModel)]="toDate" [style]="{width: '100%'}" [showIcon]="true"
+                            yearNavigator=true >
+                        </p-calendar>
+                        <label for="vat-input">To Date</label>
+                    </span>
+                </div>
+            </div>
+        </div>    </div>''
+    <div footer>
+        <button pButton pRipple (click)="dashboardDatesDialog=false" type="button" label=" {{'Cancel' |translate}}"
+            icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
+        <button  pButton pRipple (click)=" count();dashboardDatesDialog=false" type="button" label=" {{'Apply' |translate}}"
+            class="p-button-primary"></button>
+    </div>
+</app-modal>

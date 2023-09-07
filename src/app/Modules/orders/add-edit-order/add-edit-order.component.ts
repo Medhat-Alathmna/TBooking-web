@@ -67,10 +67,11 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
       this.selectedOrder.discountType=this.selectedOrder.attributes.discountType
       this.discountMode='show'
     }
-   console.log( this.selectedOrder);
     if (this.selectedOrder.attributes.pay_by) {
-      this.selectedOrder.pay_by=this.selectedOrder.attributes.pay_by.data.attributes
+      this.selectedOrder.pay_by=this.selectedOrder?.attributes?.pay_by?.data?.attributes
       this.payByMode=true
+    }else{
+      this.payByMode=false
     }
     this.acions = [
       {

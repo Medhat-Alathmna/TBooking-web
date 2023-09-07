@@ -43,6 +43,7 @@ export class UsersService {
   hideUser(user:any): Observable<any> {
     let body={
         hide:true,
+        blocked:true,
         deletedBy:this.userAuth.username
       
     }

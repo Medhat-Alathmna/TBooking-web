@@ -116,12 +116,12 @@
                             [required]="true"></app-input>
                     </div>
                     <div class="my-1">
-                        <app-calender [(ngModel)]="appointment.fromDate" [stepMinute]='30'
+                        <app-calender [(ngModel)]="appointment.fromDate" [stepMinute]='15'
                             (ngModelChange)="startDateChange()" [showTime]="true" [required]="true" name="fromDate"
                             showIcon="true" [title]="'Start Date'|translate"></app-calender>
                     </div>
                     <div>
-                        <app-calender [(ngModel)]="appointment.toDate" [stepMinute]='30'
+                        <app-calender [(ngModel)]="appointment.toDate" [stepMinute]='15'
                             (ngModelChange)="finishDateChange()" [timeOnly]="true" [showTime]="true" [required]="true"
                             name="toDate" showIcon="true" [title]="'Finish Date'|translate"></app-calender>
                     </div>

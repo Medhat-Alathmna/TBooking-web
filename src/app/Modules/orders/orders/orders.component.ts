@@ -6,6 +6,7 @@ import { OrdersService } from '../orders.service';
 import { CalenderService } from '../../calender/calender.service';
 import { Filter } from 'src/app/modals/filter';
 import { Order } from 'src/app/modals/order';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-orders',
@@ -17,6 +18,7 @@ export class OrdersComponent extends BaseComponent implements OnInit {
   rowNum: any = 10
   currentPage: any = 1
   orders:any=[]
+  searchCustomer
   total
   showOrderSidebar:boolean=false
   selectedOrder
@@ -24,6 +26,8 @@ export class OrdersComponent extends BaseComponent implements OnInit {
     orderNo: new Filter(),
     status: new Filter(),
     number: new Filter(),
+    createdAt: new Filter(),
+    name: new Filter(),
   }
   status=[
     {label:'Paid'},
@@ -32,16 +36,38 @@ export class OrdersComponent extends BaseComponent implements OnInit {
     {label:'Canceled'}
   ]
 
+  queryTypes = [
+
+    {
+      type: 'Not Equal',
+      value: '$ne'
+    },
+    {
+      type: 'Equal',
+      value: '$containsi'
+    },
+    {
+      type: 'Less than',
+      value: '$lte'
+    },
+    {
+      type: 'Greater Than',
+      value: '$gte'
+    },
+
+  ]
   @ViewChild('kt') table: any;
 
   constructor(public translates: TranslateService,
-    public messageService: MessageService,private ordersService:OrdersService,
+    public messageService: MessageService,private ordersService:OrdersService, private datePipe: DatePipe,
     private calenderService:CalenderService,) {super(messageService, translates) }
 
   ngOnInit(): void {
     this.clearAllFillter()
   }
   getOrders(pageNum?: number, query?: any) {
+    isSet(this.fillterFildes.createdAt.value) ? this.fillterFildes.createdAt.value = this.datePipe.transform(this.fillterFildes.createdAt.value, 'yyyy-MM-dd') : null
+
     this.loading = true
     const subscription = this.calenderService.getlist('orders',pageNum,10,query).subscribe((results: any) => {
       this.loading = false
@@ -102,8 +128,26 @@ export class OrdersComponent extends BaseComponent implements OnInit {
       orderNo: new Filter(),
       status: new Filter(),
       number: new Filter(),
+      name: new Filter(),
+      createdAt: new Filter(),
     }
     this.calenderService.queryFilters = []
     this.getOrders(1, null)
+  }
+  search() {
+    this.searchCustomer=this.fillterFildes.name.value
+    this.loading = true
+    const subscription = this.ordersService.search(this.searchCustomer).subscribe((data: any) => {
+      this.loading = false
+      if (!isSet(data)) {
+        return
+      }
+    
+      subscription.unsubscribe()
+    }, error => {
+      console.log(error);
+      this.loading = false
+      subscription.unsubscribe()
+    })
   }
 }
