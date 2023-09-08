@@ -25,6 +25,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
   fromDate: any = new Date()
   toDate: any = new Date()
   dashboardDatesDialog: boolean = false
+  dashboardDetails: boolean = false
   role =JSON.parse(localStorage.getItem('role'))
   textSecondaryColor = getComputedStyle(document.documentElement).getPropertyValue('--surface-500')
 
@@ -44,7 +45,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
       {
         icon: 'pi pi-file text-primary',
         command: () => {
-          this.dashboardDatesDialog = true
+          this.dashboardDetails = true
         }
       },
       {
