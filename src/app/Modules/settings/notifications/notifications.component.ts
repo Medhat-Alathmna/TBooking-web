@@ -29,7 +29,7 @@ export class NotificationsComponent extends BaseComponent implements OnInit {
       }
     },
     {
-      label: 'Order',
+      label: this.trans('Orders'),
       command: event => {
         this.tabSelected = 'order'
       }
