@@ -93,8 +93,11 @@
                     [required]="true"></app-input>
             </div>
             <div class="lg:col-4 sm:col-6 ">
-                <app-input-mask name="phone" [(ngModel)]="appointment.phone" [required]="true"
+                <app-input-mask name="phone" [(ngModel)]="appointment.phone" [multiPhone]="true" [required]="true"
                     [title]="'Phone'|translate"></app-input-mask>
+                    <!-- <app-multi-input [(ngModel)]="appointment.phone" name="Phone" [required]="true"
+                    [title]="'Phone'|translate">
+                    </app-multi-input> -->
             </div>
             <div class="lg:col-4 sm:col-6 ">
                 <app-input [(ngModel)]="appointment.address" name="address" [title]="'Address'|translate"></app-input>

@@ -5,7 +5,8 @@ export class Appointment {
     firstName:any;
     middleName:any;
     lastName:any;
-    phone?: any;
+    phone?: [];
+    mainPhone:any;
     address?: any;
     notes?: any;
     deposit?: number;

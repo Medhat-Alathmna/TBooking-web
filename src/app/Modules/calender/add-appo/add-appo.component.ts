@@ -26,6 +26,7 @@ import { th } from 'date-fns/locale';
 import { Services } from 'src/app/modals/service';
 import { Products } from 'src/app/modals/products';
 import { PayByComponent } from 'src/app/Shared/pay-by/pay-by.component';
+import { MultiInputComponent } from 'src/app/Shared/multi-input/multi-input.component';
 
 
 @Component({
@@ -45,6 +46,7 @@ import { PayByComponent } from 'src/app/Shared/pay-by/pay-by.component';
     PayByComponent,
     InputMaskComponent,
     LoadingComponent,
+    MultiInputComponent
   ],
 })
 export class AddAppoComponent extends BaseComponent implements OnInit {
@@ -99,7 +101,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       }, 100);
       this.appointment.toDate = this.closeCurrentTime
       this.appointment.deposit = 0
-      this.appointment.phone = 962
+      this.appointment.phone =[{number:null}]
       this.appointment.number = moment(new Date()).format('YY-MM-D') + '-00'
     } else {
 
@@ -109,6 +111,8 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       this.appointment.lastName = this.appointment?.customer?.lastName
       this.appointment.fromDate = new Date(this.appointment.fromDate)
       this.appointment.toDate = new Date(this.appointment.toDate)
+      this.appointment.mainPhone=this.appointment?.phone[0]?.number
+      
       this.appointment.createdAt = moment(this.appointment.createdAt).format('YYYY-MM-DD HH:ss')
       if (this.appointment.services) {
         this.appointment?.services?.map(item => {
@@ -174,18 +178,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
 
 
   }
-  // getTotalPrice() {
-  //   let serviceAmount: number = 0
-  //   let productsAmount: number = 0
-  //   this.selectServices?.map(x => {
-  //     serviceAmount += x.price
-  //   })
-  //   this.selectProducts?.map(x => {
-  //     productsAmount += x.price * x.qty
-  //   })
-  //   const total = serviceAmount + productsAmount
-  //   return total
-  // }
+
   getTotalPrice() {
     let total = 0
     let serviceAmount: number = 0
@@ -296,6 +289,8 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     }
   }
   addAppominet() {
+    console.log( this.appointment);
+    
     this.appointment.deposit = !this.appointment.deposit ? 0 : this.appointment.deposit
     this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
@@ -304,27 +299,28 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     this.appointment.employee = this.selectEmployee
 
     this.loading = true
-    const subscription = this.calenderService.addAppominets(this.appointment).subscribe((data) => {
-      if (!isSet(data)) {
-        return
-      }
-      if ( this.selectProducts.length) {
-        this.selectProducts.map(prod=>{
-          console.log(prod);
+    // const subscription = this.calenderService.addAppominets(this.appointment).subscribe((data) => {
+    //   if (!isSet(data)) {
+    //     return
+    //   }
+    //   if ( this.selectProducts.length) {
+    //     this.selectProducts.map(prod=>{
+    //       console.log(prod);
           
-          this.updateProduct(prod,prod.id)
-        })
-      }
-      this.refreshLish.emit(true)
-      this.display = false
-      this.loading = false
-      subscription.unsubscribe()
-    }, error => {
-      this.loading = false
-      subscription.unsubscribe()
-    })
+    //       this.updateProduct(prod,prod.id)
+    //     })
+    //   }
+    //   this.refreshLish.emit(true)
+    //   this.display = false
+    //   this.loading = false
+    //   subscription.unsubscribe()
+    // }, error => {
+    //   this.loading = false
+    //   subscription.unsubscribe()
+    // })
   }
   updateAppominet() {
+    
     this.appointment.id = this.id
     this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()

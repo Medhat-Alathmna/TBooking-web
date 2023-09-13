@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import {InputTextModule} from 'primeng/inputtext';
@@ -9,6 +9,7 @@ import { InputMaskModule } from 'primeng/inputmask';
 import { SettingsService } from 'src/app/Modules/settings/settings.service';
 import { isSet } from 'src/app/core/base/base.component';
 import { TooltipModule } from 'primeng/tooltip';
+import { ModalComponent } from '../modal/modal.component';
 
 
 @Component({
@@ -16,16 +17,17 @@ import { TooltipModule } from 'primeng/tooltip';
   templateUrl: './input-mask.component.html',
   styleUrls: ['./input-mask.component.scss'],
   standalone:true,
-  imports:[InputTextModule,CommonModule,FormsModule,TranslateModule,ButtonModule,InputMaskModule,TooltipModule],
+  imports:[InputTextModule,CommonModule,FormsModule,TranslateModule,ButtonModule,InputMaskModule,TooltipModule,ModalComponent],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: InputMaskComponent,
       multi: true
     }]
+ 
 })
 
-export class InputMaskComponent implements ControlValueAccessor {
+export class InputMaskComponent implements OnInit , ControlValueAccessor {
   
   @Input() title: string
   @Input() class: string
@@ -34,27 +36,41 @@ export class InputMaskComponent implements ControlValueAccessor {
   @Input() hideTitle: boolean
   @Input() disabled: boolean
   @Input() numberInput: boolean=false
+  @Input() multiPhone: boolean=false
   lang = localStorage.getItem('currentLang')
   loading:any
-
-  @Output() clickBtn: EventEmitter<any> = new EventEmitter();
-
-  constructor(private settingsService: SettingsService,) { }
-  innervalue
- 
+  addNumber
+  valuePhone
+  innervalue=[]
 
   private onTouchedCallback: () => void = () => {};
   private onChangeCallback: (_: any) => void = () => {};
 
+  @Output() clickBtn: EventEmitter<any> = new EventEmitter();
+
+  constructor(private settingsService: SettingsService,) { }
+
+
+
+  ngOnInit(): void {
+    this.innervalue.push({number:null})
+  }
+ 
+
+
+ 
+
   get value(): any {
+    console.log(this.innervalue);
+
     return this.innervalue;
   }
 
   set value(v: any) {
-    if (v !== this.innervalue) {
+    
       this.innervalue = v;
       this.onChangeCallback(v);
-    }
+    
   }
 
   writeValue(value: any) {
@@ -94,4 +110,13 @@ this.clickBtn.emit('')
       subscription.unsubscribe()
     })
   }
+  openPhone(){
+    this.innervalue.push({number:null})
+
+ }
+ pushValue(){
+  this.innervalue=this.innervalue.filter(el=>{return el.number != null})
+  this.innervalue.push({number:this.valuePhone})
+ }
+
 }
