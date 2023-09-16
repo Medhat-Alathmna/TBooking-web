@@ -5,7 +5,7 @@ export class Appointment {
     firstName:any;
     middleName:any;
     lastName:any;
-    phone?: [];
+    phone?: any;
     mainPhone:any;
     address?: any;
     notes?: any;
@@ -14,7 +14,7 @@ export class Appointment {
     services?: any;
     status?: any;
     payBy?: any;
-    employee?: any;
+    employee?: any | [];
     approved?: boolean;
     hide?: boolean;
     fromDate?: Date |any;

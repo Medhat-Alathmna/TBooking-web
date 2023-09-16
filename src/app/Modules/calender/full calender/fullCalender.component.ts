@@ -115,8 +115,7 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
         const customer = this.Appointments?.data[index]?.attributes?.customer.firstName + ' ' + this.Appointments?.data[index]?.attributes?.customer.middleName + ' ' + this.Appointments?.data[index]?.attributes?.customer.lastName
         this.calendarOptions.events.push({
           id: this.Appointments.data[index].id,
-          title: this.Appointments?.data[index]?.attributes?.employee?.data?.attributes?.username ?
-            this.Appointments?.data[index]?.attributes?.employee?.data?.attributes?.username + '  (' + customer + '  )' : 'No Employee yet' + '  (' + customer + '  )',
+          title:customer,
           // title: 'Medhat',
           start: new Date(this.Appointments.data[index].attributes.fromDate),
           end: new Date(this.Appointments.data[index].attributes.toDate),
@@ -154,6 +153,8 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
 
       this.unapprovedAppoit = objects.filter(x => x.attributes.approved == false)
       this.approvedAppointments = objects.filter(x => x.attributes.approved == true && x.attributes.status === 'Draft')
+      console.log( this.approvedAppointments);
+      
       this.completedAppoit = objects.filter(x => x.attributes.status === 'Completed')
       console.log(this.completedAppoit);
 

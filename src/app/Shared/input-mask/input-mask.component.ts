@@ -27,7 +27,7 @@ import { ModalComponent } from '../modal/modal.component';
  
 })
 
-export class InputMaskComponent implements OnInit , ControlValueAccessor {
+export class InputMaskComponent implements  ControlValueAccessor {
   
   @Input() title: string
   @Input() class: string
@@ -36,12 +36,9 @@ export class InputMaskComponent implements OnInit , ControlValueAccessor {
   @Input() hideTitle: boolean
   @Input() disabled: boolean
   @Input() numberInput: boolean=false
-  @Input() multiPhone: boolean=false
   lang = localStorage.getItem('currentLang')
   loading:any
-  addNumber
-  valuePhone
-  innervalue=[]
+  innervalue
 
   private onTouchedCallback: () => void = () => {};
   private onChangeCallback: (_: any) => void = () => {};
@@ -52,17 +49,13 @@ export class InputMaskComponent implements OnInit , ControlValueAccessor {
 
 
 
-  ngOnInit(): void {
-    this.innervalue.push({number:null})
-  }
+
  
 
 
  
 
   get value(): any {
-    console.log(this.innervalue);
-
     return this.innervalue;
   }
 
@@ -94,7 +87,7 @@ export class InputMaskComponent implements OnInit , ControlValueAccessor {
 this.clickBtn.emit('')
   }
 
-  checkForbidenNumber(event){
+  checkForbidenNumber(){
     this.loading = 'pros'
     const subscription = this.settingsService.checkForbidNumbers(this.value).subscribe((data:any) => {
       this.loading = false
@@ -110,13 +103,5 @@ this.clickBtn.emit('')
       subscription.unsubscribe()
     })
   }
-  openPhone(){
-    this.innervalue.push({number:null})
-
- }
- pushValue(){
-  this.innervalue=this.innervalue.filter(el=>{return el.number != null})
-  this.innervalue.push({number:this.valuePhone})
- }
 
 }

@@ -27,6 +27,7 @@ export class OrdersService {
         discountType:order.discountType,
         orderBy:this.userAuth.username,
         discount:order.discount,
+        employee:order.employee,
         cash:order.cash,
         pay_by:order?.payBy?.id,
         totalPrice:totalPrice,

@@ -26,7 +26,6 @@ import { th } from 'date-fns/locale';
 import { Services } from 'src/app/modals/service';
 import { Products } from 'src/app/modals/products';
 import { PayByComponent } from 'src/app/Shared/pay-by/pay-by.component';
-import { MultiInputComponent } from 'src/app/Shared/multi-input/multi-input.component';
 
 
 @Component({
@@ -46,7 +45,6 @@ import { MultiInputComponent } from 'src/app/Shared/multi-input/multi-input.comp
     PayByComponent,
     InputMaskComponent,
     LoadingComponent,
-    MultiInputComponent
   ],
 })
 export class AddAppoComponent extends BaseComponent implements OnInit {
@@ -61,6 +59,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   notfiItems: any = []
   showAddValue: boolean = false
   toOrderDialog: boolean = false
+  showEmployiesDialog: boolean = false
   discountMode: string = 'type'
   cashMode: boolean = false
   servType: any
@@ -101,36 +100,23 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       }, 100);
       this.appointment.toDate = this.closeCurrentTime
       this.appointment.deposit = 0
-      this.appointment.phone =[{number:null}]
+      this.appointment.employee = []
+      this.appointment.phone = 962
       this.appointment.number = moment(new Date()).format('YY-MM-D') + '-00'
     } else {
-
       this.appointment = Appointment.cloneObject(this.appointment)
       this.appointment.firstName = this.appointment?.customer?.firstName
       this.appointment.middleName = this.appointment?.customer?.middleName
       this.appointment.lastName = this.appointment?.customer?.lastName
       this.appointment.fromDate = new Date(this.appointment.fromDate)
       this.appointment.toDate = new Date(this.appointment.toDate)
-      this.appointment.mainPhone=this.appointment?.phone[0]?.number
-      
       this.appointment.createdAt = moment(this.appointment.createdAt).format('YYYY-MM-DD HH:ss')
-      if (this.appointment.services) {
-        this.appointment?.services?.map(item => {
-          this.selectServices.push({ id: item?.id, ar: item?.ar, en: item?.en, price: item?.price })
-        })
+      if (this.appointment.products) {
         this.appointment?.products?.map(item => {
-          this.selectProducts.push({ id: item?.id, name: item?.name, stocks: item?.stocks, price: item?.price, qty: item?.qty ,brand:item.brand})
+          this.selectProducts.push({ id: item?.id, name: item?.name, stocks: item?.stocks, price: item?.price, qty: item?.qty, brand: item.brand })
         })
-      }
-      if (this.selectEmployee = this.appointment.employee) {
-        this.selectEmployee = this.appointment?.employee?.data?.attributes
-        this.employeeMode = true
-      }
-      if (!this.selectEmployee) {
-        this.employeeMode = false
       }
       this.getNotfi()
-
       this.acions = [
         {
           label: this.appointment.approved ? this.trans('Cancel the Appointment') : this.trans('Convert to Approved'),
@@ -144,12 +130,11 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
           icon: 'pi pi-money-bill',
           command: () => {
             this.orderNo = this.appointment.number
-            this.appointment.cash=0
-            this.appointment.discount=0
+            this.appointment.cash = 0
+            this.appointment.discount = 0
             this.toOrderDialog = true
           }
         },
-
         {
           label: this.trans('Delete'),
           icon: 'pi pi-times',
@@ -175,43 +160,57 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     }
 
     console.log(this.appointment);
-
-
   }
 
   getTotalPrice() {
     let total = 0
     let serviceAmount: number = 0
     let productsAmount: number = 0
-    this.selectServices?.map(x => {
-      serviceAmount += x.price
+    this.appointment?.employee?.map(x => {
+      x.services?.map(rs => {
+        serviceAmount += rs?.price
+
+      })
     })
     this.selectProducts?.map(x => {
-      productsAmount += x.price * x.qty
+      productsAmount += x?.price * x?.qty
     })
     const products = serviceAmount + productsAmount
     if (this.appointment.discountType == 'cash') {
       total = products - this.appointment.discount - this.appointment.cash - this.appointment.deposit
     } else {
-      const cash = products  - this.appointment.deposit
-      total = (cash * ((100 - this.appointment.discount) / 100))-this.appointment.cash
+      const cash = products - this.appointment.deposit
+      total = (cash * ((100 - this.appointment.discount) / 100)) - this.appointment.cash
     }
     return {
       products, total
 
     }
   }
-  showAddNewServ(type) {
+  showAddNewServ(type, index?) {
     this.title = type == 'ser' ? this.trans('New Service') : this.trans('New Product')
+    if (!this.appointment.employee[index]?.services && type == 'ser') {
+      this.appointment.employee[index] = Object.assign(this.appointment.employee[index], {
+        services: []
+      });
+    }
+    this.selectEmployee = index
     this.showAddValue = true
     this.newValue = ''
     this.servType = type
   }
+  showAddNewEmp(type) {
+    this.showEmployiesDialog = true
+
+    this.newValue = ''
+  }
 
   selectEmployees(event) {
-    this.selectEmployee = event
+    console.log(event);
+
+    this.appointment.employee.push(event)
     this.showAddValue = false
-    this.employeeMode = true
+    this.showEmployiesDialog = false
   }
   selectService() {
     if (!isSet(this.selectServices)) {
@@ -223,12 +222,19 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       return
     }
 
-    this.selectServices.push(Services.cloneObject({
+    this.appointment.employee[this.selectEmployee].services.push({
       id: this.newValue?.id,
       ar: this.newValue?.ar,
       en: this.newValue?.en,
       price: this.newValue?.price
-    }))
+    }
+    );
+    // this.appointment.employee[index].push(data)
+
+
+
+    console.log(this.appointment.employee[this.selectEmployee].services);
+
     this.showAddValue = false
   }
   selectProduct() {
@@ -243,7 +249,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     if (existServ) {
       this.errorMessage(this.trans('This Product Already Selected'))
       return
-    }    
+    }
     this.selectProducts.push(Products.cloneObject({
       id: this.newValue?.id,
       name: this.newValue?.name,
@@ -253,15 +259,17 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       price: this.newValue?.price
     }))
     this.showAddValue = false
-    this.newValue=null
+    this.newValue = null
   }
   deleteValue(index, type) {
-    type == 'serv' ? this.selectServices.splice(index, 1) : this.selectProducts.splice(index, 1)
+    type == 'emp' ? this.appointment.employee.splice(index, 1) : this.selectProducts.splice(index, 1)
+  }
+  deleteValueServ(i, child) {
+    this.appointment.employee[i].services.splice(child, 1)
   }
   checkStock() {
     this.selectProducts.map(prod => {
       if (prod.qty > prod.stocks) {
-        console.log('awe');
         setTimeout(() => {
           prod.qty = prod.stocks
           this.errorMessage(this.trans('The Quantity must not be more than Stocks'))
@@ -289,43 +297,39 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     }
   }
   addAppominet() {
-    console.log( this.appointment);
-    
+    console.log(this.appointment);
+
     this.appointment.deposit = !this.appointment.deposit ? 0 : this.appointment.deposit
     this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
-    this.appointment.services = this.selectServices
     this.appointment.products = this.selectProducts
-    this.appointment.employee = this.selectEmployee
 
     this.loading = true
-    // const subscription = this.calenderService.addAppominets(this.appointment).subscribe((data) => {
-    //   if (!isSet(data)) {
-    //     return
-    //   }
-    //   if ( this.selectProducts.length) {
-    //     this.selectProducts.map(prod=>{
-    //       console.log(prod);
-          
-    //       this.updateProduct(prod,prod.id)
-    //     })
-    //   }
-    //   this.refreshLish.emit(true)
-    //   this.display = false
-    //   this.loading = false
-    //   subscription.unsubscribe()
-    // }, error => {
-    //   this.loading = false
-    //   subscription.unsubscribe()
-    // })
+    const subscription = this.calenderService.addAppominets(this.appointment).subscribe((data) => {
+      if (!isSet(data)) {
+        return
+      }
+      if (this.selectProducts.length) {
+        this.selectProducts.map(prod => {
+          console.log(prod);
+
+          this.updateProduct(prod, prod.id)
+        })
+      }
+      this.refreshLish.emit(true)
+      this.display = false
+      this.loading = false
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+      subscription.unsubscribe()
+    })
   }
   updateAppominet() {
-    
+
     this.appointment.id = this.id
     this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
-    this.appointment.services = this.selectServices
-    this.appointment.employee = this.selectEmployee
     this.appointment.products = this.selectProducts
 
     this.loading = true
@@ -441,7 +445,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     })
   }
 
-  
+
   completeAppointment() {
     this.appointment.id = this.id
     const subscription = this.calenderService.completeAppointment(this.appointment).subscribe((data) => {
@@ -487,14 +491,13 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   addOrder() {
     this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
-    this.appointment.services = this.selectServices
     this.appointment.products = this.selectProducts
     this.appointment.status = this.getTotalPrice().total == 0 ? "Paid" : "Unpaid"
     if (!this.appointment.employee) {
       this.errorMessage('Please choose Employee !')
     }
     console.log(this.appointment.payBy);
-    
+
     this.loading = true
     const subscription = this.orderService.addOrder(this.appointment, this.orderNo, this.getTotalPrice(), this.id).subscribe((data) => {
       if (!isSet(data)) {
@@ -567,7 +570,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
 
 
       results.data.map(item => {
-        this.Products.push({ id: item?.id, name: item?.attributes?.name, stocks: item?.attributes?.stocks, price: item?.attributes?.price,brand:item?.attributes?.brand?.data?.attributes })
+        this.Products.push({ id: item?.id, name: item?.attributes?.name, stocks: item?.attributes?.stocks, price: item?.attributes?.price, brand: item?.attributes?.brand?.data?.attributes })
       })
 
       subscription.unsubscribe()
@@ -577,8 +580,8 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     })
   }
-  updateProduct(prod,id){
-    const subscription = this.calenderService.updateProduct(prod,id).subscribe((results: any) => {
+  updateProduct(prod, id) {
+    const subscription = this.calenderService.updateProduct(prod, id).subscribe((results: any) => {
       this.loading = false
       if (!isSet(results)) {
         return
@@ -590,9 +593,9 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     })
   }
-  onKeyEnter(event,type?) {
+  onKeyEnter(event, type?) {
     if (event.keyCode === 13) {
-      type=='cash'?this.cashMode = false:this.discountMode = 'show'
+      type == 'cash' ? this.cashMode = false : this.discountMode = 'show'
     }
   }
 

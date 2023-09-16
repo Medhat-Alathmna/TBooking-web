@@ -69,7 +69,7 @@
                     [model]="acions"></p-menu>
                 <button *ngIf="this.appointment.status != 'Canceled' && this.appointment.status !='Completed'" pButton
                     [disabled]="form?.invalid || !appointment?.firstName ||!appointment?.middleName ||
-                     ! appointment?.lastName || !appointment?.phone ||!appointment?.fromDate " pRipple type="button"
+                     ! appointment?.lastName ||!appointment?.fromDate " pRipple type="button"
                     [label]="'Save'|translate" icon="pi pi-check " (click)="detailMode?updateAppominet():addAppominet()"
                     class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
             </div>
@@ -93,11 +93,8 @@
                     [required]="true"></app-input>
             </div>
             <div class="lg:col-4 sm:col-6 ">
-                <app-input-mask name="phone" [(ngModel)]="appointment.phone" [multiPhone]="true" [required]="true"
+                <app-input-mask name="phone" [(ngModel)]="appointment.phone" [required]="true"
                     [title]="'Phone'|translate"></app-input-mask>
-                    <!-- <app-multi-input [(ngModel)]="appointment.phone" name="Phone" [required]="true"
-                    [title]="'Phone'|translate">
-                    </app-multi-input> -->
             </div>
             <div class="lg:col-4 sm:col-6 ">
                 <app-input [(ngModel)]="appointment.address" name="address" [title]="'Address'|translate"></app-input>
@@ -128,19 +125,6 @@
                             (ngModelChange)="finishDateChange()" [timeOnly]="true" [showTime]="true" [required]="true"
                             name="toDate" showIcon="true" [title]="'Finish Date'|translate"></app-calender>
                     </div>
-                    <div class="block my-1">
-                        <ng-container>
-                            <div class="text-lg font-semibold mb-2" translate>
-                                Employee
-                            </div>
-                        </ng-container>
-                        <p-dropdown *ngIf="!employeeMode" [required]="true" appendTo="body" [filter]="true"
-                            [options]="users" [placeholder]="'Select a Employee'|translate"
-                            (onChange)="selectEmployees($event.value)" optionLabel="username"></p-dropdown>
-                        <p-button *ngIf="employeeMode" [label]="selectEmployee?.username" [style]="{'width': '100%'}"
-                            (click)="employeeMode=false" styleClass="p-button-outlined p-button-success"></p-button>
-
-                    </div>
                 </div>
                 <div [class]="lang=='en'?'col-6 leftLine':'leftRight col-6'">
                     <div class="flex justify-content-between flex-wrap mx-2 mt-2">
@@ -150,37 +134,55 @@
                             </div>
                         </div>
                         <div class="flex align-items-center justify-content-center  ">
-
-                            <button pButton pRipple type="button" icon="pi pi pi-plus " (click)="showAddNewServ('ser')"
-                                [label]="'New Service'|translate"
+                            <button pButton pRipple type="button" icon="pi pi pi-plus " (click)="showAddNewEmp('ser')"
+                                [label]="'Add Employee'|translate"
                                 class="p-button-rounded p-button-outlined text-btn"></button>
                             <button pButton pRipple type="button" icon="pi pi pi-plus " (click)="showAddNewServ('prod')"
                                 [label]="'New Product'|translate"
                                 class="p-button-rounded p-button-outlined text-btn mx-1"></button>
                         </div>
                     </div>
-                    <div *ngIf="services" class="mt-3 mx-2">
-                        <div *ngFor="let item of selectServices;let i =index "
-                            class="flex justify-content-between flex-wrap mb-2">
-                            <div class=" text-base font-semibold "
-                                style="display: flex;align-items: center;justify-content: space-around;width: 23vw">
-                                <div class="pi pi-circle-fill text-primary text-xs pt-2"></div>
-                                <span class="  font-bold "> {{item[lang]}} </span>
-                                <span class="  font-bold">
-                                    <input type="number" name="price{{i}}" pInputText [(ngModel)]="item.price" />
-
-                                </span>
+                    <div class="block my-1" *ngFor="let item of appointment.employee;let i =index ">
+                        <ng-container>
+                            <div class="text-lg font-semibold mb-2" translate>
+                                Employee
                             </div>
-                            <div class="flex align-items-center justify-content-center  ">
-                                <button pButton pRipple type="button" (click)="deleteValue(i,'serv')"
-                                    icon="pi pi-trash "
+                        </ng-container>
+                        <div class="flex">
+                            <div class="block" style="width: 75%;">
+                                <p-button *ngIf="item" [label]="item?.username" [style]="{'width': '50%'}"
+                                    (click)="employeeMode=false"
+                                    styleClass="p-button-outlined p-button-success"></p-button>
+                            </div>
+                            <div>
+                                <button pButton pRipple type="button" icon="pi pi pi-plus "
+                                    (click)="showAddNewServ('ser',i)" [label]="'New Service'|translate"
+                                    class="p-button-rounded p-button-outlined text-btn"></button>
+
+                                <button pButton pRipple type="button" icon="pi pi-trash "  (click)="deleteValue(i,'emp')"
                                     class="p-button-rounded p-button-danger p-button-text  "></button>
                             </div>
                         </div>
-                        <p-divider *ngIf="selectProducts.length"></p-divider>
+                        <div *ngIf="item.services" class="mt-3 mx-2">
+                            <div *ngFor="let ser of item.services;let c =index " class="flex justify-content-between flex-wrap mb-2">
+                                <div class=" text-base font-semibold justify-content-between"
+                                    style="display: flex;align-items: center;justify-content: space-around;width: 23vw">
+                                    <div class="pi pi-circle-fill text-primary text-xs pt-2"></div>
+                                    <span class="  font-bold "> {{ser[lang]}} </span>
+                                    <span class="  font-bold">
+                                        <input type="number" name="price{{i}}{{c}}" pInputText [(ngModel)]="ser.price" />
 
+                                    </span>
+                                </div>
+                                <div class="flex align-items-center justify-content-center  ">
+                                    <button pButton pRipple type="button" (click)="deleteValueServ(i,c)"
+                                        icon="pi pi-trash "
+                                        class="p-button-rounded p-button-danger p-button-text  "></button>
+                                </div>
+                            </div>
+                            <p-divider *ngIf="item.services.length"></p-divider>
+                        </div>
                     </div>
-
                     <div *ngIf="selectProducts?.length" class="mt-3">
                         <p-table [value]="selectProducts" [tableStyle]="{'width.%': 100}">
                             <ng-template pTemplate="header">
@@ -214,7 +216,7 @@
                                     </td>
                                     <td>
                                         <span class="  font-bold">
-                                            {{product?.brand?.name}} 
+                                            {{product?.brand?.name}}
                                         </span>
                                     </td>
                                     <td>
@@ -222,7 +224,7 @@
                                             {{product.price*product.qty}} {{jod}}
                                         </span>
                                     </td>
-                                  
+
                                     <td>
                                         <span class="  font-bold">
                                             <button pButton pRipple type="button" (click)="deleteValue(s,'prod')"
@@ -234,7 +236,7 @@
                             </ng-template>
                         </p-table>
                         <div class="text-xl text-primary font-bold pt-2">
-                            <span>{{'Price'|translate}}: {{getTotalPrice().products}} {{jod}}</span>
+                            <span>{{'Price'|translate}}: {{getTotalPrice()?.products}} {{jod}}</span>
                         </div>
                     </div>
                 </div>
@@ -267,6 +269,20 @@
     </div>
 </app-modal>
 
+<app-modal [(display)]="showEmployiesDialog" [title]="title" class="modal-sm">
+    <div body>
+        <p-dropdown *ngIf="!employeeMode" [required]="true" appendTo="body" [filter]="true" [options]="users"
+            [placeholder]="'Select a Employee'|translate" (onChange)="selectEmployees($event.value)"
+            optionLabel="username"></p-dropdown>
+
+
+    </div>
+    <div footer>
+        <button (click)="showEmployiesDialog=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"
+            icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
+    </div>
+</app-modal>
+
 
 
 <app-modal [(display)]="toOrderDialog" title="Convert To Order" class="modal-md">
@@ -295,14 +311,13 @@
                     </span>
 
                     <span *ngIf="discountMode =='price'">
-                        <p-inputNumber [min]="0" *ngIf="appointment.discountType == 'cash'"
-                            name="discount" [(ngModel)]="appointment.discount"
-                            (onFocus)="$event.target.select()" (keydown)="onKeyEnter($event)"
-                            mode="decimal" [minFractionDigits]="2"></p-inputNumber>
+                        <p-inputNumber [min]="0" *ngIf="appointment.discountType == 'cash'" name="discount"
+                            [(ngModel)]="appointment.discount" (onFocus)="$event.target.select()"
+                            (keydown)="onKeyEnter($event)" mode="decimal" [minFractionDigits]="2"></p-inputNumber>
 
-                        <p-inputNumber [min]="0" *ngIf="appointment.discountType == 'percent'"
-                            prefix="%" name="discount" (keydown)="onKeyEnter($event)"
-                            [(ngModel)]="appointment.discount" [max]="100"></p-inputNumber>
+                        <p-inputNumber [min]="0" *ngIf="appointment.discountType == 'percent'" prefix="%"
+                            name="discount" (keydown)="onKeyEnter($event)" [(ngModel)]="appointment.discount"
+                            [max]="100"></p-inputNumber>
                     </span>
                     <span *ngIf="discountMode =='show'" (click)="discountMode ='type'">
                         <span *ngIf="appointment.discountType =='cash'">
@@ -320,8 +335,7 @@
                     <span class="pointer" *ngIf="!cashMode" (click)="cashMode=true">
                         {{appointment.cash}} {{jod}}</span>
                     <span *ngIf="cashMode">
-                        <input [(ngModel)]="appointment.cash" type="number"
-                            (keydown)="onKeyEnter($event,'cash')"
+                        <input [(ngModel)]="appointment.cash" type="number" (keydown)="onKeyEnter($event,'cash')"
                             placeholder="{{'Enter'|translate}} Cash" name="Cash" pInputText />
                     </span>
                 </th>
@@ -338,7 +352,7 @@
     <div footer>
         <button (click)="toOrderDialog=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"
             icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
-        <button (click)="addOrder()" pButton pRipple type="button" label=" {{'Save' |translate}}"
+        <button (click)="addOrder()" [disabled]="!appointment.payBy" pButton pRipple type="button" label=" {{'Save' |translate}}"
             class="p-button-primary"></button>
     </div>
 </app-modal>

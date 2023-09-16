@@ -16,6 +16,7 @@ export class NotificationsComponent extends BaseComponent implements OnInit {
     private confirmationService: ConfirmationService, private settingsService: SettingsService) { super(messageService, translates) }
   appointments = []
   orders = []
+  group = []
   bodyDialog: boolean = false
   info: boolean = false
   editMode: boolean = false
@@ -34,6 +35,12 @@ export class NotificationsComponent extends BaseComponent implements OnInit {
         this.tabSelected = 'order'
       }
     },
+    {
+      label: this.trans('Group messages'),
+      command: event => {
+        this.tabSelected = 'group'
+      }
+    },
   ]
   ngOnInit(): void {
     this.getNotfi()
@@ -47,6 +54,7 @@ export class NotificationsComponent extends BaseComponent implements OnInit {
       this.loading=false
       this.appointments = results.data.filter(x => x.attributes.type == 'Appointment')
       this.orders = results.data.filter(x => x.attributes.type == 'Orders')
+      this.group = results.data.filter(x => x.attributes.type == 'Group')
       subscription.unsubscribe()
     }, error => {
       this.loading=false
@@ -120,7 +128,7 @@ export class NotificationsComponent extends BaseComponent implements OnInit {
     this.selectedBody.body=notfi.attributes.body
     this.selectedBody.type=notfi.attributes.type
     this.selectedBody.id=notfi.id
-    console.log(this.selectedBody);
+    console.log(notfi);
 
   }
   confirmDelete() {

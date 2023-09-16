@@ -38,13 +38,6 @@ export class CalenderService {
           lastName: appointment.lastName,
         },
         phone: appointment.phone,
-        services: appointment.services.map(serv => {
-          return {
-            ar: serv.ar,
-            en: serv.en,
-            price: serv.price,
-          }
-        }),
         products: appointment.products.map((prod: Products) => {
           return {
             name: prod.name,
@@ -53,7 +46,7 @@ export class CalenderService {
             brand: prod.brand,
           }
         }),
-        employee: appointment?.employee?.id,
+        employee: appointment?.employee,
         approved: true,
         hide: false,
         appoBy: this.userAuth.username,
@@ -93,13 +86,7 @@ export class CalenderService {
           lastName: appointment.lastName,
         },
         phone: appointment.phone,
-        services: appointment.services.map(serv => {
-          return {
-            ar: serv.ar,
-            en: serv.en,
-            price: serv.price,
-          }
-        }),
+       
         products: appointment.products.map((prod: Products) => {
           return {
             name: prod.name,
@@ -108,7 +95,7 @@ export class CalenderService {
             brand: prod.brand,
           }
         }),
-        employee: appointment?.employee?.id,
+        employee: appointment?.employee,
       }
     }
     return this.api.put<Appointment>(`/appointments/${appointment.id}`, body);

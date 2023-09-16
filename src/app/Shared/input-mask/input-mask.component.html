@@ -5,22 +5,16 @@
                 {{title}}
                 <span *ngIf=" required && !innervalue" style="color: var(--danger) !important">*</span>
             </div>
-            <div *ngIf="multiPhone">
-                <i class="pi pi-plus-circle pointer" (click)="openPhone()" style="color: green"></i>
-
-            </div>
         </div>
     </ng-container>
-    <div *ngFor="let no of innervalue;let i =index" >
     <span [class]=" lang =='ar'?'p-input-icon-left':'p-input-icon-right '" style="width: 100%; padding-bottom: 5px;">
         <i *ngIf="loading=='pros'" class='pi pi-spin pi-spinner'></i>
         <i *ngIf="loading=='ok'" class="pi pi-check text-primary"></i>
         <i *ngIf="loading=='no'" class="pi pi-info-circle" style="color: var(--danger) !important;"
             pTooltip="{{'This number is Forbidden'|translate}}" showDelay="500" tooltipPosition="bottom"></i>
-        <p-inputMask mask="999-999-999-999" (onComplete)="checkForbidenNumber($event);pushValue()"
-            [class]="loading=='no'?'ng-invalid ng-dirty':''"  [(ngModel)]="valuePhone" 
+        <p-inputMask mask="999-999-999-999" (onComplete)="checkForbidenNumber()"
+            [class]="loading=='no'?'ng-invalid ng-dirty':''"  [(ngModel)]="value" 
             placeholder="962-999-999-999"></p-inputMask>
 
     </span>
-</div>
 </div>

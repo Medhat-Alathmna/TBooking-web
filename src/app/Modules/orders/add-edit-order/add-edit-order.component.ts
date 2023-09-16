@@ -97,8 +97,10 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
     let total = 0
     let serviceAmount: number = 0
     let productsAmount: number = 0
-    this.selectedOrder.attributes.services?.map(x => {
-      serviceAmount += x.price
+    this.selectedOrder.attributes.employee?.map(x => {
+      x.services?.map(rs => {
+        serviceAmount += rs?.price
+      })
     })
     this.selectedOrder.attributes.products?.map(x => {
       productsAmount += x.price * x.qty

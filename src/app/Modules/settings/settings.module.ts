@@ -11,6 +11,7 @@ import { InputComponent } from 'src/app/Shared/input/input.component';
 import { TextAreaComponent } from 'src/app/Shared/text-area/text-area.component';
 import { ForbiddenNumbersComponent } from './forbidden-numbers/forbidden-numbers.component';
 import { InputMaskComponent } from 'src/app/Shared/input-mask/input-mask.component';
+import { GroupMessagesComponent } from './notifications/group-messages/group-messages.component';
 
 
 export const routes: Routes = [
@@ -21,7 +22,8 @@ export const routes: Routes = [
   declarations: [
     SettingsMainComponent,
     NotificationsComponent,
-    ForbiddenNumbersComponent
+    ForbiddenNumbersComponent,
+    GroupMessagesComponent
   ],
   imports: [
     CommonModule,

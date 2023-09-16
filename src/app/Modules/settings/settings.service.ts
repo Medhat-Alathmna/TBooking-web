@@ -47,6 +47,10 @@ export class SettingsService {
   checkForbidNumbers(number): Observable<any[]> {
     return this.api.get<any[]>(`forbidden-numbers?filters[number][$contains]=${number}`);
   }
+
+  getPhoneGroup(): Observable<any[]> {
+    return this.api.get<any[]>(`numbers`);
+  }
   createForbidNumbers(forbid: any): Observable<any> {
     let body = {
       data: {
