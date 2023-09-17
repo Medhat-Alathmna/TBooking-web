@@ -1,0 +1,37 @@
+
+<div class="grid mx-3">
+    <div class="col-12">
+    <h5>Menu Type</h5>
+    <div class="field-radiobutton">
+        <p-radioButton name="menuMode" value="horizontal" [(ngModel)]="app.menuMode" inputId="mode1"
+                       (onClick)="app.menuTheme = app.topbarTheme; appMain.sidebarStatic = false; appMain.sidebarActive = false"></p-radioButton>
+        <label for="mode1" class="font-bold text-md px-2">Horizontal</label>
+    </div>
+    <div class="field-radiobutton">
+        <p-radioButton name="menuMode" value="slim" [(ngModel)]="app.menuMode" inputId="mode3" (onClick)="appMain.sidebarStatic = false; appMain.sidebarActive = false"></p-radioButton>
+        <label for="mode3" class="font-bold text-md px-2">Slim</label>
+    </div>
+
+    <hr />
+
+    <h5>Color Scheme</h5>
+    <div class="field-radiobutton">
+        <p-radioButton name="darkMode" value="light" [(ngModel)]="app.darkMode" inputId="darkMode1"
+                        (onClick)="changeColorScheme('light')"></p-radioButton>
+        <label for="darkMode1" class="font-bold text-md px-2">Light</label>
+    </div>
+    <div class="field-radiobutton">
+        <p-radioButton name="darkMode" value="dark" [(ngModel)]="app.darkMode" inputId="darkMode2"
+                        (onClick)="changeColorScheme('dark')"></p-radioButton>
+        <label for="darkMode2" class="font-bold text-md px-2">Dark</label>
+    </div>
+</div>
+    <hr />
+    <h5>Theme Colors</h5>
+    <div class="layout-themes">
+        <div *ngFor="let t of themes">
+            <a style="cursor: pointer" (click)="changeTheme(t.name)" [ngStyle]="{'background-color': t.color}">
+            </a>
+        </div>
+    </div>
+    </div>

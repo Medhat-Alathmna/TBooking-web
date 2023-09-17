@@ -10,7 +10,7 @@ import * as moment from 'moment';
 export class GroupMessagesComponent implements OnInit {
 
   selectedPhones = []
-  selectedBody: string
+  selectedBody: any
   phones = []
   showMessagesDialog: boolean = false
 
@@ -48,12 +48,7 @@ export class GroupMessagesComponent implements OnInit {
     return  el.phone
     })
     const phoneNumbers = this.selectedPhones.join(',');
-
-    console.log(phoneNumbers);
-    console.log(this.selectedBody);
-    
-
-    window.open(`https://web.whatsapp.com/send?phones=${phoneNumbers}&text=${this.selectedBody}`, "_blank")
+    window.open(`https://web.whatsapp.com/send?phones=${phoneNumbers}&text=${this.selectedBody.attributes.body}`, "_blank")
 
   }
 }

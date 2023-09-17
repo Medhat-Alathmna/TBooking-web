@@ -10,12 +10,9 @@
     </div>
     <div class="sm-col-12 md:col-8 lg:col-10">
         <div class="card p-0  ">
-            <div *ngIf="selectedView =='Site Settings'" class="overflow-y-auto" style="height:calc( 90vh - 100px);">
-
-                
-            </div>
             <app-notifications *ngIf="selectedView =='Notifications'" ></app-notifications>
             <app-forbidden-numbers *ngIf="selectedView =='Forbidden Numbers'"></app-forbidden-numbers>
+            <app-site-settings class="overflow-y-auto" style="height:calc( 90vh - 100px);" *ngIf="selectedView =='Site Settings'"></app-site-settings>
         </div>
     </div>
 </div>

@@ -9,41 +9,43 @@ import { BaseComponent } from 'src/app/core/base/base.component';
   styleUrls: ['./settings-main.component.scss']
 })
 export class SettingsMainComponent extends BaseComponent implements OnInit {
-  items: any[] = [
-    {
-      id: 0, label: 'Site Settings', styleClass: 'active', icon: this.angleIcon() + ' px-2',
-      command: (event) => {
-        this.selectedView = 'Site Settings';
-        this.selectActiveMenu(event?.item?.id)
-
-      }
-    },
-    {
-      id: 1, label: 'Notifications', styleClass: 'active', icon: this.angleIcon() + ' px-2',
-      command: (event) => {
-        this.selectedView = 'Notifications'
-        this.selectActiveMenu(event?.item?.id)
-
-      }
-    }
-    ,
-    {
-      id: 2, label: 'Forbidden Numbers', styleClass: 'active', icon: this.angleIcon() + ' px-2',
-      command: (event) => {
-        this.selectedView = 'Forbidden Numbers'
-        this.selectActiveMenu(event?.item?.id)
-
-      }
-    }
-  ]
-  selectedView = 'Notifications'
+  items: any[] = []
+  selectedView = 'Site Settings'
   currentIndex = 0
   currentIndexModule = 0
 
   constructor(public translates: TranslateService, public messageService: MessageService,) { super(messageService, translates) }
 
   ngOnInit(): void {
-    this.selectActiveMenu(1)
+    this.items=[
+      {
+        id: 0, label: 'Site Settings', styleClass: 'active', icon: this.angleIcon() + ' px-2',
+        command: (event) => {
+          this.selectedView = 'Site Settings';
+          this.selectActiveMenu(event?.item?.id)
+  
+        }
+      },
+      {
+        id: 1, label: 'Notifications', styleClass: 'active', icon: this.angleIcon() + ' px-2',
+        command: (event) => {
+          this.selectedView = 'Notifications'
+          this.selectActiveMenu(event?.item?.id)
+  
+        }
+      }
+      ,
+      {
+        id: 2, label: 'Forbidden Numbers', styleClass: 'active', icon: this.angleIcon() + ' px-2',
+        command: (event) => {
+          this.selectedView = 'Forbidden Numbers'
+          this.selectActiveMenu(event?.item?.id)
+  
+        }
+      }
+    ]
+    this.selectActiveMenu(0)
+  
   }
 
   angleIcon() {
@@ -56,13 +58,7 @@ export class SettingsMainComponent extends BaseComponent implements OnInit {
     this.items[Number(this.currentIndex)].styleClass = ''
     this.items[Number(index)].styleClass = 'active'
     this.currentIndex = index
-    if (index != 1) {
-      this.items[1].expanded = false
-      if (this.items[1]?.items?.length) {
-        this.items[1].items[this.currentIndexModule].styleClass = ''
 
-      }
-    }
   }
 
   activeMenu(event) {
