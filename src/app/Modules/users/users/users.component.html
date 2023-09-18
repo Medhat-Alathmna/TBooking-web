@@ -1,12 +1,12 @@
 <app-loading *ngIf="loading" display="full"></app-loading>
 <p-toast position="top-right"></p-toast>
-<div style="height:calc(100vh - 68px) ;" class="  pt-0 card ">
+<div style="height:calc(100vh - 80px) ;" class="  pt-0 card ">
     <p-tabMenu class="col-12" [model]="tabIndex" [activeItem]="tabIndex[0]"></p-tabMenu>
     <div *ngIf="tabSelected=='users'" class=" grid col-12">
 
-        <p-table #kt [value]="users" (onPage)="getUsers(($event?.first/rowNum)+1)"
-        [paginator]="true" [rows]='rowNum' currentPageReportTemplate="Showing {first} to {last} entries"
-        [scrollable]="true" [tableStyle]="{'width.%': 100}" scrollHeight="80vh">
+        <p-table #kt [value]="users"
+        currentPageReportTemplate="Showing {first} to {last} entries"
+        [scrollable]="true" [tableStyle]="{'width.%': 100}" scrollHeight="70vh">
             <ng-template pTemplate="caption">
                 <div class="flex align-items-center justify-content-between">
                     <div>

@@ -74,7 +74,6 @@ export class OrdersComponent extends BaseComponent implements OnInit {
       if (!isSet(results)) {
         return
       }
-      console.log(results);
       const clone=results.data
       this.total=results.meta.pagination.total
       if (!isSet(this.orders)) {

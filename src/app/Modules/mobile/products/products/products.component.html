@@ -1,7 +1,7 @@
 <app-loading *ngIf="loading" display="full"></app-loading>
 
 <div class="grid card h-full">
-    <p-table #kt [value]="products" 
+    <p-table #kt [value]="products"  (onPage)="getProducts(($event?.first/rowNum)+1)"
     [paginator]="true" [rows]='rowNum' currentPageReportTemplate="Showing {first} to {last} entries"
     [scrollable]="true" [tableStyle]="{'width.%': 100}" scrollHeight="80vh">
         <ng-template pTemplate="caption">

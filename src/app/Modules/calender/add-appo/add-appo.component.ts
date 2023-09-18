@@ -53,7 +53,8 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   acions: any[] = []
   services: Services[] = []
   Products: Products[] = []
-  selectEmployee: any
+  selectEmployee: any 
+  newEmpe: any 
   selectServices: Services[] = []
   selectProducts: Products[] = []
   notfiItems: any = []
@@ -202,7 +203,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   showAddNewEmp(type) {
     this.showEmployiesDialog = true
 
-    this.newValue = ''
+    this.newValue = null
   }
 
   selectEmployees(event) {
@@ -211,6 +212,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     this.appointment.employee.push(event)
     this.showAddValue = false
     this.showEmployiesDialog = false
+    this.newEmpe = null
   }
   selectService() {
     if (!isSet(this.selectServices)) {
@@ -221,7 +223,6 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       this.errorMessage(this.trans('This Service Already Selected'))
       return
     }
-
     this.appointment.employee[this.selectEmployee].services.push({
       id: this.newValue?.id,
       ar: this.newValue?.ar,
@@ -229,12 +230,6 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       price: this.newValue?.price
     }
     );
-    // this.appointment.employee[index].push(data)
-
-
-
-    console.log(this.appointment.employee[this.selectEmployee].services);
-
     this.showAddValue = false
   }
   selectProduct() {
@@ -496,8 +491,6 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     if (!this.appointment.employee) {
       this.errorMessage('Please choose Employee !')
     }
-    console.log(this.appointment.payBy);
-
     this.loading = true
     const subscription = this.orderService.addOrder(this.appointment, this.orderNo, this.getTotalPrice(), this.id).subscribe((data) => {
       if (!isSet(data)) {

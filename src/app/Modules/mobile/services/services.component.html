@@ -28,7 +28,33 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th translate>Services EN</th>
+                    <th translate >Services EN 
+                        <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
+                        [ngClass]="fillterFildes?.name?.status?'status-filter':null" type="text" field="id"
+                        matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
+                        [showAddButton]="false">
+                        <ng-template pTemplate="filter">
+                            <div class="mt-3">
+                                <input [disabled]="fillterFildes?.en?.status" [(ngModel)]="fillterFildes.en.value"
+                                    type="text" pInputText>
+                            </div>
+                            <div class="grid mt-2">
+                                <div class="col-6">
+                                    <button pButton label='Clear' class="p-button-outlined"
+                                        (click)="fillterFildes.en.value=null;fillterFildes.en.status=flase;clearAllFillter()"
+                                        type="button">
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button pButton [disabled]="!fillterFildes.en.value" label='Apply'
+                                        (click)="fillterFildes.en.name='en';fillterFildes.en.status=true;fillterFildes.en.type='$contains';listServices(1,fillterFildes?.en)"
+                                        type="button">
+                                    </button>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-columnFilter>
+                    </th>
                     <th translate>Services AR</th>
                     <th translate>Price</th>
                     <th style="width: 10% !important" translate>Actions</th>

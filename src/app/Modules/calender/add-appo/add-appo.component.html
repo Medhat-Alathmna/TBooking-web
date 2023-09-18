@@ -269,10 +269,10 @@
     </div>
 </app-modal>
 
-<app-modal [(display)]="showEmployiesDialog" [title]="title" class="modal-sm">
+<app-modal [(display)]="showEmployiesDialog" title="{{'Add Employee'|translate}}" class="modal-sm">
     <div body>
-        <p-dropdown *ngIf="!employeeMode" [required]="true" appendTo="body" [filter]="true" [options]="users"
-            [placeholder]="'Select a Employee'|translate" (onChange)="selectEmployees($event.value)"
+        <p-dropdown *ngIf="!employeeMode" appendTo="body" [filter]="true" [options]="users"
+            [placeholder]="'Select a Employee'|translate"  [(ngModel)]="newEmpe"  (onChange)="selectEmployees($event.value)"
             optionLabel="username"></p-dropdown>
 
 

@@ -118,19 +118,36 @@
                         showDelay="1000" hideDelay="1000" tooltipPosition="bottom" [class]="body.status">{{body.status |translate}} </span>
                 </ng-template>
                 <ng-template pTemplate="content">
-                    <div *ngFor="let item of body.services;let i =index "
-                    class="flex justify-content-between flex-wrap mb-2">
-                    <div class=" text-base font-semibold "
-                        style="display: flex;align-items: center;justify-content: space-around;width: 23vw">
-                        <div class="pi pi-circle-fill text-primary text-xs pt-2"></div>
-                        <span class="  font-bold "> {{item[lang]}} </span>
-                        <span class="  font-bold">
-                            <input type="number" name="price{{i}}" pInputText [(ngModel)]="item.price" disabled />
+                    <div class="block my-1" *ngFor="let item of body?.appointment?.employee;let i =index ">
+                        <ng-container>
+                            <div class="text-lg font-semibold mb-2" translate>
+                                Employee
+                            </div>
+                        </ng-container>
+                        <div class="flex">
+                            <div class="block" style="width: 75%;">
+                                <p-button *ngIf="item" [label]="item?.username" [style]="{'width': '50%'}"
+                                    (click)="employeeMode=false"
+                                    styleClass="p-button-outlined p-button-success"></p-button>
+                            </div>
+                           
+                        </div>
+                        <div *ngIf="item.services" class="mt-3 mx-2">
+                            <div *ngFor="let ser of item.services;let c =index " class="flex justify-content-between flex-wrap mb-2">
+                                <div class=" text-base font-semibold justify-content-between"
+                                    style="display: flex;align-items: center;justify-content: space-around;width: 23vw">
+                                    <div class="pi pi-circle-fill text-primary text-xs pt-2"></div>
+                                    <span class="  font-bold "> {{ser[lang]}} </span>
+                                    <span class="  font-bold">
+                                        <input type="number" disabled name="price{{i}}{{c}}" pInputText [(ngModel)]="ser.price" />
 
-                        </span>
+                                    </span>
+                                </div>
+                             
+                            </div>
+                            <p-divider *ngIf="item.services.length"></p-divider>
+                        </div>
                     </div>
-                   
-                </div>
                 <p-divider *ngIf="body.products?.length"></p-divider>
                         <div *ngIf="body.products?.length" class="mt-3">
                             <p-table [value]="body.products" [tableStyle]="{'width.%': 100}">

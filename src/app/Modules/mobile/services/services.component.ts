@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Services } from 'src/app/modals/service';
 import { CalenderService } from '../../calender/calender.service';
+import { Filter } from 'src/app/modals/filter';
 
 
 @Component({
@@ -36,6 +37,32 @@ export class MobileComponent extends BaseComponent implements OnInit {
         this.tabSelected = 'products'
       }
     }
+  ]
+
+  fillterFildes = {
+    en: new Filter(),
+    ar: new Filter(),
+    price: new Filter(),
+  }
+  queryTypes = [
+
+    {
+      type: 'Not Equal',
+      value: '$ne'
+    },
+    {
+      type: 'Equal',
+      value: '$eq'
+    },
+    {
+      type: 'Less than',
+      value: '$lt'
+    },
+    {
+      type: 'Greater Than',
+      value: '$gt'
+    },
+
   ]
 
   @ViewChild('kt') table: any;
@@ -157,6 +184,14 @@ export class MobileComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     })
   }
-
+  clearAllFillter() {
+    this.fillterFildes = {
+      en: new Filter(),
+    ar: new Filter(),
+    price: new Filter(),
+    }
+    this.calenderService.queryFilters = []
+    this.listServices(1, null)
+  }
 
 }

@@ -52,39 +52,8 @@ export class UsersComponent extends BaseComponent implements OnInit {
       if (!isSet(results)) {
         return
       }
-      console.log(results);
-      
-      const clone=results
-      if (!isSet(this.users)) {
-        this.users = Array(this.total).fill(0)
-      }
-      if (clone.length < this.rowNum) {
-        for (let index = clone.length; index < this.rowNum; index++) {
-          clone[index] = null
-        }
-      }
-      //
-      if (!isSet(pageNum)) {
-        clone.map((item, index) => {
-          this.users[index] = item
-        })
+      this.users=results
 
-      } else {
-        const currentPage = pageNum * this.rowNum
-        let cloneObjIndex = 0
-        for (let index = currentPage - this.rowNum; index < currentPage; index++) {
-          this.users[index] = clone[cloneObjIndex++]
-        }
-      }
-      //
-      if (!isSet(this.users?.next)) {
-        this.users = this.users.filter(item => {
-          return isSet(item)
-        })
-      }
-      setTimeout(() => {
-        this.table.first = pageNum > 1 ? (pageNum - 1) * this.rowNum : 0
-      });
       subscription.unsubscribe()
     }, error => {
       this.loading = false
