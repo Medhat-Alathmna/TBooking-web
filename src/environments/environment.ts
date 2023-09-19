@@ -6,6 +6,8 @@ export const environment = {
   production: false,
   // apiUrl: 'http://luxury.tamimysoft.com/api'
   // apiUrl: 'https://lobster-app-ua5mr.ondigitalocean.app/api'
+  // apiUrl: 'https://octopus-app-9koya.ondigitalocean.app/api'
+
   apiUrl: 'http://localhost:1337/api'
 };
 

@@ -208,7 +208,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
 
   selectEmployees(event) {
     console.log(event);
-
+    if (!this.appointment.employee) this.appointment.employee=[]
     this.appointment.employee.push(event)
     this.showAddValue = false
     this.showEmployiesDialog = false
@@ -292,13 +292,10 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     }
   }
   addAppominet() {
-    console.log(this.appointment);
-
     this.appointment.deposit = !this.appointment.deposit ? 0 : this.appointment.deposit
     this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
     this.appointment.products = this.selectProducts
-
     this.loading = true
     const subscription = this.calenderService.addAppominets(this.appointment).subscribe((data) => {
       if (!isSet(data)) {
@@ -307,7 +304,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       if (this.selectProducts.length) {
         this.selectProducts.map(prod => {
           console.log(prod);
-
+  
           this.updateProduct(prod, prod.id)
         })
       }
@@ -321,12 +318,10 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     })
   }
   updateAppominet() {
-
     this.appointment.id = this.id
     this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
     this.appointment.products = this.selectProducts
-
     this.loading = true
     const subscription = this.calenderService.updateAppointemt(this.appointment).subscribe((data) => {
       if (!isSet(data)) {

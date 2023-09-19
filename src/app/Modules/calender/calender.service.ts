@@ -40,6 +40,7 @@ export class CalenderService {
         phone: appointment.phone,
         products: appointment.products.map((prod: Products) => {
           return {
+            id:prod.id,
             name: prod.name,
             qty: prod.qty,
             price: prod.price,
@@ -89,6 +90,7 @@ export class CalenderService {
        
         products: appointment.products.map((prod: Products) => {
           return {
+            id:prod.id,
             name: prod.name,
             qty: prod.qty,
             price: prod.price,
@@ -183,6 +185,7 @@ export class CalenderService {
   }
 
   updateProduct(product: Products,id): Observable<any> {
+    
     let body = {
       data: {
         stocks: product?.stocks-product.qty,
