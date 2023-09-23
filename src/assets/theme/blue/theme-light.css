@@ -7638,3 +7638,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 .p-datatable table {
   border: solid 1px #e7e7e7 !important;
 }
+.ContorlPanal-menu {
+  border: 1px solid #dcd8d8 !important;
+  background-color: #fff;
+}

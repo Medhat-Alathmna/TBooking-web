@@ -42,6 +42,8 @@ export class HttpsInterceptor extends BaseComponent implements HttpInterceptor {
                (err: any) => {
                   if (err.status == 500) {
                      this.errorMessage(this.trans('Server Side Error'))
+                  }if(err.status == 401){
+                     return
                   } else {
                      console.log(err);
                      

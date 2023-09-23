@@ -48,8 +48,6 @@ export class LoginComponent extends BaseComponent implements OnInit {
   landingPage: any
   primaryColor: any
   ngOnInit(): void {
-    console.log(JSON.parse(localStorage.getItem('userAuth')));
-
     window.addEventListener('keydown', (event: KeyboardEvent) => {
       if (event.keyCode === 13) {
         this.login()

@@ -207,9 +207,15 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   }
 
   selectEmployees(event) {
-    console.log(event);
     if (!this.appointment.employee) this.appointment.employee=[]
-    this.appointment.employee.push(event)
+    for (const employee of this.appointment.employee) {
+      if (employee.username === event.username) {
+        this.newEmpe = null
+        this.errorMessage(this.trans('This employee has already been selected'))
+        return;
+      }
+    }  
+      this.appointment.employee.push(event)
     this.showAddValue = false
     this.showEmployiesDialog = false
     this.newEmpe = null

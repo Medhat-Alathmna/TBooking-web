@@ -5346,6 +5346,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 .p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link:not(.p-disabled):hover .p-submenu-icon {
   color: #EAEBEC;
 }
+
 .p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link:focus {
   outline: 0 none;
   outline-offset: 0;
@@ -6235,4 +6236,8 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 /* Add your customizations of the theme styles here */
 .fc.fc-theme-standard .fc-highlight {
   background: rgba(186, 230, 255, 0.1);
+}
+.ContorlPanal-menu {
+  border: 1px solid #293241 !important;
+  background-color: #293241;
 }
