@@ -22,7 +22,6 @@ import { InputMaskComponent } from 'src/app/Shared/input-mask/input-mask.compone
 import { ModalComponent } from 'src/app/Shared/modal/modal.component';
 import { OrdersService } from '../../orders/orders.service';
 import { SettingsService } from '../../settings/settings.service';
-import { th } from 'date-fns/locale';
 import { Services } from 'src/app/modals/service';
 import { Products } from 'src/app/modals/products';
 import { PayByComponent } from 'src/app/Shared/pay-by/pay-by.component';
@@ -324,6 +323,14 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     })
   }
   updateAppominet() {
+    console.log(this.userAuth.username);
+    console.log(this.appointment?.appoBy);
+    console.log((this.userAuth.username != this.appointment?.appoBy)&&(this.role?.name != 'Admin'));
+    
+    if ((this.userAuth.username != this.appointment?.appoBy)&&(this.role?.name != 'Admin')) {
+      this.errorMessage(this.trans('You do not have permission to modify this appointment'))
+      return
+    }
     this.appointment.id = this.id
     this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()

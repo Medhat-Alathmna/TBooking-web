@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
     this.getLang()
     // this.getColors()
 
-  }
+  } 
 
   getLang() {
     if (!localStorage.getItem('currentLang')) {

@@ -121,7 +121,7 @@
                             showIcon="true" [title]="'Start Date'|translate"></app-calender>
                     </div>
                     <div>
-                        <app-calender [(ngModel)]="appointment.toDate" [stepMinute]='15'
+                        <app-calender [(ngModel)]="appointment.toDate" [stepMinute]='15' 
                             (ngModelChange)="finishDateChange()" [timeOnly]="true" [showTime]="true" [required]="true"
                             name="toDate" showIcon="true" [title]="'Finish Date'|translate"></app-calender>
                     </div>

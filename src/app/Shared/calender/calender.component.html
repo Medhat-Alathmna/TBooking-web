@@ -3,6 +3,6 @@
         <span *ngIf="required && !value" style="color: var(--danger) !important">*</span>
     </div>
     <p-calendar dateFormat="mm-dd-yy" [disabled]="disabled" [inputStyleClass]="'css.dir-ltr'|translate" [showTime]="showTime" [stepMinute]="stepMinute"
-        [timeOnly]="timeOnly" hourFormat="12" [showIcon]="showIcon" appendTo="body" [(ngModel)]="value"
+        [timeOnly]="timeOnly" hourFormat="12" [showIcon]="showIcon" appendTo="body" [(ngModel)]="value" readonlyInput="true"
         [required]="required" type="text" placeholder="{{'Enter'|translate}} {{title}}" [name]="title"> </p-calendar>
 </div>
