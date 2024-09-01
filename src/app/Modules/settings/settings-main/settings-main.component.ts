@@ -17,13 +17,13 @@ export class SettingsMainComponent extends BaseComponent implements OnInit {
   constructor(public translates: TranslateService, public messageService: MessageService,) { super(messageService, translates) }
 
   ngOnInit(): void {
-    this.items=[
+    this.items = [
       {
         id: 0, label: 'Site Settings', styleClass: 'active', icon: this.angleIcon() + ' px-2',
         command: (event) => {
           this.selectedView = 'Site Settings';
           this.selectActiveMenu(event?.item?.id)
-  
+
         }
       },
       {
@@ -31,7 +31,7 @@ export class SettingsMainComponent extends BaseComponent implements OnInit {
         command: (event) => {
           this.selectedView = 'Notifications'
           this.selectActiveMenu(event?.item?.id)
-  
+
         }
       }
       ,
@@ -40,12 +40,14 @@ export class SettingsMainComponent extends BaseComponent implements OnInit {
         command: (event) => {
           this.selectedView = 'Forbidden Numbers'
           this.selectActiveMenu(event?.item?.id)
-  
+
         }
       }
     ]
     this.selectActiveMenu(0)
-  
+    this.items.map(item => {
+      item.label = this.trans(item.label)
+    })
   }
 
   angleIcon() {

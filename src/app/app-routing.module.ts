@@ -6,13 +6,14 @@ import { AppNotfoundComponent } from './Layout/NotFound/app.notfound.component';
 import { AuthModule } from './Modules/auth/auth.module';
 import { AuthGuard } from './Modules/auth/guards/auth.guard';
 import { HomeModule } from './Modules/home/home.module';
-import { MobileModule } from './Modules/mobile/services.module';
 import { CalenderModule } from './Modules/calender/calender.module';
 import { GuestGuard } from './Modules/auth/guards/guest.guard';
 import { UsersModule } from './Modules/users/users.module';
 import { OrdersModule } from './Modules/orders/orders.module';
 import { SettingsModule } from './Modules/settings/settings.module';
 import { DashboardModule } from './Modules/dashboard/dashboard.module';
+import { ProductsModule } from './Modules/products/services.module';
+import { MobileAppModule } from './Modules/mobile-app/mobile-app.module';
 
 
 
@@ -27,7 +28,8 @@ import { DashboardModule } from './Modules/dashboard/dashboard.module';
                 canActivate: [AuthGuard],
                 children: [
                     { path: '', loadChildren: () => HomeModule },
-                    { path: 'mobile', loadChildren: () => MobileModule },
+                    { path: 'products', loadChildren: () => ProductsModule },
+                    { path: 'mobile', loadChildren: () => MobileAppModule },
                     { path: 'calender', loadChildren: () => CalenderModule },
                     { path: 'users', loadChildren: () => UsersModule },
                     { path: 'orders', loadChildren: () => OrdersModule },

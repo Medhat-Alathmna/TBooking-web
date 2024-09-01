@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/core/api.service';
+import { Gallary } from 'src/app/modals/gallary';
 import { Services } from 'src/app/modals/service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MobileService {
+export class ProductsService {
   userAuth =JSON.parse(localStorage.getItem('userAuth'))?.user
 
 
@@ -27,6 +28,7 @@ export class MobileService {
     }
     return this.api.post<any>(`services`, body);
   }
+
 
   updateService(service: Services): Observable<any> {
     let body = {

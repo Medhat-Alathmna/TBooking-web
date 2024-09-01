@@ -10,8 +10,7 @@ import { AuthService } from '../auth.service';
 })
 export class AuthGuard implements CanActivate {
 
-  private activatedRoute: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
-  public activatedRouteEmitter: Observable<boolean> = this.activatedRoute.asObservable();
+
 
   constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService) {
 
@@ -22,7 +21,6 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): boolean {
 
     if (this.authData) {
-      this.activatedRoute.next(true)
       return true;
     } else {
       console.log(this.authData);

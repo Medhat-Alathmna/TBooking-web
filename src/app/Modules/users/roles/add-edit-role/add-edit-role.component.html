@@ -1,0 +1,87 @@
+<app-loading *ngIf="loading" display="full"></app-loading>
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog containerStyleClass="vw" acceptButtonStyleClass="p-button-danger"
+    acceptIcon="pi pi-trash"></p-confirmDialog>
+<app-sidebar [display]="display" (displayChange)="onHide()">
+    <div header>
+        <div class="flex justify-content-between flex-wrap ">
+            <div *ngIf="detailMode" class="flex align-items-center justify-content-center   ">
+                <div class="flex-initial flex align-items-center justify-content-center mx-2">
+                    <button pButton pRipple type="button" icon="pi pi-times" (click)="onHide()"
+                        class="p-button-rounded p-button-secondary p-button-lg p-button-text btn-white "></button>
+                </div>
+                <div class="flex align-items-center justify-content-center border-break"></div>
+                <div class="flex-initial flex align-items-center justify-content-center px-3">
+                    <i class="pi pi-calendar text-100 text-3xl " [class]="'css.mr-2'|translate"></i>
+                    <entity-viewer
+                        [entity]="{type:'text',title:'CREATION DATE' | translate,value:this.selectedRole.createdAt}"
+                        [darkMode]="true"></entity-viewer>
+                </div>
+            </div>
+            <div *ngIf="!detailMode" class="flex align-items-center justify-content-center   ">
+
+                <div class="flex-initial flex align-items-center justify-content-center mx-2">
+                    <button pButton (click)="onHide()" pRipple type="button" icon="pi pi-times"
+                        class="p-button-rounded p-button-secondary p-button-lg p-button-text btn-white "></button>
+                </div>
+                <div class="flex align-items-center justify-content-center border-break"></div>
+
+                <div class="flex-initial flex align-items-center justify-content-center px-3">
+                    <span class="text-3xl text-white " translate>Add Role </span>
+
+                </div>
+            </div>
+            <div class="flex align-items-center justify-content-center mx-2 ">
+                <div class="flex align-items-center justify-content-center mx-2 ">
+                    <button *ngIf="detailMode" (click)="menu.toggle($event)" pButton pRipple type="button"
+                        icon="pi pi-ellipsis-v"
+                        class="p-button-rounded mr-2 p-button-secondary p-button-lg p-button-text btn-white "></button>
+                  
+                    <button *ngIf="!detailMode" pButton
+                        [disabled]="form?.invalid || !selectedRole.role "
+                        pRipple type="button" [label]="'Save'|translate" icon="pi pi-check " (click)="createRole()"
+                        class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
+                    <button *ngIf="detailMode" pButton
+                        [disabled]=" !selectedRole.role" pRipple type="button"
+                        [label]="'Save'|translate" icon="pi pi-check " (click)="updateUser()"
+                        class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <form #form="ngForm" body class="px-5 ">
+        <div class="grid ">
+            <div class="col-12 pb-4">
+                <!-- <span class="text-3xl ont-semibold font-bold" translate>Role Details </span> -->
+            </div>
+            <div class="lg:col-6 sm:col-12">
+                <app-input [(ngModel)]="selectedRole.role" name="role" [title]="'Role Name'|translate"
+                    [required]="true"></app-input>
+            </div>
+            <div class="lg:col-6 sm:col-12">
+                <app-text-area [(ngModel)]="selectedRole.description" name="description" [title]="'Description'|translate"
+                    [required]="true"></app-text-area>
+            </div>
+
+            <div class="col-12 pb-4">
+                <span class="text-3xl ont-semibold font-bold" translate>Privileges</span>
+            </div>
+            <div class="grid pt-3">
+                <div class="col-12 flex" *ngFor="let prev of selectedRole.pages">
+                    <div class="col-5" style="text-align: start;">
+                        <h5 class="text-primary">{{prev?.name | translate}}</h5>
+                    </div>
+                    <div class="col-3" style="text-align: start;">
+                        <p-toggleButton onLabel="Allowed" offLabel="Rejected" onIcon="pi pi-check" offIcon="pi pi-times"
+                        name="isAllowed" 
+                            (onChange)="prev.isAllowed=!prev.isAllowed"></p-toggleButton>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+</app-sidebar>

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { BaseComponent, isSet } from 'src/app/core/base/base.component';
-import { MobileService } from '../services.service';
+import {  ProductsService } from '../services.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Services } from 'src/app/modals/service';
@@ -13,7 +13,7 @@ import { Filter } from 'src/app/modals/filter';
   templateUrl: './services.component.html',
   styleUrls: ['./services.component.scss']
 })
-export class MobileComponent extends BaseComponent implements OnInit {
+export class ServicesComponent extends BaseComponent implements OnInit {
 
   tabSelected = 'service'
   editMode:boolean=false
@@ -37,6 +37,7 @@ export class MobileComponent extends BaseComponent implements OnInit {
         this.tabSelected = 'products'
       }
     }
+
   ]
 
   fillterFildes = {
@@ -68,7 +69,7 @@ export class MobileComponent extends BaseComponent implements OnInit {
   @ViewChild('kt') table: any;
 
   constructor(public translates: TranslateService, public messageService: MessageService, private calenderService:CalenderService,
-     private mobileService: MobileService,private confirmationService: ConfirmationService) { super(messageService, translates) }
+     private mobileService: ProductsService,private confirmationService: ConfirmationService) { super(messageService, translates) }
 
   ngOnInit(): void {
     this.listServices()
@@ -166,11 +167,10 @@ export class MobileComponent extends BaseComponent implements OnInit {
 
   confirm1Delete(id) {
     this.confirmationService.confirm({
-        message: 'Are you sure that you want to delete this service ?',
-        header: 'Confirmation',
+        message: this.trans('Are you sure that you want to delete this service ?') ,
+        header:  this.trans('Confirmation'),
         icon: 'pi pi-exclamation-triangle',
-        accept: () => {this.deleteSerive(id) ;console.log(id);
-        },
+        accept: () => {this.deleteSerive(id)},
     });
   }
   deleteSerive(id){

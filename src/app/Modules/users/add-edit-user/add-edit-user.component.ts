@@ -53,6 +53,13 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
     }
     this.acions = [
       {
+        label: this.selectedUser.isToday ? 'UnAvilabale Today' : 'Available Today',
+        icon: 'pi pi-power-off',
+        command: () => {
+          this.userAvialble()
+        }
+      },
+      {
         label: this.selectedUser.blocked ? 'Activation' : 'Suspend',
         icon: 'pi pi-power-off',
         command: () => {
@@ -128,6 +135,23 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
     this.selectedUser.blocked = !this.selectedUser.blocked
     this.loading = true
     const subscription = this.userService.userStatus(this.selectedUser).subscribe((results: any) => {
+      this.loading = false
+      if (!isSet(results)) {
+        return
+      }
+      this.refreshLish.emit(true)
+      this.display = false
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+      console.log(error);
+      subscription.unsubscribe()
+    })
+  }
+  userAvialble() {
+    this.selectedUser.isToday = !this.selectedUser.isToday
+    this.loading = true
+    const subscription = this.userService.userAvialble(this.selectedUser).subscribe((results: any) => {
       this.loading = false
       if (!isSet(results)) {
         return

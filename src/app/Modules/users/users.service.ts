@@ -56,6 +56,13 @@ export class UsersService {
     }
     return this.api.put<UserInfo>(`/users/${user.id}`,body);
     }
+  userAvialble(user:UserInfo): Observable<UserInfo> {
+    let body={
+        isToday:user.isToday,
+      
+    }
+    return this.api.put<UserInfo>(`/users/${user.id}`,body);
+    }
 
 
 }

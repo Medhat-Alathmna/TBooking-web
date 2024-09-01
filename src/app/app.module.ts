@@ -61,11 +61,7 @@ import { AppComponent } from './app.component';
         AppFooterComponent,
     ],
     providers: [
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: HttpsInterceptor,
-            multi: true
-        },
+       
         { provide: LocationStrategy, useClass: PathLocationStrategy }
         , MenuService, ConfigService, DatePipe, MessageService, ConfirmationService,
         ConfigEnvironmentService,

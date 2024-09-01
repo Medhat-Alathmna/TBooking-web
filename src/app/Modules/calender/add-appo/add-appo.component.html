@@ -25,7 +25,7 @@
                         <i *ngIf="!appointment.approved" class="pi pi-times-circle text-100 text-3xl "></i>
                     </span>
                     <entity-viewer
-                        [entity]="{type:'text',title:'Approved'| translate,value:appointment.approved?'Yes':'No'}"
+                        [entity]="{type:'text',title:'Approved'| translate,value:appointment.approved ?('Yes'| translate):('No'| translate) }"
                         [darkMode]="true"></entity-viewer>
                 </div>
 
@@ -34,7 +34,7 @@
                     <span [class]="'css.mr-2'|translate">
                         <i class="pi pi-tags text-100 text-3xl "></i>
                     </span>
-                    <entity-viewer [entity]="{type:'text',title:'Status'| translate,value:appointment.status}"
+                    <entity-viewer [entity]="{type:'text',title:'Status'| translate,value:appointment.status| translate}"
                         [darkMode]="true"></entity-viewer>
                 </div>
 
@@ -150,7 +150,7 @@
                         </ng-container>
                         <div class="flex">
                             <div class="block" style="width: 75%;">
-                                <p-button *ngIf="item" [label]="item?.username" [style]="{'width': '50%'}"
+                                <p-button *ngIf="item" [label]="item?.username" [style]="{'width': '50%','cursor':'default'}"
                                     (click)="employeeMode=false"
                                     styleClass="p-button-outlined p-button-success"></p-button>
                             </div>
@@ -221,7 +221,7 @@
                                     </td>
                                     <td>
                                         <span class="  font-bold">
-                                            {{product.price*product.qty}} {{jod}}
+                                            {{product?.price*product?.qty}} {{jod}}
                                         </span>
                                     </td>
 
@@ -235,9 +235,9 @@
                                 </tr>
                             </ng-template>
                         </p-table>
-                        <div class="text-xl text-primary font-bold pt-2">
-                            <span>{{'Price'|translate}}: {{getTotalPrice()?.products}} {{jod}}</span>
-                        </div>
+                    </div>
+                    <div class="text-xl text-primary font-bold pt-2">
+                        <span>{{'Price'|translate}}: {{getTotalPrice()?.products}} {{jod}}</span>
                     </div>
                 </div>
             </div>

@@ -17,7 +17,6 @@ import { startOfHour, addMinutes, format } from 'date-fns';
 import { DatePipe } from '@angular/common';
 import { UsersService } from '../../users/users.service';
 import * as moment from 'moment';
-import { MobileService } from '../../mobile/services.service';
 import { InputMaskComponent } from 'src/app/Shared/input-mask/input-mask.component';
 import { ModalComponent } from 'src/app/Shared/modal/modal.component';
 import { OrdersService } from '../../orders/orders.service';
@@ -25,6 +24,7 @@ import { SettingsService } from '../../settings/settings.service';
 import { Services } from 'src/app/modals/service';
 import { Products } from 'src/app/modals/products';
 import { PayByComponent } from 'src/app/Shared/pay-by/pay-by.component';
+import { ProductsService } from '../../products/services.service';
 
 
 @Component({
@@ -84,7 +84,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
 
   constructor(public translates: TranslateService,
     public messageService: MessageService, private cd: ChangeDetectorRef, private calenderService: CalenderService, private settingsService: SettingsService,
-    private confirmationService: ConfirmationService, private mobileService: MobileService, private orderService: OrdersService
+    private confirmationService: ConfirmationService, private productsService: ProductsService, private orderService: OrdersService
   ) { super(messageService, translates) }
 
   ngOnInit(): void {
@@ -144,7 +144,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
         }
       ]
       if (!this.appointment.approved) {
-        this.acions.splice(1, 2)
+        this.acions.splice(1, 1)
       }
       if (this.appointment.status == 'Canceled') {
         this.acions = [
@@ -220,10 +220,10 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     this.newEmpe = null
   }
   selectService() {
-    if (!isSet(this.selectServices)) {
-      this.selectServices = []
+    if (!isSet(this.appointment.employee[this.selectEmployee].services)) {
+      this.appointment.employee[this.selectEmployee].services = []
     }
-    const existServ = this.selectServices.find(x => x.id == this.newValue.id)
+    const existServ =this.appointment.employee[this.selectEmployee].services.find(x => x.id == this.newValue.id)    
     if (existServ) {
       this.errorMessage(this.trans('This Service Already Selected'))
       return
@@ -306,13 +306,6 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       if (!isSet(data)) {
         return
       }
-      if (this.selectProducts.length) {
-        this.selectProducts.map(prod => {
-          console.log(prod);
-  
-          this.updateProduct(prod, prod.id)
-        })
-      }
       this.refreshLish.emit(true)
       this.display = false
       this.loading = false
@@ -365,7 +358,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
 
   listServices() {
     this.loading = true
-    const subscription = this.mobileService.getServices().subscribe((results: any) => {
+    const subscription = this.productsService.getServices().subscribe((results: any) => {
       this.loading = false
       if (!isSet(results)) {
         return
@@ -415,6 +408,19 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
           }
         }
       ]
+      console.log(results);
+      this.appointment = Appointment.cloneObject(results.data.attributes)
+      this.appointment.firstName = this.appointment?.customer?.firstName
+      this.appointment.middleName = this.appointment?.customer?.middleName
+      this.appointment.lastName = this.appointment?.customer?.lastName
+      this.appointment.fromDate = new Date(this.appointment.fromDate)
+      this.appointment.toDate = new Date(this.appointment.toDate)
+      this.appointment.createdAt = moment(this.appointment.createdAt).format('YYYY-MM-DD HH:ss')
+      if (this.appointment.products) {
+        this.appointment?.products?.map(item => {
+          this.selectProducts.push({ id: item?.id, name: item?.name, stocks: item?.stocks, price: item?.price, qty: item?.qty, brand: item.brand })
+        })
+      }
       this.refreshLish.emit(true)
       subscription.unsubscribe()
     }, error => {
@@ -425,7 +431,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   }
   confirm1Delete() {
     this.confirmationService.confirm({
-      message: 'Are you sure that you want to delete this Appontment ?',
+      message: this.trans('Are you sure that you want to delete this Appontment ?'),
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => { this.deleteAppo() },
@@ -503,6 +509,11 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     const subscription = this.orderService.addOrder(this.appointment, this.orderNo, this.getTotalPrice(), this.id).subscribe((data) => {
       if (!isSet(data)) {
         return
+      }
+      if (this.selectProducts.length) {
+        this.selectProducts.map(prod => {  
+          this.updateProduct(prod, prod.id)
+        })
       }
       this.completeAppointment()
       this.loading = false

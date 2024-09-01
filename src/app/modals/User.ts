@@ -12,6 +12,7 @@ export class UserInfo {
   confirmPassword: string
   role: any
   blocked: boolean
+  isToday: boolean
   createdAt:any
   data:any
   public constructor(params?: UserInfo) {

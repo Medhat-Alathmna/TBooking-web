@@ -184,9 +184,9 @@
                 </td>
                 <td style="width: 30vw">
                     <span  (click)="getOrder(ser)" class="text-xl text-primary pointer ">
-                        {{ser.attributes?.appointment.data.attributes?.customer.firstName}}
-                        {{ser.attributes?.appointment.data.attributes?.customer.middleName}}
-                        {{ser.attributes?.appointment.data.attributes?.customer.lastName}}
+                        {{ser?.attributes?.appointment?.data?.attributes?.customer?.firstName}}
+                        {{ser?.attributes?.appointment?.data?.attributes?.customer?.middleName}}
+                        {{ser?.attributes?.appointment?.data?.attributes?.customer?.lastName}}
                     </span>
                 </td>
                 <td>

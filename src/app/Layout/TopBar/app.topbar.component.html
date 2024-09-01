@@ -7,14 +7,14 @@
             <a tabindex="0" id="logo-link" class="layout-topbar-logo relative"
                 (click)="appMain.onMenuButtonClick($event)">
                 <ng-container *ngIf="!currentLogo" class="col-6">
-                    <span [style.left.px]="lang=='en'?62:null" [style.right.px]="lang=='ar'?62:null"
+                    <!-- <span [style.left.px]="lang=='en'?62:null" [style.right.px]="lang=='ar'?62:null"
                         [style.top]="lang=='ar'?'10%':'12%'" style="display: contents;"
                         class="text-4xl  absolute font-bold logo-text" translate>
-                        Luxury Beatuy Center</span>
-                    <!-- <span [style.left.px]="lang=='en'?62:null" [style.right.px]="lang=='ar'?62:null"
+                        Luxury Beatuy Center</span> -->
+                    <span [style.left.px]="lang=='en'?62:null" [style.right.px]="lang=='ar'?62:null"
                         [style.top]="lang=='ar'?'10%':'12%'" style="display: contents; color:#e59e5a"
                         class="text-5xl  absolute font-bold " translate>
-                      <label class="text-primary" >T</label>Booking</span> -->
+                      <label class="text-primary" >T</label>Booking</span>
                 </ng-container>
 
                 <ng-container *ngIf="currentLogo">

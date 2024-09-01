@@ -39,7 +39,8 @@ export class AppMenuComponent extends BaseComponent implements OnInit {
             { label: 'Orders',  icon: 'pi pi-money-bill text-color', routerLink: ['/orders'] },
             { label: 'Users',  icon: 'pi pi-users text-color', routerLink: ['/users'] },
             { label: 'Dashboard',  icon: 'pi pi-chart-pie text-color', routerLink: ['/dashboard'] },            
-            { label: 'Services',  icon: 'pi pi-ticket text-color', routerLink: ['/mobile'] },            
+            { label: 'Products',  icon: 'pi pi-ticket text-color', routerLink: ['/products'] },            
+            { label: 'Mobile App',  icon: 'pi pi-ticket text-color', routerLink: ['/mobile'] },            
         ];
         this.menuService.menuData = this.model
        this.checkRole()
@@ -61,7 +62,8 @@ export class AppMenuComponent extends BaseComponent implements OnInit {
             { label: 'Orders',  icon: 'pi pi-money-bill text-color', routerLink: ['/orders'] },
             { label: 'Users',  icon: 'pi pi-users text-color', routerLink: ['/users'] },
             { label: 'Dashboard',  icon: 'pi pi-chart-pie text-color', routerLink: ['/dashboard'] },            
-            { label: 'Services',  icon: 'pi pi-ticket text-color', routerLink: ['/mobile'] },            
+            { label: 'Products',  icon: 'pi pi-ticket text-color', routerLink: ['/products'] },            
+            { label: 'Mobile App',  icon: 'pi pi-mobile text-color', routerLink: ['/mobile'] },               
         ];
         this.menuService.menuData = this.model
         console.log(role);

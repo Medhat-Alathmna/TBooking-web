@@ -98,9 +98,10 @@
     <div *ngIf="tabSelected=='products'" class="grid">
         <app-products></app-products>
     </div>
+  
 </div>
 
-<p-dialog [header]="editMode?'Modify the service':'Create the service'" modal="true" [resizable]="false"
+<p-dialog [header]="editMode?('Modify the service'|translate):('Create the service'|translate)" modal="true" [resizable]="false"
     [draggable]="false" [(visible)]="showServ" [style]="{width: '30vw'}">
     <div class="grid textl-left">
         <div class=" lg:col-6  sm:col-12">
@@ -110,7 +111,7 @@
             <app-input [(ngModel)]="Service.ar" name="ar" [title]="'Services AR'|translate" [required]="true"></app-input>
         </div>
         <div class=" lg:col-6  sm:col-12">
-            <app-input [(ngModel)]="Service.price" type="nmber" name="price" [title]="'Price'|translate"
+            <app-input [(ngModel)]="Service.price" type="number" name="price" [title]="'Price'|translate"
                 [required]="true"></app-input>
         </div>
     </div>

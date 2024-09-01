@@ -10,6 +10,8 @@ import { AddEditUserComponent } from './add-edit-user/add-edit-user.component';
 import { CalenderComponent } from 'src/app/Shared/calender/calender.component';
 import { SidebarComponent } from 'src/app/Shared/sidebar/sidebar.component';
 import { EntityViewerComponent } from 'src/app/Shared/entity-viewer/entity-viewer.component';
+import { RolesComponent } from './roles/roles.component';
+import { AddEditRoleComponent } from './roles/add-edit-role/add-edit-role.component';
 
 
 export const routes: Routes = [
@@ -18,7 +20,7 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [UsersComponent, ],
+  declarations: [UsersComponent, RolesComponent, ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -28,6 +30,7 @@ export const routes: Routes = [
     SidebarComponent,
     CalenderComponent,
     EntityViewerComponent,
+    AddEditRoleComponent,
     AddEditUserComponent,
     LoadingComponent
   ]

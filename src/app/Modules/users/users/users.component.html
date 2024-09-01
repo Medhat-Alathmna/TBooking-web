@@ -32,6 +32,7 @@
                     <th style="width: 40vw" translate>Email</th>
                     <th translate>Role</th>
                     <th translate>Status</th>
+                    <th translate>Availbale Today</th>
                     <th style="width: 10% !important" translate>Actions</th>
                 </tr>
             </ng-template>
@@ -58,6 +59,12 @@
                             <span *ngIf="ser?.blocked==true " class="InActive">{{'InActive'|translate}}</span>
                         </span>
                     </td>
+                    <td style="width: 5vw">
+                        <span class="text-xl text-primary text-center  bold">
+                            <span *ngIf="ser?.isToday ==false " class="InActive">{{'No'|translate}}</span>
+                            <span *ngIf="ser?.isToday==true " class="Active">{{'Yes'|translate}}</span>
+                        </span>
+                    </td>
                     <td style="width: 10%">
                         <button (click)="showUserDeatil(ser)" pButton pRipple icon="pi pi-pencil text-base"
                             class="p-button-sm  p-button-primary mr-1"></button>
@@ -74,8 +81,9 @@
         </p-table>
     </div>
 
-
-
+    <div *ngIf="tabSelected=='roles'" class=" grid col-12">
+        <app-roles></app-roles>
+</div>
 </div>
 
 <app-add-edit-user *ngIf='showUserSidebar' (refreshLish)="getUsers()" [selectedUser]="selectedUser"

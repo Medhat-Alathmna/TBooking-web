@@ -1,0 +1,150 @@
+<app-loading *ngIf="loading" display="full"></app-loading>
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog containerStyleClass="vw" acceptButtonStyleClass="p-button-danger" acceptIcon="pi pi-trash"
+    rejectButtonStyleClass="p-button-text" appendTo="body"></p-confirmDialog>
+<p-table #kt [value]="posts" [scrollable]="true" [tableStyle]="{'width.%': 100}" scrollHeight="80vh">
+    <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+            <div>
+                <h5 class="m-0 primary" translate>Gallary Management</h5>
+                <label class="text-600 ">
+                    In total there are <label class="text-primary font-bold ">
+                        {{total }}</label> Posts .
+                </label>
+            </div>
+            <div class="table-header inputgroup-stopwords block ">
+                <div class="p-inputgroup inputgroup-stopwords">
+                    <div>
+                        <button type="button" [iconPos]="lang =='ar'?'right':'left'" (click)="showcreateDialog()"
+                            [label]="'Add Post'|translate" pRipple pButton icon="pi pi-plus"
+                            class="p-button-success "></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width: 20%" translate> {{lang=='ar'?'Text AR':'Text EN'}}
+                <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
+                    [ngClass]="fillterFildes?.name?.status?'status-filter':null" type="text" field="id"
+                    matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
+                    [showAddButton]="false">
+                    <ng-template pTemplate="filter">
+                        <div class="mt-3">
+                            <input [disabled]="fillterFildes?.en?.status" [(ngModel)]="fillterFildes.en.value"
+                                type="text" pInputText>
+                        </div>
+                        <div class="grid mt-2">
+                            <div class="col-6">
+                                <button pButton label='Clear' class="p-button-outlined"
+                                    (click)="fillterFildes.en.value=null;fillterFildes.en.status=flase;clearAllFillter()"
+                                    type="button">
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                <button pButton [disabled]="!fillterFildes.en.value" label='Apply'
+                                    (click)="fillterFildes.en.name='en';fillterFildes.en.status=true;fillterFildes.en.type='$contains';listServices(1,fillterFildes?.en)"
+                                    type="button">
+                                </button>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-columnFilter>
+            </th>
+            <th style="width: 70%" translate>Media</th>
+            <th style="width: 10% !important" translate>Published</th>
+            <th style="width: 10% !important" translate>Pinned</th>
+            <th style="width: 10% !important" translate>Actions</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-ser let-i="rowIndex">
+        <tr>
+            <td style="width: 20%">
+                <span class="text-2xl text-primary pointer bold" (click)="showSelectedPost(ser)">
+                    {{ lang=='en'?ser?.attributes?.textEN:ser?.attributes?.textAR}}
+                </span>
+            </td>
+            <td style="width: 70%">
+                <ng-container *ngFor="let ad of ser?.attributes?.ads?.data, let index=index">
+                    <span class="text-2xl text-primary pointer bold;" style="display: flex;align-items: center"
+                        (click)="showSelectedPost(ser)">
+                        <img *ngIf="index==0 &&cheackMediaType(ad?.attributes.mime,'image')" style="padding: 1px;"
+                            [src]="imgUrl+ad?.attributes.url" width="200" height="200" alt="">
+                        <video *ngIf="index==0 && cheackMediaType(ad?.attributes.mime,'video')" width="200" height="200"
+                            [src]="imgUrl+ad.attributes.url| safe" frameborder="0" allowfullscreen></video>
+                        <h3 *ngIf="index==0&&ser?.attributes?.ads?.data.length>1">
+                            +{{ser?.attributes?.ads?.data.length-1}}</h3>
+                    </span>
+                </ng-container>
+            </td>
+            <td style="width: 10%">
+                <p-toggleButton [(ngModel)]="ser?.attributes.published"
+                    (onChange)="publishedPost($event.checked,ser.id)" class="p-button-sm  p-button-primary mr-1"
+                    onLabel="{{'Yes'|translate}}" offLabel="{{'No'|translate}}">
+                </p-toggleButton>
+            </td>
+            <td style="width: 10%">
+                <p-toggleButton [(ngModel)]="ser?.attributes.pin" (onChange)="pinPost($event.checked,ser.id)"
+                    class="p-button-sm  p-button-primary mr-1" onLabel="{{'Yes'|translate}}" offLabel="{{'No'|translate}}">
+                </p-toggleButton>
+            </td>
+            <td style="width: 10%">
+                <button pButton pRipple icon="pi pi-pencil text-base" (click)="showSelectedPost(ser)"
+                    class="p-button-sm  p-button-primary mr-1"></button>
+                <button pButton (click)="confirm1Delete(ser)" pRipple icon="pi pi-trash text-base"
+                    class="p-button-sm  p-button-danger mr-1 "></button>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="4">No Posts .</td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<p-dialog [header]="editMode?('Modify the post'|translate):('Create post'|translate)" modal="true" [resizable]="false"
+    [draggable]="false" [(visible)]="showPost" [style]="{width: '64vw'}">
+    <div class=" lg:col-12  sm:col-12">
+        <div *ngIf="!editMode" class="grid textl-left">
+            <p-fileUpload multiple="multiple" (uploadHandler)="uploadFiles($event)" [customUpload]="true" name="demo[]"
+                dragDropSupport="true" rendered="true" style="width: -webkit-fill-available;"></p-fileUpload>
+        </div>
+        <div *ngIf="editMode" class="grid textl-left">
+            <div class="col-12">
+                <!-- <p-galleria [value]="post.ads.data" [showIndicators]="true" [showItemNavigators]="true" [showThumbnails]="false" [responsiveOptions]="galleriaResponsiveOptions"
+                [containerStyle]="{'max-width': '800px', 'margin':'auto','background':'rgb(228 246 255)'}" [numVisible]="6" [circular]="true">
+
+                <ng-template pTemplate="item" let-item let-i="rowIndex">
+                    <img [src]="imgUrl+item.attributes.url" style="width: 100%; display: block;height:55vh;" />
+                    <i class="pi pi-trash delete-icon" (click)="onDeleteImage(item.id)"></i>
+                </ng-template>
+            </p-galleria> -->
+                <p-carousel [value]="post.ads.data" [numVisible]="1" [numScroll]="1" [circular]="true">
+                    <ng-template pTemplate="item" let-image>
+                        <div class="carousel-item">
+                            <img *ngIf="cheackMediaType(image?.attributes.mime,'image')" [src]="imgUrl+image.attributes.url"
+                                alt="Carousel Image" class="carousel-image" />
+                            <video *ngIf=" cheackMediaType(image?.attributes.mime,'video')" width="800" height="400"
+                                [src]="imgUrl+image.attributes.url| safe" controls></video>
+                            <div class="overlay-buttons">
+                                <button pButton icon="pi pi-trash delete-icon" (click)="onDeleteImage(image.id)"
+                                    class="overlay-btn"></button>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-carousel>
+            </div>
+        </div>
+
+        <div class=" lg:col-12  sm:col-12">
+            <app-input [(ngModel)]="post.textEN" name="en" [title]="'Text EN'|translate" [required]="false"></app-input>
+            <app-input [(ngModel)]="post.textAR" name="ar" [title]="'Text AR'|translate" [required]="false"></app-input>
+        </div>
+    </div>
+    <p-footer>
+        <button *ngIf="editMode" type="button" pButton (click)="updatePost()" label="Update"></button>
+        <button *ngIf="editMode" type="button" (click)="showPost=false" class="p-button-secondary " pButton label='Cancel'></button>
+    </p-footer>
+</p-dialog>

@@ -59,6 +59,8 @@ export class CalenderService {
     let body = {
       data: {
         approved: appointment.approved,
+        appoBy: this.userAuth.username,
+
       }
     }
     return this.api.put<Appointment>(`/appointments/${appointment.id}`, body);
@@ -125,10 +127,10 @@ export class CalenderService {
     return this.api.put<Appointment>(`/appointments/${appointment.id}`, body);
   }
   getEmployee(): Observable<any[]> {
-    return this.api.get<any[]>(`users?populate=role&filters[hide][$eq]=false&filters[blocked][$eq]=false`);
+    return this.api.get<any[]>(`users?populate=role&filters[hide][$eq]=false&filters[blocked][$eq]=false&filters[isToday][$eq]=true`);
   }
   getMe(): Observable<any[]> {
-    return this.api.get<any[]>(`users/me?populate=role`);
+    return this.api.get<any[]>(`users/me?populate=*`);
   }
   search(val): Observable<any> {
     return this.api.get<any>(`/searchCustomers?search=${val}`);
@@ -185,12 +187,7 @@ export class CalenderService {
   }
 
   updateProduct(product: Products,id): Observable<any> {
-    
-    let body = {
-      data: {
-        stocks: product?.stocks-product.qty,
-      }
-    }
-    return this.api.put<any>(`products/${id}`, body);
+    let body = {qty:product.qty}
+    return this.api.put<any>(`discountQTY/${id}`, body);
   }
 }
