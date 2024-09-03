@@ -11,6 +11,7 @@ export class Appointment {
     notes?: any;
     deposit?: number;
     appoBy?: any;
+    createBy?: any;
     services?: any;
     status?: any;
     payBy?: any;

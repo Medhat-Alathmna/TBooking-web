@@ -20,7 +20,7 @@
                         <i class="pi pi-tags text-100 text-3xl "></i>
                     </span>
                     <entity-viewer
-                        [entity]="{type:'text',title:'Status'| translate,value:selectedOrder.attributes.status}"
+                        [entity]="{type:'text',title:'Status'| translate,value:selectedOrder.attributes.status|translate}"
                         [darkMode]="true"></entity-viewer>
                 </div>
                 <div class="flex align-items-center justify-content-center border-break"></div>
@@ -133,7 +133,7 @@
                         </ng-container>
                         <div class="flex">
                             <div class="block" style="width: 75%;">
-                                <p-button *ngIf="item" [label]="item?.username" [style]="{'width': '50%'}"
+                                <p-button *ngIf="item" [label]="item?.username" [style]="{'width': '50%','cursor':'default'}"
                                     (click)="employeeMode=false"
                                     styleClass="p-button-outlined p-button-success"></p-button>
                             </div>
@@ -215,11 +215,11 @@
                                 <th>{{selectedOrder.attributes.appointment.data.attributes.deposit}} {{jod}}</th>
                             </tr>
                             <p-divider></p-divider>
-                            <tr>
+                            <tr >
                                 <th class="px-5 py-2" translate> {{'Discount'|translate}}:</th>
                                 <th>
-                                    <span *ngIf="discountMode =='type'">
-                                        <i class="pointer pi pi-money-bill"
+                                    <span *ngIf="discountMode =='type'" >
+                                        <i class="pointer pi pi-money-bill" 
                                             (click)="discountMode='price';cashMode=false;selectedOrder.discountType='cash'">
                                         </i>
                                         <span class="px-2">|</span>
@@ -228,12 +228,12 @@
                                     </span>
 
                                     <span *ngIf="discountMode =='price'">
-                                        <p-inputNumber [min]="0" *ngIf="selectedOrder.discountType == 'cash'"
+                                        <p-inputNumber [min]="0" *ngIf="selectedOrder.discountType == 'cash'" [disabled]="selectedOrder.attributes.status==='Paid'"
                                             name="discount" [(ngModel)]="selectedOrder.discount"
                                             (onFocus)="$event.target.select()" (keydown)="onKeyEnter($event)"
                                             mode="decimal" [minFractionDigits]="2"></p-inputNumber>
 
-                                        <p-inputNumber [min]="0" *ngIf="selectedOrder.discountType == 'percent'"
+                                        <p-inputNumber [min]="0" *ngIf="selectedOrder.discountType == 'percent'" [disabled]="selectedOrder.attributes.status==='Paid'"
                                             prefix="%" name="discount" (keydown)="onKeyEnter($event)"
                                             [(ngModel)]="selectedOrder.discount" [max]="100"></p-inputNumber>
                                     </span>
@@ -253,7 +253,7 @@
                                     <span class="pointer" *ngIf="!cashMode" (click)="cashMode=true">
                                         {{selectedOrder.cash}} {{jod}}</span>
                                     <span *ngIf="cashMode">
-                                        <input [(ngModel)]="selectedOrder.cash" type="number"
+                                        <input [(ngModel)]="selectedOrder.cash" type="number" [disabled]="selectedOrder.attributes.status==='Paid'"
                                             (keydown)="onKeyEnter($event,'cash')"
                                             placeholder="{{'Enter'|translate}} Cash" name="Cash" pInputText />
                                     </span>
@@ -268,7 +268,7 @@
 
 
                     </div>
-                    <app-pay-by [ngModelOptions]="{standalone: true}" [payByMode]="payByMode" [(ngModel)]="selectedOrder.pay_by"></app-pay-by>
+                    <app-pay-by [ngModelOptions]="{standalone: true}" [disabled]="selectedOrder.attributes.status==='Paid'" [payByMode]="payByMode" [(ngModel)]="selectedOrder.pay_by"></app-pay-by>
 
                 </div>
             </div>

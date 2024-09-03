@@ -2,7 +2,7 @@
         <!-- <th class="text-lg font-semibold mb-2" translate>
             Payment Method
         </th> -->
-            <p-dropdown [options]="bayPaies" *ngIf="!payByMode" [name]="payBy" [ngModelOptions]="{standalone: true}"
+            <p-dropdown [disabled]="disabled" [options]="bayPaies" *ngIf="!payByMode" [name]="payBy" [ngModelOptions]="{standalone: true}"
                 (onChange)="selectPayBy($event)" [(ngModel)]="payBy" [filter]="true" appendTo="body" filterBy="name"
                 optionLabel="name" placeholder="{{'Select a Payment Method'|translate}}">
                 <ng-template pTemplate="selectedItem">
@@ -26,7 +26,7 @@
                     </div>
                 </ng-template>
             </p-dropdown>
-        <p-button *ngIf="payByMode" [label]="payBy?.name" [style]="{'width': '15vw'}"
+        <p-button *ngIf="payByMode" [disabled]="disabled" [label]="payBy?.name" [style]="{'width': '15vw'}"
         (click)="payByMode=false" styleClass="p-button-outlined p-button-success"></p-button>
   
 </div>

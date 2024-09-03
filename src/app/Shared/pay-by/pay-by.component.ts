@@ -36,6 +36,7 @@ export class PayByComponent extends BaseComponent implements ControlValueAccesso
 
   @Input() innerPayBy:any
   @Input() payByMode:any =false
+  @Input() disabled:any =false
 
   constructor(messageService: MessageService, translates: TranslateService,private sharedServies:SharedService,private confirmationService: ConfirmationService,) { super(messageService,translates)}
 

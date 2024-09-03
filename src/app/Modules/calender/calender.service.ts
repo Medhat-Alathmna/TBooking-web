@@ -51,6 +51,7 @@ export class CalenderService {
         approved: true,
         hide: false,
         appoBy: this.userAuth.username,
+        createBy: this.userAuth.username,
       }
     }
     return this.api.post<Appointment>('/appointments', body);

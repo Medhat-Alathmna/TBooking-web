@@ -309,6 +309,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       this.refreshLish.emit(true)
       this.display = false
       this.loading = false
+      this.successMessage(null,'The Appoiment has been Created')
       subscription.unsubscribe()
     }, error => {
       this.loading = false
@@ -316,10 +317,6 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     })
   }
   updateAppominet() {
-    console.log(this.userAuth.username);
-    console.log(this.appointment?.appoBy);
-    console.log((this.userAuth.username != this.appointment?.appoBy)&&(this.role?.name != 'Admin'));
-    
     if ((this.userAuth.username != this.appointment?.appoBy)&&(this.role?.name != 'Admin')) {
       this.errorMessage(this.trans('You do not have permission to modify this appointment'))
       return
