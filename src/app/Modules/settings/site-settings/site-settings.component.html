@@ -1,37 +1,103 @@
 
-<div class="grid mx-3">
-    <div class="col-12">
-    <h5>Menu Type</h5>
-    <div class="field-radiobutton">
-        <p-radioButton name="menuMode" value="horizontal" [(ngModel)]="app.menuMode" inputId="mode1"
-                       (onClick)="app.menuTheme = app.topbarTheme; appMain.sidebarStatic = false; appMain.sidebarActive = false"></p-radioButton>
-        <label for="mode1" class="font-bold text-md px-2">Horizontal</label>
-    </div>
-    <div class="field-radiobutton">
-        <p-radioButton name="menuMode" value="slim" [(ngModel)]="app.menuMode" inputId="mode3" (onClick)="appMain.sidebarStatic = false; appMain.sidebarActive = false"></p-radioButton>
-        <label for="mode3" class="font-bold text-md px-2">Slim</label>
-    </div>
-
-    <hr />
-
-    <h5>Color Scheme</h5>
-    <div class="field-radiobutton">
-        <p-radioButton name="darkMode" value="light" [(ngModel)]="app.darkMode" inputId="darkMode1"
-                        (onClick)="changeColorScheme('light')"></p-radioButton>
-        <label for="darkMode1" class="font-bold text-md px-2">Light</label>
-    </div>
-    <div class="field-radiobutton">
-        <p-radioButton name="darkMode" value="dark" [(ngModel)]="app.darkMode" inputId="darkMode2"
-                        (onClick)="changeColorScheme('dark')"></p-radioButton>
-        <label for="darkMode2" class="font-bold text-md px-2">Dark</label>
-    </div>
-</div>
-    <hr />
-    <h5>Theme Colors</h5>
-    <div class="layout-themes">
-        <div *ngFor="let t of themes">
-            <a style="cursor: pointer" (click)="changeTheme(t.name)" [ngStyle]="{'background-color': t.color}">
-            </a>
+<app-loading *ngIf="loading" display="full"></app-loading>
+<p-toast position="top-right"></p-toast>
+<div class=" mx-3">
+    <ng-container >
+        <div class="flex pt-4 pb-2  border-bottom-0" style="width: 100%">
+            <div class="text-xl font-semibold" translate>Currencies
+            </div>
         </div>
-    </div>
+     <div class="grid">
+        <div class="col-3">
+            <div class="mt-3">
+                <div class=" mb-2 font-semibold" translate>
+                    Pick a Currency
+                </div>
+                <p-dropdown appendTo="body" [(ngModel)]="currency"  [options]="currencies"  (onChange)="selectCurrency($event.value)"
+                optionLabel="name"></p-dropdown>
+
+            </div>
+        </div>
+     </div>
+
+
+
+    </ng-container>
+    <ng-container #Apperance>
+        <div class="flex pt-4 pb-2  border-bottom-0" style="width: 100%">
+            <div class="text-xl font-semibold" translate>Appearance
+                <button pButton pRipple type="button" icon="pi pi-refresh" pTooltip="{{'Default Colors'|translate}}"
+                    (click)="backToDefultColors()"
+                    class="p-button-secondary p-button-sm p-button-text p-0 mb-1"></button>
+            </div>
+        </div>
+        <div class="grid">
+            <div class="col-4">
+                <div class="mt-3">
+                    <div class="text-lg mb-2 font-semibold" translate>
+
+
+                        Pick a Primary Color
+                        <button pButton pRipple type="button"
+                            [icon]="systemColors?.primaryColorEdit == null ? 'pi pi-pencil':'pi pi-times' "
+                            (click)="systemColors?.primaryColorEdit == true ? systemColors.primaryColorEdit=null: systemColors.primaryColorEdit=true"
+                            class="p-button-secondary p-button-sm p-button-text p-0 mb-1"></button>
+                    </div>
+                    <div *ngIf="!systemColors?.primaryColorEdit" 
+                        class="w-5 h-3rem border-round " [style.background]="systemColors.primaryColor">
+                    </div>
+                    <app-color-input *ngIf="systemColors?.primaryColorEdit ===true"
+                        [(ngModel)]="systemColors.primaryColor" (ngModelChange)="onPrimayColorChange()"
+                        (onHide)="updateGeneralSettings(selected);systemColors.primaryColorEdit =null" name="colorPrimay"></app-color-input>
+
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="mt-3">
+                    <div class="text-lg mb-2 font-semibold" translate>Pick a Text Color
+                        <button pButton pRipple type="button"
+                        [icon]="systemColors?.textColorEdit == null ? 'pi pi-pencil':'pi pi-times' "
+                        (click)="systemColors?.textColorEdit == true ? systemColors.textColorEdit=null: systemColors.textColorEdit=true"
+                        class="p-button-secondary p-button-sm p-button-text p-0 mb-1"></button>
+                    </div>
+
+                    <div *ngIf="!systemColors?.textColorEdit" 
+                    class="w-5 h-3rem border-round " [style.background]="systemColors.textColor">
+                </div>
+                <app-color-input *ngIf="systemColors?.textColorEdit ===true"
+                    [(ngModel)]="systemColors.textColor" (ngModelChange)="onTextColorChange()"
+                    (onHide)="updateGeneralSettings(selected);systemColors.textColorEdit=null" name="textColor"></app-color-input>
+
+
+                </div>
+            </div>
+
+            <div class="col-4">
+                <div class="mt-3">
+                    <div class="text-lg mb-2 font-semibold" translate>Pick a Secondary Text Color
+
+                        <button pButton pRipple type="button"
+                        [icon]="systemColors?.secondaryColorEdit == null ? 'pi pi-pencil':'pi pi-times' "
+                        (click)="systemColors?.secondaryColorEdit == true ? systemColors.secondaryColorEdit=null: systemColors.secondaryColorEdit=true"
+                        class="p-button-secondary p-button-sm p-button-text p-0 mb-1"></button>
+
+                    </div>
+
+                    <div *ngIf="!systemColors?.secondaryColorEdit" 
+                    class="w-5 h-3rem border-round " [style.background]="systemColors.secondaryColor">
+                </div>
+                <app-color-input *ngIf="systemColors?.secondaryColorEdit ===true"
+                    [(ngModel)]="systemColors.secondaryColor" (ngModelChange)="onTextSecondaryColorChange()"
+                    (onHide)="updateGeneralSettings(selected);systemColors.secondaryColorEdit=null" name="secondaryColor"></app-color-input>
+
+                    
+             
+
+                </div>
+            </div>
+        </div>
+
+
+
+    </ng-container>
     </div>

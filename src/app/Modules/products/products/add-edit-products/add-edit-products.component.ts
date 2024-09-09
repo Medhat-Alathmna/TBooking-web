@@ -117,7 +117,6 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
         return
       }
       this.brands=[]
-      console.log(results);
       this.brands.push({
         id: 0, name: `<span class="font-bold text-primary">${this.trans('New Brand')}</span>`})
       results.data.map(item => {
@@ -139,9 +138,7 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
     const subscription = this.productsService.createBrand(this.brandName).subscribe((data) => {
       if (!isSet(data)) {
         return
-      }
-      console.log(data);
-      
+      }      
       this.loading = false
       this.brandDialog = false
       this.brandMode=false
@@ -158,9 +155,7 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
     const subscription = this.productsService.updateBrand(this.brandName,this.selectedProduct.brand.id,type).subscribe((data) => {
       if (!isSet(data)) {
         return
-      }
-      console.log(data);
-      
+      }      
       this.loading = false
       this.brandDialog = false
       this.getBrands()

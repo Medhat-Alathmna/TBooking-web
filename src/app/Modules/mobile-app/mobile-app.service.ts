@@ -54,4 +54,17 @@ export class MobileAppService {
   getMainSettings(): Observable<any> {
     return this.api.get<any>(`/main-settings-mobile`); 
    }
+  updateMainSettings(type,value): Observable<any> {
+    let bodyBooking={
+      data:{
+        booking:value
+      }
+    }
+    let bodyPhone={
+      data:{
+        phone:value
+      }
+    }
+    return this.api.put<any>(`/main-settings-mobile`,type=='phone'?bodyPhone:bodyBooking); 
+   }
 }

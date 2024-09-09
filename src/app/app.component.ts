@@ -5,6 +5,8 @@ import { DOCUMENT } from '@angular/common';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { CalenderService } from './Modules/calender/calender.service';
 import { OrdersService } from './Modules/orders/orders.service';
+import { SettingsService } from './Modules/settings/settings.service';
+import { isSet } from './core/base/base.component';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +25,9 @@ export class AppComponent implements OnInit {
 
   ripple: boolean;
 
-  constructor(private primengConfig: PrimeNGConfig, private translate: TranslateService, private router: Router, private calenderService: CalenderService,private orderService:OrdersService,
+  constructor(private primengConfig: PrimeNGConfig, 
+    private translate: TranslateService, private router: Router,private settingsServices:SettingsService,
+     private calenderService: CalenderService,private orderService:OrdersService,
     @Inject(DOCUMENT) private document: Document) { }
 
   ngOnInit() {
@@ -32,7 +36,9 @@ export class AppComponent implements OnInit {
     }
     this.primengConfig.ripple = false;
     this.getLang()
-    // this.getColors()
+    this.getGeneralSettings()
+    this.getCurrencies()
+  
 
   } 
 
@@ -47,27 +53,42 @@ export class AppComponent implements OnInit {
     htmlTag.dir = lang !== "en" ? "rtl" : "ltr";
   }
   getColors() {
-    const SystemColors={
-      primaryColor: getComputedStyle(document.documentElement).getPropertyValue('--primary-color'),
-      textColor:getComputedStyle(document.documentElement).getPropertyValue('--text-color'),
-      textSecondaryColor:getComputedStyle(document.documentElement).getPropertyValue('--surface-500'),
-
-    } 
-    localStorage.setItem('SystemColors', JSON.stringify(SystemColors))
+    const genralSettings = JSON.parse(localStorage.getItem('systemColor'))
+    document.documentElement.style.setProperty('--primary-color', genralSettings.primaryColor)
+    document.documentElement.style.setProperty('--text-color', genralSettings.textColor)
+    document.documentElement.style.setProperty('--surface-500', genralSettings.secondaryColor)
 
 
   }
   getMe() {
     const subscription = this.calenderService.getMe().subscribe((user: any) => {
-      console.log(user);
       localStorage.setItem('role', JSON.stringify(user.role))
       this.orderService.checkRole.next(true)
-
       subscription.unsubscribe()
     }, error => {
-      console.log(error);
       subscription.unsubscribe()
     })
   }
+
+  getGeneralSettings() {
+    const subscription = this.settingsServices.getGeneralSettings().subscribe((results: any) => {
+      if (!isSet(localStorage.getItem('systemColor'))) {
+        localStorage.setItem('systemColor',JSON.stringify(results.data.attributes))
+      }
+      this.getColors()
+        subscription.unsubscribe()
+    }, error => {
+        subscription.unsubscribe()
+    })
+}
+getCurrencies() {
+  const subscription = this.settingsServices.getCurrencies().subscribe((results: any) => {
+    localStorage.setItem('currency', results.data.attributes.code)
+
+      subscription.unsubscribe()
+  }, error => {
+      subscription.unsubscribe()
+  })
+}
 
 }

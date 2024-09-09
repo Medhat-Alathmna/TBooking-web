@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { BaseComponent } from 'src/app/core/base/base.component';
@@ -8,18 +8,24 @@ import { BaseComponent } from 'src/app/core/base/base.component';
   templateUrl: './settings-main.component.html',
   styleUrls: ['./settings-main.component.scss']
 })
-export class SettingsMainComponent extends BaseComponent implements OnInit {
+export class SettingsMainComponent extends BaseComponent implements AfterViewInit {
   items: any[] = []
   selectedView = 'Site Settings'
   currentIndex = 0
   currentIndexModule = 0
+ 
 
   constructor(public translates: TranslateService, public messageService: MessageService,) { super(messageService, translates) }
+  ngAfterViewInit(){
+    setTimeout(() => {
+      this.getMenu()
 
-  ngOnInit(): void {
+    }, );
+  }
+  getMenu() {
     this.items = [
       {
-        id: 0, label: 'Site Settings', styleClass: 'active', icon: this.angleIcon() + ' px-2',
+        id: 0, label: 'General Settings', styleClass: 'active', icon: this.angleIcon() + ' px-2',
         command: (event) => {
           this.selectedView = 'Site Settings';
           this.selectActiveMenu(event?.item?.id)
@@ -27,7 +33,7 @@ export class SettingsMainComponent extends BaseComponent implements OnInit {
         }
       },
       {
-        id: 1, label: 'Notifications', styleClass: 'active', icon: this.angleIcon() + ' px-2',
+        id: 1, label: 'Notifications',  icon: this.angleIcon() + ' px-2',
         command: (event) => {
           this.selectedView = 'Notifications'
           this.selectActiveMenu(event?.item?.id)
@@ -36,7 +42,7 @@ export class SettingsMainComponent extends BaseComponent implements OnInit {
       }
       ,
       {
-        id: 2, label: 'Forbidden Numbers', styleClass: 'active', icon: this.angleIcon() + ' px-2',
+        id: 2, label: 'Forbidden Numbers',  icon: this.angleIcon() + ' px-2',
         command: (event) => {
           this.selectedView = 'Forbidden Numbers'
           this.selectActiveMenu(event?.item?.id)
@@ -60,6 +66,7 @@ export class SettingsMainComponent extends BaseComponent implements OnInit {
     this.items[Number(this.currentIndex)].styleClass = ''
     this.items[Number(index)].styleClass = 'active'
     this.currentIndex = index
+    
 
   }
 
@@ -69,12 +76,14 @@ export class SettingsMainComponent extends BaseComponent implements OnInit {
       node = event?.target;
     } else {
       node = event?.target?.parentNode;
-    }
+    }    
     let menuitem = document.getElementsByClassName("ui-menuitem-link");
     for (let i = 0; i < menuitem.length; i++) {
       menuitem[i].classList.remove("active");
     }
+    
     node?.classList?.add("active")
   }
 
+ 
 }

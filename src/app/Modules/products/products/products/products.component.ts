@@ -61,8 +61,6 @@ export class ProductsComponent extends BaseComponent implements OnInit {
       if (!isSet(results)) {
         return
       }
-      console.log(results);
-
       const clone = results.data
       this.total = results.meta.pagination.total
       if (!isSet(this.products)) {
@@ -98,7 +96,6 @@ export class ProductsComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     }, error => {
       this.loading = false
-      console.log(error);
       subscription.unsubscribe()
     })
   }

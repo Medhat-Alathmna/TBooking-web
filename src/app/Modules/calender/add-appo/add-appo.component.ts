@@ -158,8 +158,6 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
         ]
       }
     }
-
-    console.log(this.appointment);
   }
 
   getTotalPrice() {
@@ -366,7 +364,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     }, error => {
       this.loading = false
-      console.log(error);
+
       subscription.unsubscribe()
     })
   }
@@ -405,7 +403,6 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
           }
         }
       ]
-      console.log(results);
       this.appointment = Appointment.cloneObject(results.data.attributes)
       this.appointment.firstName = this.appointment?.customer?.firstName
       this.appointment.middleName = this.appointment?.customer?.middleName
@@ -422,7 +419,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     }, error => {
       this.loading = false
-      console.log(error);
+
       subscription.unsubscribe()
     })
   }
@@ -489,7 +486,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     }, error => {
       this.loading = false
-      console.log(error);
+
       subscription.unsubscribe()
     })
   }
@@ -536,7 +533,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       })
       subscription.unsubscribe()
     }, error => {
-      console.log(error);
+
       subscription.unsubscribe()
     })
   }
@@ -575,17 +572,13 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       if (!isSet(results)) {
         return
       }
-      console.log(results);
-
-
       results.data.map(item => {
         this.Products.push({ id: item?.id, name: item?.attributes?.name, stocks: item?.attributes?.stocks, price: item?.attributes?.price, brand: item?.attributes?.brand?.data?.attributes })
       })
-
       subscription.unsubscribe()
     }, error => {
       this.loading = false
-      console.log(error);
+
       subscription.unsubscribe()
     })
   }
@@ -598,7 +591,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     }, error => {
       this.loading = false
-      console.log(error);
+
       subscription.unsubscribe()
     })
   }

@@ -211,7 +211,6 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
       })
       subscription.unsubscribe()
     }, error => {
-      console.log(error);
       subscription.unsubscribe()
     })
   }

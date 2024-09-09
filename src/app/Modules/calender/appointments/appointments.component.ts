@@ -65,7 +65,6 @@ export class AppointmentsComponent extends BaseComponent implements OnInit {
   }
 
   getAppointment(id) {
-    console.log(id);
     this.id = id
     this.loading = true
     const subscription = this.calenderService.retreiveAppo(id).subscribe((results: any) => {
@@ -78,7 +77,6 @@ export class AppointmentsComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     }, error => {
       this.loading = false
-      console.log(error);
       subscription.unsubscribe()
     })
   }
@@ -133,7 +131,6 @@ export class AppointmentsComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     }, error => {
       this.loading = false
-      console.log(error);
       subscription.unsubscribe()
     })
   }
@@ -148,7 +145,6 @@ export class AppointmentsComponent extends BaseComponent implements OnInit {
     
       subscription.unsubscribe()
     }, error => {
-      console.log(error);
       this.loading = false
       subscription.unsubscribe()
     })

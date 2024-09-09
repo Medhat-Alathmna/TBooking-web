@@ -3,6 +3,9 @@
     justify-content: space-evenly;
     padding-top:22px
 }
+:host::ng-deep .p-tabview-panels{
+display: inline !important;
+}
 .Active {
     background: #c8e6c9;
     color: #256029;

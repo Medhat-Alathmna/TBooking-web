@@ -113,7 +113,7 @@
                         <span pTooltip="{{'Creation Date'|translate}}"
                         showDelay="1000" hideDelay="1000" tooltipPosition="bottom" class="vertical-align-middle py-2">{{body.createdAt  | date: 'dd/MM/yyyy hh:mm A'}}</span>
                         <span pTooltip="{{'Cash'|translate}}"
-                        showDelay="1000" hideDelay="1000" tooltipPosition="bottom" class="vertical-align-middle">{{body.cash}} {{jod}}</span>
+                        showDelay="1000" hideDelay="1000" tooltipPosition="bottom" class="vertical-align-middle">{{body.cash}} {{getCurrencySymbol(cur)}}</span>
                         <span pTooltip="{{'Cash'|translate}}"
                         showDelay="1000" hideDelay="1000" tooltipPosition="bottom" [class]="body.status">{{body.status |translate}} </span>
                 </ng-template>
@@ -183,7 +183,7 @@
                                         </td>
                                         <td>
                                             <span class="  font-bold">
-                                                {{product.price*product.qty}} {{jod}}
+                                                {{product.price*product.qty}} {{getCurrencySymbol(cur)}}
                                             </span>
                                         </td>
                                       

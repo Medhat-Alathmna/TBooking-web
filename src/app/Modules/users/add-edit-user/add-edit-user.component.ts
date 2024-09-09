@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { InputComponent } from 'src/app/Shared/input/input.component';
 import { LoadingComponent } from 'src/app/Shared/loading/loading.component';
 import { SidebarComponent } from 'src/app/Shared/sidebar/sidebar.component';
@@ -32,7 +32,7 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
   selectRold
   roles: any[] = []
   acions: any = []
-  roleMode:boolean=false
+  roleMode: boolean = false
 
   @Input() selectedUser: UserInfo
   @Input() display: boolean = false
@@ -40,34 +40,32 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
   @Output() displayChange: EventEmitter<boolean> = new EventEmitter();
   @Output() refreshLish: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(private userService: UsersService,private confirmationService: ConfirmationService,) { super() }
+  constructor(private userService: UsersService, private confirmationService: ConfirmationService,public translates: TranslateService,) { super(null,translates) }
 
   ngOnInit(): void {
-    console.log(this.selectedUser);
-
     // this.selectedUser.role=this.roles[0]
     if (this.detailMode) {
       this.selectedUser.createdAt = moment(this.selectedUser.createdAt).format('YYYY-MM-DD HH:ss')
-     this.selectRold= this.selectedUser.role
+      this.selectRold = this.selectedUser.role
       this.roleMode = true
     }
     this.acions = [
       {
-        label: this.selectedUser.isToday ? 'UnAvilabale Today' : 'Available Today',
+        label: this.selectedUser.isToday ? this.trans('UnAvilabale Today') :  this.trans('Available Today'),
         icon: 'pi pi-power-off',
         command: () => {
           this.userAvialble()
         }
       },
       {
-        label: this.selectedUser.blocked ? 'Activation' : 'Suspend',
+        label: this.selectedUser.blocked ?  this.trans('Activation') :  this.trans('Suspend'),
         icon: 'pi pi-power-off',
         command: () => {
           this.userStatus()
         }
       },
       {
-        label: 'Delete',
+        label: this.trans('Delete'),
         icon: 'pi pi-times',
         command: () => {
           this.confirm1Delete()
@@ -75,7 +73,6 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
       }
     ]
     this.getRoles()
-
   }
 
   onHide() {
@@ -111,7 +108,6 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     }, error => {
       this.loading = false
-      console.log(error);
       subscription.unsubscribe()
     })
   }
@@ -127,7 +123,6 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     }, error => {
       this.loading = false
-      console.log(error);
       subscription.unsubscribe()
     })
   }
@@ -144,7 +139,6 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     }, error => {
       this.loading = false
-      console.log(error);
       subscription.unsubscribe()
     })
   }
@@ -161,25 +155,24 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     }, error => {
       this.loading = false
-      console.log(error);
       subscription.unsubscribe()
     })
   }
   confirm1Delete() {
     this.confirmationService.confirm({
-        message: 'Are you sure that you want to delete this User ?',
-        header: 'Confirmation',
-        icon: 'pi pi-exclamation-triangle',
-        accept: () => {this.deleteUser()},
+      message: 'Are you sure that you want to delete this User ?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => { this.deleteUser() },
     });
   }
-  deleteUser(){
+  deleteUser() {
     const subscription = this.userService.hideUser(this.selectedUser).subscribe((data) => {
       if (!isSet(data)) {
         return
       }
       // this.successMessage('The Appontment deleted successfully')
-      this.display=false
+      this.display = false
       this.refreshLish.emit(true)
       subscription.unsubscribe()
     }, error => {
@@ -187,8 +180,6 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
     })
   }
   selectRole(event) {
-    console.log(event);
-
     this.selectRold = event
     this.roleMode = true
 

@@ -4,7 +4,7 @@ import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { ToastModule } from 'primeng/toast';
 import { LoadingComponent } from 'src/app/Shared/loading/loading.component';
-import { DatePipe } from '@angular/common';
+import { DatePipe, getCurrencySymbol } from '@angular/common';
 
 @Component({
   selector: 'app-base',
@@ -17,6 +17,7 @@ export class BaseComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   public loading = false;
   lang = localStorage.getItem('currentLang')
+  cur = localStorage.getItem('currency')
   jod=this.trans('JOD')
   userAuth =JSON.parse(localStorage.getItem('userAuth'))?.user
   role =JSON.parse(localStorage.getItem('role'))
@@ -44,11 +45,16 @@ export class BaseComponent implements OnInit, OnDestroy {
     } catch (error) {
     }
   }
-
+  public getCurrencySymbol(code?: string, format?: 'wide' | 'narrow', locale?: string): string {
+    if(!isSet(format)) {
+      format = 'narrow';
+    }
+    return getCurrencySymbol(code, format, locale);
+  }
   // toast messages
   public successMessage(header: string, detail?: string) {
     if (!isSet(header)) {
-      header = 'Successful'
+      header = this.trans('Successful')
     }
     this.messageService.add({ severity: 'success', summary: header, detail: detail || '' });
 

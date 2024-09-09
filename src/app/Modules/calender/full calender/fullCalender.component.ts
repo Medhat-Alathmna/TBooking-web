@@ -34,20 +34,7 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
   viewTypes = []
   selectDate = new Date()
   calendarOptions: CalendarOptions
-  tabIndex = [
-    {
-      label: this.trans('Calender'),
-      command: event => {
-        this.tabSelected = 'calender'
-      }
-    },
-    {
-      label: this.trans('Appointments'),
-      command: event => {
-        this.tabSelected = 'appointments'
-      }
-    },
-  ]
+  activeIndex=0
   Appointment: any
   @ViewChild('calendar') calendar: FullCalendarComponent;
   ngOnInit(): void {
@@ -98,7 +85,6 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     }, error => {
       this.loading = false
-      console.log(error);
       subscription.unsubscribe()
     })
   }
@@ -119,8 +105,8 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
           // title: 'Medhat',
           start: new Date(this.Appointments.data[index].attributes.fromDate),
           end: new Date(this.Appointments.data[index].attributes.toDate),
-          backgroundColor:this.Appointments?.data[index]?.attributes.status=='Completed'?'#66FF99': "hsl(" + Math.random() * 360 + ", 100%, 75%)",
-          borderColor: this.Appointments?.data[index]?.attributes.status=='Completed'?'#66FF99': "hsl(" + Math.random() * 360 + ", 100%, 75%)",
+          backgroundColor:this.Appointments?.data[index]?.attributes.status=='Completed'?'#66FF99': "#e39dff",
+          borderColor: this.Appointments?.data[index]?.attributes.status=='Completed'?'#66FF99': "#e39dff",
         },
         )
         this.Appointments.data[index].attributes.fromDate = moment(this.Appointments.data[index].attributes.fromDate).format('hh:mm A')
@@ -129,7 +115,6 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     }, error => {
       this.loading = false
-      console.log(error);
       subscription.unsubscribe()
     })
   }
@@ -150,18 +135,12 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
       for (let index = 0; index < results.data?.length; index++) {
         results.data[index].attributes.fromDate = this.datePipe.transform(results.data[index].attributes.fromDate, 'hh:mm A')
       }
-
       this.unapprovedAppoit = objects.filter(x => x.attributes.approved == false)
       this.approvedAppointments = objects.filter(x => x.attributes.approved == true && x.attributes.status === 'Draft')
-      console.log( this.approvedAppointments);
-      
       this.completedAppoit = objects.filter(x => x.attributes.status === 'Completed')
-      console.log(this.completedAppoit);
-
       subscription.unsubscribe()
     }, error => {
       this.loading = false
-      console.log(error);
       subscription.unsubscribe()
     })
   }

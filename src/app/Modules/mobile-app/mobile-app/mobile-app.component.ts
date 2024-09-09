@@ -13,27 +13,28 @@ export class MobileAppComponent extends BaseComponent implements OnInit {
   tabSelected = 'gallary'
   dataSetting
 
-  tabIndex = [
-   
-
-    {
-      label: this.trans('Gallary'),
-      command: event => {
-        this.tabSelected = 'gallary'
-      }
-    },
-    {
-      label: this.trans('Main Settings'),
-      command: event => {
-        this.tabSelected = 'main'
-      }
-    }
-  ]
+  tabIndex 
   constructor(public translates: TranslateService,
      public messageService: MessageService,private mobileService: MobileAppService,) {super(messageService, translates) }
 
   ngOnInit(): void {
     this.getMainSettings()
+    setTimeout(() => {
+      this.tabIndex = [
+        {
+          label: this.trans('Gallary'),
+          command: event => {
+            this.tabSelected = 'gallary'
+          }
+        },
+        {
+          label: this.trans('General Settings'),
+          command: event => {
+            this.tabSelected = 'main'
+          }
+        }
+      ]
+    });
   }
 
   getMainSettings(){
@@ -44,6 +45,20 @@ export class MobileAppComponent extends BaseComponent implements OnInit {
         return
       }
       this.dataSetting=results.data.attributes
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+      subscription.unsubscribe()
+    })
+  }
+ updateMainSettings(type,value){
+    this.loading = true
+    const subscription = this.mobileService.updateMainSettings(type,value).subscribe((results: any) => {
+      this.loading = false
+      if (!isSet(results)) {
+        return
+      }
+      this.successMessage(null ,type=='phone'?this.trans('The contact number changed'):this.trans('This Action Changed'))
       subscription.unsubscribe()
     }, error => {
       this.loading = false

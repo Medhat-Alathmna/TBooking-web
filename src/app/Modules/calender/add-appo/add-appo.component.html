@@ -226,7 +226,7 @@
                                     </td>
                                     <td>
                                         <span class="  font-bold">
-                                            {{product?.price*product?.qty}} {{jod}}
+                                            {{product?.price*product?.qty}} {{getCurrencySymbol(cur)}}
                                         </span>
                                     </td>
 
@@ -242,7 +242,7 @@
                         </p-table>
                     </div>
                     <div class="text-xl text-primary font-bold pt-2">
-                        <span>{{'Price'|translate}}: {{getTotalPrice()?.products}} {{jod}}</span>
+                        <span>{{'Price'|translate}}: {{getTotalPrice()?.products}} {{getCurrencySymbol(cur)}}</span>
                     </div>
                 </div>
             </div>
@@ -261,11 +261,11 @@
 <app-modal [(display)]="showAddValue" [title]="title" class="modal-sm">
     <div body>
         <p-dropdown *ngIf="servType == 'ser'" appendTo="body" [filter]="true" class="text-xl" [options]="services"
-            [(ngModel)]="newValue" placeholder="Select a Services" name="newValue" (onChange)="selectService()"
+            [(ngModel)]="newValue" [placeholder]="'Select Service'|translate" name="newValue" (onChange)="selectService()"
             [optionLabel]="lang"></p-dropdown>
 
         <p-dropdown *ngIf="servType != 'ser'" appendTo="body" [filter]="true" class="text-xl" [options]="Products"
-            [(ngModel)]="newValue" placeholder="Select a Product" name="newValue" (onChange)="selectProduct()"
+            [(ngModel)]="newValue" [placeholder]="'Select Product'|translate" name="newValue" (onChange)="selectProduct()"
             optionLabel="name"></p-dropdown>
     </div>
     <div footer>
@@ -296,11 +296,11 @@
         <table class="py-4">
             <tr>
                 <th class="px-5">{{'Services Price'|translate}}:</th>
-                <th>{{getTotalPrice().products}} {{jod}}</th>
+                <th>{{getTotalPrice().products}} {{getCurrencySymbol(cur)}} </th>
             </tr>
             <tr>
                 <th class="px-5 py-2" translate> {{'Deposit'|translate}}:</th>
-                <th>{{appointment.deposit}} {{jod}}</th>
+                <th>{{appointment.deposit}} {{getCurrencySymbol(cur)}}</th>
             </tr>
             <p-divider></p-divider>
             <tr>
@@ -338,7 +338,7 @@
                 <th class="px-5 py-2" translate> {{'Paid'|translate}}:</th>
                 <th>
                     <span class="pointer" *ngIf="!cashMode" (click)="cashMode=true">
-                        {{appointment.cash}} {{jod}}</span>
+                        {{appointment.cash}} {{getCurrencySymbol(cur)}}</span>
                     <span *ngIf="cashMode">
                         <input [(ngModel)]="appointment.cash" type="number" (keydown)="onKeyEnter($event,'cash')"
                             placeholder="{{'Enter'|translate}} Cash" name="Cash" pInputText />
@@ -348,7 +348,7 @@
             <p-divider></p-divider>
             <tr>
                 <th class="px-5 text-danger">{{'Unpaid'|translate}}:</th>
-                <th>{{getTotalPrice().total | number : '1.2-2'}} {{jod}}</th>
+                <th>{{getTotalPrice().total | number : '1.2-2'}} {{getCurrencySymbol(cur)}}</th>
             </tr>
         </table>
         <app-pay-by *ngIf="toOrderDialog" [(ngModel)]="appointment.payBy"></app-pay-by>

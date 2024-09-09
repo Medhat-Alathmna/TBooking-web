@@ -57,12 +57,9 @@ export class GallaryComponent extends BaseComponent implements OnInit {
         return
       }
       this.posts = results.data
-      console.log(this.posts);
-
       subscription.unsubscribe()
     }, error => {
       this.loading = false
-      console.log(error);
       subscription.unsubscribe()
     })
   }
@@ -80,7 +77,9 @@ export class GallaryComponent extends BaseComponent implements OnInit {
     })
   }
   updatePost() {
+    this.loading=true
     const subscription = this.mobileService.updatePost(this.post).subscribe((data) => {
+      this.loading=false
       if (!isSet(data)) {
         return
       }
@@ -89,11 +88,14 @@ export class GallaryComponent extends BaseComponent implements OnInit {
 
       subscription.unsubscribe()
     }, error => {
+      this.loading=false
       subscription.unsubscribe()
     })
   }
   uploadMedia(body) {
+    this.loading=true
     const subscription = this.mobileService.uploadMedia(body).subscribe((data) => {
+      this.loading=false
       if (!isSet(data)) {
         return
       }
@@ -101,6 +103,7 @@ export class GallaryComponent extends BaseComponent implements OnInit {
       this.createPost()
       subscription.unsubscribe()
     }, error => {
+      this.loading=false
       subscription.unsubscribe()
     })
   }

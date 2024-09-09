@@ -1,3 +1,7 @@
+<app-loading *ngIf="loading" display="full"></app-loading>
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog containerStyleClass="vw" acceptButtonStyleClass="p-button-danger" acceptIcon="pi pi-trash"
+    rejectButtonStyleClass="p-button-text" appendTo="body"></p-confirmDialog>
 <div class="grid card h-full">
     <p-tabMenu class="col-12" [model]="tabIndex" [activeItem]="tabIndex[0]"></p-tabMenu>
 
@@ -9,7 +13,7 @@
                 </p>
             </div>
             <div class="col-3">
-                <p-toggleButton  [(ngModel)]="dataSetting.booking" class="p-button-sm  p-button-primary mr-1" onLabel="{{'Yes'|translate}}"
+                <p-toggleButton  (onChange)="updateMainSettings('booking',$event.checked)"  [(ngModel)]="dataSetting.booking" class="p-button-sm  p-button-primary mr-1" onLabel="{{'Yes'|translate}}"
                     offLabel="{{'No'|translate}}">
                 </p-toggleButton>
             </div>
@@ -32,8 +36,11 @@
                     Contact No.
                 </p>
             </div>
-            <div class="lg:col-3 sm:col-6 ">
-                <app-input-mask [(ngModel)]="dataSetting.phone" name="phone"></app-input-mask>
+            <div class="lg:col-3 sm:col-6 flex " style="justify-content: space-between">
+                <app-input-mask style="width: 70%" [(ngModel)]="dataSetting.phone" name="phone"></app-input-mask>
+                <button type="button" (click)="updateMainSettings('phone',dataSetting.phone)"
+                [label]="'Save'|translate" pRipple pButton
+                ></button>
             </div>
         </div>
 

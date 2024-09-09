@@ -110,14 +110,11 @@ export class OrdersComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     }, error => {
       this.loading = false
-      console.log(error);
       subscription.unsubscribe()
     })
   }
 
-  getOrder(order){
-    console.log(order);
-    
+  getOrder(order){    
     this.selectedOrder=order
     this.showOrderSidebar=true
   }
@@ -144,7 +141,6 @@ export class OrdersComponent extends BaseComponent implements OnInit {
     
       subscription.unsubscribe()
     }, error => {
-      console.log(error);
       this.loading = false
       subscription.unsubscribe()
     })

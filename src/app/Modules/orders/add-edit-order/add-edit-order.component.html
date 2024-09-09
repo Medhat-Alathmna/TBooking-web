@@ -79,7 +79,7 @@
             </div>
             <div class="lg:col-4 sm:col-6 ">
                 <app-input [disabled]="true" [(ngModel)]="selectedOrder.attributes.appointment.data.attributes.deposit"
-                    name="deposit" title="{{'Deposit'|translate}} / {{jod}}" type="number"></app-input>
+                    name="deposit" title="{{'Deposit'|translate}} /   {{getCurrencySymbol(cur)}}" type="number"></app-input>
             </div>
         </div>
         <div>
@@ -192,7 +192,7 @@
                                     </td>
                                     <td>
                                         <span class="  font-bold">
-                                            {{product.price*product.qty}} {{jod}}
+                                            {{product.price*product.qty}}   {{getCurrencySymbol(cur)}}
                                         </span>
                                     </td>
 
@@ -203,16 +203,14 @@
                     </div>
 
                     <div class="text-xl text-primary font-bold mt-3 col-12" style="display: table-footer-group">
-                        <!-- <div style="display: flex;justify-content: space-evenly"><span>Total:</span> <span class="mx-1">{{getTotalPrice()}} {{jod}}</span> </div>
-                            <div style="display: flex;justify-content: space-evenly"><span>Deposit:</span> <span class="mx-1">{{selectedOrder.attributes.appointment.data.attributes.deposit}} {{jod}}</span> </div> -->
                         <table>
                             <tr>
                                 <th class="px-5">{{'Services Price'|translate}}:</th>
-                                <th>{{getTotalPrice().products}} {{jod}}</th>
+                                <th>{{getTotalPrice().products}}  {{getCurrencySymbol(cur)}}</th>
                             </tr>
                             <tr>
                                 <th class="px-5 py-2" translate> {{'Deposit'|translate}}:</th>
-                                <th>{{selectedOrder.attributes.appointment.data.attributes.deposit}} {{jod}}</th>
+                                <th>{{selectedOrder.attributes.appointment.data.attributes.deposit}}  {{getCurrencySymbol(cur)}}</th>
                             </tr>
                             <p-divider></p-divider>
                             <tr >
@@ -239,7 +237,7 @@
                                     </span>
                                     <span *ngIf="discountMode =='show'" (click)="discountMode ='type'">
                                         <span *ngIf="selectedOrder.discountType =='cash'">
-                                            {{selectedOrder.discount}} {{jod}}
+                                            {{selectedOrder.discount}}  {{getCurrencySymbol(cur)}}
                                         </span>
                                         <span *ngIf="selectedOrder.discountType =='percent'">
                                             {{selectedOrder.discount}} %
@@ -251,7 +249,7 @@
                                 <th class="px-5 py-2" translate> {{'Paid'|translate}}:</th>
                                 <th>
                                     <span class="pointer" *ngIf="!cashMode" (click)="cashMode=true">
-                                        {{selectedOrder.cash}} {{jod}}</span>
+                                        {{selectedOrder.cash}}  {{getCurrencySymbol(cur)}}</span>
                                     <span *ngIf="cashMode">
                                         <input [(ngModel)]="selectedOrder.cash" type="number" [disabled]="selectedOrder.attributes.status==='Paid'"
                                             (keydown)="onKeyEnter($event,'cash')"
@@ -262,7 +260,7 @@
                             <p-divider></p-divider>
                             <tr>
                                 <th class="px-5 text-danger">{{'Unpaid'|translate}}:</th>
-                                <th>{{getTotalPrice().total | number : '1.2-2'}} {{jod}}</th>
+                                <th>{{getTotalPrice().total | number : '1.2-2'}}  {{getCurrencySymbol(cur)}}</th>
                             </tr>
                         </table>
 

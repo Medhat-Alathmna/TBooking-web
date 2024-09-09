@@ -14,6 +14,12 @@ export class SettingsService {
   getNotifications(): Observable<any[]> {
     return this.api.get<any[]>(`notifications`);
   }
+  getGeneralSettings(): Observable<any> {
+    return this.api.get<any>(`/general-setting`); 
+   }
+  getCurrencies(): Observable<any> {
+    return this.api.get<any>(`/currency`); 
+   }
   createNotifications(notfi: Notifications): Observable<Notifications[]> {
     let body = {
       data: {
@@ -35,6 +41,21 @@ export class SettingsService {
       }
     }
     return this.api.put<Notifications[]>(`notifications/${notfi.id}`, body);
+  }
+  updateGeneralSettings(color: any): Observable<any> {
+    let body = {
+      data: {
+        textColor:color.textColor,
+        primaryColor:color.primaryColor,
+        secondaryColor:color.secondaryColor,
+       
+      }
+    }
+    return this.api.put<any>(`general-setting`, body);
+  }
+  updateCurrency(code: any): Observable<any> {
+    let body = {data: {code}}
+    return this.api.put<any>(`currency`, body);
   }
   deleteNotifications(notfi: Notifications): Observable<Notifications[]> {
     return this.api.delete<Notifications[]>(`notifications/${notfi.id}`);

@@ -23,22 +23,7 @@ export class ServicesComponent extends BaseComponent implements OnInit {
   rowNum: any = 10
   currentPage: any = 1
   total=0
-  tabIndex = [
-    {
-      label: this.trans('Services'),
-      command: event => {
-        this.tabSelected = 'service'
-        this.listServices()
-      }
-    },
-    {
-      label: this.trans('Products'),
-      command: event => {
-        this.tabSelected = 'products'
-      }
-    }
-
-  ]
+  tabIndex 
 
   fillterFildes = {
     en: new Filter(),
@@ -73,6 +58,24 @@ export class ServicesComponent extends BaseComponent implements OnInit {
 
   ngOnInit(): void {
     this.listServices()
+    setTimeout(() => {
+      this.tabIndex= [
+        {
+          label: this.trans('Services'),
+          command: event => {
+            this.tabSelected = 'service'
+            this.listServices()
+          }
+        },
+        {
+          label: this.trans('Products'),
+          command: event => {
+            this.tabSelected = 'products'
+          }
+        }
+    
+      ]
+    }, );
   }
 
 
@@ -121,7 +124,6 @@ export class ServicesComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     }, error => {
       this.loading = false
-      console.log(error);
       subscription.unsubscribe()
     })
   }

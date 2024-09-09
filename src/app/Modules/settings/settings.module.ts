@@ -13,6 +13,7 @@ import { ForbiddenNumbersComponent } from './forbidden-numbers/forbidden-numbers
 import { InputMaskComponent } from 'src/app/Shared/input-mask/input-mask.component';
 import { GroupMessagesComponent } from './notifications/group-messages/group-messages.component';
 import { SiteSettingsComponent } from './site-settings/site-settings.component';
+import { ColorInputComponent } from 'src/app/Shared/color-input/color-input.component';
 
 
 export const routes: Routes = [
@@ -34,6 +35,7 @@ export const routes: Routes = [
     TranslateModule,
     ModalComponent,
     InputComponent,
+    ColorInputComponent,
     TextAreaComponent,
     InputMaskComponent,
     LoadingComponent

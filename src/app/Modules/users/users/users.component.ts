@@ -21,29 +21,32 @@ export class UsersComponent extends BaseComponent implements OnInit {
   rowNum: any = 10
   currentPage: any = 1
   total
-
+  tabIndex
   @ViewChild('kt') table: any;
 
-  tabIndex = [
-    {
-      label: this.trans('Users'),
-      command: event => {
-        this.tabSelected = 'users'
-      }
-    },
-    {
-      label: this.trans('Roles'),
-      command: event => {
-        this.tabSelected = 'roles'
-      }
-    },
-    
-  ]
+   
 
   constructor(public translates: TranslateService, public messageService: MessageService, private calenderService:CalenderService, private userService: UsersService) { super(messageService, translates) }
 
   ngOnInit(): void {
     this.getUsers(1,null)
+    setTimeout(() => {
+      this.tabIndex= [
+        {
+          label: this.trans('Users'),
+          command: event => {
+            this.tabSelected = 'users'
+          }
+        },
+        {
+          label: this.trans('Roles'),
+          command: event => {
+            this.tabSelected = 'roles'
+          }
+        },
+        
+      ]
+    });
   }
   showUserSide() {
     this.selectedUser = new UserInfo
@@ -63,7 +66,6 @@ export class UsersComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     }, error => {
       this.loading = false
-      console.log(error);
       subscription.unsubscribe()
     })
   }
