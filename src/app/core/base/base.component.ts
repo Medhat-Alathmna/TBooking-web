@@ -17,7 +17,7 @@ export class BaseComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   public loading = false;
   lang = localStorage.getItem('currentLang')
-  cur = localStorage.getItem('currency')
+  cur:any =JSON.parse(localStorage.getItem('currency')) 
   jod=this.trans('JOD')
   userAuth =JSON.parse(localStorage.getItem('userAuth'))?.user
   role =JSON.parse(localStorage.getItem('role'))
@@ -45,7 +45,7 @@ export class BaseComponent implements OnInit, OnDestroy {
     } catch (error) {
     }
   }
-  public getCurrencySymbol(code?: string, format?: 'wide' | 'narrow', locale?: string): string {
+  public getCurrencySymbol(code?: any, format?: 'wide' | 'narrow', locale?: string): string {
     if(!isSet(format)) {
       format = 'narrow';
     }

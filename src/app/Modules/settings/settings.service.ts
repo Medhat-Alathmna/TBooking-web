@@ -53,8 +53,8 @@ export class SettingsService {
     }
     return this.api.put<any>(`general-setting`, body);
   }
-  updateCurrency(code: any): Observable<any> {
-    let body = {data: {code}}
+  updateCurrency(cur: any): Observable<any> {
+    let body = {data: {name:cur.name,code:cur.code}}
     return this.api.put<any>(`currency`, body);
   }
   deleteNotifications(notfi: Notifications): Observable<Notifications[]> {

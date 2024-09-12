@@ -226,7 +226,7 @@
                                     </td>
                                     <td>
                                         <span class="  font-bold">
-                                            {{product?.price*product?.qty}} {{getCurrencySymbol(cur)}}
+                                            {{product?.price*product?.qty}} {{getCurrencySymbol(cur.code)}}
                                         </span>
                                     </td>
 
@@ -242,7 +242,7 @@
                         </p-table>
                     </div>
                     <div class="text-xl text-primary font-bold pt-2">
-                        <span>{{'Price'|translate}}: {{getTotalPrice()?.products}} {{getCurrencySymbol(cur)}}</span>
+                        <span>{{'Price'|translate}}: {{getTotalPrice()?.products}} {{getCurrencySymbol(cur.code)}}</span>
                     </div>
                 </div>
             </div>
@@ -296,11 +296,11 @@
         <table class="py-4">
             <tr>
                 <th class="px-5">{{'Services Price'|translate}}:</th>
-                <th>{{getTotalPrice().products}} {{getCurrencySymbol(cur)}} </th>
+                <th>{{getTotalPrice().products}} {{getCurrencySymbol(cur.code)}} </th>
             </tr>
             <tr>
                 <th class="px-5 py-2" translate> {{'Deposit'|translate}}:</th>
-                <th>{{appointment.deposit}} {{getCurrencySymbol(cur)}}</th>
+                <th>{{appointment.deposit}} {{getCurrencySymbol(cur.code)}}</th>
             </tr>
             <p-divider></p-divider>
             <tr>
@@ -338,7 +338,7 @@
                 <th class="px-5 py-2" translate> {{'Paid'|translate}}:</th>
                 <th>
                     <span class="pointer" *ngIf="!cashMode" (click)="cashMode=true">
-                        {{appointment.cash}} {{getCurrencySymbol(cur)}}</span>
+                        {{appointment.cash}} {{getCurrencySymbol(cur.code)}}</span>
                     <span *ngIf="cashMode">
                         <input [(ngModel)]="appointment.cash" type="number" (keydown)="onKeyEnter($event,'cash')"
                             placeholder="{{'Enter'|translate}} Cash" name="Cash" pInputText />
@@ -348,7 +348,7 @@
             <p-divider></p-divider>
             <tr>
                 <th class="px-5 text-danger">{{'Unpaid'|translate}}:</th>
-                <th>{{getTotalPrice().total | number : '1.2-2'}} {{getCurrencySymbol(cur)}}</th>
+                <th>{{getTotalPrice().total | number : '1.2-2'}} {{getCurrencySymbol(cur.code)}}</th>
             </tr>
         </table>
         <app-pay-by *ngIf="toOrderDialog" [(ngModel)]="appointment.payBy"></app-pay-by>

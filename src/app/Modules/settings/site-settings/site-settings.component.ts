@@ -36,11 +36,11 @@ export class SiteSettingsComponent extends BaseComponent implements OnInit {
         this.getGeneralSettings()
         this.getCurrencies()
         this.currencies = [
-            { name: 'Dollar', value: 'USD' },
-            { name: 'Euro', value: 'EUR' },
-            { name: 'Shekel', value: 'ILS' },
-            { name: 'Jordanian dinar', value: 'JOD' },
-            { name: 'Egyptian pound', value: 'EGP' },
+            { name: 'Dollar', code: 'USD' },
+            { name: 'Euro', code: 'EUR' },
+            { name: 'Shekel', code: 'ILS' },
+            { name: 'Jordanian dinar', code: 'JOD' },
+            { name: 'Egyptian pound', code: 'EGP' },
 
         ]
         setTimeout(() => {
@@ -53,7 +53,7 @@ export class SiteSettingsComponent extends BaseComponent implements OnInit {
 
 
 
-    selectCurrency(currency) {        
+    selectCurrency(currency) {                
         this.updateCurrency(currency)
     }
 
@@ -83,6 +83,8 @@ export class SiteSettingsComponent extends BaseComponent implements OnInit {
     onPrimayColorChange() {
 
         document.documentElement.style.setProperty('--primary-color', this.systemColors?.primaryColor)
+      
+      
         this.selected = {
             key: 'PrimaryColor',
             value: this.systemColors?.primaryColor
@@ -131,8 +133,7 @@ export class SiteSettingsComponent extends BaseComponent implements OnInit {
     }
     getCurrencies() {
         const subscription = this.settingsServices.getCurrencies().subscribe((results: any) => {
-            this.currency = this.currencies.find(x => x.value == results.data.attributes.code)
-            console.log(this.currency);
+            this.currency = this.currencies.find(x => x.code == results.data.attributes.code)
             subscription.unsubscribe()
         }, error => {
             subscription.unsubscribe()
@@ -147,8 +148,8 @@ export class SiteSettingsComponent extends BaseComponent implements OnInit {
         })
     }
     updateCurrency(currency) {
-        const subscription = this.settingsServices.updateCurrency(currency.value).subscribe((results: any) => {
-            localStorage.setItem('currency', results.data.attributes.code)
+        const subscription = this.settingsServices.updateCurrency(currency).subscribe((results: any) => {
+            localStorage.setItem('currency',JSON.stringify(results.data.attributes) )
             this.successMessage(null,this.trans(`The Main currency has been Changed to`) +` ${this.trans(currency.name)}`)
             subscription.unsubscribe()
         }, error => {

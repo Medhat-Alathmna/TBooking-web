@@ -83,7 +83,7 @@ export class AppComponent implements OnInit {
 }
 getCurrencies() {
   const subscription = this.settingsServices.getCurrencies().subscribe((results: any) => {
-    localStorage.setItem('currency', results.data.attributes.code)
+    localStorage.setItem('currency',JSON.stringify(results.data.attributes))
 
       subscription.unsubscribe()
   }, error => {
