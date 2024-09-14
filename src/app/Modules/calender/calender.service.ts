@@ -20,6 +20,9 @@ export class CalenderService {
   getCalender(): Observable<any[]> {
     return this.api.get<any[]>(`appointments?populate=*&filters[approved][$eq]=true&filters[hide][$eq]=false&filters[status][$eq]=Completed&filters[status][$eq]=Draft`);
   }
+  getNotfi(): Observable<any> {
+    return this.api.get<any>(`notfi`);
+  }
   getTodayAppominets(currentDate): Observable<any[]> {
     return this.api.get<any[]>(`appointments?populate=*&filters[hide][$eq]=false&filters[fromDate][$gte]=${currentDate}`);
   }

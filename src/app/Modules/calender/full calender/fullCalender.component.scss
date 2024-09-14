@@ -40,3 +40,7 @@ display: inline !important;
     top: 6%;
     left: -88%;
   }
+ :host::ng-deep .cal{
+    display: flex;
+    justify-content: space-between
+  }

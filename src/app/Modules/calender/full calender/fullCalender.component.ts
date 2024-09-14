@@ -38,7 +38,9 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
   Appointment: any
   @ViewChild('calendar') calendar: FullCalendarComponent;
   ngOnInit(): void {
-  
+    document.getElementsByClassName('p-tabview-nav')[0]?.classList?.add("cal")
+    console.log(document.getElementsByClassName('p-tabview-nav'));
+
     this.calendarOptions = {
       initialView: 'timeGridDay',
 
@@ -59,6 +61,10 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
     }
     this.getCalender()
     this.getTodayAppo()
+      this.getNotfi()
+
+
+
   }
   moveToDay() {
     this.calendar.getApi().gotoDate(new Date(this.selectDate))
@@ -141,6 +147,19 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     }, error => {
       this.loading = false
+      subscription.unsubscribe()
+    })
+  }
+  getNotfi() {
+   
+    const subscription = this.calenderService.getNotfi().subscribe((results: any) => {
+      if (!isSet(results)) {
+        return
+      }
+    console.log(results);
+    
+      subscription.unsubscribe()
+    }, error => {
       subscription.unsubscribe()
     })
   }

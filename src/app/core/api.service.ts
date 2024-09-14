@@ -68,11 +68,19 @@ export class ApiService {
       headers: this.getHeaders()
     })
   }
+  // getGuest<T>(url: string): Observable<T> {
+  //   url = url.charAt(0) === '/' ? url : `/${url}`;
+
+
+  //   return this.httpClient.get<T>(`${this.apiUrl}${url}`)
+  // }
   getGuest<T>(url: string): Observable<T> {
     url = url.charAt(0) === '/' ? url : `/${url}`;
 
 
-    return this.httpClient.get<T>(`${this.apiUrl}${url}`)
+    return this.httpClient.get<T>(`${this.apiUrl}${url}`, {
+      headers: this.getHeadersGuest()
+    })
   }
   getFile<T>(url: string): Observable<T> {
     url = url.charAt(0) === '/' ? url : `/${url}`;
@@ -122,7 +130,14 @@ export class ApiService {
     return headers
   }
 
+  private getHeadersGuest() {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer 6dbf339badc863aea1ce61fdbf1a083eddc9756c85ef172cac0ca1f3c427a628f77d87e51fe4a4e95a6476e488063fac3ac46b8e99d628a9a74641eefd695367d2dde8daad76d963e6ba5fc68e8d588fa82a456055fed6537cbbbc35ec6ece6746e64bec20169d70f1d77b679cdbbff61040f518886bc29323ad06f985ec521d`,
+      Accept: 'application/json'
+        });
 
+    return headers
+  }
 
 }
 
