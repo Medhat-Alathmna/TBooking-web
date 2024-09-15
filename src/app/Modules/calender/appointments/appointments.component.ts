@@ -142,7 +142,10 @@ export class AppointmentsComponent extends BaseComponent implements OnInit {
       if (!isSet(data)) {
         return
       }
-    
+  this.appointments=   data.customer.map(x=>{
+      x.attributes=x
+     })
+     
       subscription.unsubscribe()
     }, error => {
       this.loading = false

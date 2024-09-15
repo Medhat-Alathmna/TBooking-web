@@ -1,6 +1,8 @@
 <app-loading *ngIf="loading" display="full"></app-loading>
 <p-tabView   [(activeIndex)]="activeIndex">
-
+    <div *ngIf="message">
+        <p>{{ message }}</p>
+      </div>
     <p-tabPanel style="display: inline;"   header="{{'Calender'|translate}}">
         <div *ngIf="activeIndex==0"  class="grid  ">
             <div [class]="edpandMode?'lg:col-12 sm:col-12':'lg:col-8 sm:col-12' ">
@@ -127,7 +129,7 @@
                                 </div>
                             </p-tabPanel>
                             <i class="pi pi-exclamation-circle" showDelay="1000" tooltipPosition="bottom"
-                                pTooltip="This are Appointments for a current day" style="font-size: 1.5rem"></i>
+                                pTooltip="This are Appointments from a current day" style="font-size: 1.5rem"></i>
         
                         </p-tabView>
         

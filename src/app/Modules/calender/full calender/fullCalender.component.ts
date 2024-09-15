@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
@@ -15,10 +15,11 @@ import { CalendarModule } from 'primeng/calendar';
   templateUrl: './fullCalender.component.html',
   styleUrls: ['./fullCalender.component.scss']
 })
-export class FullCalenderComponent extends BaseComponent implements OnInit {
+export class FullCalenderComponent extends BaseComponent implements OnInit , AfterViewInit  {
 
   constructor(public translates: TranslateService,
     public messageService: MessageService, private datePipe: DatePipe, private calenderService: CalenderService) { super(messageService, translates) }
+    private eventSource: EventSource | undefined;
 
   Appointments: any = []
   approvedAppointments: any = []
@@ -37,9 +38,17 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
   activeIndex=0
   Appointment: any
   @ViewChild('calendar') calendar: FullCalendarComponent;
-  ngOnInit(): void {
-    document.getElementsByClassName('p-tabview-nav')[0]?.classList?.add("cal")
-    console.log(document.getElementsByClassName('p-tabview-nav'));
+  message
+  ngAfterViewInit() {
+    const tabViewNavCollection = document.getElementsByClassName('p-tabview-nav');
+    if (tabViewNavCollection.length > 1) {
+      tabViewNavCollection[1].classList.add("cal");
+    } else {
+      console.log("Second element not found");
+    }
+  }  ngOnInit(): void {
+    // document.getElementsByClassName('p-tabview-nav')[0]?.classList?.add("cal")
+    // console.log(document.getElementsByClassName('p-tabview-nav'));
 
     this.calendarOptions = {
       initialView: 'timeGridDay',
@@ -61,10 +70,26 @@ export class FullCalenderComponent extends BaseComponent implements OnInit {
     }
     this.getCalender()
     this.getTodayAppo()
-      this.getNotfi()
+      // this.getNotfi()
 
+      this.eventSource = this.calenderService.getServerSentEvent('http://localhost:1337/api/notfi');
 
+      this.eventSource.onmessage = (event) => {
+        this. message = JSON.parse(event.data);
+        console.log('Received SSE:', this.message);
+  
+        // Display the message to the user using a notification service
+        // Example: this.notificationService.showNotification(message.message);
+      };
+  
+      this.eventSource.onerror = (error) => {
+        console.error('SSE error:', error);
+        this.eventSource?.close();
+      };
 
+  }
+  ngOnDestroy(): void {
+    this.eventSource?.close();
   }
   moveToDay() {
     this.calendar.getApi().gotoDate(new Date(this.selectDate))

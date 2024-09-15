@@ -23,6 +23,9 @@ export class CalenderService {
   getNotfi(): Observable<any> {
     return this.api.get<any>(`notfi`);
   }
+  getServerSentEvent(url: string): EventSource {
+    return new EventSource(url);
+  }
   getTodayAppominets(currentDate): Observable<any[]> {
     return this.api.get<any[]>(`appointments?populate=*&filters[hide][$eq]=false&filters[fromDate][$gte]=${currentDate}`);
   }
@@ -137,7 +140,7 @@ export class CalenderService {
     return this.api.get<any[]>(`users/me?populate=*`);
   }
   search(val): Observable<any> {
-    return this.api.get<any>(`/searchCustomers?search=${val}`);
+    return this.api.get<any>(`/searchCU?search=${val}`);
   }
 
   getlist(moduleName: string, pageNum?: number, rows?: number, query?: any, pop?): Observable<any[]> {
