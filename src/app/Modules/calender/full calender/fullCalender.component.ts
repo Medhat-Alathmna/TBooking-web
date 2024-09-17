@@ -72,21 +72,6 @@ export class FullCalenderComponent extends BaseComponent implements OnInit , Aft
     this.getTodayAppo()
       // this.getNotfi()
 
-      this.eventSource = this.calenderService.getServerSentEvent('http://localhost:1337/api/notfi');
-
-      this.eventSource.onmessage = (event) => {
-        this. message = JSON.parse(event.data);
-        console.log('Received SSE:', this.message);
-  
-        // Display the message to the user using a notification service
-        // Example: this.notificationService.showNotification(message.message);
-      };
-  
-      this.eventSource.onerror = (error) => {
-        console.error('SSE error:', error);
-        this.eventSource?.close();
-      };
-
   }
   ngOnDestroy(): void {
     this.eventSource?.close();

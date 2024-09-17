@@ -20,13 +20,13 @@
                         <i class="pi pi-tags text-100 text-3xl "></i>
                     </span>
                     <entity-viewer
-                        [entity]="{type:'text',title:'Status'| translate,value:selectedOrder.attributes.status|translate}"
+                        [entity]="{type:'text',title:'Status'| translate,value:selectedOrder?.attributes?.status|translate}"
                         [darkMode]="true"></entity-viewer>
                 </div>
                 <div class="flex align-items-center justify-content-center border-break"></div>
                 <div class="flex-initial flex align-items-center justify-content-center px-3">
                     <entity-viewer
-                        [entity]="{type:'user',title:'Ordered BY'|translate,value:selectedOrder.attributes.appointment.data.attributes?.appoBy}"
+                        [entity]="{type:'user',title:'Ordered BY'|translate,value:selectedOrder?.attributes?.appointment?.data?.attributes?.appoBy}"
                         [darkMode]="true"></entity-viewer>
                 </div>
             </div>
@@ -74,7 +74,7 @@
                     [title]="'Phone'|translate"></app-input-mask>
             </div>
             <div class="lg:col-4 sm:col-6 ">
-                <app-input [disabled]="true" [(ngModel)]="selectedOrder.attributes.appointment.data.attributes.address"
+                <app-input [disabled]="true" [(ngModel)]="selectedOrder?.attributes.appointment.data.attributes.address"
                     name="address" [title]="'Address'|translate"></app-input>
             </div>
             <div class="lg:col-4 sm:col-6 ">

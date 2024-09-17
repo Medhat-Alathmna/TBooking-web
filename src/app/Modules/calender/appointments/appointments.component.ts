@@ -98,7 +98,7 @@ export class AppointmentsComponent extends BaseComponent implements OnInit {
       if (!isSet(results)) {
         return
       }
-      this.appointments=[]
+      this.appointments = []
       const clone = Appointment.cloneManyObjects(results.data)
       this.total = results.meta.pagination.total
       if (!isSet(this.appointments)) {
@@ -142,10 +142,12 @@ export class AppointmentsComponent extends BaseComponent implements OnInit {
       if (!isSet(data)) {
         return
       }
-  this.appointments=   data.customer.map(x=>{
-      x.attributes=x
-     })
-     
+      data.customer.map((x: any) => {
+        console.log(x);
+        
+        x.attributes = x
+      })
+      this.appointments = data.customer
       subscription.unsubscribe()
     }, error => {
       this.loading = false

@@ -68,6 +68,6 @@ export class OrdersService {
     return this.api.put<any>(`/appointments/${appointment.id}`,body); 
    }
    search(val): Observable<any> {
-        return this.api.get<any>(`/searchCustomer?search=${val}`);
+        return this.api.get<any>(`/searchOR?search=${val}`);
       }
 }

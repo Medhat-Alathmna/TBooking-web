@@ -8,7 +8,18 @@
         <div class="grid flex-column grid-nogutter">
             <div class="col-12">
                 <div class="card cardColor">
-                    <h5>{{"Total of today's orders"| translate}}</h5>
+                    <div class="row flex justify-content-between">
+                        <div class="col-6">
+                            <h5>{{"Total of today's orders"| translate}} </h5>
+                        </div>
+                        <div class="col-6" style="display: flex;
+                        align-items: baseline;
+                        flex-direction: row;
+                        justify-content: space-evenly">
+                            <h5>{{fromDate | date:'YYYY-MM-dd'}}</h5>
+                            <h5 *ngIf="(fromDate| date:'YYYY-MM-dd') != (toDate| date:'YYYY-MM-dd')">{{toDate | date:'YYYY-MM-dd'}}</h5>
+                        </div>
+                    </div>
                     <p-chart type="bar" *ngIf="results" [data]="toDayChart" [options]="basicOptions"
                         height="51vh"></p-chart>
                     <div style="height:51vh" *ngIf="!results" class="text-center">
@@ -26,7 +37,18 @@
         <div class="grid flex-column grid-nogutter">
             <div class="col-12">
                 <div class="card cardColor">
-                    <h5>{{"Today's Cash"| translate}}</h5>
+                    <div class="row flex justify-content-between">
+                        <div class="col-6">
+                            <h5>{{"Today's Cash"| translate}}</h5>
+                        </div>
+                        <div class="col-6" style="display: flex;
+                        align-items: baseline;
+                        flex-direction: row;
+                        justify-content: space-evenly">
+                            <h5>{{fromDate | date:'YYYY-MM-dd'}}</h5>
+                            <h5 *ngIf="(fromDate| date:'YYYY-MM-dd') != (toDate| date:'YYYY-MM-dd')">{{toDate | date:'YYYY-MM-dd'}}</h5>
+                        </div>
+                    </div>
                     <p-chart type="bar" *ngIf="results" [data]="todayCashChart" [options]="basicOptions"
                         height="51vh"></p-chart>
                     <div style="height:51vh" *ngIf="!results" class="text-center">
@@ -75,7 +97,7 @@
                         <p-calendar dateFormat="dd-mm-yy" [(ngModel)]="fromDate" appendTo="body"
                             [style]="{width: '100%'}" [showIcon]="true" yearNavigator=true>
                         </p-calendar>
-                        <label for="vat-input">From Date</label>
+                        <label for="vat-input" translate>From Date</label>
                     </span>
                 </div>
             </div>
@@ -85,7 +107,7 @@
                         <p-calendar dateFormat="dd-mm-yy" appendTo="body" [(ngModel)]="toDate" [style]="{width: '100%'}"
                             [showIcon]="true" yearNavigator=true>
                         </p-calendar>
-                        <label for="vat-input">To Date</label>
+                        <label for="vat-input" translate>To Date</label>
                     </span>
                 </div>
             </div>
@@ -106,16 +128,17 @@
             </p-accordionTab> -->
             <p-accordionTab>
                 <ng-template pTemplate="header">
-                        <span pTooltip="{{'Customer'|translate}}"
-                        showDelay="1000" hideDelay="1000" tooltipPosition="bottom" class="vertical-align-middle py-2">{{ body.appointment?.customer?.firstName}} {{ body.appointment?.customer?.middleName}} {{ body.appointment?.customer?.lastName}}</span>
-                        <span pTooltip="{{'Order No.'|translate}}"
-                        showDelay="1000" hideDelay="1000" tooltipPosition="bottom" class="vertical-align-middle ">{{body.orderNo}}</span>
-                        <span pTooltip="{{'Creation Date'|translate}}"
-                        showDelay="1000" hideDelay="1000" tooltipPosition="bottom" class="vertical-align-middle py-2">{{body.createdAt  | date: 'dd/MM/yyyy hh:mm A'}}</span>
-                        <span pTooltip="{{'Cash'|translate}}"
-                        showDelay="1000" hideDelay="1000" tooltipPosition="bottom" class="vertical-align-middle">{{body.cash}} {{getCurrencySymbol(cur.code)}}</span>
-                        <span pTooltip="{{'Cash'|translate}}"
-                        showDelay="1000" hideDelay="1000" tooltipPosition="bottom" [class]="body.status">{{body.status |translate}} </span>
+                    <span pTooltip="{{'Customer'|translate}}" showDelay="1000" hideDelay="1000" tooltipPosition="bottom"
+                        class="vertical-align-middle py-2">{{ body.appointment?.customer?.firstName}} {{
+                        body.appointment?.customer?.middleName}} {{ body.appointment?.customer?.lastName}}</span>
+                    <span pTooltip="{{'Order No.'|translate}}" showDelay="1000" hideDelay="1000"
+                        tooltipPosition="bottom" class="vertical-align-middle ">{{body.orderNo}}</span>
+                    <span pTooltip="{{'Creation Date'|translate}}" showDelay="1000" hideDelay="1000"
+                        tooltipPosition="bottom" class="vertical-align-middle py-2">{{body.createdAt | date: 'dd/MM/yyyy hh:mm A'}}</span>
+                    <span pTooltip="{{'Cash'|translate}}" showDelay="1000" hideDelay="1000" tooltipPosition="bottom"
+                        class="vertical-align-middle">{{body.cash}} {{getCurrencySymbol(cur.code)}}</span>
+                    <span pTooltip="{{'Cash'|translate}}" showDelay="1000" hideDelay="1000" tooltipPosition="bottom"
+                        [class]="body.status">{{body.status |translate}} </span>
                 </ng-template>
                 <ng-template pTemplate="content">
                     <div class="block my-1" *ngFor="let item of body?.appointment?.employee;let i =index ">
@@ -130,72 +153,74 @@
                                     (click)="employeeMode=false"
                                     styleClass="p-button-outlined p-button-success"></p-button>
                             </div>
-                           
+
                         </div>
                         <div *ngIf="item.services" class="mt-3 mx-2">
-                            <div *ngFor="let ser of item.services;let c =index " class="flex justify-content-between flex-wrap mb-2">
+                            <div *ngFor="let ser of item.services;let c =index "
+                                class="flex justify-content-between flex-wrap mb-2">
                                 <div class=" text-base font-semibold justify-content-between"
                                     style="display: flex;align-items: center;justify-content: space-around;width: 23vw">
                                     <div class="pi pi-circle-fill text-primary text-xs pt-2"></div>
                                     <span class="  font-bold "> {{ser[lang]}} </span>
                                     <span class="  font-bold">
-                                        <input type="number" disabled name="price{{i}}{{c}}" pInputText [(ngModel)]="ser.price" />
+                                        <input type="number" disabled name="price{{i}}{{c}}" pInputText
+                                            [(ngModel)]="ser.price" />
 
                                     </span>
                                 </div>
-                             
+
                             </div>
                             <p-divider *ngIf="item.services.length"></p-divider>
                         </div>
                     </div>
-                <p-divider *ngIf="body.products?.length"></p-divider>
-                        <div *ngIf="body.products?.length" class="mt-3">
-                            <p-table [value]="body.products" [tableStyle]="{'width.%': 100}">
-                                <ng-template pTemplate="header">
-                                    <tr>
-                                        <th translate>Product Name</th>
-                                        <th translate>Price</th>
-                                        <th translate>Quantity</th>
-                                        <th translate>Brand</th>
-                                        <th translate>Total</th>
-                                    </tr>
-                                </ng-template>
-                                <ng-template pTemplate="body" let-product let-s="rowIndex">
-                                    <tr>
-                                        <td class=" px-2 font-bold">{{ product.name }}</td>
-                                        <td>
-                                            <span class=" px-2 font-bold">
-                                                <input type="number" [value]="product.price" disabled
-                                                    [ngModelOptions]="{standalone: true}" pInputText
-                                                    [(ngModel)]="product.price" />
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <span class="  font-bold">
-                                                <input type="number" name="qty{{s}}" disabled pInputText
-                                                    [(ngModel)]="product.qty" />
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <span class="  font-bold">
-                                                {{product?.brand?.name}} 
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <span class="  font-bold">
-                                                {{product.price*product.qty}} {{getCurrencySymbol(cur.code)}}
-                                            </span>
-                                        </td>
-                                      
-                                      
-                                    </tr>
-                                </ng-template>
-                            </p-table>
-                          
-                        </div>
+                    <p-divider *ngIf="body.products?.length"></p-divider>
+                    <div *ngIf="body.products?.length" class="mt-3">
+                        <p-table [value]="body.products" [tableStyle]="{'width.%': 100}">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th translate>Product Name</th>
+                                    <th translate>Price</th>
+                                    <th translate>Quantity</th>
+                                    <th translate>Brand</th>
+                                    <th translate>Total</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-product let-s="rowIndex">
+                                <tr>
+                                    <td class=" px-2 font-bold">{{ product.name }}</td>
+                                    <td>
+                                        <span class=" px-2 font-bold">
+                                            <input type="number" [value]="product.price" disabled
+                                                [ngModelOptions]="{standalone: true}" pInputText
+                                                [(ngModel)]="product.price" />
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="  font-bold">
+                                            <input type="number" name="qty{{s}}" disabled pInputText
+                                                [(ngModel)]="product.qty" />
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="  font-bold">
+                                            {{product?.brand?.name}}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="  font-bold">
+                                            {{product.price*product.qty}} {{getCurrencySymbol(cur.code)}}
+                                        </span>
+                                    </td>
+
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+
+                    </div>
                 </ng-template>
             </p-accordionTab>
         </p-accordion>
     </div>
-   
+
 </app-modal>

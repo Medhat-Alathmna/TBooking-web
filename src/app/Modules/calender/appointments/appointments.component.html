@@ -86,7 +86,7 @@
                                 [showClear]="true" [(ngModel)]="fillterFildes.status.value"
                                 placeholder='Select Status' optionValue="label" optionLabel="label">
                                 <ng-template let-item pTemplate="item">
-                                    <span [class]="item.label">{{item.label}}</span>
+                                    <span [class]="item.label">{{item.label|translate}}</span>
                                 </ng-template>
                             </p-dropdown>
                             <div class="grid mt-2">
@@ -117,7 +117,7 @@
                             [(ngModel)]="fillterFildes.fromDate.type" placeholder='Select filter Type'
                             optionValue="value" optionLabel="type">
                             <ng-template let-item pTemplate="item">
-                                <span>{{item.type}}</span>
+                                <span>{{item.type|translate}}</span>
                             </ng-template>
                         </p-dropdown>
                         <div class="mt-3">

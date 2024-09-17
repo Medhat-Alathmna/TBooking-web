@@ -41,9 +41,7 @@ export class PayByComponent extends BaseComponent implements ControlValueAccesso
   constructor(messageService: MessageService, translates: TranslateService,private sharedServies:SharedService,private confirmationService: ConfirmationService,) { super(messageService,translates)}
 
   ngOnInit(): void {
-    this.getPayBy()
-    console.log(this.payBy);
-    
+    this.getPayBy()    
   }
 
   private onChangeCallback: (_: any) => void = () => {};

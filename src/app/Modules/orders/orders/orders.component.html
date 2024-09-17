@@ -48,31 +48,31 @@
                 </p-columnFilter>
             </th>
                 <th style="width: 30vw" translate>Customer
-                    <!-- <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
-                    [ngClass]="fillterFildes?.name?.status?'status-filter':null" type="text" field="id"
+                    <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
+                    [ngClass]="fillterFildes?.number?.status?'status-filter':null" type="text" field="id"
                     matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
                     [showAddButton]="false">
                     <ng-template pTemplate="filter">
                         <div class="mt-3">
-                            <input [disabled]="fillterFildes?.name?.status" [(ngModel)]="fillterFildes.name.value"
+                            <input [disabled]="fillterFildes?.customer?.status" [(ngModel)]="fillterFildes.customer.value"
                                 type="text" pInputText>
                         </div>
                         <div class="grid mt-2">
                             <div class="col-6">
-                                <button pButton label='Clear' class="p-button-outlined"name
-                                    (click)="fillterFildes.name.value=null;fillterFildes.name.status=flase;clearAllFillter()"
+                                <button pButton label='Clear' class="p-button-outlined"
+                                    (click)="fillterFildes.customer.value=null;fillterFildes.customer.status=flase;clearAllFillter()"
                                     type="button">
                                 </button>
                             </div>
                             <div class="col-6">
-                                <button pButton [disabled]="!fillterFildes.name.value" label='Apply'
-                                    (click)="fillterFildes.name.name='name';fillterFildes.name.status=true;search()"
+                                <button pButton [disabled]="!fillterFildes.customer.value" label='Apply'
+                                    (click)="fillterFildes.customer.status=true;search()"
                                     type="button">
                                 </button>
                             </div>
                         </div>
                     </ng-template>
-                </p-columnFilter> -->
+                </p-columnFilter>
             </th>
                 <th translate>Appointment No.
                     <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
@@ -111,7 +111,7 @@
                                 [showClear]="true" [(ngModel)]="fillterFildes.status.value"
                                 placeholder='Select Status' optionValue="label" optionLabel="label">
                                 <ng-template let-item pTemplate="item">
-                                    <span [class]="item.label">{{item.label}}</span>
+                                    <span [class]="item.label">{{item.label |translate}}</span>
                                 </ng-template>
                             </p-dropdown>
                             <div class="grid mt-2">
@@ -191,7 +191,7 @@
                 </td>
                 <td>
                     <span class="text-xl text-primary ">
-                        {{ser.attributes?.appointment.data.attributes?.number}}
+                        {{ser?.attributes?.appointment?.data?.attributes?.number}}
                     </span>
                 </td>
                 <td>

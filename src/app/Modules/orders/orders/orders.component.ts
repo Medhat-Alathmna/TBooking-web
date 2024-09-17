@@ -17,23 +17,24 @@ export class OrdersComponent extends BaseComponent implements OnInit {
 
   rowNum: any = 10
   currentPage: any = 1
-  orders:any=[]
+  orders: any = []
   searchCustomer
   total
-  showOrderSidebar:boolean=false
+  showOrderSidebar: boolean = false
   selectedOrder
   fillterFildes = {
     orderNo: new Filter(),
     status: new Filter(),
+    customer: new Filter(),
     number: new Filter(),
     createdAt: new Filter(),
     name: new Filter(),
   }
-  status=[
-    {label:'Paid'},
-    {label:'Unpaid'},
-    {label:'Draft'},
-    {label:'Canceled'}
+  status = [
+    { label: 'Paid' },
+    { label: 'Unpaid' },
+    { label: 'Draft' },
+    { label: 'Canceled' }
   ]
 
   queryTypes = [
@@ -59,8 +60,8 @@ export class OrdersComponent extends BaseComponent implements OnInit {
   @ViewChild('kt') table: any;
 
   constructor(public translates: TranslateService,
-    public messageService: MessageService,private ordersService:OrdersService, private datePipe: DatePipe,
-    private calenderService:CalenderService,) {super(messageService, translates) }
+    public messageService: MessageService, private ordersService: OrdersService, private datePipe: DatePipe,
+    private calenderService: CalenderService,) { super(messageService, translates) }
 
   ngOnInit(): void {
     this.clearAllFillter()
@@ -69,13 +70,13 @@ export class OrdersComponent extends BaseComponent implements OnInit {
     isSet(this.fillterFildes.createdAt.value) ? this.fillterFildes.createdAt.value = this.datePipe.transform(this.fillterFildes.createdAt.value, 'yyyy-MM-dd') : null
 
     this.loading = true
-    const subscription = this.calenderService.getlist('orders',pageNum,10,query).subscribe((results: any) => {
+    const subscription = this.calenderService.getlist('orders', pageNum, 10, query).subscribe((results: any) => {
       this.loading = false
       if (!isSet(results)) {
         return
       }
-      const clone=results.data
-      this.total=results.meta.pagination.total
+      const clone = results.data
+      this.total = results.meta.pagination.total
       if (!isSet(this.orders)) {
         this.orders = Array(this.total).fill(0)
       }
@@ -114,9 +115,9 @@ export class OrdersComponent extends BaseComponent implements OnInit {
     })
   }
 
-  getOrder(order){    
-    this.selectedOrder=order
-    this.showOrderSidebar=true
+  getOrder(order) {
+    this.selectedOrder = order
+    this.showOrderSidebar = true
   }
 
   clearAllFillter() {
@@ -124,6 +125,7 @@ export class OrdersComponent extends BaseComponent implements OnInit {
       orderNo: new Filter(),
       status: new Filter(),
       number: new Filter(),
+      customer: new Filter(),
       name: new Filter(),
       createdAt: new Filter(),
     }
@@ -131,14 +133,20 @@ export class OrdersComponent extends BaseComponent implements OnInit {
     this.getOrders(1, null)
   }
   search() {
-    this.searchCustomer=this.fillterFildes.name.value
     this.loading = true
-    const subscription = this.ordersService.search(this.searchCustomer).subscribe((data: any) => {
+    const subscription = this.ordersService.search(this.fillterFildes.customer.value).subscribe((data: any) => {
       this.loading = false
       if (!isSet(data)) {
         return
       }
-    
+      data.customer.map((x: any) => {
+        x.attributes = x;
+        x.attributes.appointment.data = x?.appointment
+        x.attributes.appointment.data.attributes = x.attributes.appointment.data
+      })
+      this.orders = data.customer
+      console.log(this.orders );
+      
       subscription.unsubscribe()
     }, error => {
       this.loading = false
