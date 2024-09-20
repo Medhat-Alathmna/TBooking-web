@@ -16,16 +16,7 @@
             <li app-menuitem *ngFor="let item of model; let i = index;" [item]="item" [index]="i" [root]="true"
                 (click)="activeControlPanel=false;activeTeamPanel=false"></li>
         </ul>
-        <div [style.padding-top.px]="menuContainer.offsetHeight-560">
-            <ul class="layout-menu">
-                <li>
-                    <a (click)="navToContorlPanal()" [class.active-route]="activeControlPanel">
-                        <i class=" pi pi-cog text-color"></i>
-                    </a>
-                </li>
-             
-            </ul>
-        </div>
+      
 
     </div>
 

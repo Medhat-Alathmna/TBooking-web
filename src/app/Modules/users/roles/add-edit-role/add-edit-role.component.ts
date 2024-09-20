@@ -35,8 +35,15 @@ export class AddEditRoleComponent extends BaseComponent implements OnInit {
 
   constructor(public translates: TranslateService,
     public messageService: MessageService,private roleService:RolesService) { super(messageService, translates) }
+    prev=[
+      {name:'Appointments',isAllowed:false},
+      {name:'Appointments',isAllowed:false},
+      {name:'Appointments',isAllowed:false},
+      {name:'Appointments',isAllowed:false},
+      {name:'Appointments',isAllowed:false},
+    ]
   ngOnInit(): void {
-this.detailMode==true? this.selectedRole=this.selectedRole.attributes:null
+    this.selectedRole=this.detailMode? this.selectedRole.attributes:null
  console.log(this.selectedRole.pages);
 
     // this.selectedRole.description=this.selectedRole.attributes.description

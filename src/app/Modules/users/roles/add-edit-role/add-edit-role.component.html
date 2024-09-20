@@ -74,7 +74,7 @@
                     </div>
                     <div class="col-3" style="text-align: start;">
                         <p-toggleButton onLabel="Allowed" offLabel="Rejected" onIcon="pi pi-check" offIcon="pi pi-times"
-                        name="isAllowed" 
+                        name="isAllowed" [(ngModel)]="prev.isAllowed"
                             (onChange)="prev.isAllowed=!prev.isAllowed"></p-toggleButton>
                     </div>
 

@@ -27,7 +27,7 @@ import { MobileAppModule } from './Modules/mobile-app/mobile-app.module';
                 path: '', component: AppMainComponent,
                 canActivate: [AuthGuard],
                 children: [
-                    { path: '', loadChildren: () => HomeModule },
+                    { path: '', loadChildren: () => CalenderModule, },
                     { path: 'products', loadChildren: () => ProductsModule },
                     { path: 'mobile', loadChildren: () => MobileAppModule },
                     { path: 'calender', loadChildren: () => CalenderModule },

@@ -44,7 +44,7 @@
                             class="p-button-secondary p-button-sm p-button-text p-0 mb-1"></button>
                     </div>
                     <div *ngIf="!systemColors?.primaryColorEdit" 
-                        class="w-5 h-3rem border-round " [style.background]="systemColors.primaryColor">
+                        class="w-5 h-3rem border-round " [style.background]="systemColors?.primaryColor">
                     </div>
                     <app-color-input *ngIf="systemColors?.primaryColorEdit ===true"
                         [(ngModel)]="systemColors.primaryColor" (ngModelChange)="onPrimayColorChange()"
@@ -62,7 +62,7 @@
                     </div>
 
                     <div *ngIf="!systemColors?.textColorEdit" 
-                    class="w-5 h-3rem border-round " [style.background]="systemColors.textColor">
+                    class="w-5 h-3rem border-round " [style.background]="systemColors?.textColor">
                 </div>
                 <app-color-input *ngIf="systemColors?.textColorEdit ===true"
                     [(ngModel)]="systemColors.textColor" (ngModelChange)="onTextColorChange()"
@@ -84,7 +84,7 @@
                     </div>
 
                     <div *ngIf="!systemColors?.secondaryColorEdit" 
-                    class="w-5 h-3rem border-round " [style.background]="systemColors.secondaryColor">
+                    class="w-5 h-3rem border-round " [style.background]="systemColors?.secondaryColor">
                 </div>
                 <app-color-input *ngIf="systemColors?.secondaryColorEdit ===true"
                     [(ngModel)]="systemColors.secondaryColor" (ngModelChange)="onTextSecondaryColorChange()"

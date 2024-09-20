@@ -105,7 +105,7 @@
                 <app-input [(ngModel)]="appointment.address" name="address" [title]="'Address'|translate"></app-input>
             </div>
             <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="appointment.deposit" name="deposit" title="{{'Deposit'|translate}} / {{jod}}"
+                <app-input [(ngModel)]="appointment.deposit" name="deposit" title="{{'Deposit'|translate}} /  {{getCurrencySymbol(cur.code)}}"
                     type="number"></app-input>
             </div>
         </div>

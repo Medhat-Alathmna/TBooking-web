@@ -159,7 +159,7 @@
                         </ng-template>
                     </p-columnFilter>
                 </th>
-                <th translate>Creation Date</th>
+                <!-- <th translate>Creation Date</th> -->
                 <th style="width: 10% !important" translate>Actions</th>
             </tr>
         </ng-template>
@@ -185,12 +185,12 @@
                         <span>{{ser?.attributes?.barcode ? ser?.attributes?.barcode:'ـــ'}}</span>
                     </span>
                 </td>
-                <td>
+                <!-- <td>
                     <span class="text-xl text-primary  bold">
                         {{ ser?.attributes?.createdAt| date: 'dd/MM/yyyy hh:mm' }}
                     </span>
                    
-                </td>
+                </td> -->
                 <td style="width: 10%">
                     <button (click)="selectProd(ser)" pButton pRipple icon="pi pi-pencil text-base"
                         class="p-button-sm  p-button-primary mr-1"></button>
