@@ -7,6 +7,9 @@ import { CalenderService } from './Modules/calender/calender.service';
 import { OrdersService } from './Modules/orders/orders.service';
 import { SettingsService } from './Modules/settings/settings.service';
 import { isSet } from './core/base/base.component';
+import { PermissionService } from './core/permission.service';
+
+
 
 @Component({
   selector: 'app-root',
@@ -24,16 +27,14 @@ export class AppComponent implements OnInit {
   inputStyle = 'outlined';
 
   ripple: boolean;
-
-  constructor(private primengConfig: PrimeNGConfig, 
+  prev:any=localStorage.getItem('prev')
+  
+  constructor(private primengConfig: PrimeNGConfig, private PermissionService:PermissionService,
     private translate: TranslateService, private router: Router,private settingsServices:SettingsService,
      private calenderService: CalenderService,private orderService:OrdersService,
     @Inject(DOCUMENT) private document: Document) { }
 
-  ngOnInit() {
-    if (!JSON.parse(localStorage.getItem('role'))) {
-      this.getMe()
-    }
+  async ngOnInit() {
     this.primengConfig.ripple = false;
     this.getLang()
     this.getGeneralSettings()
@@ -60,15 +61,8 @@ export class AppComponent implements OnInit {
 
 
   }
-  getMe() {
-    const subscription = this.calenderService.getMe().subscribe((user: any) => {
-      localStorage.setItem('role', JSON.stringify(user.role))
-      this.orderService.checkRole.next(true)
-      subscription.unsubscribe()
-    }, error => {
-      subscription.unsubscribe()
-    })
-  }
+ 
+
 
   getGeneralSettings() {
     const subscription = this.settingsServices.getGeneralSettings().subscribe((results: any) => {

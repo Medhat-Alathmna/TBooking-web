@@ -68,7 +68,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
       this.router?.navigate(['/calender']);
     }, error => {
       this.loading = false
-      console.log(error);
+      this.errorMessage(error.error.error.message)
     })
   }
   changeLang(lang) {

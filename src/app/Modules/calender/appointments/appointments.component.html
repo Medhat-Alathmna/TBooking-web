@@ -147,7 +147,36 @@
 
                 </p-columnFilter>
                 </th>
-                <th translate>Approved</th>
+                <th translate>Approved
+                    <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
+                    [ngClass]="fillterFildes?.approved?.status?'status-filter':null" type="text" field="id"
+                    matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
+                    [showAddButton]="false">
+                    <ng-template pTemplate="filter">
+                        <p-dropdown [disabled]="fillterFildes?.approved?.status" [options]="approvedList"
+                            [showClear]="true" [(ngModel)]="fillterFildes.approved.value"
+                            placeholder='Select Status' optionValue="value" optionLabel="label">
+                            <ng-template let-item pTemplate="item">
+                                <span [class]="item.label=='Approved'?'Completed':'Canceled'">{{item.label|translate}}</span>
+                            </ng-template>
+                        </p-dropdown>
+                        <div class="grid mt-2">
+                            <div class="col-6">
+                                <button pButton label='Clear' class="p-button-outlined"
+                                    (click)="fillterFildes.approved.value=null;fillterFildes.approved.status=flase;clearAllFillter()"
+                                    type="button">
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                <button pButton label='Apply'
+                                    (click)="fillterFildes.approved.name='approved';fillterFildes.approved.status=true;fillterFildes.approved.type='$eq';getAppointments(1,fillterFildes?.approved)"
+                                    type="button">
+                                </button>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-columnFilter>
+                </th>
                 <th translate>Actions</th>
             </tr>
         </ng-template>

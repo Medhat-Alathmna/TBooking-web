@@ -4,6 +4,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import { SettingsService } from '../settings.service';
 import { Notifications } from 'src/app/modals/notfi';
+import { PermissionService } from 'src/app/core/permission.service';
 
 @Component({
   selector: 'app-notifications',
@@ -12,7 +13,7 @@ import { Notifications } from 'src/app/modals/notfi';
 })
 export class NotificationsComponent extends BaseComponent implements OnInit {
 
-  constructor(public translates: TranslateService, public messageService: MessageService,
+  constructor(public translates: TranslateService, public messageService: MessageService, public permissionService:PermissionService,
     private confirmationService: ConfirmationService, private settingsService: SettingsService) { super(messageService, translates) }
   appointments = []
   orders = []
@@ -35,12 +36,7 @@ export class NotificationsComponent extends BaseComponent implements OnInit {
         this.tabSelected = 'order'
       }
     },
-    {
-      label: this.trans('Group messages'),
-      command: event => {
-        this.tabSelected = 'group'
-      }
-    },
+  
   ]
   ngOnInit(): void {
     this.getNotfi()

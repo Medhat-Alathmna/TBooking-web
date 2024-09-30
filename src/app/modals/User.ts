@@ -10,6 +10,7 @@ export class UserInfo {
   title: string
   password: string
   confirmPassword: string
+  privilege:any
   role: any
   blocked: boolean
   isToday: boolean

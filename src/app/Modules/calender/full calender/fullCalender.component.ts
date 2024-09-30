@@ -8,6 +8,7 @@ import { CalenderService } from '../calender.service';
 import { Appointment } from 'src/app/modals/appoiments';
 import { DatePipe } from '@angular/common';
 import { CalendarModule } from 'primeng/calendar';
+import { SseService } from 'src/app/core/Sse.service';
 
 
 @Component({
@@ -15,11 +16,12 @@ import { CalendarModule } from 'primeng/calendar';
   templateUrl: './fullCalender.component.html',
   styleUrls: ['./fullCalender.component.scss']
 })
-export class FullCalenderComponent extends BaseComponent implements OnInit , AfterViewInit  {
+export class FullCalenderComponent extends BaseComponent implements OnInit, AfterViewInit {
 
   constructor(public translates: TranslateService,
-    public messageService: MessageService, private datePipe: DatePipe, private calenderService: CalenderService) { super(messageService, translates) }
-    private eventSource: EventSource | undefined;
+    public messageService: MessageService, private datePipe: DatePipe,private sseService:SseService,
+     private calenderService: CalenderService) { super(messageService, translates) }
+  private eventSource: EventSource | undefined;
 
   Appointments: any = []
   approvedAppointments: any = []
@@ -35,21 +37,41 @@ export class FullCalenderComponent extends BaseComponent implements OnInit , Aft
   viewTypes = []
   selectDate = new Date()
   calendarOptions: CalendarOptions
-  activeIndex=0
+  activeIndex = 0
+  tabIndex=[]
+  notifications=[]
   Appointment: any
   @ViewChild('calendar') calendar: FullCalendarComponent;
   message
   ngAfterViewInit() {
     const tabViewNavCollection = document.getElementsByClassName('p-tabview-nav');
-    if (tabViewNavCollection.length > 1) {
-      tabViewNavCollection[1].classList.add("cal");
-    } else {
-      console.log("Second element not found");
-    }
-  }  ngOnInit(): void {
-    // document.getElementsByClassName('p-tabview-nav')[0]?.classList?.add("cal")
-    // console.log(document.getElementsByClassName('p-tabview-nav'));
+    tabViewNavCollection[0].classList.add("cal");
 
+    
+  }
+   ngOnInit(): void {
+    this.sseService.connect('http://localhost:1337/api/sse');
+    this.sseService.getData().subscribe((data) => {
+      this.notifications.push(data);
+    });
+    console.log(this.notifications);
+    
+setTimeout(() => {
+  this.tabIndex=[
+    {
+      label: this.trans('Calender'),
+      command: event => {
+        this.tabSelected = 'calender'
+      }
+    },
+    {
+      label: this.trans('Appointments'),
+      command: event => {
+        this.tabSelected = 'appointments'
+      }
+    },
+  ] 
+});
     this.calendarOptions = {
       initialView: 'timeGridDay',
 
@@ -70,7 +92,7 @@ export class FullCalenderComponent extends BaseComponent implements OnInit , Aft
     }
     this.getCalender()
     this.getTodayAppo()
-      // this.getNotfi()
+    // this.getNotfi()
 
   }
   ngOnDestroy(): void {
@@ -80,8 +102,8 @@ export class FullCalenderComponent extends BaseComponent implements OnInit , Aft
     this.calendar.getApi().gotoDate(new Date(this.selectDate))
     this.selectDateMode = false
   }
-  expnd(){
-    this.edpandMode= !this.edpandMode
+  expnd() {
+    this.edpandMode = !this.edpandMode
     setTimeout(() => {
       this.calendar.getApi().today()
     }, 0);
@@ -117,12 +139,12 @@ export class FullCalenderComponent extends BaseComponent implements OnInit , Aft
         const customer = this.Appointments?.data[index]?.attributes?.customer.firstName + ' ' + this.Appointments?.data[index]?.attributes?.customer.middleName + ' ' + this.Appointments?.data[index]?.attributes?.customer.lastName
         this.calendarOptions.events.push({
           id: this.Appointments.data[index].id,
-          title:customer,
+          title: customer,
           // title: 'Medhat',
           start: new Date(this.Appointments.data[index].attributes.fromDate),
           end: new Date(this.Appointments.data[index].attributes.toDate),
-          backgroundColor:this.Appointments?.data[index]?.attributes.status=='Completed'?'#66FF99': "#e39dff",
-          borderColor: this.Appointments?.data[index]?.attributes.status=='Completed'?'#66FF99': "#e39dff",
+          backgroundColor: this.Appointments?.data[index]?.attributes.status == 'Completed' ? '#66FF99' : "#e39dff",
+          borderColor: this.Appointments?.data[index]?.attributes.status == 'Completed' ? '#66FF99' : "#e39dff",
         },
         )
         this.Appointments.data[index].attributes.fromDate = moment(this.Appointments.data[index].attributes.fromDate).format('hh:mm A')
@@ -161,13 +183,13 @@ export class FullCalenderComponent extends BaseComponent implements OnInit , Aft
     })
   }
   getNotfi() {
-   
+
     const subscription = this.calenderService.getNotfi().subscribe((results: any) => {
       if (!isSet(results)) {
         return
       }
-    console.log(results);
-    
+      console.log(results);
+
       subscription.unsubscribe()
     }, error => {
       subscription.unsubscribe()

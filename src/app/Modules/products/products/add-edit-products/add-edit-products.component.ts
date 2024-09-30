@@ -14,6 +14,7 @@ import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import { Products } from 'src/app/modals/products';
 import { PrimengComponentsModule } from 'src/app/primeng-components.module';
 import { ProductsService } from '../products.service';
+import { PermissionService } from 'src/app/core/permission.service';
 
 @Component({
   selector: 'app-add-edit-products',
@@ -50,7 +51,7 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
   @Output() displayChange: EventEmitter<boolean> = new EventEmitter();
   @Output() refreshLish: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(public translates: TranslateService, public messageService: MessageService,
+  constructor(public translates: TranslateService, public messageService: MessageService,public permissionService:PermissionService,
       private confirmationService: ConfirmationService,private productsService: ProductsService) { super(messageService, translates) }
 
   ngOnInit(): void {

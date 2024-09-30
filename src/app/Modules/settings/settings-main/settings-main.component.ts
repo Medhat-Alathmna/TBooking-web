@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { BaseComponent } from 'src/app/core/base/base.component';
+import { PermissionService } from 'src/app/core/permission.service';
 
 @Component({
   selector: 'app-settings-main',
@@ -15,7 +16,8 @@ export class SettingsMainComponent extends BaseComponent implements AfterViewIni
   currentIndexModule = 0
  
 
-  constructor(public translates: TranslateService, public messageService: MessageService,) { super(messageService, translates) }
+  constructor(public translates: TranslateService, public permissionService:PermissionService,
+    public messageService: MessageService,) { super(messageService, translates) }
   ngAfterViewInit(){
     setTimeout(() => {
       this.getMenu()
@@ -34,6 +36,7 @@ export class SettingsMainComponent extends BaseComponent implements AfterViewIni
       },
       {
         id: 1, label: 'Notifications',  icon: this.angleIcon() + ' px-2',
+        disabled:!this.permissionService.hasPermission('SiteSittengs','Notifications'),
         command: (event) => {
           this.selectedView = 'Notifications'
           this.selectActiveMenu(event?.item?.id)
@@ -43,8 +46,19 @@ export class SettingsMainComponent extends BaseComponent implements AfterViewIni
       ,
       {
         id: 2, label: 'Forbidden Numbers',  icon: this.angleIcon() + ' px-2',
+        disabled:!this.permissionService.hasPermission('SiteSittengs','ForbbidenNumber'),
         command: (event) => {
           this.selectedView = 'Forbidden Numbers'
+          this.selectActiveMenu(event?.item?.id)
+
+        }
+      },
+      {
+        id: 3, label: 'Appointments Settings',  icon: this.angleIcon() + ' px-2',
+        disabled:!this.permissionService.hasPermission('SiteSittengs','AppointmentsSettings'),
+
+        command: (event) => {
+          this.selectedView = 'Appointments Settings'
           this.selectActiveMenu(event?.item?.id)
 
         }

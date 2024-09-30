@@ -14,6 +14,7 @@ import { SettingsModule } from './Modules/settings/settings.module';
 import { DashboardModule } from './Modules/dashboard/dashboard.module';
 import { ProductsModule } from './Modules/products/services.module';
 import { MobileAppModule } from './Modules/mobile-app/mobile-app.module';
+import { PermissionGuard } from './Modules/auth/guards/permission.guard';
 
 
 
@@ -27,17 +28,37 @@ import { MobileAppModule } from './Modules/mobile-app/mobile-app.module';
                 path: '', component: AppMainComponent,
                 canActivate: [AuthGuard],
                 children: [
-                    { path: '', loadChildren: () => CalenderModule, },
-                    { path: 'products', loadChildren: () => ProductsModule },
-                    { path: 'mobile', loadChildren: () => MobileAppModule },
-                    { path: 'calender', loadChildren: () => CalenderModule },
+                    {
+                        path: '',redirectTo: 'calender',pathMatch:'full'
+                    },
+                    {
+                        path: 'products', loadChildren: () => ProductsModule,
+                        canActivate: [PermissionGuard],
+                        data: { resource: 'Products', action: 'view' }
+                    },
+                    {
+                        path: 'mobile', loadChildren: () => MobileAppModule, canActivate: [PermissionGuard],
+                        data: { resource: 'Gallary', action: 'view' }
+                    },
+                    {
+                        path: 'calender', loadChildren: () => CalenderModule,
+                    },
                     { path: 'users', loadChildren: () => UsersModule },
-                    { path: 'orders', loadChildren: () => OrdersModule },
-                    { path: 'settings', loadChildren: () => SettingsModule },
-                    { path: 'dashboard', loadChildren: () => DashboardModule },
+                    {
+                        path: 'orders', loadChildren: () => OrdersModule, canActivate: [PermissionGuard],
+                        data: { resource: 'Orders', action: 'view' }
+                    },
+                    {
+                        path: 'settings', loadChildren: () => SettingsModule, canActivate: [PermissionGuard],
+                        data: { resource: 'SiteSittengs', action: 'view' }
+                    },
+                    {
+                        path: 'dashboard', loadChildren: () => DashboardModule, canActivate: [PermissionGuard],
+                        data: { resource: 'Dashboard', action: 'view' }
+                    },
 
 
-                        
+
                 ]
             },
             { path: 'notfound', component: AppNotfoundComponent },

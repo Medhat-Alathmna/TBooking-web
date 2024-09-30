@@ -48,11 +48,16 @@ export class AppointmentsComponent extends BaseComponent implements OnInit {
     { label: 'Draft' },
     { label: 'Canceled' }
   ]
+  approvedList=[
+    {label:'Approved',value:true},
+    {label:'UnApproved',value:false}
+  ]
   fillterFildes = {
     number: new Filter(),
     status: new Filter(),
     fromDate: new Filter(),
     customer: new Filter(),
+    approved: new Filter()
   }
 
   @ViewChild('kt') table: any;
@@ -86,6 +91,7 @@ export class AppointmentsComponent extends BaseComponent implements OnInit {
       status: new Filter(),
       fromDate: new Filter(),
       customer: new Filter(),
+      approved: new Filter()
     }
     this.calenderService.queryFilters = []
     this.getAppointments(1, null)

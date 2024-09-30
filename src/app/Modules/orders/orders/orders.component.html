@@ -11,10 +11,7 @@
             <div class="flex align-items-center justify-content-between">
                 <div>
                     <h5 class="m-0 primary" translate>Orders Manager</h5>
-                    <label class="text-600 ">
-                        In total there are <label class="text-primary font-bold ">
-                            {{total }}</label> Orders .
-                    </label>
+                  
                 </div>
             </div>
         </ng-template>
@@ -139,10 +136,10 @@
                     <ng-template pTemplate="filter">
                         <p-dropdown [disabled]="fillterFildes?.createdAt?.status"
                             [options]="queryTypes"
-                            [(ngModel)]="fillterFildes.createdAt.type" placeholder='Select filter Type'
+                            [(ngModel)]="fillterFildes.createdAt.type" placeholder='{{"Select filter Type"|translate}}'
                             optionValue="value" optionLabel="type">
                             <ng-template let-item pTemplate="item">
-                                <span>{{item.type}}</span>
+                                <span>{{item.type |translate}}</span>
                             </ng-template>
                         </p-dropdown>
                         <div class="mt-3">

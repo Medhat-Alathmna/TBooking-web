@@ -8,6 +8,7 @@ import { SettingsService } from '../settings.service';
 import { BaseComponent } from 'src/app/core/base/base.component';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
+import { PermissionService } from 'src/app/core/permission.service';
 
 @Component({
     selector: 'app-site-settings',
@@ -26,7 +27,7 @@ export class SiteSettingsComponent extends BaseComponent implements OnInit {
     systemColors: any
     currency = { name: 'Egyptian pound', value: 'EGP' }
 
-    constructor(public app: AppComponent, public appMain: AppMainComponent, public translates: TranslateService,
+    constructor(public app: AppComponent, public appMain: AppMainComponent,public permissionService:PermissionService, public translates: TranslateService,
         public messageService: MessageService, public configService: ConfigService, private settingsServices: SettingsService) { super(messageService, translates) }
     ngOnInit() {
         this.config = this.configService.config;
@@ -140,6 +141,7 @@ export class SiteSettingsComponent extends BaseComponent implements OnInit {
         })
     }
     updateGeneralSettings() {
+       
         const subscription = this.settingsServices.updateGeneralSettings(this.systemColors).subscribe((results: any) => {
             localStorage.setItem('systemColor', JSON.stringify(results.data.attributes))
             subscription.unsubscribe()

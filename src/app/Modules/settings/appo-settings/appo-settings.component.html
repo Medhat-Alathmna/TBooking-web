@@ -1,0 +1,32 @@
+<app-loading *ngIf="loading" display="full"></app-loading>
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog containerStyleClass="vw" acceptButtonStyleClass="p-button-danger"
+    rejectButtonStyleClass="p-button-text" appendTo="body"></p-confirmDialog>
+<div class="overflow-y-auto" style="height:calc( 92vh - 100px);">
+    <div class=" mx-3">
+        <ng-container >
+            <div class="flex pt-4 pb-2  border-bottom-0" style="width: 100%">
+                <div class="text-xl font-semibold" translate>Cancel All Drafted Appointments
+                </div>
+            </div>
+            <div class="grid pb-3">
+                <div class="col-4 pt-4">
+                    <button pButton pRipple style="width: 50%;" label="{{'Cancel'|translate}}" class="p-button-sm p-button-danger"
+                        (click)="confirmConvert()"></button>
+                </div>
+            </div>
+        </ng-container>
+        <ng-container>
+            <div class="flex pt-4 pb-2  border-bottom-0" style="width: 100%">
+                <div class="text-xl font-semibold" translate>Delete All Unapproved Appointments
+                </div>
+            </div>
+            <div class="grid">
+                <div class="col-4 pt-4">
+                    <button pButton pRipple style="width: 50%;" label="{{'Delete'|translate}}" class="p-button-sm  p-button-danger"
+                        (click)="confirmDelete()"></button>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>

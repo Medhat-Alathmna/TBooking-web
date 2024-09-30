@@ -1,12 +1,13 @@
 <app-loading *ngIf="loading" display="full"></app-loading>
 <p-toast position="top-right"></p-toast>
-<p-confirmDialog containerStyleClass="vw" acceptButtonStyleClass="p-button-danger" acceptIcon="pi pi-trash"  rejectButtonStyleClass="p-button-text" appendTo="body"></p-confirmDialog>
+<p-confirmDialog containerStyleClass="vw" acceptButtonStyleClass="p-button-danger" acceptIcon="pi pi-trash"
+    rejectButtonStyleClass="p-button-text" appendTo="body"></p-confirmDialog>
 <div class="grid card h-full">
     <p-tabMenu class="col-12" [model]="tabIndex" [activeItem]="tabIndex[0]"></p-tabMenu>
     <div *ngIf="tabSelected=='service'" class=" grid col-12">
-        <p-table #kt [value]="services"  (onPage)="listServices(($event?.first/rowNum)+1)"
-        [paginator]="true" [rows]='rowNum' currentPageReportTemplate="Showing {first} to {last} entries"
-        [scrollable]="true" [tableStyle]="{'width.%': 100}" scrollHeight="80vh">
+        <p-table #kt [value]="services" (onPage)="listServices(($event?.first/rowNum)+1)" [paginator]="true"
+            [rows]='rowNum' currentPageReportTemplate="Showing {first} to {last} entries" [scrollable]="true"
+            [tableStyle]="{'width.%': 100}" scrollHeight="80vh">
             <ng-template pTemplate="caption">
                 <div class="flex align-items-center justify-content-between">
                     <div>
@@ -19,7 +20,8 @@
                     <div class="table-header inputgroup-stopwords block ">
                         <div class="p-inputgroup inputgroup-stopwords">
                             <div>
-                                <button type="button" [iconPos]="lang =='ar'?'right':'left'" (click)="showcreateDialog()" [label]="'Add Service'|translate" pRipple pButton
+                                <button type="button" [iconPos]="lang =='ar'?'right':'left'"
+                                    (click)="showcreateDialog()" [label]="'Add Service'|translate" pRipple pButton
                                     icon="pi pi-plus" class="p-button-success "></button>
                             </div>
                         </div>
@@ -28,35 +30,99 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th translate >Services EN 
+                    <th translate>Services EN
                         <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
-                        [ngClass]="fillterFildes?.name?.status?'status-filter':null" type="text" field="id"
-                        matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
-                        [showAddButton]="false">
-                        <ng-template pTemplate="filter">
-                            <div class="mt-3">
-                                <input [disabled]="fillterFildes?.en?.status" [(ngModel)]="fillterFildes.en.value"
-                                    type="text" pInputText>
-                            </div>
-                            <div class="grid mt-2">
-                                <div class="col-6">
-                                    <button pButton label='Clear' class="p-button-outlined"
-                                        (click)="fillterFildes.en.value=null;fillterFildes.en.status=flase;clearAllFillter()"
-                                        type="button">
-                                    </button>
+                            [ngClass]="fillterFildes?.en?.status?'status-filter':null" type="text" field="id"
+                            matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
+                            [showAddButton]="false">
+                            <ng-template pTemplate="filter">
+                                <div class="mt-3">
+                                    <input [disabled]="fillterFildes?.en?.status" [(ngModel)]="fillterFildes.en.value"
+                                        type="text" pInputText>
                                 </div>
-                                <div class="col-6">
-                                    <button pButton [disabled]="!fillterFildes.en.value" label='Apply'
-                                        (click)="fillterFildes.en.name='en';fillterFildes.en.status=true;fillterFildes.en.type='$contains';listServices(1,fillterFildes?.en)"
-                                        type="button">
-                                    </button>
+                                <div class="grid mt-2">
+                                    <div class="col-6">
+                                        <button pButton label='Clear' class="p-button-outlined"
+                                            (click)="fillterFildes.en.value=null;fillterFildes.en.status=flase;clearAllFillter()"
+                                            type="button">
+                                        </button>
+                                    </div>
+                                    <div class="col-6">
+                                        <button pButton [disabled]="!fillterFildes.en.value" label='Apply'
+                                            (click)="fillterFildes.en.name='en';fillterFildes.en.status=true;fillterFildes.en.type='$contains';listServices(1,fillterFildes?.en)"
+                                            type="button">
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        </ng-template>
-                    </p-columnFilter>
+                            </ng-template>
+                        </p-columnFilter>
                     </th>
-                    <th translate>Services AR</th>
-                    <th translate>Price</th>
+                    <th translate>Services AR
+                        <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
+                            [ngClass]="fillterFildes?.ar?.status?'status-filter':null" type="text" field="id"
+                            matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
+                            [showAddButton]="false">
+                            <ng-template pTemplate="filter">
+                                <div class="mt-3">
+                                    <input [disabled]="fillterFildes?.ar?.status" [(ngModel)]="fillterFildes.ar.value"
+                                        type="text" pInputText>
+                                </div>
+                                <div class="grid mt-2">
+                                    <div class="col-6">
+                                        <button pButton label='Clear' class="p-button-outlined"
+                                            (click)="fillterFildes.ar.value=null;fillterFildes.ar.status=flase;clearAllFillter()"
+                                            type="button">
+                                        </button>
+                                    </div>
+                                    <div class="col-6">
+                                        <button pButton [disabled]="!fillterFildes.ar.value" label='Apply'
+                                            (click)="fillterFildes.ar.name='ar';fillterFildes.ar.status=true;fillterFildes.ar.type='$contains';listServices(1,fillterFildes?.ar)"
+                                            type="button">
+                                        </button>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </p-columnFilter>
+                    </th>
+                    <th translate>Price
+                        <p-columnFilter #fitlerstocks [showApplyButton]="false" [showClearButton]="false"
+                            [ngClass]="fillterFildes?.price?.status?'active-filter':null" type="date" field="price"
+                            matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
+                            [showAddButton]="false">
+                            <ng-template pTemplate="filter">
+                                <p-dropdown [disabled]="fillterFildes?.price?.status" [options]="queryTypes"
+                                    [showClear]="true" [(ngModel)]="fillterFildes.price.type"
+                                    placeholder='{{"Select filter Type"|translate}}' optionValue="value"
+                                    optionLabel="type">
+                                    <ng-template let-item pTemplate="item">
+                                        <span>{{item.type |translate}}</span>
+                                    </ng-template>
+                                </p-dropdown>
+                                <div class="mt-3">
+                                    <input [disabled]="fillterFildes?.price?.status"
+                                        [(ngModel)]="fillterFildes.price.value" type="text" pInputText>
+                                </div>
+                                <div class="grid mt-2">
+                                    <div class="col-6">
+                                        <button pButton label='Clear' class="p-button-outlined"
+                                            (click)="fillterFildes.price.value=null;fillterFildes.price.status=flase;clearAllFillter()"
+                                            type="button">
+                                        </button>
+                                    </div>
+                                    <div class="col-6">
+                                        <button pButton
+                                            [disabled]="!fillterFildes.price.type||!fillterFildes.price.value"
+                                            label='Apply'
+                                            (click)="fillterFildes.price.name='price';fillterFildes.price.status=true;listServices(1,fillterFildes?.price)"
+                                            type="button">
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </ng-template>
+
+                        </p-columnFilter>
+                    </th>
                     <th style="width: 10% !important" translate>Actions</th>
                 </tr>
             </ng-template>
@@ -80,14 +146,14 @@
                     <td style="width: 10%">
                         <button pButton pRipple icon="pi pi-pencil text-base" (click)="showServices(ser)"
                             class="p-button-sm  p-button-primary mr-1"></button>
-                        <button pButton (click)="confirm1Delete(ser.id)" pRipple icon="pi pi-trash text-base"
+                        <button pButton *ngIf="permissionService.hasPermission('Services', 'delete')" (click)="confirm1Delete(ser.id)" pRipple icon="pi pi-trash text-base"
                             class="p-button-sm  p-button-danger mr-1 "></button>
                     </td>
                 </tr>
             </ng-template>
             <ng-template pTemplate="emptymessage">
                 <tr>
-                    <td colspan="4">No Services .</td>
+                    <td colspan="4" translate>No Services</td>
                 </tr>
             </ng-template>
         </p-table>
@@ -98,17 +164,19 @@
     <div *ngIf="tabSelected=='products'" class="grid">
         <app-products></app-products>
     </div>
-  
+
 </div>
 
-<p-dialog [header]="editMode?('Modify the service'|translate):('Create the service'|translate)" modal="true" [resizable]="false"
-    [draggable]="false" [(visible)]="showServ" [style]="{width: '30vw'}">
+<p-dialog [header]="editMode?('Modify the service'|translate):('Add Service'|translate)" modal="true"
+    [resizable]="false" [draggable]="false" [(visible)]="showServ" [style]="{width: '30vw'}">
     <div class="grid textl-left">
         <div class=" lg:col-6  sm:col-12">
-            <app-input [(ngModel)]="Service.en" name="en" [title]="'Services EN'|translate"  [required]="true"></app-input>
+            <app-input [(ngModel)]="Service.en" name="en" [title]="'Services EN'|translate"
+                [required]="true"></app-input>
         </div>
         <div class=" lg:col-6  sm:col-12">
-            <app-input [(ngModel)]="Service.ar" name="ar" [title]="'Services AR'|translate" [required]="true"></app-input>
+            <app-input [(ngModel)]="Service.ar" name="ar" [title]="'Services AR'|translate"
+                [required]="true"></app-input>
         </div>
         <div class=" lg:col-6  sm:col-12">
             <app-input [(ngModel)]="Service.price" type="number" name="price" [title]="'Price'|translate"
@@ -116,8 +184,11 @@
         </div>
     </div>
     <p-footer>
-        <button type="button" [disabled]="!Service.price ||!Service.ar||!Service.en" pButton
-            (click)="editMode?updateService():createService()" [label]='"Save"|translate'></button>
-        <button type="button" (click)="showServ=false" class="p-button-secondary " pButton [label]='"Cancel"|translate'></button>
+        <button type="button" *ngIf="editMode&&permissionService.hasPermission('Services', 'update')" [disabled]="!Service.price ||!Service.ar||!Service.en" pButton
+            (click)="updateService()" [label]='"Save"|translate'></button>
+        <button type="button" *ngIf="editMode&&permissionService.hasPermission('Services', 'create')" [disabled]="!Service.price ||!Service.ar||!Service.en" pButton
+            (click)="createService()" [label]='"Save"|translate'></button>
+        <button type="button" (click)="showServ=false" class="p-button-secondary " pButton
+            [label]='"Cancel"|translate'></button>
     </p-footer>
 </p-dialog>

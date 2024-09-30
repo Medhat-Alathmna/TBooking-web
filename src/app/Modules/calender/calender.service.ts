@@ -23,6 +23,12 @@ export class CalenderService {
   getNotfi(): Observable<any> {
     return this.api.get<any>(`notfi`);
   }
+  getLastNumber(): Observable<any> {
+    return this.api.get<any>(`getLastNumber`);
+  }
+  getLastNumberOrder(): Observable<any> {
+    return this.api.get<any>(`getLastNumberOrder`);
+  }
   getServerSentEvent(url: string): EventSource {
     return new EventSource(url);
   }

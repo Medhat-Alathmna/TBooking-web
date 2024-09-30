@@ -22,16 +22,18 @@ export class DashboardComponent extends BaseComponent implements OnInit {
   basicOptions
   todayCashChart
   orderStutsChart
+  topProductsChart
+  topServicesChart
   fromDate: any = new Date()
   toDate: any = new Date()
   dashboardDatesDialog: boolean = false
   dashboardDetails: boolean = false
-  role =JSON.parse(localStorage.getItem('role'))
+  role = JSON.parse(localStorage.getItem('role'))
   textSecondaryColor = getComputedStyle(document.documentElement).getPropertyValue('--surface-500')
 
   @ViewChild('printOrder') printOrder: ElementRef;
 
-  constructor(public translates: TranslateService, public messageService: MessageService,private router:Router,private orderService:OrdersService,
+  constructor(public translates: TranslateService, public messageService: MessageService, private router: Router, private orderService: OrdersService,
     private dashboardService: DashboardService, private datePipe: DatePipe) { super(messageService, translates) }
 
   ngOnInit(): void {
@@ -61,7 +63,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     if (this.role.name == 'Admin') {
       this.count()
 
-    }else{
+    } else {
       this.orderService.checkRole.next(true)
       this.router.navigateByUrl('/calender')
     }
@@ -78,6 +80,8 @@ export class DashboardComponent extends BaseComponent implements OnInit {
       this.toDayOrdersCharts()
       this.todayCashCharts()
       this.orderStutsCharts()
+      this.topProductsCharts()
+      this.topServicesChartCharts()
       subscription.unsubscribe()
     }, error => {
       this.loading = false
@@ -119,7 +123,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
       labels: [this.trans(this.cur.name)],
       datasets: [
         {
-          label:this.trans(this.cur.name) ,
+          label: this.trans(this.cur.name),
           data: [this.totalcash],
           backgroundColor: ['rgba(255, 159, 64, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)'],
           borderColor: ['rgb(255, 159, 64)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)'],
@@ -155,6 +159,88 @@ export class DashboardComponent extends BaseComponent implements OnInit {
           borderColor: ['rgb(75, 192, 192)', 'rgb(255, 159, 64)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)'],
           borderWidth: 1
         }
+      ]
+    };
+    this.basicOptions = {
+      plugins: { legend: { labels: { boxWidth: 10, color: this.textSecondaryColor } } },
+      scales: {
+        x: {
+          ticks: {
+            display: true,
+
+          }, grid: { color: 'white' }
+        },
+        y: {
+          grid: { color: 'white' }
+        },
+
+
+      }
+    };
+  }
+  topProductsCharts() {
+    let name = []
+    let qty = []
+    this.results.topProducts.map(x => {
+      name.push(x.name)
+      qty.push(x.qty)
+    })
+    this.topProductsChart = {
+      labels: name,
+      datasets: [
+        {
+          label: this.trans('Products'),
+          data: qty,
+          backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)'],
+          borderColor: ['rgb(75, 192, 192)', 'rgb(255, 159, 64)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)'],
+          borderWidth: 1
+        }
+      ]
+    };
+    this.basicOptions = {
+      plugins: { legend: { labels: { boxWidth: 10, color: this.textSecondaryColor } } },
+      scales: {
+        x: {
+          ticks: {
+            display: true,
+
+          }, grid: { color: 'white' }
+        },
+        y: {
+          grid: { color: 'white' }
+        },
+
+
+      }
+    };
+  }
+  topServicesChartCharts() {
+    const documentStyle = getComputedStyle(document.documentElement);
+    let name = []
+    let cash = []
+    let times = []
+    this.results.topServices.map(x => {
+      name.push(this.lang == 'ar' ? x.ar : x.en)
+      cash.push(x.price)
+      times.push(x.count)
+    })
+    this.topServicesChart = {
+      labels: name,
+      datasets: [
+        {
+          label: (this.trans('Cash') + ' ' + this.getCurrencySymbol(this.cur.code)),
+          data: cash,
+          backgroundColor: documentStyle.getPropertyValue('--blue-500'),
+          borderColor: documentStyle.getPropertyValue('--blue-500'),
+          borderWidth: 1
+        },
+        {
+          label: this.trans('Used Times'),
+          data: times,
+          backgroundColor: documentStyle.getPropertyValue('--pink-500'),
+          borderColor: documentStyle.getPropertyValue('--pink-500'),
+          borderWidth: 1
+        },
       ]
     };
     this.basicOptions = {

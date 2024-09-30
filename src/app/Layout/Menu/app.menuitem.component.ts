@@ -13,7 +13,7 @@ import { MenuService } from './app.menu.service';
     /* tslint:enable:component-selector */
     template: `
 		<ng-container>
-			<a [attr.href]="item.url" (click)="itemClick($event)" *ngIf="(!item.routerLink || item.items) && item.visible !== false" (mouseenter)="onMouseEnter()"
+			<a [attr.href]="item.url" (click)="itemClick($event)" [style]='item.style' *ngIf="(!item.routerLink || item.items) && item.visible !== false" (mouseenter)="onMouseEnter()"
 			   (keydown.enter)="itemClick($event)" [ngClass]="item.class" pRipple
 			   [attr.target]="item.target" [attr.tabindex]="0">
 				<i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
@@ -24,16 +24,16 @@ import { MenuService } from './app.menu.service';
 			   [routerLink]="item.routerLink" routerLinkActive="active-route" [ngClass]="item.class" pRipple
 			   [routerLinkActiveOptions]="{exact: !item.preventExact}" [attr.target]="item.target" [attr.tabindex]="0">
 				<i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
-				<span class="layout-menuitem-text">{{item.label}}</span>
+				<span class="layout-menuitem-text" translate>{{item.label}}</span>
 				<i class="pi pi-fw pi-chevron-down layout-submenu-toggler" *ngIf="item.items"></i>
 			</a>
-            <div class="layout-menu-tooltip">
+            <div class="layout-menu-tooltip" >
                 <div  [class.tooltip-arrow-ar]="currentlang!='en'" class="layout-menu-tooltip-arrow"></div>
                 <div class="layout-menu-tooltip-text" translate>{{item.label}}</div>
             </div>
 			<ul *ngIf="item.items && active && item.visible !== false" [@children]="((appMain.isSlim()||appMain.isHorizontal()) && !appMain.isMobile() && root) ? (active ? 'visible' : 'hidden') :
 				(active ? 'visibleAnimated' : 'hiddenAnimated')" role="menu">
-				<ng-template ngFor let-child let-i="index" [ngForOf]="item.items">
+				<ng-template  ngFor let-child let-i="index" [ngForOf]="item.items">
 					<li app-menuitem [item]="child" [index]="i" [parentKey]="key" [class]="child.badgeClass"></li>
 				</ng-template>
 			</ul>

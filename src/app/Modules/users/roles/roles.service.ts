@@ -11,7 +11,7 @@ export class RolesService {
   constructor(private api: ApiService) { }
 
 
-  createRole(role: RoleInfo): Observable<RoleInfo> {
+  createRole(role: any): Observable<RoleInfo> {
     let body = {
       data: {
       role: role.role,

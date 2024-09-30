@@ -6,6 +6,7 @@ import { MobileAppService } from '../mobile-app.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { environment } from 'src/environments/environment';
+import { PermissionService } from 'src/app/core/permission.service';
 
 @Component({
   selector: 'app-gallary',
@@ -23,7 +24,7 @@ export class GallaryComponent extends BaseComponent implements OnInit {
   responsiveOptions: any[] | undefined;
 
   imgUrl = environment.imgUrl
-  constructor(private mobileService: MobileAppService, public translates: TranslateService,
+  constructor(private mobileService: MobileAppService, public translates: TranslateService,public permissionService:PermissionService,
     public messageService: MessageService, private confirmationService: ConfirmationService) { super(messageService, translates) }
 
   ngOnInit(): void {

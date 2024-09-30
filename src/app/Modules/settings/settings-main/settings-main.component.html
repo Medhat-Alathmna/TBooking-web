@@ -12,6 +12,7 @@
         <div class="card p-0  ">
             <app-notifications *ngIf="selectedView =='Notifications'" ></app-notifications>
             <app-forbidden-numbers *ngIf="selectedView =='Forbidden Numbers'"></app-forbidden-numbers>
+            <app-appo-settings  *ngIf="selectedView =='Appointments Settings'"></app-appo-settings>
             <app-site-settings class="overflow-y-auto" style="height:calc( 90vh - 100px);" *ngIf="selectedView =='Site Settings'"></app-site-settings>
         </div>
     </div>

@@ -7,15 +7,12 @@
         <div class="flex align-items-center justify-content-between">
             <div>
                 <h5 class="m-0 primary" translate>Gallary Management</h5>
-                <label class="text-600 ">
-                    In total there are <label class="text-primary font-bold ">
-                        {{total }}</label> Posts .
-                </label>
+             
             </div>
             <div class="table-header inputgroup-stopwords block ">
                 <div class="p-inputgroup inputgroup-stopwords">
                     <div>
-                        <button type="button" [iconPos]="lang =='ar'?'right':'left'" (click)="showcreateDialog()"
+                        <button *ngIf="permissionService.hasPermission('Gallary', 'create')" type="button" [iconPos]="lang =='ar'?'right':'left'" (click)="showcreateDialog()"
                             [label]="'Add Post'|translate" pRipple pButton icon="pi pi-plus"
                             class="p-button-success "></button>
                     </div>
@@ -79,20 +76,20 @@
                 </ng-container>
             </td>
             <td style="width: 10%">
-                <p-toggleButton [(ngModel)]="ser?.attributes.published"
+                <p-toggleButton [(ngModel)]="ser?.attributes.published" [disabled]="!permissionService.hasPermission('Gallary', 'update')"
                     (onChange)="publishedPost($event.checked,ser.id)" class="p-button-sm  p-button-primary mr-1"
                     onLabel="{{'Yes'|translate}}" offLabel="{{'No'|translate}}">
                 </p-toggleButton>
             </td>
             <td style="width: 10%">
-                <p-toggleButton [(ngModel)]="ser?.attributes.pin" (onChange)="pinPost($event.checked,ser.id)"
+                <p-toggleButton [(ngModel)]="ser?.attributes.pin" (onChange)="pinPost($event.checked,ser.id)" [disabled]="!permissionService.hasPermission('Gallary', 'update')"
                     class="p-button-sm  p-button-primary mr-1" onLabel="{{'Yes'|translate}}" offLabel="{{'No'|translate}}">
                 </p-toggleButton>
             </td>
             <td style="width: 10%">
                 <button pButton pRipple icon="pi pi-pencil text-base" (click)="showSelectedPost(ser)"
                     class="p-button-sm  p-button-primary mr-1"></button>
-                <button pButton (click)="confirm1Delete(ser)" pRipple icon="pi pi-trash text-base"
+                <button *ngIf="permissionService.hasPermission('Gallary', 'delete')" pButton (click)="confirm1Delete(ser)" pRipple icon="pi pi-trash text-base"
                     class="p-button-sm  p-button-danger mr-1 "></button>
             </td>
         </tr>
@@ -113,14 +110,6 @@
         </div>
         <div *ngIf="editMode" class="grid textl-left">
             <div class="col-12">
-                <!-- <p-galleria [value]="post.ads.data" [showIndicators]="true" [showItemNavigators]="true" [showThumbnails]="false" [responsiveOptions]="galleriaResponsiveOptions"
-                [containerStyle]="{'max-width': '800px', 'margin':'auto','background':'rgb(228 246 255)'}" [numVisible]="6" [circular]="true">
-
-                <ng-template pTemplate="item" let-item let-i="rowIndex">
-                    <img [src]="imgUrl+item.attributes.url" style="width: 100%; display: block;height:55vh;" />
-                    <i class="pi pi-trash delete-icon" (click)="onDeleteImage(item.id)"></i>
-                </ng-template>
-            </p-galleria> -->
                 <p-carousel [value]="post.ads.data" [numVisible]="1" [numScroll]="1" [circular]="true">
                     <ng-template pTemplate="item" let-image>
                         <div class="carousel-item">
@@ -129,7 +118,7 @@
                             <video *ngIf=" cheackMediaType(image?.attributes.mime,'video')" width="800" height="400"
                                 [src]="imgUrl+image.attributes.url| safe" controls></video>
                             <div class="overlay-buttons">
-                                <button pButton icon="pi pi-trash delete-icon" (click)="onDeleteImage(image.id)"
+                                <button *ngIf="permissionService.hasPermission('Gallary', 'update')" pButton icon="pi pi-trash delete-icon" (click)="onDeleteImage(image.id)"
                                     class="overlay-btn"></button>
                             </div>
                         </div>
@@ -144,7 +133,7 @@
         </div>
     </div>
     <p-footer>
-        <button *ngIf="editMode" type="button" pButton (click)="updatePost()" label="Update"></button>
-        <button *ngIf="editMode" type="button" (click)="showPost=false" class="p-button-secondary " pButton label='Cancel'></button>
+        <button *ngIf="editMode&&permissionService.hasPermission('Gallary', 'update')"  type="button" pButton (click)="updatePost()" label="{{'Update'|translate}}"></button>
+        <button *ngIf="editMode" type="button" (click)="showPost=false" class="p-button-secondary " pButton label='{{"Cancel"|translate}}'></button>
     </p-footer>
 </p-dialog>

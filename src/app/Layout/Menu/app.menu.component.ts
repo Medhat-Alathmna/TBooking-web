@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import { AppMainComponent } from '../Main/app.main.component';
 import { MenuService } from './app.menu.service';
 import { OrdersService } from 'src/app/Modules/orders/orders.service';
+import { PermissionService } from 'src/app/core/permission.service';
+import { CalenderService } from 'src/app/Modules/calender/calender.service';
 
 @Component({
     selector: 'app-menu',
@@ -11,14 +13,16 @@ import { OrdersService } from 'src/app/Modules/orders/orders.service';
     styleUrls: ['./app.menu.component.scss'],
 
 })
-export class AppMenuComponent extends BaseComponent implements OnInit {
+export class AppMenuComponent extends BaseComponent implements AfterViewInit, OnInit {
     
 
     model: any[];
     // menu-wrapper
-    constructor(public appMain: AppMainComponent, private router: Router,private avtiveRouter:Router ,private orderService:OrdersService,
+    constructor(public appMain: AppMainComponent,private permissionService:PermissionService, private calenderService: CalenderService,
+         private router: Router,private avtiveRouter:Router ,private orderService:OrdersService,
         private menuService: MenuService,
 ) { super(null)
+    this.getMe()
         }
     lang = localStorage.getItem('currentLang')
     activeControlPanel = false
@@ -26,71 +30,54 @@ export class AppMenuComponent extends BaseComponent implements OnInit {
 
     customModulesClick = false
     customModules = []
+     ngAfterViewInit(){
 
-    ngOnInit() {
-        this.initModules()
-            console.log(this.checkUrl('/settings'));
+      }
+    async ngOnInit() {
+            // console.log(this.checkUrl('/settings'));
 
 
 
     }
     initModules() {
         this.model = [
-            // { label: 'Home',  icon: 'pi pi-home text-color', routerLink: ['/'] },
-            // { label: 'Dashboard',  icon: 'icon-statistics text-color', routerLink: ['/dashboard'] },
-            { label: 'Appointments', icon: 'pi pi-calendar-plus text-color', routerLink: ['/calender'] },
-            { label: 'Orders',  icon: 'pi pi-money-bill text-color', routerLink: ['/orders'] },
-            { label: 'Users',  icon: 'pi pi-users text-color', routerLink: ['/users'] },
-            { label: 'Dashboard',  icon: 'pi pi-chart-pie text-color', routerLink: ['/dashboard'] },            
-            { label: 'Products',  icon: 'pi pi-ticket text-color', routerLink: ['/products'] },            
-            { label: 'Mobile App',  icon: 'pi pi-ticket text-color', routerLink: ['/mobile'] },            
-            { label: 'Settings',  icon: 'pi pi-cog text-color', routerLink: ['/settings'] },            
+            { label: 'Appointments', icon: 'pi pi-calendar-plus text-color', routerLink: ['/calender'], resource: 'Appointments' },
+            { label: 'Orders', icon: 'pi pi-money-bill text-color', routerLink: ['/orders'], resource: 'Orders' },
+            { label: 'Users', icon: 'pi pi-users text-color', routerLink: ['/users'], resource: 'Users' },
+            { label: 'Dashboard', icon: 'pi pi-chart-pie text-color', routerLink: ['/dashboard'], resource: 'Dashboard' },            
+            { label: 'Products', icon: 'pi pi-ticket text-color', routerLink: ['/products'], resource: 'Products' },            
+            { label: 'Mobile App', icon: 'pi pi-mobile text-color', routerLink: ['/mobile'], resource: 'Gallary' },            
+            { label: 'Settings', icon: 'pi pi-cog text-color',style:'top: 70%;position: fixed', routerLink: ['/settings'], resource: 'SiteSittengs' },                  
         ];
+        this.model = this.model.filter(item => this.hasPermission(item.resource, 'view'));
         this.menuService.menuData = this.model
-       this.checkRole()
     }
-   
-    navToContorlPanal() {
-        this.router?.navigateByUrl('settings')
-        console.log(this.checkUrl('/settings'));
+    
+    hasPermission(resource: string, action: string): boolean {
+        const permissionsForResource = this.permissionService.userPermissions[resource];
         
-    }
-    checkUrl(url){
-        return   this.avtiveRouter
-        return   this.avtiveRouter.routerState.snapshot.url === url
-        this.router.isActive('/settings',true)
-    }
+        // Check if the permission exists and matches the action
+        if (permissionsForResource && permissionsForResource[action] !== undefined) {
+          return permissionsForResource[action] === true;
+        }
+        
+        return false;
+      }
 
-    checkRole(){
-    const sub=    this.orderService.checkRoleEmitter.subscribe(result=>{
-      const  role =JSON.parse(localStorage.getItem('role'))
-        console.log(result);
-        
-        this.model = [
-            // { label: 'Home',  icon: 'pi pi-home text-color', routerLink: ['/'] },
-            // { label: 'Dashboard',  icon: 'icon-statistics text-color', routerLink: ['/dashboard'] },
-            { label: 'Appointments', icon: 'pi pi-calendar-plus text-color', routerLink: ['/calender'] },
-            { label: 'Orders',  icon: 'pi pi-money-bill text-color', routerLink: ['/orders'] },
-            { label: 'Users',  icon: 'pi pi-users text-color', routerLink: ['/users'] },
-            { label: 'Dashboard',  icon: 'pi pi-chart-pie text-color', routerLink: ['/dashboard'] },            
-            { label: 'Products',  icon: 'pi pi-ticket text-color', routerLink: ['/products'] },            
-            { label: 'Mobile App',  icon: 'pi pi-mobile text-color', routerLink: ['/mobile'] },     
-            { label: 'Settings',  icon: 'pi pi-cog text-color', routerLink: ['/settings'] ,style:'top: 50%;position: fixed'},            
-          
-        ];
-        this.menuService.menuData = this.model
-        console.log(role);
-        
-            if (role?.name != 'Admin') {
-                this.model.splice(2,3)
-            }
+
+    getMe() {
+        const subscription = this.calenderService.getMe().subscribe(async (user: any) => {
+          localStorage.setItem('role', JSON.stringify(user.role))
+          sessionStorage.setItem('prev',JSON.stringify(user.privilege.pages))
+       await   this.permissionService.setPermissions(user.privilege.pages);
+           this.initModules()
+
+          subscription.unsubscribe()
+        }, error => {
+          subscription.unsubscribe()
         })
-        this.subscriptions.push(sub)
-    }
+      }
 
-    // initCustomModule() {
-    //     this.model[this.model.length - 1].items = []
-    //     this.customModulesClick == true
-    // }
-
+   
+     
 }

@@ -60,10 +60,10 @@
                     <ng-template pTemplate="filter">
                         <p-dropdown [disabled]="fillterFildes?.stocks?.status"
                             [options]="queryTypes" [showClear]="true"
-                            [(ngModel)]="fillterFildes.stocks.type" placeholder='Select filter Type'
+                            [(ngModel)]="fillterFildes.stocks.type" placeholder='{{"Select filter Type"|translate}}'
                             optionValue="value" optionLabel="type">
                             <ng-template let-item pTemplate="item">
-                                <span>{{item.type}}</span>
+                                <span>{{item.type |translate}}</span>
                             </ng-template>
                         </p-dropdown>
                         <div class="mt-3">
@@ -98,10 +98,10 @@
                     <ng-template pTemplate="filter">
                         <p-dropdown [disabled]="fillterFildes?.price?.status"
                             [options]="queryTypes" [showClear]="true"
-                            [(ngModel)]="fillterFildes.price.type" placeholder='Select filter Type'
+                            [(ngModel)]="fillterFildes.price.type" placeholder='{{"Select filter Type"|translate}}'
                             optionValue="value" optionLabel="type">
                             <ng-template let-item pTemplate="item">
-                                <span>{{item.type}}</span>
+                                <span>{{item.type |translate}}</span>
                             </ng-template>
                         </p-dropdown>
                         <div class="mt-3">
@@ -111,15 +111,15 @@
                         <div class="grid mt-2">
                             <div class="col-6">
                                 <button pButton label='Clear' class="p-button-outlined"
-                                    (click)="fitlerstocks.overlayVisible=false;fillterFildes.price.value=null;fillterFildes.price.status=flase;clearAllFillter()"
+                                    (click)="fillterFildes.price.value=null;fillterFildes.price.status=flase;clearAllFillter()"
                                     type="button">
                                 </button>
                             </div>
                             <div class="col-6">
                                 <button pButton
-                                    [disabled]="!fillterFildes.stocks.type||!fillterFildes.stocks.value"
+                                    [disabled]="!fillterFildes.price.type||!fillterFildes.price.value"
                                     label='Apply'
-                                    (click)="fillterFildes.stocks.name='stocks';fillterFildes.stocks.status=true;getProducts(1,fillterFildes?.stocks)"
+                                    (click)="fillterFildes.price.name='price';fillterFildes.price.status=true;getProducts(1,fillterFildes?.price)"
                                     type="button">
                                 </button>
 
@@ -139,7 +139,7 @@
                                 [showClear]="true" [(ngModel)]="fillterFildes.status.value"
                                 placeholder='Select Status' optionValue="label" optionLabel="label">
                                 <ng-template let-item pTemplate="item">
-                                    <span [class]="item.label">{{item.label}}</span>
+                                    <span [class]="item.label">{{item.label |translate}}</span>
                                 </ng-template>
                             </p-dropdown>
                             <div class="grid mt-2">

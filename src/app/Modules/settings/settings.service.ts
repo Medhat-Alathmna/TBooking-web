@@ -20,6 +20,12 @@ export class SettingsService {
   getCurrencies(): Observable<any> {
     return this.api.get<any>(`/currency`); 
    }
+   deleteUnapproved(): Observable<any> {
+    return this.api.get<any>(`/deleteUnapproved`); 
+   }
+   convertDraftToCancel(): Observable<any> {
+    return this.api.get<any>(`/convertDraftToCancel`); 
+   }
   createNotifications(notfi: Notifications): Observable<Notifications[]> {
     let body = {
       data: {

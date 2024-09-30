@@ -11,12 +11,7 @@
                         class="p-button-rounded p-button-secondary p-button-lg p-button-text btn-white "></button>
                 </div>
                 <div class="flex align-items-center justify-content-center border-break"></div>
-                <div class="flex-initial flex align-items-center justify-content-center px-3">
-                    <i class="pi pi-calendar text-100 text-3xl " [class]="'css.mr-2'|translate"></i>
-                    <entity-viewer
-                        [entity]="{type:'text',title:'CREATION DATE' | translate,value:this.selectedRole.createdAt}"
-                        [darkMode]="true"></entity-viewer>
-                </div>
+
             </div>
             <div *ngIf="!detailMode" class="flex align-items-center justify-content-center   ">
 
@@ -36,13 +31,11 @@
                     <button *ngIf="detailMode" (click)="menu.toggle($event)" pButton pRipple type="button"
                         icon="pi pi-ellipsis-v"
                         class="p-button-rounded mr-2 p-button-secondary p-button-lg p-button-text btn-white "></button>
-                  
-                    <button *ngIf="!detailMode" pButton
-                        [disabled]="form?.invalid || !selectedRole.role "
-                        pRipple type="button" [label]="'Save'|translate" icon="pi pi-check " (click)="createRole()"
+
+                    <button *ngIf="!detailMode" pButton [disabled]="form?.invalid || !selectedRole.role " pRipple
+                        type="button" [label]="'Save'|translate" icon="pi pi-check " (click)="createRole()"
                         class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
-                    <button *ngIf="detailMode" pButton
-                        [disabled]=" !selectedRole.role" pRipple type="button"
+                    <button *ngIf="detailMode" pButton [disabled]=" !selectedRole.role" pRipple type="button"
                         [label]="'Save'|translate" icon="pi pi-check " (click)="updateUser()"
                         class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
                 </div>
@@ -50,7 +43,7 @@
             </div>
         </div>
     </div>
-    <form #form="ngForm" body class="px-5 ">
+    <div body class="px-5 ">
         <div class="grid ">
             <div class="col-12 pb-4">
                 <!-- <span class="text-3xl ont-semibold font-bold" translate>Role Details </span> -->
@@ -60,28 +53,47 @@
                     [required]="true"></app-input>
             </div>
             <div class="lg:col-6 sm:col-12">
-                <app-text-area [(ngModel)]="selectedRole.description" name="description" [title]="'Description'|translate"
-                    [required]="true"></app-text-area>
+                <app-text-area [(ngModel)]="selectedRole.description" name="description"
+                    [title]="'Description'|translate" [required]="true"></app-text-area>
             </div>
 
-            <div class="col-12 pb-4">
-                <span class="text-3xl ont-semibold font-bold" translate>Privileges</span>
-            </div>
-            <div class="grid pt-3">
-                <div class="col-12 flex" *ngFor="let prev of selectedRole.pages">
-                    <div class="col-5" style="text-align: start;">
-                        <h5 class="text-primary">{{prev?.name | translate}}</h5>
-                    </div>
-                    <div class="col-3" style="text-align: start;">
-                        <p-toggleButton onLabel="Allowed" offLabel="Rejected" onIcon="pi pi-check" offIcon="pi pi-times"
-                        name="isAllowed" [(ngModel)]="prev.isAllowed"
-                            (onChange)="prev.isAllowed=!prev.isAllowed"></p-toggleButton>
-                    </div>
-
-                </div>
-            </div>
+         
+            
         </div>
-    </form>
+        <div class="grid pt-3">
+            <!-- <p-panel header="Permissions" style="width: 70%" >
+                <div *ngFor="let category of permissions">
+                  <p-panel [header]="category.category" [toggleable]="true">
+                    <div class="permission-grid">
+                      <div *ngFor="let action of category.actions" class="permission-item">
+                        <p-checkbox [binary]="true" 
+                          [label]="action.label" 
+                          [(ngModel)]="action.checked">
+                        </p-checkbox>
+                      </div>
+                    </div>
+                  </p-panel>
+                </div>
+              </p-panel> -->
+
+              <div class="role-manager-container">
+                <h2>Permission Manager</h2>
+                <div class="permission-list">
+                  <!-- Iterate over resources and actions -->
+                  <div class="resource" *ngFor="let resource of resources">
+                    <h4>{{ resource.name |translate  }}</h4>
+                    
+                    <div class="actions">
+                      <p-checkbox *ngFor="let action of resource?.actions" 
+                                  [(ngModel)]="pages[resource.name][action]"
+                                  binary="true" 
+                                  label="{{ action |translate }}"></p-checkbox>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+    </div>
 
 
 </app-sidebar>

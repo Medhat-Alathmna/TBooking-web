@@ -21,7 +21,7 @@ export class UsersComponent extends BaseComponent implements OnInit {
   rowNum: any = 10
   currentPage: any = 1
   total
-  tabIndex
+  tabIndex=[]
   @ViewChild('kt') table: any;
 
    

@@ -19,6 +19,7 @@ import { EntityViewerComponent } from 'src/app/Shared/entity-viewer/entity-viewe
 import { InputMaskComponent } from 'src/app/Shared/input-mask/input-mask.component';
 import { AppointmentsComponent } from './appointments/appointments.component';
 import { TableComponent } from 'src/app/Shared/table/table.component';
+import { PermissionService } from 'src/app/core/permission.service';
 
 
 FullCalendarModule.registerPlugins([

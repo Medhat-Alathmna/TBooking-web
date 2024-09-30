@@ -94,9 +94,7 @@ this.clickBtn.emit('')
       if (!isSet(data)) {
         return
       }
-      this.loading=data.data.length?'no':'ok'
-      console.log(data);
-      
+      this.loading=data.data.length?'no':'ok'      
       subscription.unsubscribe()
     }, error => {
       this.loading = null

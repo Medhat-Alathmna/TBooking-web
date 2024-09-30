@@ -20,7 +20,11 @@
                     [model]="acions"></p-menu>
                 <button pButton
                 [disabled]="form?.invalid "
-                    pRipple type="button" [label]="'Save'|translate" icon="pi pi-check " (click)="detailMode?updateProduct():createProduct()"
+                    pRipple type="button" [label]="'Save'|translate" icon="pi pi-check "*ngIf="detailMode&&permissionService.hasPermission('Products', 'update')" (click)="updateProduct()"
+                    class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
+                <button pButton
+                [disabled]="form?.invalid "
+                    pRipple type="button" [label]="'Save'|translate" icon="pi pi-check " *ngIf="!detailMode&&permissionService.hasPermission('Products', 'create')"  (click)="createProduct()"
                     class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
             </div>
         </div>

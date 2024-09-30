@@ -42,7 +42,7 @@
                 <p-menu #menu id="meetingActinos" styleClass="meetingActinos" [popup]="true" appendTo="body"
                     [model]="acions"></p-menu>
                 <button pButton
-                    *ngIf="selectedOrder.attributes.status == 'Draft' || selectedOrder.attributes.status == 'Unpaid'"
+                    *ngIf="(selectedOrder.attributes.status == 'Draft' || selectedOrder.attributes.status == 'Unpaid')&&permissionService.hasPermission('Orders', 'update')"
                     pRipple type="button" [label]="'Save'|translate" icon="pi pi-check " (click)="updateOrder()"
                     class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
             </div>

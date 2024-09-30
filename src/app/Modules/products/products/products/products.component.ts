@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { CalenderService } from 'src/app/Modules/calender/calender.service';
 import { BaseComponent, isSet } from 'src/app/core/base/base.component';
+import { PermissionService } from 'src/app/core/permission.service';
 import { Filter } from 'src/app/modals/filter';
 import { Products } from 'src/app/modals/products';
 
@@ -24,6 +25,7 @@ export class ProductsComponent extends BaseComponent implements OnInit {
   fillterFildes = {
     name: new Filter(),
     stocks: new Filter(),
+    price: new Filter(),
   }
   queryTypes = [
 
@@ -48,7 +50,8 @@ export class ProductsComponent extends BaseComponent implements OnInit {
 
   @ViewChild('kt') table: any;
 
-  constructor(public translates: TranslateService, public messageService: MessageService, private calenderService: CalenderService,) { super(messageService, translates) }
+  constructor(public translates: TranslateService, public messageService: MessageService,public permissionService:PermissionService,
+     private calenderService: CalenderService,) { super(messageService, translates) }
 
   ngOnInit(): void {
     this.getProducts()
@@ -116,6 +119,7 @@ this.detailMode=true
     this.fillterFildes = {
       name: new Filter(),
       stocks: new Filter(),
+      price: new Filter()
     }
     this.calenderService.queryFilters = []
     this.getProducts(1, null)

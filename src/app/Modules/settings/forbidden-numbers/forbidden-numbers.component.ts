@@ -5,6 +5,7 @@ import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import { Notifications } from 'src/app/modals/notfi';
 import { SettingsService } from '../settings.service';
 import { CalenderService } from '../../calender/calender.service';
+import { PermissionService } from 'src/app/core/permission.service';
 
 @Component({
   selector: 'app-forbidden-numbers',
@@ -23,7 +24,8 @@ export class ForbiddenNumbersComponent extends BaseComponent implements OnInit {
 
   @ViewChild('kt') table: any;
 
-  constructor(public translates: TranslateService, public messageService: MessageService, private calenderService:CalenderService,
+  constructor(public translates: TranslateService, public messageService: MessageService,public permissionService:PermissionService,
+     private calenderService:CalenderService,
     private confirmationService: ConfirmationService, private settingsService: SettingsService) { super(messageService, translates) }
 
   ngOnInit(): void {

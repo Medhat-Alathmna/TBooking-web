@@ -18,6 +18,7 @@ import { th } from 'date-fns/locale';
 import { Order } from 'src/app/modals/order';
 import { SettingsService } from '../../settings/settings.service';
 import { PayByComponent } from 'src/app/Shared/pay-by/pay-by.component';
+import { PermissionService } from 'src/app/core/permission.service';
 
 @Component({
   selector: 'app-add-edit-order',
@@ -53,7 +54,7 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
   @Output() displayChange: EventEmitter<boolean> = new EventEmitter();
   @Output() refreshLish: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(public translate: TranslateService,
+  constructor(public translate: TranslateService,public permissionService:PermissionService,
     public messageService: MessageService, private orderService: OrdersService, private settingsService: SettingsService,
     private confirmationService: ConfirmationService,) { super(messageService, translate) }
 
@@ -77,6 +78,7 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
       {
         label: this.trans('Cancel the Order'),
         icon: 'pi pi-trash',
+        disabled:!this.permissionService.hasPermission('Orders','cancel'),
         command: () => {
           this.confirm1Cancel()
         }

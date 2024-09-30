@@ -13,17 +13,18 @@
                             <h5>{{"Total of today's orders"| translate}} </h5>
                         </div>
                         <div class="col-6" style="display: flex;
-                        align-items: baseline;
-                        flex-direction: row;
-                        justify-content: space-evenly">
-                            <h5>{{fromDate | date:'YYYY-MM-dd'}}</h5>
-                            <h5 *ngIf="(fromDate| date:'YYYY-MM-dd') != (toDate| date:'YYYY-MM-dd')">{{toDate | date:'YYYY-MM-dd'}}</h5>
+                       align-items: flex-end;
+                       flex-direction: column">
+                            <h5 style="font-size: small">{{'Date'|translate}} :{{fromDate | date:'YYYY-MM-dd'}}
+                            </h5>
+                            <h5 style="font-size: small"
+                                *ngIf="(fromDate| date:'YYYY-MM-dd') != (toDate| date:'YYYY-MM-dd')">{{'To Date'|translate}} :{{toDate | date:'YYYY-MM-dd'}}</h5>
                         </div>
                     </div>
-                    <p-chart type="bar" *ngIf="results" [data]="toDayChart" [options]="basicOptions"
+                    <p-chart type="bar" *ngIf="results?.entities?.length" [data]="toDayChart" [options]="basicOptions"
                         height="51vh"></p-chart>
-                    <div style="height:51vh" *ngIf="!results" class="text-center">
-                        <h4 style="padding-top: 21vh;">
+                    <div style="height:51vh" *ngIf="!results.entities?.length" class="text-center">
+                        <h4 style="padding-top: 21vh;" translate>
                             <i class="mx-2 pi pi-exclamation-circle text-xl font-bold"
                                 style=" color:var(--danger)  !important;"></i>
                             No Data to View Chart
@@ -42,18 +43,80 @@
                             <h5>{{"Today's Cash"| translate}}</h5>
                         </div>
                         <div class="col-6" style="display: flex;
-                        align-items: baseline;
-                        flex-direction: row;
-                        justify-content: space-evenly">
-                            <h5>{{fromDate | date:'YYYY-MM-dd'}}</h5>
-                            <h5 *ngIf="(fromDate| date:'YYYY-MM-dd') != (toDate| date:'YYYY-MM-dd')">{{toDate | date:'YYYY-MM-dd'}}</h5>
+                        align-items: flex-end;
+                        flex-direction: column">
+                            <h5 style="font-size: small">{{'Date'|translate}} :{{fromDate | date:'YYYY-MM-dd'}}
+                            </h5>
+                            <h5 style="font-size: small"
+                                *ngIf="(fromDate| date:'YYYY-MM-dd') != (toDate| date:'YYYY-MM-dd')">{{'To Date'|translate}} :{{toDate | date:'YYYY-MM-dd'}}</h5>
                         </div>
                     </div>
-                    <p-chart type="bar" *ngIf="results" [data]="todayCashChart" [options]="basicOptions"
+                    <p-chart type="bar" *ngIf="totalcash" [data]="todayCashChart" [options]="basicOptions"
                         height="51vh"></p-chart>
-                    <div style="height:51vh" *ngIf="!results" class="text-center">
-                        <h4 style="padding-top: 21vh;">
+                    <div style="height:51vh" *ngIf="!totalcash" class="text-center">
+                        <h4 style="padding-top: 21vh;" translate>
                             <i class="mx-2 pi pi-exclamation-circle text-xl font-bold"
+                                style=" color:var(--danger)  !important;"></i>
+                            No Data to View Chart
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-12 lg:col-6">
+        <div class="grid flex-column grid-nogutter">
+            <div class="col-12">
+                <div class="card cardColor">
+                    <div class="row flex justify-content-between">
+
+                    <div class="col-6">
+
+                        <h5>{{"Top 5 Services"| translate}}</h5>
+                    </div>
+                    <div class="col-6" style="display: flex;align-items: flex-end;flex-direction: column">
+                        <h5 style="font-size: small">{{'Date'|translate}} :{{fromDate | date:'YYYY-MM-dd'}}</h5>
+                        <h5 style="font-size: small"
+                            *ngIf="(fromDate| date:'YYYY-MM-dd') != (toDate| date:'YYYY-MM-dd')">{{'To Date'|translate}}
+                            :{{toDate | date:'YYYY-MM-dd'}}</h5>
+                    </div>
+                    </div>
+                    <p-chart type="bar" *ngIf="results.topServices?.length" [data]="topServicesChart"
+                        [options]="basicOptions" height="51vh"></p-chart>
+                    <div style="height:51vh" *ngIf="!results.topServices?.length" class="text-center">
+                        <h4 style="padding-top: 21vh;" translate>
+                            <i class="mx-2 pi pi-exclamation-circle text-xl font-bold" 
+                                style=" color:var(--danger)  !important;"></i>
+                            No Data to View Chart
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 lg:col-6">
+        <div class="grid flex-column grid-nogutter">
+            <div class="col-12">
+                <div class="card cardColor">
+                    <div class="row flex justify-content-between">
+
+                    <div class="col-6">
+
+                        <h5>{{"Top 5 Products"| translate}}</h5>
+                    </div>
+                    <div class="col-6" style="display: flex;align-items: flex-end;flex-direction: column">
+                        <h5 style="font-size: small">{{'Date'|translate}} :{{fromDate | date:'YYYY-MM-dd'}}</h5>
+                        <h5 style="font-size: small"
+                            *ngIf="(fromDate| date:'YYYY-MM-dd') != (toDate| date:'YYYY-MM-dd')">{{'To Date'|translate}}
+                            :{{toDate | date:'YYYY-MM-dd'}}</h5>
+                    </div>
+                    </div>
+                    <p-chart type="bar" *ngIf="results.topProducts?.length" [data]="topProductsChart"
+                        [options]="basicOptions" height="51vh"></p-chart>
+                    <div style="height:51vh" *ngIf="!results.topProducts?.length" class="text-center">
+                        <h4 style="padding-top: 21vh;" translate>
+                            <i class="mx-2 pi pi-exclamation-circle text-xl font-bold" 
                                 style=" color:var(--danger)  !important;"></i>
                             No Data to View Chart
                         </h4>
@@ -70,7 +133,7 @@
                     <p-chart type="bar" *ngIf="results" [data]="orderStutsChart" [options]="basicOptions"
                         height="51vh"></p-chart>
                     <div style="height:51vh" *ngIf="!results" class="text-center">
-                        <h4 style="padding-top: 21vh;">
+                        <h4 style="padding-top: 21vh;" translate>
                             <i class="mx-2 pi pi-exclamation-circle text-xl font-bold"
                                 style=" color:var(--danger)  !important;"></i>
                             No Data to View Chart
@@ -170,7 +233,7 @@
                                 </div>
 
                             </div>
-                            <p-divider *ngIf="item.services.length"></p-divider>
+                            <p-divider *ngIf="item.services?.length"></p-divider>
                         </div>
                     </div>
                     <p-divider *ngIf="body.products?.length"></p-divider>

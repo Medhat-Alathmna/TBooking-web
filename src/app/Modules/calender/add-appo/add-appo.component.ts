@@ -25,6 +25,7 @@ import { Services } from 'src/app/modals/service';
 import { Products } from 'src/app/modals/products';
 import { PayByComponent } from 'src/app/Shared/pay-by/pay-by.component';
 import { ProductsService } from '../../products/services.service';
+import { PermissionService } from '../../../core/permission.service';
 
 
 @Component({
@@ -82,7 +83,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
 
   @ViewChild('MultiSelect') MultiSelect: ElementRef;
 
-  constructor(public translates: TranslateService,
+  constructor(public translates: TranslateService,public permissionService:PermissionService,
     public messageService: MessageService, private cd: ChangeDetectorRef, private calenderService: CalenderService, private settingsService: SettingsService,
     private confirmationService: ConfirmationService, private productsService: ProductsService, private orderService: OrdersService
   ) { super(messageService, translates) }
@@ -95,6 +96,8 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     this.getProducts(1, null)
     if (!this.detailMode || !this.appointment) {
       this.appointment = new Appointment
+      this.getLastNumber()
+
       setTimeout(() => {
         this.appointment.fromDate = this.closeCurrentTime
       }, 100);
@@ -102,7 +105,6 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       this.appointment.deposit = 0
       this.appointment.employee = []
       this.appointment.phone = 962
-      this.appointment.number = moment(new Date()).format('YY-MM-D') + '-00'
     } else {
       this.appointment = Appointment.cloneObject(this.appointment)
       this.appointment.firstName = this.appointment?.customer?.firstName
@@ -116,28 +118,29 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
           this.selectProducts.push({ id: item?.id, name: item?.name, stocks: item?.stocks, price: item?.price, qty: item?.qty, brand: item.brand })
         })
       }
+      console.log();
+      
       this.getNotfi()
       this.acions = [
         {
           label: this.appointment.approved ? this.trans('Cancel the Appointment') : this.trans('Convert to Approved'),
           icon: 'pi pi-refresh',
           command: () => {
-            this.appointment.approved ? this.confirmCancel() : this.convertApprove()
+            this.appointment.approved ? this.confirmCancel() : this.convertApprove();this.display=false
           }
         },
         {
           label: this.trans('Convert to Order'),
           icon: 'pi pi-money-bill',
           command: () => {
-            this.orderNo = this.appointment.number
-            this.appointment.cash = 0
-            this.appointment.discount = 0
-            this.toOrderDialog = true
+           this.getLastNumberOrder()
+          
           }
         },
         {
           label: this.trans('Delete'),
           icon: 'pi pi-times',
+          disabled:!this.permissionService.hasPermission('Appointments','delete'),
           command: () => {
             this.confirm1Delete()
           }
@@ -315,10 +318,6 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     })
   }
   updateAppominet() {
-    if ((this.userAuth.username != this.appointment?.appoBy)&&(this.role?.name != 'Admin')) {
-      this.errorMessage(this.trans('You do not have permission to modify this appointment'))
-      return
-    }
     this.appointment.id = this.id
     this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
@@ -330,7 +329,8 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       }
       this.loading = false
       this.refreshLish.emit(true)
-      this.display = false
+      this.successMessage(null,'This Appoinment has been updated')
+      // this.display = false
       subscription.unsubscribe()
     }, error => {
       this.loading = false
@@ -398,6 +398,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
         {
           label: this.trans('Delete'),
           icon: 'pi pi-times',
+          disabled:this.permissionService.hasPermission('Appointments','delete'),
           command: () => {
             this.confirm1Delete()
           }
@@ -490,8 +491,16 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     })
   }
-
+seq(){
+  new Promise(res=>{
+    this.updateAppominet()
+  }).then(tt=>{this.addOrder()}).catch(tt=>this.errorMessage(null,'Something wrong happen'))
+}
   addOrder() {
+    if (this.appointment.deposit>this.getTotalPrice().products) {
+      this.errorMessage(null,"It's not allowe to be a deposit more then services Total")
+      return
+    }
     this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
     this.appointment.products = this.selectProducts
@@ -499,6 +508,8 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     if (!this.appointment.employee) {
       this.errorMessage('Please choose Employee !')
     }
+    this.updateAppominet()
+
     this.loading = true
     const subscription = this.orderService.addOrder(this.appointment, this.orderNo, this.getTotalPrice(), this.id).subscribe((data) => {
       if (!isSet(data)) {
@@ -588,6 +599,35 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       if (!isSet(results)) {
         return
       }
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+
+      subscription.unsubscribe()
+    })
+  }
+  getLastNumber() {
+    const subscription = this.calenderService.getLastNumber().subscribe((results: any) => {
+      this.loading = false
+      if (!isSet(results)) {
+        return
+      }
+      this.appointment.number=results.newNumber
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+
+      subscription.unsubscribe()
+    })
+  }
+  getLastNumberOrder() {
+    this.loading=true
+    const subscription = this.calenderService.getLastNumberOrder().subscribe((results: any) => {
+      this.loading = false
+      this.orderNo=results.newNumber
+      this.appointment.cash = 0
+      this.appointment.discount = 0
+      this.toOrderDialog = true
       subscription.unsubscribe()
     }, error => {
       this.loading = false

@@ -11,6 +11,8 @@ import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import * as moment from 'moment';
 import { EntityViewerComponent } from 'src/app/Shared/entity-viewer/entity-viewer.component';
 import { ConfirmationService } from 'primeng/api';
+import { PermissionService } from 'src/app/core/permission.service';
+import { RolesService } from '../roles/roles.service';
 
 @Component({
   selector: 'app-add-edit-user',
@@ -40,7 +42,9 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
   @Output() displayChange: EventEmitter<boolean> = new EventEmitter();
   @Output() refreshLish: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(private userService: UsersService, private confirmationService: ConfirmationService,public translates: TranslateService,) { super(null,translates) }
+  constructor(private userService: UsersService, private confirmationService: ConfirmationService,private roleService:RolesService,
+    public permissionService:PermissionService,
+    public translates: TranslateService,) { super(null,translates) }
 
   ngOnInit(): void {
     // this.selectedUser.role=this.roles[0]
@@ -51,7 +55,7 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
     }
     this.acions = [
       {
-        label: this.selectedUser.isToday ? this.trans('UnAvilabale Today') :  this.trans('Available Today'),
+        label: this.selectedUser.isToday ? this.trans('UnAvilabale Today') :  this.trans('Availbale Today'),
         icon: 'pi pi-power-off',
         command: () => {
           this.userAvialble()
@@ -67,6 +71,7 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
       {
         label: this.trans('Delete'),
         icon: 'pi pi-times',
+        disabled:!this.permissionService.hasPermission('Users','delete'),
         command: () => {
           this.confirm1Delete()
         }
@@ -99,18 +104,37 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
 
   getRoles() {
     this.loading = true
-    const subscription = this.userService.getRoles().subscribe((results: any) => {
+    const subscription = this.roleService.getRoles().subscribe((results: any) => {
       this.loading = false
       if (!isSet(results)) {
         return
       }
-      this.roles = results.roles
+   results.data.forEach(element => {
+    element.attributes.id=element.id
+    this.roles.push(element.attributes)
+   });
       subscription.unsubscribe()
     }, error => {
       this.loading = false
+      console.log(error);
       subscription.unsubscribe()
     })
   }
+
+  // getRoles() {
+  //   this.loading = true
+  //   const subscription = this.userService.getRoles().subscribe((results: any) => {
+  //     this.loading = false
+  //     if (!isSet(results)) {
+  //       return
+  //     }
+  //     this.roles = results.roles
+  //     subscription.unsubscribe()
+  //   }, error => {
+  //     this.loading = false
+  //     subscription.unsubscribe()
+  //   })
+  // }
   updateUser() {
     this.loading = true
     const subscription = this.userService.updateUser(this.selectedUser, this.selectRold).subscribe((results: any) => {
@@ -180,7 +204,9 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
     })
   }
   selectRole(event) {
-    this.selectRold = event
+    this.selectedUser.privilege = event
+    console.log(event);
+    
     this.roleMode = true
 
   }

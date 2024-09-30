@@ -1,10 +1,7 @@
 <app-loading *ngIf="loading" display="full"></app-loading>
-<p-tabView   [(activeIndex)]="activeIndex">
-    <div *ngIf="message">
-        <p>{{ message }}</p>
-      </div>
-    <p-tabPanel style="display: inline;"   header="{{'Calender'|translate}}">
-        <div *ngIf="activeIndex==0"  class="grid  ">
+<p-tabMenu class="col-12" [model]="tabIndex" [activeItem]="tabIndex[0]"></p-tabMenu>
+
+        <div *ngIf="tabSelected=='calender'"  class="grid  ">
             <div [class]="edpandMode?'lg:col-12 sm:col-12':'lg:col-8 sm:col-12' ">
                 <div #carddH style="height: 80vh;" class="card p-0 ">
                     <div class="col-12" *ngIf="selectDateMode" style="text-align: center;">
@@ -145,13 +142,9 @@
             </div>
         
         </div>
-    </p-tabPanel>
 
-    <p-tabPanel header="{{'Appointments'|translate}}">
-        <app-appointments *ngIf="activeIndex==1"></app-appointments>
+        <app-appointments *ngIf="tabSelected=='appointments'"></app-appointments>
 
-    </p-tabPanel>
 
-</p-tabView>
 <app-add-appo *ngIf="showSppoSidebar" (refreshLish)="getCalender();getTodayAppo()" [appointment]="Appointment" [id]="id"
     [detailMode]="detailMode" [(display)]="showSppoSidebar"></app-add-appo>

@@ -12,8 +12,7 @@ import { MobileAppService } from '../mobile-app.service';
 export class MobileAppComponent extends BaseComponent implements OnInit {
   tabSelected = 'gallary'
   dataSetting
-
-  tabIndex 
+  tabIndex=[]
   constructor(public translates: TranslateService,
      public messageService: MessageService,private mobileService: MobileAppService,) {super(messageService, translates) }
 

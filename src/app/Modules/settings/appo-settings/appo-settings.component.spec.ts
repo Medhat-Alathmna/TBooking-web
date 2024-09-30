@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GroupMessagesComponent } from './group-messages.component';
+import { AppoSettingsComponent } from './appo-settings.component';
 
-describe('GroupMessagesComponent', () => {
-  let component: GroupMessagesComponent;
-  let fixture: ComponentFixture<GroupMessagesComponent>;
+describe('AppoSettingsComponent', () => {
+  let component: AppoSettingsComponent;
+  let fixture: ComponentFixture<AppoSettingsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GroupMessagesComponent ]
+      declarations: [ AppoSettingsComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(GroupMessagesComponent);
+    fixture = TestBed.createComponent(AppoSettingsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

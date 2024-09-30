@@ -6,6 +6,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Services } from 'src/app/modals/service';
 import { CalenderService } from '../../calender/calender.service';
 import { Filter } from 'src/app/modals/filter';
+import { PermissionService } from 'src/app/core/permission.service';
 
 
 @Component({
@@ -15,7 +16,7 @@ import { Filter } from 'src/app/modals/filter';
 })
 export class ServicesComponent extends BaseComponent implements OnInit {
 
-  tabSelected = 'service'
+  tabSelected = 'products'
   editMode:boolean=false
   showServ: boolean = false
   Service = new Services
@@ -23,7 +24,7 @@ export class ServicesComponent extends BaseComponent implements OnInit {
   rowNum: any = 10
   currentPage: any = 1
   total=0
-  tabIndex 
+  tabIndex=[]
 
   fillterFildes = {
     en: new Filter(),
@@ -53,29 +54,33 @@ export class ServicesComponent extends BaseComponent implements OnInit {
 
   @ViewChild('kt') table: any;
 
-  constructor(public translates: TranslateService, public messageService: MessageService, private calenderService:CalenderService,
+  constructor(public translates: TranslateService, public messageService: MessageService,public permissionService:PermissionService, private calenderService:CalenderService,
      private mobileService: ProductsService,private confirmationService: ConfirmationService) { super(messageService, translates) }
 
   ngOnInit(): void {
-    this.listServices()
+    this.clearAllFillter()
     setTimeout(() => {
       this.tabIndex= [
         {
+          label: this.trans('Products'),
+          disabled:!this.permissionService.hasPermission('Products','view'),
+          command: event => {
+            this.tabSelected = 'products'
+          }
+        },
+        {
           label: this.trans('Services'),
+          disabled:!this.permissionService.hasPermission('Products','Services'),
           command: event => {
             this.tabSelected = 'service'
             this.listServices()
           }
         },
-        {
-          label: this.trans('Products'),
-          command: event => {
-            this.tabSelected = 'products'
-          }
-        }
+        
     
       ]
     }, );
+
   }
 
 
@@ -83,13 +88,13 @@ export class ServicesComponent extends BaseComponent implements OnInit {
 
   listServices(pageNum?: number, query?: any) {
     this.loading = true
-    const subscription = this.calenderService.getlist('services',pageNum,10,query).subscribe((results: any) => {
+    const subscription = this.calenderService.getlist('services', pageNum, 10, query).subscribe((results: any) => {
       this.loading = false
       if (!isSet(results)) {
         return
       }
-      const clone=results.data
-      this.total=results.meta.pagination.total
+      const clone = results.data
+      this.total = results.meta.pagination.total
       if (!isSet(this.services)) {
         this.services = Array(this.total).fill(0)
       }
@@ -103,7 +108,6 @@ export class ServicesComponent extends BaseComponent implements OnInit {
         clone.map((item, index) => {
           this.services[index] = item
         })
-
       } else {
         const currentPage = pageNum * this.rowNum
         let cloneObjIndex = 0
@@ -111,6 +115,7 @@ export class ServicesComponent extends BaseComponent implements OnInit {
           this.services[index] = clone[cloneObjIndex++]
         }
       }
+      
       //
       if (!isSet(this.services?.next)) {
         this.services = this.services.filter(item => {
@@ -120,7 +125,6 @@ export class ServicesComponent extends BaseComponent implements OnInit {
       setTimeout(() => {
         this.table.first = pageNum > 1 ? (pageNum - 1) * this.rowNum : 0
       });
-
       subscription.unsubscribe()
     }, error => {
       this.loading = false

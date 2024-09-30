@@ -17,8 +17,9 @@ export class UsersService {
       username: user.username,
       password: user.password,
       phone: user.phone,
+      privilege: user.privilege.id,
       role: {
-        connect: [{ id: selectRold.id }]
+        connect: [{ id: 3 }]
       },
       email: user.email
     }
