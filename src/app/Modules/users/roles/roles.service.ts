@@ -14,14 +14,24 @@ export class RolesService {
   createRole(role: any): Observable<RoleInfo> {
     let body = {
       data: {
-      role: role.role,
-      description: role.description,
-      pages: role.pages,
-    }
+        role: role.role,
+        description: role.description,
+        pages: role.pages,
+      }
     }
     return this.api.post<RoleInfo>(`privileges`, body);
   }
+  updateRole(role: any): Observable<RoleInfo> {
+    let body = {
+      data: {
+        role: role.role,
+        description: role.description,
+        pages: role.pages,
+      }
+    }
+    return this.api.put<RoleInfo>(`privileges/${role.id}`, body);
+  }
   getRoles(): Observable<any[]> {
-    return this.api.get<any[]>(`privileges`);
+    return this.api.get<any[]>(`privileges?populate=*`);
   }
 }

@@ -57,7 +57,7 @@ export class MobileAppComponent extends BaseComponent implements OnInit {
       if (!isSet(results)) {
         return
       }
-      this.successMessage(null ,type=='phone'?this.trans('The contact number changed'):this.trans('This Action Changed'))
+      this.successMessage(null ,type=='phone'?'The contact number changed':'This Action Changed')
       subscription.unsubscribe()
     }, error => {
       this.loading = false

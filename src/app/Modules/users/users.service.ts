@@ -12,7 +12,7 @@ export class UsersService {
 
   constructor(private api: ApiService) { }
 
-  createUser(user: UserInfo,selectRold): Observable<UserInfo> {
+  createUser(user: UserInfo): Observable<UserInfo> {
     let body = {
       username: user.username,
       password: user.password,
@@ -26,14 +26,13 @@ export class UsersService {
     return this.api.post<UserInfo>(`users`, body);
   }
 
-  updateUser(user,selectRold): Observable<UserInfo>{
+  updateUser(user): Observable<UserInfo>{
     let body={
         email:user?.email,
         username:user?.username, 
         password:user?.password, 
         phone: user?.phone,
-        role: selectRold.id 
-      
+        privilege: user.privilege.id,
     }
     return this.api.put<UserInfo>(`/users/${user.id}`,body);
 

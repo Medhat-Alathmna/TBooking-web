@@ -8,7 +8,6 @@ import { CalenderService } from '../calender.service';
 import { Appointment } from 'src/app/modals/appoiments';
 import { DatePipe } from '@angular/common';
 import { CalendarModule } from 'primeng/calendar';
-import { SseService } from 'src/app/core/Sse.service';
 
 
 @Component({
@@ -19,7 +18,7 @@ import { SseService } from 'src/app/core/Sse.service';
 export class FullCalenderComponent extends BaseComponent implements OnInit, AfterViewInit {
 
   constructor(public translates: TranslateService,
-    public messageService: MessageService, private datePipe: DatePipe,private sseService:SseService,
+    public messageService: MessageService, private datePipe: DatePipe,
      private calenderService: CalenderService) { super(messageService, translates) }
   private eventSource: EventSource | undefined;
 
@@ -50,11 +49,6 @@ export class FullCalenderComponent extends BaseComponent implements OnInit, Afte
     
   }
    ngOnInit(): void {
-    this.sseService.connect('http://localhost:1337/api/sse');
-    this.sseService.getData().subscribe((data) => {
-      this.notifications.push(data);
-    });
-    console.log(this.notifications);
     
 setTimeout(() => {
   this.tabIndex=[

@@ -28,7 +28,6 @@ export class DashboardComponent extends BaseComponent implements OnInit {
   toDate: any = new Date()
   dashboardDatesDialog: boolean = false
   dashboardDetails: boolean = false
-  role = JSON.parse(localStorage.getItem('role'))
   textSecondaryColor = getComputedStyle(document.documentElement).getPropertyValue('--surface-500')
 
   @ViewChild('printOrder') printOrder: ElementRef;
@@ -37,6 +36,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     private dashboardService: DashboardService, private datePipe: DatePipe) { super(messageService, translates) }
 
   ngOnInit(): void {
+    this.count()
     this.items = [
       {
         icon: 'pi pi-calendar text-primary',
@@ -60,13 +60,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
       },
 
     ];
-    if (this.role.name == 'Admin') {
-      this.count()
-
-    } else {
-      this.orderService.checkRole.next(true)
-      this.router.navigateByUrl('/calender')
-    }
+   
   }
   count() {
     this.loading = true

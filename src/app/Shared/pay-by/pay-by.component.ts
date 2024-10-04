@@ -81,7 +81,6 @@ export class PayByComponent extends BaseComponent implements ControlValueAccesso
         return
       }
       this.bayPaies=[]
-      console.log(results);
       this.bayPaies.push({
         id: 0, name: `<span class="font-bold text-primary">${this.trans('New Payment Method')}</span>`})
       results.data.map(item => {
@@ -92,9 +91,7 @@ export class PayByComponent extends BaseComponent implements ControlValueAccesso
       //   this.payByMode=true
       //   this.selectedProduct.brand=this.selectedProduct.brand.data.attributes
       // }
-      if (this.role.name !='Admin') {
-        this.bayPaies.splice(0,1)
-      }
+     
       
         subscription.unsubscribe()
     }, error => {

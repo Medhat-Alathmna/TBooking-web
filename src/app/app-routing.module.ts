@@ -29,7 +29,7 @@ import { PermissionGuard } from './Modules/auth/guards/permission.guard';
                 canActivate: [AuthGuard],
                 children: [
                     {
-                        path: '',redirectTo: 'calender',pathMatch:'full'
+                        path: '',redirectTo: 'calender',pathMatch:'prefix'
                     },
                     {
                         path: 'products', loadChildren: () => ProductsModule,
@@ -43,7 +43,8 @@ import { PermissionGuard } from './Modules/auth/guards/permission.guard';
                     {
                         path: 'calender', loadChildren: () => CalenderModule,
                     },
-                    { path: 'users', loadChildren: () => UsersModule },
+                    { path: 'users', loadChildren: () => UsersModule,canActivate: [PermissionGuard],
+                        data: { resource: 'Users', action: 'view' } },
                     {
                         path: 'orders', loadChildren: () => OrdersModule, canActivate: [PermissionGuard],
                         data: { resource: 'Orders', action: 'view' }

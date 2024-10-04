@@ -16,7 +16,7 @@ export class RolesComponent extends BaseComponent implements OnInit {
  showRoleSidebar:boolean=false
  detailMode: boolean = false
 selectedRole:RoleInfo
-
+id
 
 
   constructor(public translates: TranslateService,private roleService:RolesService,
@@ -47,8 +47,8 @@ selectedRole:RoleInfo
     })
   }
   showRoleDeatil(data:RoleInfo) {
-    console.log(data);
-    
+    console.log(data.id);
+    this.id=data.id
     this.detailMode = true
     this.selectedRole =data
     this.showRoleSidebar = true

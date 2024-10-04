@@ -15,7 +15,7 @@
                         <div class="col-10" style=" margin-top: 10px;font-size: 17px">
                             <span [innerHTML]="item.name"></span>
                         </div>
-                        <div class="col-2" *ngIf="(item.id != 0) && (item.id != -1) && role.name =='Admin'">
+                        <div class="col-2" *ngIf="(item.id != 0) && (item.id != -1) ">
                             <button style="z-index: 10000; color: #000000;" pButton pTooltip="Edit"
                                 tooltipPosition="bottom" (click)="selectUpdatePayBy(item);PayByDialog=true"
                                 class="p-button-text  ml-sm-1" type="button" icon="fas fa-edit"></button>

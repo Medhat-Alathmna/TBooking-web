@@ -146,7 +146,7 @@ export class GallaryComponent extends BaseComponent implements OnInit {
       if (!isSet(data)) {
         return
       }
-      this.successMessage(null, 'This post Published')
+      this.successMessage(null, data.data.attributes.published?'This post Published':'This post UnPublished')
       this.getPosts()
       subscription.unsubscribe()
     }, error => {

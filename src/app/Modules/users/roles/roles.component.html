@@ -23,6 +23,7 @@
             <ng-template pTemplate="header">
                 <tr>
                     <th style="width: 30vw" translate>Role</th>
+                    <th style="width: 30vw" translate>Users</th>
                     <th style="width: 40vw" translate>Description</th>
                     <th style="width: 10% !important" translate>Actions</th>
                 </tr>
@@ -32,6 +33,11 @@
                     <td style="width: 30vw">
                         <span (click)="showRoleDeatil(ser)" class="text-xl text-primary pointer font-bold">
                             {{ser?.attributes?.role}}
+                        </span>
+                    </td>
+                    <td style="width: 30vw">
+                        <span  class="text-xl text-primary pointer font-bold">
+                            {{ser?.attributes?.users?.data?.length}}
                         </span>
                     </td>
                     <td style="width: 30vw">
@@ -56,5 +62,5 @@
     </div>
 
 
-    <app-add-edit-role *ngIf='showRoleSidebar' [selectedRole]="selectedRole"
+    <app-add-edit-role *ngIf='showRoleSidebar' [id]="id" (refreshLish)="getRoles()" [selectedRole]="selectedRole"
     [detailMode]="detailMode" [(display)]="showRoleSidebar"></app-add-edit-role>

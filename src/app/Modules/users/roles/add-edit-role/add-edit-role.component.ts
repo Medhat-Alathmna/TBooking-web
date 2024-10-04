@@ -27,6 +27,7 @@ import { RolesService } from '../roles.service';
 })
 export class AddEditRoleComponent extends BaseComponent implements OnInit {
 
+  @Input() id
   @Input() selectedRole: any
   @Input() display: boolean = false
   @Input() detailMode: boolean = false
@@ -38,7 +39,8 @@ export class AddEditRoleComponent extends BaseComponent implements OnInit {
     resources = [
       { name: 'Appointments', actions: ['create', 'view', 'update', 'delete'] },
       { name: 'Orders', actions: ['create', 'view', 'update', 'cancel'] },
-      { name: 'Users', actions: ['create', 'view', 'update', 'delete'] },
+      { name: 'Users', actions: ['create', 'view', 'update', 'delete','Roles','suspend'] },
+      { name: 'Roles', actions: ['create','update', 'delete'] },
       { name: 'Dashboard', actions: ['view',] },
       { name: 'Products', actions: ['create', 'view', 'update', 'delete','Services'] },
       { name: 'Services', actions: ['create','update', 'delete'] },
@@ -52,7 +54,8 @@ export class AddEditRoleComponent extends BaseComponent implements OnInit {
     pages = {
       Appointments: { create: false, view: true, update: false, delete: false },
       Orders: { create: false, view: false, update: false, cancel: false },
-      Users: { create: false, view: false, update: false, delete: false },
+      Users: { create: false, view: false, update: false, delete: false ,suspend:false,Roles:false},
+      Roles: { create: false, update: false, delete: false },
       Dashboard: { view: false},
       Products: { create: false, view: false, update: false, delete: false,Services:false },
       Services: { create: false, update: false, delete: false },
@@ -72,7 +75,7 @@ export class AddEditRoleComponent extends BaseComponent implements OnInit {
 
     if ( this.detailMode) {
       this.pages= this.selectedRole.pages
-
+      this.selectedRole.id=this.id
     }
 
     // this.selectedRole.description=this.selectedRole.attributes.description
@@ -93,6 +96,24 @@ export class AddEditRoleComponent extends BaseComponent implements OnInit {
       }
       this.loading = false
       this.refreshLish.emit(true)
+      this.successMessage(null,'The new role has been created')
+      this.display = false
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+      subscription.unsubscribe()
+    })
+  }
+  updateRole() {
+    this.selectedRole.pages=this.pages
+    this.loading = true
+    const subscription = this.roleService.updateRole(this.selectedRole).subscribe((data) => {
+      if (!isSet(data)) {
+        return
+      }
+      this.loading = false
+      this.refreshLish.emit(true)
+      this.successMessage(null,'This role has been Changed')
       this.display = false
       subscription.unsubscribe()
     }, error => {

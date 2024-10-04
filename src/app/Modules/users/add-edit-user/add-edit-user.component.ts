@@ -35,7 +35,7 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
   roles: any[] = []
   acions: any = []
   roleMode: boolean = false
-
+  selectedPrev
   @Input() selectedUser: UserInfo
   @Input() display: boolean = false
   @Input() detailMode: boolean = false
@@ -51,6 +51,7 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
     if (this.detailMode) {
       this.selectedUser.createdAt = moment(this.selectedUser.createdAt).format('YYYY-MM-DD HH:ss')
       this.selectRold = this.selectedUser.role
+      this.selectedPrev=this.selectRold.privilege
       this.roleMode = true
     }
     this.acions = [
@@ -88,7 +89,7 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
   }
   createUser() {
     this.loading = true
-    const subscription = this.userService.createUser(this.selectedUser, this.selectRold).subscribe((data) => {
+    const subscription = this.userService.createUser(this.selectedUser).subscribe((data) => {
       if (!isSet(data)) {
         return
       }
@@ -97,6 +98,8 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
       this.display = false
       subscription.unsubscribe()
     }, error => {
+      console.log(error);
+      
       this.loading = false
       subscription.unsubscribe()
     })
@@ -113,6 +116,7 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
     element.attributes.id=element.id
     this.roles.push(element.attributes)
    });
+   
       subscription.unsubscribe()
     }, error => {
       this.loading = false
@@ -137,7 +141,7 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
   // }
   updateUser() {
     this.loading = true
-    const subscription = this.userService.updateUser(this.selectedUser, this.selectRold).subscribe((results: any) => {
+    const subscription = this.userService.updateUser(this.selectedUser).subscribe((results: any) => {
       this.loading = false
       if (!isSet(results)) {
         return
@@ -204,7 +208,7 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
     })
   }
   selectRole(event) {
-    this.selectedUser.privilege = event
+    this.selectedUser.privilege = event 
     console.log(event);
     
     this.roleMode = true
