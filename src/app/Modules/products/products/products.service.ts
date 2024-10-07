@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/core/api.service';
+import { isSet } from 'src/app/core/base/base.component';
 import { Products } from 'src/app/modals/products';
 
 @Injectable({
@@ -40,6 +41,10 @@ export class ProductsService {
   }
   getBrands(): Observable<any> {
     return this.api.get<any>(`brands?sort[0]=createdAt:desc&pagination[pageSize]=1000&filters[hide][$eq]=false`);
+  }
+  productInfo(id,from, to): Observable<any> {
+    const date = isSet(from) ? `?startDate=${from.toISOString()}&endDate=${to.toISOString()}` : ''
+    return this.api.get<any>(`productInfo/${id}${date}`);
   }
   createBrand(name): Observable<any> {
     let body = { data: {name } }

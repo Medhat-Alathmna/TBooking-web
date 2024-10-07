@@ -109,3 +109,10 @@
             class="p-button-primary"></button>
     </div>
 </app-modal>
+
+<div >
+    <div style="right: 5vw;top: 74vh;z-index: 99999" class="fixed">
+        <p-speedDial appendTo="body" buttonClassName="dashbored-btn" showIcon="pi pi-filter " [model]="items"></p-speedDial>
+    </div>
+</div>
+<app-from-to-date [(display)]="displayDate" (dateChange)="productInfo($event)"></app-from-to-date>

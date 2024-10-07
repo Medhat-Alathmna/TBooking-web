@@ -1,23 +1,20 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterContentChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import * as moment from 'moment';
 import { CalenderService } from '../calender.service';
-import { Appointment } from 'src/app/modals/appoiments';
 import { DatePipe } from '@angular/common';
-import { CalendarModule } from 'primeng/calendar';
-
 
 @Component({
   selector: 'app-full-calender',
   templateUrl: './fullCalender.component.html',
   styleUrls: ['./fullCalender.component.scss']
 })
-export class FullCalenderComponent extends BaseComponent implements OnInit, AfterViewInit {
+export class FullCalenderComponent extends BaseComponent implements OnInit, AfterViewInit,AfterContentChecked {
 
-  constructor(public translates: TranslateService,
+  constructor(public translates: TranslateService,private cd: ChangeDetectorRef,
     public messageService: MessageService, private datePipe: DatePipe,
      private calenderService: CalenderService) { super(messageService, translates) }
   private eventSource: EventSource | undefined;
@@ -40,6 +37,7 @@ export class FullCalenderComponent extends BaseComponent implements OnInit, Afte
   tabIndex=[]
   notifications=[]
   Appointment: any
+  inter
   @ViewChild('calendar') calendar: FullCalendarComponent;
   message
   ngAfterViewInit() {
@@ -84,14 +82,28 @@ setTimeout(() => {
         this.getAppointment(arg?.event.id)
       },
     }
-    this.getCalender()
     this.getTodayAppo()
+  //  this.inter= interval(5000).pipe(
+      
+  //     switchMap(() =>this.calenderService.getTodayAppominets(currentDate))  // Call the API at each interval
+  //   ).subscribe(
+  //     response => {
+  //       console.log('API Response:', response); // Handle the API response
+  //     },
+  //     error => {
+  //       console.error('API Error:', error);  // Handle any errors
+  //     }
+  //   );
+    this.getCalender()
     // this.getNotfi()
 
   }
-  ngOnDestroy(): void {
-    this.eventSource?.close();
+  ngAfterContentChecked() {
+    this.cd.detectChanges();
   }
+  // ngOnDestroy(): void {
+  //  delete this.inter
+  // }
   moveToDay() {
     this.calendar.getApi().gotoDate(new Date(this.selectDate))
     this.selectDateMode = false

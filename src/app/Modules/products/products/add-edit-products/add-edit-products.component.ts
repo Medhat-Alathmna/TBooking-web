@@ -15,6 +15,7 @@ import { Products } from 'src/app/modals/products';
 import { PrimengComponentsModule } from 'src/app/primeng-components.module';
 import { ProductsService } from '../products.service';
 import { PermissionService } from 'src/app/core/permission.service';
+import { FromToDateComponent } from 'src/app/Shared/from-to-date/from-to-date.component';
 
 @Component({
   selector: 'app-add-edit-products',
@@ -32,18 +33,22 @@ import { PermissionService } from 'src/app/core/permission.service';
     ModalComponent,
     InputMaskComponent,
     LoadingComponent,
+    FromToDateComponent,
   ],
 })
 export class AddEditProductsComponent extends BaseComponent implements OnInit {
-
+  items
   acions
   number
   headerDialog
   brandName: string
-  brands:any[] = []
+  brands: any[] = []
   brandDialog: boolean = false
   brandMode: boolean = false
   brandEdit: boolean = false
+  fromDate: any 
+  toDate: any 
+  displayDate = false
   @Input() selectedProduct: Products
   @Input() id: any
   @Input() display: boolean = false
@@ -51,14 +56,33 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
   @Output() displayChange: EventEmitter<boolean> = new EventEmitter();
   @Output() refreshLish: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(public translates: TranslateService, public messageService: MessageService,public permissionService:PermissionService,
-      private confirmationService: ConfirmationService,private productsService: ProductsService) { super(messageService, translates) }
+  constructor(public translates: TranslateService, public messageService: MessageService, public permissionService: PermissionService,
+    private confirmationService: ConfirmationService, private productsService: ProductsService) { super(messageService, translates) }
 
   ngOnInit(): void {
+    this.productInfo({ fromDate: new Date(), toDate: new Date() });
+    this.items = [
+      {
+        icon: 'pi pi-calendar text-primary',
+        command: () => {
+          this.displayDate = true
+        }
+      },
+      {
+        icon: 'pi pi-refresh text-primary',
+        command: () => {
+          this.fromDate = new Date()
+          this.toDate = new Date()
+        }
+      },
+
+    ];
+
+
     this.getBrands()
     if (!this.selectedProduct.stocks) {
-      this.selectedProduct.stocks=0
-     }
+      this.selectedProduct.stocks = 0
+    }
 
   }
 
@@ -100,36 +124,38 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
     })
   }
 
-  selectBrand(event){
+  selectBrand(event) {
     if (event.value.id == 0) {
       this.brandDialog = true
       this.brandName = null
-      this.selectedProduct.brand=null
-      this.brandEdit=false
+      this.selectedProduct.brand = null
+      this.brandEdit = false
     }
-    this.brandMode=true
-    this.headerDialog=this.brandEdit?this.trans('Brand Modification'):this.trans('Brand Creation')
+    this.brandMode = true
+    this.headerDialog = this.brandEdit ? this.trans('Brand Modification') : this.trans('Brand Creation')
   }
 
   getBrands() {
-    
+
     const subscription = this.productsService.getBrands().subscribe((results) => {
       if (!isSet(results)) {
         return
       }
-      this.brands=[]
+      this.brands = []
       this.brands.push({
-        id: 0, name: `<span class="font-bold text-primary">${this.trans('New Brand')}</span>`})
+        id: 0, name: `<span class="font-bold text-primary">${this.trans('New Brand')}</span>`
+      })
       results.data.map(item => {
         this.brands.push({
-          id: item?.id, name: item?.attributes?.name})
+          id: item?.id, name: item?.attributes?.name
+        })
       })
       if (this.selectedProduct.brand) {
-        this.brandMode=true
-        this.selectedProduct.brand=this.selectedProduct.brand.data.attributes
+        this.brandMode = true
+        this.selectedProduct.brand = this.selectedProduct?.brand?.data?.attributes
       }
-  
-        subscription.unsubscribe()
+
+      subscription.unsubscribe()
     }, error => {
       subscription.unsubscribe()
     })
@@ -139,10 +165,10 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
     const subscription = this.productsService.createBrand(this.brandName).subscribe((data) => {
       if (!isSet(data)) {
         return
-      }      
+      }
       this.loading = false
       this.brandDialog = false
-      this.brandMode=false
+      this.brandMode = false
 
       this.getBrands()
       subscription.unsubscribe()
@@ -153,10 +179,10 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
   }
   updateBrand(type) {
     this.loading = true
-    const subscription = this.productsService.updateBrand(this.brandName,this.selectedProduct.brand.id,type).subscribe((data) => {
+    const subscription = this.productsService.updateBrand(this.brandName, this.selectedProduct.brand.id, type).subscribe((data) => {
       if (!isSet(data)) {
         return
-      }      
+      }
       this.loading = false
       this.brandDialog = false
       this.getBrands()
@@ -166,9 +192,9 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     })
   }
-  selectUpdateBrand(value){
-    this.brandEdit=true
-    this.brandName=value.name
+  selectUpdateBrand(value) {
+    this.brandEdit = true
+    this.brandName = value.name
   }
   confirmCancel() {
     this.confirmationService.confirm({
@@ -176,5 +202,25 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => { this.updateBrand('delete') },
     });
+  }
+
+ public productInfo(dates: { fromDate: any; toDate: any }) {
+    this.displayDate=false
+    this.fromDate = dates.fromDate
+    this.toDate = dates.toDate
+    console.log( this.fromDate,this.toDate);
+    
+    this.loading = true
+    const subscription = this.productsService.productInfo(this.id, this.fromDate, this.toDate).subscribe((data: any) => {
+      this.loading = false
+      if (!isSet(data)) {
+        return
+      }
+
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+      subscription.unsubscribe()
+    })
   }
 }

@@ -10,8 +10,8 @@ export class DashboardService {
 
   constructor(private api: ApiService) { }
 
-  count(from,to): Observable<any> {
-const date=   isSet(from)?`?startDate=${from.toISOString()}&endDate=${to.toISOString()}`:''
+  count(from, to): Observable<any> {
+    const date = isSet(from) ? `?startDate=${from.toISOString()}&endDate=${to.toISOString()}` : ''
     return this.api.get<any>(`/count${date}`);
   }
 }
