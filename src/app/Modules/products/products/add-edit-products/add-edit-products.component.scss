@@ -1,3 +1,6 @@
 ::ng-deep .p-dropdown-filter-container{
     direction: ltr !important;
 }
+::ng-deep .p-accordion-header-link {
+    justify-content: space-around;
+    }

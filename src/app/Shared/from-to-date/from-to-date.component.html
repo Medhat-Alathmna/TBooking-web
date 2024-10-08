@@ -1,4 +1,4 @@
-<app-modal [(display)]="display" class="modal-sm">
+<app-modal (displayChange)="onHide()" [(display)]="display" class="modal-sm">
     <div body>
         <div class="grid">
             <div class=" col-6 mt-3">
@@ -24,7 +24,7 @@
         </div>
     </div>
     <div footer>
-        <button pButton pRipple (click)="display=false"  type="button" label=" {{'Cancel' |translate}}"
+        <button pButton pRipple (click)="onHide()"  type="button" label=" {{'Cancel' |translate}}"
             icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
         <button pButton pRipple (click)=" emitDates()" type="button"
             label=" {{'Apply' |translate}}" class="p-button-primary"></button>

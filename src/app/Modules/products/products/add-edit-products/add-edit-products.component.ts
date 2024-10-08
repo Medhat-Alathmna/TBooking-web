@@ -42,13 +42,19 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
   number
   headerDialog
   brandName: string
+  basicOptions
   brands: any[] = []
   brandDialog: boolean = false
   brandMode: boolean = false
   brandEdit: boolean = false
-  fromDate: any 
-  toDate: any 
+  fromDate: any
+  toDate: any
+  dashboardResults
   displayDate = false
+  productChart
+  dashboardDetails
+  textSecondaryColor = getComputedStyle(document.documentElement).getPropertyValue('--surface-500')
+
   @Input() selectedProduct: Products
   @Input() id: any
   @Input() display: boolean = false
@@ -69,10 +75,16 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
         }
       },
       {
+        icon: 'pi pi-file text-primary',
+        command: () => {
+          this.dashboardDetails = true
+        }
+      },
+      {
         icon: 'pi pi-refresh text-primary',
         command: () => {
-          this.fromDate = new Date()
-          this.toDate = new Date()
+          this.productInfo({ fromDate: new Date(), toDate: new Date() });
+
         }
       },
 
@@ -203,20 +215,79 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
       accept: () => { this.updateBrand('delete') },
     });
   }
+  productChartCharts() {
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
+    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+    this.productChart = {
+      labels: [this.selectedProduct.name],
+      datasets: [
+        {
+          label: (this.trans('Cash') + ' ' + this.getCurrencySymbol(this.cur.code)),
+          data: [this.dashboardResults.totalRevenue],
+          backgroundColor: documentStyle.getPropertyValue('--blue-500'),
+          borderColor: documentStyle.getPropertyValue('--blue-500'),
+          borderWidth: 1
+        },
+        {
+          label: this.trans('Selling Times'),
+          data: [this.dashboardResults.totalQty],
+          backgroundColor: documentStyle.getPropertyValue('--pink-500'),
+          borderColor: documentStyle.getPropertyValue('--pink-500'),
+          borderWidth: 1
+        },
+      ]
+    };
+    this.basicOptions = {
+      maintainAspectRatio: false,
+      aspectRatio: 0.8,
+      plugins: {
+          legend: {
+              labels: {
+                  color: textColor
+              }
+          }
+      },
+      scales: {
+          x: {
+              ticks: {
+                  color: textColorSecondary,
+                  font: {
+                      weight: 500
+                  }
+              },
+              grid: {
+                  color: surfaceBorder,
+                  drawBorder: false
+              }
+          },
+          y: {
+              ticks: {
+                  color: textColorSecondary
+              },
+              grid: {
+                  color: surfaceBorder,
+                  drawBorder: false
+              }
+          }
 
- public productInfo(dates: { fromDate: any; toDate: any }) {
-    this.displayDate=false
+      }
+  };
+  }
+  public productInfo(dates: { fromDate: any; toDate: any }) {
     this.fromDate = dates.fromDate
     this.toDate = dates.toDate
-    console.log( this.fromDate,this.toDate);
-    
     this.loading = true
     const subscription = this.productsService.productInfo(this.id, this.fromDate, this.toDate).subscribe((data: any) => {
       this.loading = false
       if (!isSet(data)) {
         return
       }
+      this.displayDate = false
 
+      this.dashboardResults = data
+      this.productChartCharts()
       subscription.unsubscribe()
     }, error => {
       this.loading = false

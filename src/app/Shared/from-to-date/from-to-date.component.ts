@@ -19,6 +19,7 @@ export class FromToDateComponent implements OnInit {
   fromDate: any = new Date()
   toDate: any = new Date()
   @Input() display: boolean = false
+  @Output() displayChange: EventEmitter<boolean> = new EventEmitter(false);
   @Output() dateChange = new EventEmitter<{ fromDate: string; toDate: string }>();
   constructor() { }
 
@@ -28,6 +29,6 @@ export class FromToDateComponent implements OnInit {
     this.dateChange.emit({ fromDate: this.fromDate, toDate: this.toDate });
   }
   onHide() {
-    this.display = false
+    this.displayChange.emit(false)
   }
 }

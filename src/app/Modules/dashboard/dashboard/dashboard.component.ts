@@ -175,38 +175,69 @@ export class DashboardComponent extends BaseComponent implements OnInit {
   topProductsCharts() {
     let name = []
     let qty = []
+    let price = []
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
+    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
     this.results.topProducts.map(x => {
       name.push(x.name)
       qty.push(x.qty)
+      price.push(x.price)
     })
     this.topProductsChart = {
       labels: name,
       datasets: [
         {
-          label: this.trans('Products'),
+          label: this.trans('Selling Times'),
           data: qty,
           backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)'],
           borderColor: ['rgb(75, 192, 192)', 'rgb(255, 159, 64)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)'],
           borderWidth: 1
-        }
+        }, {
+          label:(this.trans('Cash') + ' ' + this.getCurrencySymbol(this.cur.code)),
+          data: price,
+          backgroundColor: [ 'rgba(255, 159, 64, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)'],
+          borderColor: [ 'rgb(255, 159, 64)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)'],
+          borderWidth: 1
+        },
       ]
     };
     this.basicOptions = {
-      plugins: { legend: { labels: { boxWidth: 10, color: this.textSecondaryColor } } },
+      maintainAspectRatio: false,
+      aspectRatio: 0.8,
+      plugins: {
+          legend: {
+              labels: {
+                  color: textColor
+              }
+          }
+      },
       scales: {
-        x: {
-          ticks: {
-            display: true,
-
-          }, grid: { color: 'white' }
-        },
-        y: {
-          grid: { color: 'white' }
-        },
-
+          x: {
+              ticks: {
+                  color: textColorSecondary,
+                  font: {
+                      weight: 500
+                  }
+              },
+              grid: {
+                  color: surfaceBorder,
+                  drawBorder: false
+              }
+          },
+          y: {
+              ticks: {
+                  color: textColorSecondary
+              },
+              grid: {
+                  color: surfaceBorder,
+                  drawBorder: false
+              }
+          }
 
       }
-    };
+  };
   }
   topServicesChartCharts() {
     const documentStyle = getComputedStyle(document.documentElement);
