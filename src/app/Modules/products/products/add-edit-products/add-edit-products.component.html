@@ -11,20 +11,20 @@
 
             </div>
             <div class="flex align-items-center justify-content-center mx-2 ">
-               
+
 
                 <!-- <button (click)="menu.toggle($event)" pButton
                     pRipple type="button" icon="pi pi-ellipsis-v"
                     class="p-button-rounded mr-2 p-button-secondary p-button-lg p-button-text btn-white "></button>
                 <p-menu #menu id="meetingActinos" styleClass="meetingActinos" [popup]="true" appendTo="body"
                     [model]="acions"></p-menu> -->
-                <button pButton
-                [disabled]="form?.invalid "
-                    pRipple type="button" [label]="'Save'|translate" icon="pi pi-check "*ngIf="detailMode&&permissionService.hasPermission('Products', 'update')" (click)="updateProduct()"
+                <button pButton [disabled]="form?.invalid " pRipple type="button" [label]="'Save'|translate"
+                    icon="pi pi-check " *ngIf="detailMode&&permissionService.hasPermission('Products', 'update')"
+                    (click)="updateProduct()"
                     class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
-                <button pButton
-                [disabled]="form?.invalid "
-                    pRipple type="button" [label]="'Save'|translate" icon="pi pi-check " *ngIf="!detailMode&&permissionService.hasPermission('Products', 'create')"  (click)="createProduct()"
+                <button pButton [disabled]="form?.invalid " pRipple type="button" [label]="'Save'|translate"
+                    icon="pi pi-check " *ngIf="!detailMode&&permissionService.hasPermission('Products', 'create')"
+                    (click)="createProduct()"
                     class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
             </div>
         </div>
@@ -34,14 +34,14 @@
             <div class="col-12 pb-4">
                 <span class="text-3xl ont-semibold font-bold" translate>Product Details </span>
             </div>
-         
+
             <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="selectedProduct.name" [required]="true"
-                    name="name" title="{{'Product Name'|translate}}" type="text"></app-input>
+                <app-input [(ngModel)]="selectedProduct.name" [required]="true" name="name"
+                    title="{{'Product Name'|translate}}" type="text"></app-input>
             </div>
             <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="selectedProduct.price" [required]="true"
-                    name="price" title="{{'Price'|translate}}" type="number"></app-input>
+                <app-input [(ngModel)]="selectedProduct.price" [required]="true" name="price"
+                    title="{{'Price'|translate}}" type="number"></app-input>
             </div>
             <div class="lg:col-4 sm:col-6 ">
                 <ng-container>
@@ -49,8 +49,9 @@
                         Brand
                     </div>
                 </ng-container>
-                <p-dropdown [options]="brands" *ngIf="!brandMode" [ngModelOptions]="{standalone: true}" (onChange)="selectBrand($event)" [(ngModel)]="selectedProduct.brand"
-                 [filter]="true" appendTo="body" filterBy="name" optionLabel="name" placeholder="{{'Select a Brand'|translate}}">
+                <p-dropdown [options]="brands" *ngIf="!brandMode" [ngModelOptions]="{standalone: true}"
+                    (onChange)="selectBrand($event)" [(ngModel)]="selectedProduct.brand" [filter]="true" appendTo="body"
+                    filterBy="name" optionLabel="name" placeholder="{{'Select a Brand'|translate}}">
                     <ng-template pTemplate="selectedItem">
                         <div class="flex align-items-center gap-2" *ngIf="selectedProduct.brand">
                             <div>{{ selectedProduct?.brand?.name }}</div>
@@ -62,74 +63,155 @@
                                 <span [innerHTML]="item.name"></span>
                             </div>
                             <div class="col-2" *ngIf="(item.id != 0) && item.id != -1">
-                                <button style="z-index: 10000; color: #000000;" pButton
-                                    pTooltip="Edit" tooltipPosition="bottom"
-                                    (click)="selectUpdateBrand(item);brandDialog=true"
-                                    class="p-button-text  ml-sm-1" type="button"
-                                    icon="fas fa-edit"></button>
-                                <button style="z-index: 10000" pButton
-                                    pTooltip="Delete" (click)="confirmCancel(item.id)"
-                                    tooltipPosition="bottom" class="p-button-text p-button-danger"
-                                    type="button" icon="fas fa-trash"></button>
+                                <button style="z-index: 10000; color: #000000;" pButton pTooltip="Edit"
+                                    tooltipPosition="bottom" (click)="selectUpdateBrand(item);brandDialog=true"
+                                    class="p-button-text  ml-sm-1" type="button" icon="fas fa-edit"></button>
+                                <button style="z-index: 10000" pButton pTooltip="Delete"
+                                    (click)="confirmCancel(item.id)" tooltipPosition="bottom"
+                                    class="p-button-text p-button-danger" type="button" icon="fas fa-trash"></button>
                             </div>
                         </div>
                     </ng-template>
                 </p-dropdown>
                 <p-button *ngIf="brandMode" [label]="selectedProduct?.brand?.name" [style]="{'width': '31vw'}"
-                (click)="brandMode=false" styleClass="p-button-outlined p-button-success"></p-button>
+                    (click)="brandMode=false" styleClass="p-button-outlined p-button-success"></p-button>
             </div>
             <div class="col-12 pb-4 pt-2">
                 <span class="text-3xl ont-semibold font-bold" translate>Stock Details </span>
             </div>
-         
+
             <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="selectedProduct.buyPrice" 
-                    name="buyPrice" title="{{'Sell Price'|translate}}" type="number"></app-input>
+                <app-input [(ngModel)]="selectedProduct.buyPrice" name="buyPrice" title="{{'Sell Price'|translate}}"
+                    type="number"></app-input>
             </div>
             <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="selectedProduct.barcode" 
-                    name="barcode" title="{{'Barcode'|translate}}" type="text"></app-input>
+                <app-input [(ngModel)]="selectedProduct.barcode" name="barcode" title="{{'Barcode'|translate}}"
+                    type="text"></app-input>
             </div>
             <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="selectedProduct.stocks" [number]="number" 
-                    name="stocks" title="{{'Stock'|translate}}" type="number"></app-input>
+                <app-input [(ngModel)]="selectedProduct.stocks" [number]="number" name="stocks"
+                    title="{{'Stock'|translate}}" type="number"></app-input>
             </div>
-        </div>
-      
-    </form>
-    <div *ngIf="detailMode" body class="grid layout-dashboard relative" style="margin-bottom: 6rem" >
-        <div class="col-12 lg:col-6">
-            <div class="grid flex-column grid-nogutter">
-                <div class="col-12">
-                    <div class="card ">
-                        <div class="row flex justify-content-between">
-    
-                        <div class="col-6">
-    
-                            <h5>{{"Statistics for this product"| translate}}</h5>
+            <div [class]="lang=='ar'?' leftLine col-6 pb-4 pt-4':'leftRight col-6 pb-4 pt-4'">
+                <div class="justify-content-between flex"> <span class="text-3xl ont-semibold font-bold"
+                        translate>Suppliers Details</span>
+                    <div>
+                        <button pButton pRipple type="button" icon="pi pi pi-plus " (click)="openInfoDialog()"
+                            [label]="'Add Details'|translate"
+                            class="p-button-rounded p-button-outlined text-btn"></button>
+                        <button pButton pRipple type="button" icon="pi pi pi-plus " (click)="openSuppliersDialog()"
+                            [label]="'Add Supplier'|translate"
+                            class="p-button-rounded p-button-outlined text-btn mx-2"></button>
+                    </div>
+                </div>
+                <div class="grid pt-5" style="flex-direction: column">
+                    <div class="grid px-3" style="justify-content: space-between"
+                        *ngFor="let sup of selectedProduct.suppliers ; let i=index">
+                        <div>
+                            <div class="text-primary text-2xl">
+                                <strong>{{ sup.name }}</strong>
+                            </div>
+                            <div class="col-12">
+                                <ul>
+                                    <li *ngIf="sup.phone"><i class="tags">{{"Phone"| translate}} : </i> {{sup.phone }}
+                                    </li>
+                                    <li *ngIf="sup.email"><i class="tags">{{"Email"| translate}} : </i> {{sup.email }}
+                                    </li>
+                                    <li *ngIf="sup.address"><i class="tags">{{"Address"| translate}} : </i>
+                                        {{sup.address }}</li>
+                                    <li *ngIf="sup.note"><i class="tags">{{"Notes"| translate}} : </i> {{sup.note }}
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="col-6" style="display: flex;align-items: flex-end;flex-direction: column">
-                            <h5 style="font-size: small">{{'Date'|translate}} :{{fromDate | date:'YYYY-MM-dd'}}</h5>
-                            <h5 style="font-size: small"
-                                *ngIf="(fromDate| date:'YYYY-MM-dd') != (toDate| date:'YYYY-MM-dd')">{{'To Date'|translate}}
-                                :{{toDate | date:'YYYY-MM-dd'}}</h5>
+                        <div>
+                            <button type="button" pButton class="p-button-text ml-1 " (click)="showEidtContact(i)"
+                                label='{{"Edit"| translate}}' icon="fas fa-edit px-2"></button>
+                            <button type="button" pButton (click)="removeContact(i)"
+                                class="p-button-text  p-button-danger " label='{{"Delete"| translate}}'
+                                icon="fas fa-trash px-2"></button>
+
                         </div>
+                    </div>
+                        <div class="text-2xl" *ngIf="selectedProduct?.details?.length">
+                            <strong translate>Extra Details</strong>
                         </div>
-                        <p-chart type="bar" *ngIf="dashboardResults?.totalRevenue>0" [data]="productChart"
-                            [options]="basicOptions" height="51vh"></p-chart>
-                        <div style="height:51vh" *ngIf="dashboardResults?.totalRevenue === 0" class="text-center">
-                            <h4 style="padding-top: 21vh;" translate>
-                                <i class="mx-2 pi pi-exclamation-circle text-xl font-bold" 
-                                    style=" color:var(--danger)  !important;"></i>
-                                No Data to View Chart
-                            </h4>
+                    <div class="grid" *ngFor="let info of selectedProduct.details let i=index" style="justify-content: space-between">
+                        <div class="block text-base font-semibold pt-2">
+                            <ng-container>
+                                <div class="flex">
+                                    <div class="text-lg text-primary font-semibold mb-2">
+                                        <div class="pi pi-circle-fill text-primary text-xs pt-2"></div>
+                                        {{info.header}}
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <span style="width: 100%; padding-bottom: 5px;">
+                                <span> {{info.body}}</span>
+                            </span>
+                        </div>
+                        <div>
+                            <button type="button" pButton (click)="removeDetails(i)"
+                                class="p-button-text p-button-danger " label='{{"Delete"| translate}}'
+                                icon="fas fa-trash px-2"></button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="detailMode" body class="col-12 lg:col-6 layout-dashboard relative" style="margin-bottom: 10rem">
+                <div class="grid flex-column grid-nogutter">
+                    <div class="col-12">
+                        <div >
+                            <div class="row flex justify-content-between">
+
+                                <div class="col-6">
+
+                                    <h5>{{"Statistics for this product"| translate}}</h5>
+                                </div>
+                                <div class="col-6" style="display: flex;align-items: flex-end;flex-direction: column">
+                                    <h5 style="font-size: small">{{'Date'|translate}} :{{fromDate | date:'YYYY-MM-dd'}}
+                                    </h5>
+                                    <h5 style="font-size: small"
+                                        *ngIf="(fromDate| date:'YYYY-MM-dd') != (toDate| date:'YYYY-MM-dd')">
+                                        {{'To Date'|translate}}
+                                        :{{toDate | date:'YYYY-MM-dd'}}</h5>
+                                </div>
+                            </div>
+                            <p-chart type="bar" *ngIf="dashboardResults?.totalRevenue>0" [data]="productChart"
+                                [options]="basicOptions" height="51vh"></p-chart>
+                            <div style="height:51vh" *ngIf="dashboardResults?.totalRevenue === 0" class="text-center">
+                                <h4 style="padding-top: 21vh;" translate>
+                                    <i class="mx-2 pi pi-exclamation-circle text-xl font-bold"
+                                        style=" color:var(--danger)  !important;"></i>
+                                    No Data to View Chart
+                                </h4>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 </app-sidebar>
+
+<p-dialog modal="true" [resizable]="false" [draggable]="false" [(visible)]="showInfoDialog"
+    [style]="{width: '51vh',hight:'50vh'}">
+    <div class="grid textl-left">
+        <div class=" lg:col-12  sm:col-12">
+            <app-input [(ngModel)]="contactInfo.header" name="header" [title]="'Title'|translate"></app-input>
+        </div>
+        <div class=" lg:col-12  sm:col-12">
+            <app-input [(ngModel)]="contactInfo.body" name="body" [title]="'Body'|translate"></app-input>
+        </div>
+    </div>
+    <p-footer>
+        <button type="button" (click)="showInfoDialog=false" class="p-button-secondary " pButton
+            [label]='"Cancel"|translate'></button>
+        <button type="button" pButton (click)="addInfoContact()" [label]='"Add"|translate'></button>
+
+    </p-footer>
+</p-dialog>
 <app-modal [(display)]="dashboardDetails" class="modal-lg">
     <div body>
         <p-accordion *ngFor="let body of dashboardResults?.allproducts">
@@ -144,7 +226,8 @@
                     <span pTooltip="{{'Order No.'|translate}}" showDelay="1000" hideDelay="1000"
                         tooltipPosition="bottom" class="vertical-align-middle ">{{body.orderNo}}</span>
                     <span pTooltip="{{'Creation Date'|translate}}" showDelay="1000" hideDelay="1000"
-                        tooltipPosition="bottom" class="vertical-align-middle py-2">{{body.createdAt | date: 'dd/MM/yyyy hh:mm A'}}</span>
+                        tooltipPosition="bottom" class="vertical-align-middle py-2">
+                        {{body.createdAt | date: 'dd/MM/yyyy hh:mm A'}}</span>
                     <span pTooltip="{{'Cash'|translate}}" showDelay="1000" hideDelay="1000" tooltipPosition="bottom"
                         class="vertical-align-middle">{{body.cash}} {{getCurrencySymbol(cur.code)}}</span>
                     <span pTooltip="{{'Cash'|translate}}" showDelay="1000" hideDelay="1000" tooltipPosition="bottom"
@@ -226,7 +309,12 @@
                                 </tr>
                             </ng-template>
                         </p-table>
-
+                        <div class="grid">
+                            <div class="col-12">
+                                <h4 class="text-primary text-center pointer" (click)="viewOrder(body)"
+                                    style="font-size: 1rem;margin: auto;padding-top: 1rem;" translate>View Order</h4>
+                            </div>
+                        </div>
                     </div>
                 </ng-template>
             </p-accordionTab>
@@ -234,21 +322,64 @@
     </div>
 
 </app-modal>
+<app-modal [(display)]="showSuppliersDialog" class="modal-md">
+    <div body>
+        <form #contactsInfo="ngForm" body>
+
+            <div class="grid">
+
+                <div class="col-12">
+                    <app-input [required]="true" [(ngModel)]="supplierInfo.name" name="name"
+                        title="{{'Supplier Name'|translate}}" type="text"></app-input>
+
+                </div>
+                <div class="col-6">
+                    <app-input [(ngModel)]="supplierInfo.email" [type]="'email'" name="email"
+                        title="{{'Email'|translate}}"></app-input>
+                </div>
+                <div class="col-6">
+                    <app-input [required]="true" [(ngModel)]="supplierInfo.phone" type="phone" name="phone"
+                        title="{{'Phone'|translate}}"></app-input>
+                </div>
+                <div class="col-6">
+                    <app-input [(ngModel)]="supplierInfo.address" name="address" title="{{'Address'|translate}}"
+                        type="text"></app-input>
+                </div>
+                <div class="col-12">
+                    <app-text-area name="notes" [(ngModel)]="supplierInfo.note"
+                        [title]="'Notes'|translate"></app-text-area>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div footer>
+        <button (click)="showSuppliersDialog=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"
+            icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
+        <button pButton pRipple type="button" (click)="ediContactMode?editContact():addSupplierContact()"
+            [disabled]="contactsInfo.invalid" label=" {{'Add' |translate}}" class="p-button-primary"></button>
+    </div>
+</app-modal>
 <app-modal [(display)]="brandDialog" [title]="headerDialog" class="modal-sm">
     <div body>
         <app-input [(ngModel)]="brandName" name="brandName" title="Brand" type="text"></app-input>
-    </div>''
+    </div>
     <div footer>
         <button (click)="brandDialog=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"
             icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
-        <button  pButton pRipple type="button" label=" {{'Save' |translate}}" (click)="brandEdit?updateBrand('update'):createBrand()"
-            class="p-button-primary"></button>
+        <button pButton pRipple type="button" label=" {{'Save' |translate}}"
+            (click)="brandEdit?updateBrand('update'):createBrand()" class="p-button-primary"></button>
     </div>
 </app-modal>
 
 <div *ngIf="detailMode">
-    <div style="right: 5vw;top: 74vh;z-index: 99999" class="fixed">
-        <p-speedDial appendTo="body" buttonClassName="dashbored-btn" showIcon="pi pi-filter " [model]="items"></p-speedDial>
+    <div [class]="lang=='en'?'fixed rightFilter':'fixed leftFilter'">
+        <p-speedDial appendTo="body" buttonClassName="dashbored-btn" showIcon="pi pi-filter "
+            [model]="items"></p-speedDial>
     </div>
 </div>
-<app-from-to-date (displayChange)="displayDate=false" [(display)]="displayDate" (dateChange)="productInfo($event)"></app-from-to-date>
+<app-from-to-date (displayChange)="displayDate=false" [(display)]="displayDate"
+    (dateChange)="productInfo($event)"></app-from-to-date>
+
+<app-add-edit-order *ngIf="showOrderSidebar" [selectedOrder]="selectedOrder" [detailMode]="true"
+    [(display)]="showOrderSidebar"></app-add-edit-order>

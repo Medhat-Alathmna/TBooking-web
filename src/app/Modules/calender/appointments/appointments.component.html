@@ -3,7 +3,7 @@
 <div style="height:calc(100vh - 68px) ;" class="grid card">
 
     <p-table #kt [value]="appointments" [rowHover]="true" (onPage)="getAppointments(($event?.first/rowNum)+1)"
-        [paginator]="true" [rows]='rowNum' currentPageReportTemplate="Showing {first} to {last} entries"
+        [paginator]="paginator" [rows]='rowNum' currentPageReportTemplate="Showing {first} to {last} entries"
         [showCurrentPageReport]="true"
         [scrollable]="true" [tableStyle]="{'width.%': 100}" scrollHeight="80vh">
 
@@ -33,13 +33,13 @@
                         </div>
                         <div class="grid mt-2">
                             <div class="col-6">
-                                <button pButton label='Clear' class="p-button-outlined"
+                                <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
                                     (click)="fillterFildes.number.value=null;fillterFildes.number.status=flase;clearAllFillter()"
                                     type="button">
                                 </button>
                             </div>
                             <div class="col-6">
-                                <button pButton [disabled]="!fillterFildes.number.value" label='Apply'
+                                <button pButton [disabled]="!fillterFildes.number.value" label="{{'Apply'|translate}}" translate
                                     (click)="fillterFildes.number.name='number';fillterFildes.number.status=true;fillterFildes.number.type='$contains';getAppointments(1,fillterFildes?.number)"
                                     type="button">
                                 </button>
@@ -61,13 +61,13 @@
                         </div>
                         <div class="grid mt-2">
                             <div class="col-6">
-                                <button pButton label='Clear' class="p-button-outlined"
+                                <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
                                     (click)="fillterFildes.customer.value=null;fillterFildes.customer.status=flase;clearAllFillter()"
                                     type="button">
                                 </button>
                             </div>
                             <div class="col-6">
-                                <button pButton [disabled]="!fillterFildes.customer.value" label='Apply'
+                                <button pButton [disabled]="!fillterFildes.customer.value" label="{{'Apply'|translate}}"
                                     (click)="fillterFildes.customer.status=true;search(1,fillterFildes?.customer)"
                                     type="button">
                                 </button>
@@ -84,20 +84,20 @@
                         <ng-template pTemplate="filter">
                             <p-dropdown [disabled]="fillterFildes?.status?.status" [options]="status"
                                 [showClear]="true" [(ngModel)]="fillterFildes.status.value"
-                                placeholder='Select Status' optionValue="label" optionLabel="label">
+                                placeholder="{{'Select Status'|translate}}"  optionValue="label" optionLabel="label">
                                 <ng-template let-item pTemplate="item">
                                     <span [class]="item.label">{{item.label|translate}}</span>
                                 </ng-template>
                             </p-dropdown>
                             <div class="grid mt-2">
                                 <div class="col-6">
-                                    <button pButton label='Clear' class="p-button-outlined"
+                                    <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
                                         (click)="fillterFildes.status.value=null;fillterFildes.status.status=flase;clearAllFillter()"
                                         type="button">
                                     </button>
                                 </div>
                                 <div class="col-6">
-                                    <button pButton label='Apply'
+                                    <button pButton label="{{'Apply'|translate}}"
                                         (click)="fillterFildes.status.name='status';fillterFildes.status.status=true;fillterFildes.status.type='$contains';getAppointments(1,fillterFildes?.status)"
                                         type="button">
                                     </button>
@@ -128,7 +128,7 @@
                         </div>
                         <div class="grid mt-2">
                             <div class="col-6">
-                                <button pButton label='Clear' class="p-button-outlined"
+                                <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
                                     (click)="fitlerfromDate.overlayVisible=false;fillterFildes.fromDate.value=null;fillterFildes.fromDate.status=flase;clearAllFillter()"
                                     type="button">
                                 </button>
@@ -136,7 +136,7 @@
                             <div class="col-6">
                                 <button pButton
                                     [disabled]="!fillterFildes.fromDate.type||!fillterFildes.fromDate.value"
-                                    label='Apply'
+                                    label="{{'Apply'|translate}}"
                                     (click)="fillterFildes.fromDate.name='fromDate';fillterFildes.fromDate.status=true;getAppointments(1,fillterFildes?.fromDate)"
                                     type="button">
                                 </button>
@@ -162,13 +162,13 @@
                         </p-dropdown>
                         <div class="grid mt-2">
                             <div class="col-6">
-                                <button pButton label='Clear' class="p-button-outlined"
+                                <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
                                     (click)="fillterFildes.approved.value=null;fillterFildes.approved.status=flase;clearAllFillter()"
                                     type="button">
                                 </button>
                             </div>
                             <div class="col-6">
-                                <button pButton label='Apply'
+                                <button pButton label="{{'Apply'|translate}}"
                                     (click)="fillterFildes.approved.name='approved';fillterFildes.approved.status=true;fillterFildes.approved.type='$eq';getAppointments(1,fillterFildes?.approved)"
                                     type="button">
                                 </button>

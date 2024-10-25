@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { LoadingComponent } from 'src/app/Shared/loading/loading.component';
 import { PrimengComponentsModule } from 'src/app/primeng-components.module';
 import { ModalComponent } from 'src/app/Shared/modal/modal.component';
+import { AddEditOrderComponent } from '../orders/add-edit-order/add-edit-order.component';
 
 
 
@@ -24,6 +25,7 @@ export const routes: Routes = [
     RouterModule.forChild(routes),
     PrimengComponentsModule,
     TranslateModule,
+    AddEditOrderComponent,
     ModalComponent,
     LoadingComponent
   ]

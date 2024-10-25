@@ -8,6 +8,7 @@ import { Filter } from 'src/app/modals/filter';
 import { Appointment } from 'src/app/modals/appoiments';
 import * as moment from 'moment';
 import { DatePipe } from '@angular/common';
+import { PermissionService } from 'src/app/core/permission.service';
 
 @Component({
   selector: 'app-appointments',
@@ -18,6 +19,7 @@ export class AppointmentsComponent extends BaseComponent implements OnInit {
 
   appointments: any
   showSppoSidebar: boolean = false
+  paginator: boolean = true
   Appointment: any
   id
   rowNum: any = 10
@@ -63,7 +65,8 @@ export class AppointmentsComponent extends BaseComponent implements OnInit {
   @ViewChild('kt') table: any;
 
   constructor(public translates: TranslateService,
-    public messageService: MessageService, private datePipe: DatePipe, private calenderService: CalenderService) { super(messageService, translates) }
+    public messageService: MessageService, private datePipe: DatePipe,private permisionServices:PermissionService,
+     private calenderService: CalenderService) { super(messageService, translates) }
 
   ngOnInit(): void {
     this.clearAllFillter()
@@ -101,9 +104,10 @@ export class AppointmentsComponent extends BaseComponent implements OnInit {
     this.loading = true
     const subscription = this.calenderService.getlist('appointments', pageNum, 10, query).subscribe((results: any) => {
       this.loading = false
-      if (!isSet(results)) {
+      if (!isSet(results)|| !this.permisionServices.hasPermission('Appointments', 'view')) {
         return
       }
+      this.paginator=true
       this.appointments = []
       const clone = Appointment.cloneManyObjects(results.data)
       this.total = results.meta.pagination.total
@@ -148,6 +152,7 @@ export class AppointmentsComponent extends BaseComponent implements OnInit {
       if (!isSet(data)) {
         return
       }
+      this.paginator=false
       data.customer.map((x: any) => {
         console.log(x);
         

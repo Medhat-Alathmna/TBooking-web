@@ -16,6 +16,8 @@ import { PrimengComponentsModule } from 'src/app/primeng-components.module';
 import { ProductsService } from '../products.service';
 import { PermissionService } from 'src/app/core/permission.service';
 import { FromToDateComponent } from 'src/app/Shared/from-to-date/from-to-date.component';
+import { AddEditOrderComponent } from 'src/app/Modules/orders/add-edit-order/add-edit-order.component';
+import { SupplierContact } from 'src/app/modals/supplierContact';
 
 @Component({
   selector: 'app-add-edit-products',
@@ -32,6 +34,7 @@ import { FromToDateComponent } from 'src/app/Shared/from-to-date/from-to-date.co
     TextAreaComponent,
     ModalComponent,
     InputMaskComponent,
+    AddEditOrderComponent,
     LoadingComponent,
     FromToDateComponent,
   ],
@@ -42,11 +45,19 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
   number
   headerDialog
   brandName: string
+  selectedOrder: any
   basicOptions
   brands: any[] = []
   brandDialog: boolean = false
   brandMode: boolean = false
   brandEdit: boolean = false
+  showOrderSidebar: boolean = false
+  showSuppliersDialog: boolean = false
+  showInfoDialog: boolean = false
+  contactInfo = { header: null, body: null }
+  supplierInfo:any = { name: null, phone: null, email: null, note: null, address: null }
+  editContactIndex
+  ediContactMode
   fromDate: any
   toDate: any
   dashboardResults
@@ -54,6 +65,7 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
   productChart
   dashboardDetails
   textSecondaryColor = getComputedStyle(document.documentElement).getPropertyValue('--surface-500')
+
 
   @Input() selectedProduct: Products
   @Input() id: any
@@ -243,37 +255,37 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
       maintainAspectRatio: false,
       aspectRatio: 0.8,
       plugins: {
-          legend: {
-              labels: {
-                  color: textColor
-              }
+        legend: {
+          labels: {
+            color: textColor
           }
+        }
       },
       scales: {
-          x: {
-              ticks: {
-                  color: textColorSecondary,
-                  font: {
-                      weight: 500
-                  }
-              },
-              grid: {
-                  color: surfaceBorder,
-                  drawBorder: false
-              }
+        x: {
+          ticks: {
+            color: textColorSecondary,
+            font: {
+              weight: 500
+            }
           },
-          y: {
-              ticks: {
-                  color: textColorSecondary
-              },
-              grid: {
-                  color: surfaceBorder,
-                  drawBorder: false
-              }
+          grid: {
+            color: surfaceBorder,
+            drawBorder: false
           }
+        },
+        y: {
+          ticks: {
+            color: textColorSecondary
+          },
+          grid: {
+            color: surfaceBorder,
+            drawBorder: false
+          }
+        }
 
       }
-  };
+    };
   }
   public productInfo(dates: { fromDate: any; toDate: any }) {
     this.fromDate = dates.fromDate
@@ -293,5 +305,55 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
       this.loading = false
       subscription.unsubscribe()
     })
+  }
+  viewOrder(event) {
+    this.selectedOrder = event
+    this.showOrderSidebar = true
+  }
+
+  openInfoDialog() {
+    this.showInfoDialog = true
+    this.contactInfo = { header: null, body: null }
+  }
+  openSuppliersDialog() {
+    this.showSuppliersDialog = true
+    this.supplierInfo = new SupplierContact
+  }
+  addInfoContact() {
+    console.log(this.contactInfo);
+    if (!isSet(this.selectedProduct.details)) {
+      this.selectedProduct.details = []
+    }
+    this.selectedProduct.details.push(this.contactInfo)
+    this.showInfoDialog = false
+    console.log(this.selectedProduct.details);
+
+
+  }
+  addSupplierContact() {
+    if (!isSet(this.selectedProduct.suppliers)) {
+      this.selectedProduct.suppliers = []
+    }
+    this.ediContactMode=false
+    this.selectedProduct.suppliers.push(this.supplierInfo)
+    this.showSuppliersDialog = false
+
+  }
+  removeContact(index){
+    this.selectedProduct.suppliers.splice(index, 1)
+  }
+  showEidtContact(index){
+    this.ediContactMode=true
+    this.editContactIndex=index
+    this.supplierInfo=Products.cloneObject(this.selectedProduct.suppliers[index])
+    this.showSuppliersDialog=true
+  }
+  editContact(){
+   
+    this.selectedProduct.suppliers[this.editContactIndex]=this.supplierInfo
+    this.showSuppliersDialog=false
+  }
+  removeDetails(index){
+    this.selectedProduct.details.splice(index, 1)
   }
 }

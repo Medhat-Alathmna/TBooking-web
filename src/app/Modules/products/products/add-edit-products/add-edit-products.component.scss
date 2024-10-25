@@ -4,3 +4,21 @@
 ::ng-deep .p-accordion-header-link {
     justify-content: space-around;
     }
+
+    .leftLine{
+        border-left-style: outset
+    }
+    .leftRight{
+        border-right-style: inset
+    }
+
+    .rightFilter{
+        right: 5vw;
+        top: 74vh;
+        z-index: 99999
+    }
+    .leftFilter{
+        left :5vw;
+        top: 74vh;
+        z-index: 99999
+    }

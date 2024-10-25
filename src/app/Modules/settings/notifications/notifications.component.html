@@ -45,12 +45,10 @@
 
     </div>
     <ng-template pTemplate="footer">
-        <button (click)="bodyDialog=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"
-            icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
         <button *ngIf="!editMode&&permissionService.hasPermission('Notifications', 'create')" (click)="createNotfication()" pButton pRipple type="button"
             label=" {{'Save' |translate}}" class="p-button-primary"></button>
-        <button *ngIf="!editMode&&permissionService.hasPermission('Notifications', 'update')"  (click)="updateNotifications()" pButton pRipple type="button"
-            label=" {{'Save' |translate}}" class="p-button-primary"></button>
+        <button *ngIf="editMode&&permissionService.hasPermission('Notifications', 'update')"  (click)="updateNotifications()" pButton pRipple type="button"
+            label=" {{'Update' |translate}}" class="p-button-primary"></button>
         <button *ngIf="editMode &&permissionService.hasPermission('Notifications', 'delete')" (click)="confirmDelete()" pButton pRipple type="button"
             label=" {{'Delete' |translate}}" class="p-button-danger"></button>
     </ng-template>

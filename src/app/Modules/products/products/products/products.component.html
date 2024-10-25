@@ -1,8 +1,9 @@
 <app-loading *ngIf="loading" display="full"></app-loading>
 
 <div class="grid card h-full">
-    <p-table #kt [value]="products"  (onPage)="getProducts(($event?.first/rowNum)+1)"
+    <p-table #kt [value]="products" [rowHover]="true" (onPage)="getProducts(($event?.first/rowNum)+1)"
     [paginator]="true" [rows]='rowNum' currentPageReportTemplate="Showing {first} to {last} entries"
+    [showCurrentPageReport]="true" 
     [scrollable]="true" [tableStyle]="{'width.%': 100}" scrollHeight="80vh">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
@@ -37,13 +38,13 @@
                         </div>
                         <div class="grid mt-2">
                             <div class="col-6">
-                                <button pButton label='Clear' class="p-button-outlined"
+                                <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
                                     (click)="fillterFildes.name.value=null;fillterFildes.name.status=flase;clearAllFillter()"
                                     type="button">
                                 </button>
                             </div>
                             <div class="col-6">
-                                <button pButton [disabled]="!fillterFildes.name.value" label='Apply'
+                                <button pButton [disabled]="!fillterFildes.name.value" label="{{'Apply'|translate}}"
                                     (click)="fillterFildes.name.name='name';fillterFildes.name.status=true;fillterFildes.name.type='$contains';getProducts(1,fillterFildes?.name)"
                                     type="button">
                                 </button>
@@ -53,7 +54,7 @@
                 </p-columnFilter>
             </th>
                 <th style="width: 30vw" translate>Stock
-                    <p-columnFilter #fitlerstocks [showApplyButton]="false" [showClearButton]="false"
+                    <p-columnFilter  [showApplyButton]="false" [showClearButton]="false"
                     [ngClass]="fillterFildes?.stocks?.status?'active-filter':null" type="date"
                     field="stocks" matchMode="equals" display="menu" [showMatchModes]="false"
                     [showOperator]="false" [showAddButton]="false">
@@ -72,15 +73,15 @@
                         </div>
                         <div class="grid mt-2">
                             <div class="col-6">
-                                <button pButton label='Clear' class="p-button-outlined"
-                                    (click)="fitlerstocks.overlayVisible=false;fillterFildes.stocks.value=null;fillterFildes.stocks.status=flase;clearAllFillter()"
+                                <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
+                                    (click)="fillterFildes.stocks.value=null;fillterFildes.stocks.status=flase;clearAllFillter()"
                                     type="button">
                                 </button>
                             </div>
                             <div class="col-6">
                                 <button pButton
                                     [disabled]="!fillterFildes.stocks.type||!fillterFildes.stocks.value"
-                                    label='Apply'
+                                    label="{{'Apply'|translate}}"
                                     (click)="fillterFildes.stocks.name='stocks';fillterFildes.stocks.status=true;getProducts(1,fillterFildes?.stocks)"
                                     type="button">
                                 </button>
@@ -110,7 +111,7 @@
                         </div>
                         <div class="grid mt-2">
                             <div class="col-6">
-                                <button pButton label='Clear' class="p-button-outlined"
+                                <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
                                     (click)="fillterFildes.price.value=null;fillterFildes.price.status=flase;clearAllFillter()"
                                     type="button">
                                 </button>
@@ -118,7 +119,7 @@
                             <div class="col-6">
                                 <button pButton
                                     [disabled]="!fillterFildes.price.type||!fillterFildes.price.value"
-                                    label='Apply'
+                                    label="{{'Apply'|translate}}"
                                     (click)="fillterFildes.price.name='price';fillterFildes.price.status=true;getProducts(1,fillterFildes?.price)"
                                     type="button">
                                 </button>
@@ -144,13 +145,13 @@
                             </p-dropdown>
                             <div class="grid mt-2">
                                 <div class="col-6">
-                                    <button pButton label='Clear' class="p-button-outlined"
+                                    <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
                                         (click)="fillterFildes.status.value=null;fillterFildes.status.status=flase;clearAllFillter()"
                                         type="button">
                                     </button>
                                 </div>
                                 <div class="col-6">
-                                    <button pButton label='Apply'
+                                    <button pButton label="{{'Apply'|translate}}"
                                         (click)="fillterFildes.status.name='status';fillterFildes.status.status=true;fillterFildes.status.type='$eq';getOrders(1,fillterFildes?.status)"
                                         type="button">
                                     </button>

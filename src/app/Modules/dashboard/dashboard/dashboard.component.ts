@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
 import { OrdersService } from '../../orders/orders.service';
+import { Order } from 'src/app/modals/order';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,6 +17,7 @@ import { OrdersService } from '../../orders/orders.service';
 export class DashboardComponent extends BaseComponent implements OnInit {
 
   results: any = []
+  selectedOrder:any
   items
   totalcash
   toDayChart
@@ -28,6 +30,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
   toDate: any = new Date()
   dashboardDatesDialog: boolean = false
   dashboardDetails: boolean = false
+  showOrderSidebar: boolean = false
   textSecondaryColor = getComputedStyle(document.documentElement).getPropertyValue('--surface-500')
 
   @ViewChild('printOrder') printOrder: ElementRef;
@@ -284,5 +287,10 @@ export class DashboardComponent extends BaseComponent implements OnInit {
 
       }
     };
+  }
+
+  viewOrder(event){
+this.selectedOrder=Order.cloneObject(event)
+this.showOrderSidebar=true
   }
 }

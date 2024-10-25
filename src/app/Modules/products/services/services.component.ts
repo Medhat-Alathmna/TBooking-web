@@ -7,6 +7,7 @@ import { Services } from 'src/app/modals/service';
 import { CalenderService } from '../../calender/calender.service';
 import { Filter } from 'src/app/modals/filter';
 import { PermissionService } from 'src/app/core/permission.service';
+import { Table } from 'primeng/table';
 
 
 @Component({
@@ -52,7 +53,7 @@ export class ServicesComponent extends BaseComponent implements OnInit {
 
   ]
 
-  @ViewChild('kt') table: any;
+  @ViewChild('kt') table: Table;
 
   constructor(public translates: TranslateService, public messageService: MessageService,public permissionService:PermissionService, private calenderService:CalenderService,
      private mobileService: ProductsService,private confirmationService: ConfirmationService) { super(messageService, translates) }
@@ -93,6 +94,7 @@ export class ServicesComponent extends BaseComponent implements OnInit {
       if (!isSet(results)) {
         return
       }
+      this.services=[]
       const clone = results.data
       this.total = results.meta.pagination.total
       if (!isSet(this.services)) {

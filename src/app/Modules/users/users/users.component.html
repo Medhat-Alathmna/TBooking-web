@@ -3,7 +3,6 @@
 <div style="height:calc(100vh - 80px) ;" class="  pt-0 card ">
     <p-tabMenu class="col-12" [model]="tabIndex" [activeItem]="tabIndex[0]"></p-tabMenu>
     <div *ngIf="tabSelected=='users'" class=" grid col-12">
-
         <p-table #kt [value]="users"
         currentPageReportTemplate="Showing {first} to {last} entries"
         [scrollable]="true" [tableStyle]="{'width.%': 100}" scrollHeight="70vh">

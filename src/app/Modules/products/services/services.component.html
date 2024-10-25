@@ -42,13 +42,13 @@
                                 </div>
                                 <div class="grid mt-2">
                                     <div class="col-6">
-                                        <button pButton label='Clear' class="p-button-outlined"
+                                        <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
                                             (click)="fillterFildes.en.value=null;fillterFildes.en.status=flase;clearAllFillter()"
                                             type="button">
                                         </button>
                                     </div>
                                     <div class="col-6">
-                                        <button pButton [disabled]="!fillterFildes.en.value" label='Apply'
+                                        <button pButton [disabled]="!fillterFildes.en.value" label="{{'Apply'|translate}}"
                                             (click)="fillterFildes.en.name='en';fillterFildes.en.status=true;fillterFildes.en.type='$contains';listServices(1,fillterFildes?.en)"
                                             type="button">
                                         </button>
@@ -69,13 +69,13 @@
                                 </div>
                                 <div class="grid mt-2">
                                     <div class="col-6">
-                                        <button pButton label='Clear' class="p-button-outlined"
+                                        <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
                                             (click)="fillterFildes.ar.value=null;fillterFildes.ar.status=flase;clearAllFillter()"
                                             type="button">
                                         </button>
                                     </div>
                                     <div class="col-6">
-                                        <button pButton [disabled]="!fillterFildes.ar.value" label='Apply'
+                                        <button pButton [disabled]="!fillterFildes.ar.value" label="{{'Apply'|translate}}"
                                             (click)="fillterFildes.ar.name='ar';fillterFildes.ar.status=true;fillterFildes.ar.type='$contains';listServices(1,fillterFildes?.ar)"
                                             type="button">
                                         </button>
@@ -104,7 +104,7 @@
                                 </div>
                                 <div class="grid mt-2">
                                     <div class="col-6">
-                                        <button pButton label='Clear' class="p-button-outlined"
+                                        <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
                                             (click)="fillterFildes.price.value=null;fillterFildes.price.status=flase;clearAllFillter()"
                                             type="button">
                                         </button>
@@ -112,7 +112,7 @@
                                     <div class="col-6">
                                         <button pButton
                                             [disabled]="!fillterFildes.price.type||!fillterFildes.price.value"
-                                            label='Apply'
+                                            label="{{'Apply'|translate}}"
                                             (click)="fillterFildes.price.name='price';fillterFildes.price.status=true;listServices(1,fillterFildes?.price)"
                                             type="button">
                                         </button>
@@ -185,8 +185,8 @@
     </div>
     <p-footer>
         <button type="button" *ngIf="editMode&&permissionService.hasPermission('Services', 'update')" [disabled]="!Service.price ||!Service.ar||!Service.en" pButton
-            (click)="updateService()" [label]='"Save"|translate'></button>
-        <button type="button" *ngIf="editMode&&permissionService.hasPermission('Services', 'create')" [disabled]="!Service.price ||!Service.ar||!Service.en" pButton
+            (click)="updateService()" [label]='"Update"|translate'></button>
+        <button type="button" *ngIf="!editMode&&permissionService.hasPermission('Services', 'create')" [disabled]="!Service.price ||!Service.ar||!Service.en" pButton
             (click)="createService()" [label]='"Save"|translate'></button>
         <button type="button" (click)="showServ=false" class="p-button-secondary " pButton
             [label]='"Cancel"|translate'></button>

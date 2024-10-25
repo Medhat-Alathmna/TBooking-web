@@ -50,7 +50,6 @@ export class NotificationsComponent extends BaseComponent implements OnInit {
       this.loading=false
       this.appointments = results.data.filter(x => x.attributes.type == 'Appointment')
       this.orders = results.data.filter(x => x.attributes.type == 'Orders')
-      this.group = results.data.filter(x => x.attributes.type == 'Group')
       subscription.unsubscribe()
     }, error => {
       this.loading=false
@@ -60,6 +59,7 @@ export class NotificationsComponent extends BaseComponent implements OnInit {
   }
   initNotfi(type) {
     this.selectedBody = new Notifications
+    this.selectedBody.body=''
     this.editMode=false
     this.selectedBody.type=type
     this.bodyDialog = true
@@ -85,9 +85,7 @@ export class NotificationsComponent extends BaseComponent implements OnInit {
     const subscription = this.settingsService.updateNotifications(this.selectedBody).subscribe((data) => {
       if (!isSet(data)) {
         return
-      }
-      console.log(data);
-      
+      }      
       this.bodyDialog = false
       this.loading = false
       this.getNotfi()
@@ -103,13 +101,10 @@ export class NotificationsComponent extends BaseComponent implements OnInit {
     const subscription = this.settingsService.deleteNotifications(this.selectedBody).subscribe((data) => {
       if (!isSet(data)) {
         return
-      }
-      console.log(data);
-      
+      }      
       this.bodyDialog = false
       this.loading = false
       this.getNotfi()
-
       subscription.unsubscribe()
     }, error => {
       this.loading = false
@@ -124,8 +119,6 @@ export class NotificationsComponent extends BaseComponent implements OnInit {
     this.selectedBody.body=notfi.attributes.body
     this.selectedBody.type=notfi.attributes.type
     this.selectedBody.id=notfi.id
-    console.log(notfi);
-
   }
   confirmDelete() {
     this.confirmationService.confirm({

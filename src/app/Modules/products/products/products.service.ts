@@ -20,7 +20,9 @@ export class ProductsService {
         price: product?.price,
         stocks: product?.stocks,
         buyPrice: product?.buyPrice,
-        brand: product?.brand
+        brand: product?.brand,
+        suppliers: product?.suppliers,
+        details: product?.details,
       }
     }
     return this.api.post<any>(`products`, body);
@@ -34,7 +36,10 @@ export class ProductsService {
         price: product?.price,
         stocks: product?.stocks,
         buyPrice: product?.buyPrice,
-        brand: product?.brand
+        brand: product?.brand,
+        suppliers: product?.suppliers,
+        details: product?.details,
+
       }
     }
     return this.api.put<any>(`products/${id}`, body);

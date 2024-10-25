@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
+import { Table } from 'primeng/table';
 import { CalenderService } from 'src/app/Modules/calender/calender.service';
 import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import { PermissionService } from 'src/app/core/permission.service';
@@ -48,13 +49,13 @@ export class ProductsComponent extends BaseComponent implements OnInit {
 
   ]
 
-  @ViewChild('kt') table: any;
+  @ViewChild('kt') table: Table;
 
   constructor(public translates: TranslateService, public messageService: MessageService,public permissionService:PermissionService,
      private calenderService: CalenderService,) { super(messageService, translates) }
 
   ngOnInit(): void {
-    this.getProducts()
+    this.clearAllFillter()
   }
 
   getProducts(pageNum?: number, query?: any) {
@@ -64,6 +65,7 @@ export class ProductsComponent extends BaseComponent implements OnInit {
       if (!isSet(results)) {
         return
       }
+      this.products=[]
       const clone = results.data
       this.total = results.meta.pagination.total
       if (!isSet(this.products)) {

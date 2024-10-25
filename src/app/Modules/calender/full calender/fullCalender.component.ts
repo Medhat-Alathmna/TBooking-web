@@ -6,6 +6,7 @@ import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import * as moment from 'moment';
 import { CalenderService } from '../calender.service';
 import { DatePipe } from '@angular/common';
+import { PermissionService } from 'src/app/core/permission.service';
 
 @Component({
   selector: 'app-full-calender',
@@ -15,7 +16,7 @@ import { DatePipe } from '@angular/common';
 export class FullCalenderComponent extends BaseComponent implements OnInit, AfterViewInit,AfterContentChecked {
 
   constructor(public translates: TranslateService,private cd: ChangeDetectorRef,
-    public messageService: MessageService, private datePipe: DatePipe,
+    public messageService: MessageService, private datePipe: DatePipe, private permisionServices:PermissionService,
      private calenderService: CalenderService) { super(messageService, translates) }
   private eventSource: EventSource | undefined;
 
@@ -136,7 +137,7 @@ setTimeout(() => {
     this.loading = true
     const subscription = this.calenderService.getCalender().subscribe((results: any) => {
       this.loading = false
-      if (!isSet(results)) {
+    if (!isSet(results) || !this.permisionServices?.hasPermission('Appointments', 'view')) {
         return
       }
       this.Appointments = results
@@ -171,7 +172,7 @@ setTimeout(() => {
     this.loading = true
     const subscription = this.calenderService.getTodayAppominets(currentDate).subscribe((results: any) => {
       this.loading = false
-      if (!isSet(results)) {
+      if (!isSet(results)|| !this.permisionServices.hasPermission('Appointments', 'view')) {
         return
       }
       let objects: any[] = []

@@ -10,6 +10,8 @@ export class Products {
     buyPrice?: number;
     qty?: number;
     brand?: any;
+    suppliers?: any;
+    details?: any;
     attributes?: any;
 
 

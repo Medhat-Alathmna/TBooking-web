@@ -3,10 +3,10 @@ import { isSet } from "../core/base/base.component";
 
 
 export class Notifications {
-    title:any
+    title:string
     id:any
-    body:any
-    type:any
+    body:string
+    type:string
     main:boolean
 
     public constructor(params?: Notifications) {

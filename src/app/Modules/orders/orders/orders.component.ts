@@ -21,6 +21,7 @@ export class OrdersComponent extends BaseComponent implements OnInit {
   searchCustomer
   total
   showOrderSidebar: boolean = false
+  paginator: boolean = true
   selectedOrder
   fillterFildes = {
     orderNo: new Filter(),
@@ -75,6 +76,8 @@ export class OrdersComponent extends BaseComponent implements OnInit {
       if (!isSet(results)) {
         return
       }
+      this.paginator=true
+      this.orders=[]
       const clone = results.data
       this.total = results.meta.pagination.total
       if (!isSet(this.orders)) {
@@ -139,6 +142,7 @@ export class OrdersComponent extends BaseComponent implements OnInit {
       if (!isSet(data)) {
         return
       }
+      this.paginator=false
       data.customer.map((x: any) => {
         x.attributes = x;
         x.attributes.appointment.data = x?.appointment
