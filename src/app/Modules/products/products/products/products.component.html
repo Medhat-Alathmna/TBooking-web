@@ -138,7 +138,7 @@
                         <ng-template pTemplate="filter">
                             <p-dropdown [disabled]="fillterFildes?.status?.status" [options]="status"
                                 [showClear]="true" [(ngModel)]="fillterFildes.status.value"
-                                placeholder='Select Status' optionValue="label" optionLabel="label">
+                                placeholder="{{'Select Status'|translate}}" optionValue="label" optionLabel="label">
                                 <ng-template let-item pTemplate="item">
                                     <span [class]="item.label">{{item.label |translate}}</span>
                                 </ng-template>

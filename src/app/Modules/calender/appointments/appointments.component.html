@@ -155,7 +155,7 @@
                     <ng-template pTemplate="filter">
                         <p-dropdown [disabled]="fillterFildes?.approved?.status" [options]="approvedList"
                             [showClear]="true" [(ngModel)]="fillterFildes.approved.value"
-                            placeholder='Select Status' optionValue="value" optionLabel="label">
+                            placeholder="{{'Select Status'|translate}}" optionValue="value" optionLabel="label">
                             <ng-template let-item pTemplate="item">
                                 <span [class]="item.label=='Approved'?'Completed':'Canceled'">{{item.label|translate}}</span>
                             </ng-template>

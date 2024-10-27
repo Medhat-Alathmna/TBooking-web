@@ -124,6 +124,7 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
         return
       }
       this.loading = false
+      this.successMessage(null,'The product has been created')
       this.refreshLish.emit(true)
       this.display = false
       subscription.unsubscribe()
@@ -140,6 +141,7 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
       }
       this.loading = false
       this.refreshLish.emit(true)
+      this.successMessage(null,'This Product has been changed')
       this.display = false
       subscription.unsubscribe()
     }, error => {
