@@ -28,6 +28,7 @@ import { AppMenuitemComponent } from './Layout/Menu/app.menuitem.component';
 import { HttpsInterceptor } from './core/https/HttpsInterceptor';
 import { ConfigEnvironmentService } from './core/config.service';
 import { AppComponent } from './app.component';
+import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 
 
 
@@ -41,6 +42,7 @@ import { AppComponent } from './app.component';
         AppRoutingModule,
         HttpClientModule,
         PrimengComponentsModule,
+        NgxQRCodeModule,
         HttpClientModule,
         TranslateModule.forRoot({
             loader: {

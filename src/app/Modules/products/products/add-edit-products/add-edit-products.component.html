@@ -13,11 +13,11 @@
             <div class="flex align-items-center justify-content-center mx-2 ">
 
 
-                <!-- <button (click)="menu.toggle($event)" pButton
+                <button (click)="menu.toggle($event)" pButton
                     pRipple type="button" icon="pi pi-ellipsis-v"
                     class="p-button-rounded mr-2 p-button-secondary p-button-lg p-button-text btn-white "></button>
                 <p-menu #menu id="meetingActinos" styleClass="meetingActinos" [popup]="true" appendTo="body"
-                    [model]="acions"></p-menu> -->
+                    [model]="acions"></p-menu>
                 <button pButton [disabled]="form?.invalid " pRipple type="button" [label]="'Save'|translate"
                     icon="pi pi-check " *ngIf="detailMode&&permissionService.hasPermission('Products', 'update')"
                     (click)="updateProduct()"
@@ -92,7 +92,42 @@
                 <app-input [(ngModel)]="selectedProduct.stocks" [number]="number" name="stocks"
                     title="{{'Stock'|translate}}" type="number"></app-input>
             </div>
-            <div [class]="lang=='ar'?' leftLine col-6 pb-4 pt-4':'leftRight col-6 pb-4 pt-4'">
+            <div class="col-12 py-4" *ngIf="selectedProduct.category && selectedProduct.category.length">
+                <div class="lg:col-4 sm:col-6 " *ngFor="let cat of selectedProduct.category ; let i=index">
+                    <ng-container>
+                        <div class="text-lg font-semibold mb-2" translate>
+                            {{cat.category}}
+                        </div>
+                    </ng-container>
+                    <p-dropdown [options]="cat.subCategory" [ngModelOptions]="{standalone: true}" *ngIf="cat.subCategory"
+                    [(ngModel)]="cat.selectedItem"
+                    (onChange)="selectItem(categoryIndex, $event.value)" [filter]="true" appendTo="body" 
+                        filterBy="name" optionLabel="name">
+                        <ng-template pTemplate="selectedItem" let-selectedOption>
+                            <div class="flex align-items-center gap-2" >
+                                <div>{{  selectedOption?.name }}</div>
+                            </div>
+                        </ng-template>
+                        <ng-template let-item pTemplate="item">
+                            <div class="grid">
+                                <div class="col-10" style=" margin-top: 10px;font-size: 17px">
+                                    <span [innerHTML]="item.name"></span>
+                                </div>
+                                <div class="col-2" *ngIf="(item.id != 0) && item.id != -1">
+                                    <button style="z-index: 10000; color: #000000;" pButton pTooltip="Edit"
+                                        tooltipPosition="bottom" (click)="showUpdateDialog(item)"
+                                        class="p-button-text  ml-sm-1" type="button" icon="fas fa-edit"></button>
+                                    <button style="z-index: 10000" pButton pTooltip="Delete"
+                                        (click)="confirmCancel(item.id)" tooltipPosition="bottom"
+                                        class="p-button-text p-button-danger" type="button" icon="fas fa-trash"></button>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                    
+                </div>
+            </div>
+            <div [class]="lang=='ar'?' leftLine col-6 py-4':'leftRight col-6 py-4'">
                 <div class="justify-content-between flex"> <span class="text-3xl ont-semibold font-bold"
                         translate>Suppliers Details</span>
                     <div>
@@ -371,6 +406,31 @@
             (click)="brandEdit?updateBrand('update'):createBrand()" class="p-button-primary"></button>
     </div>
 </app-modal>
+
+<app-modal [(display)]="showUpdateCatDialog" title="Category" class="modal-sm">
+    <div body>
+        <app-input [(ngModel)]="selectedCategory.name" name="selectedCategory" type="text"></app-input>
+    </div>
+    <div footer>
+        <button (click)="showUpdateCatDialog=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"
+            icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
+        <button pButton pRipple type="button" label=" {{'Save' |translate}}"
+            (click)="updateCategory()" class="p-button-primary"></button>
+    </div>
+</app-modal>
+
+<app-modal [(display)]="showCategoryDialog" title="New Category" class="modal-sm">
+    <div body>
+        <app-input [(ngModel)]="catName" name="brandName" title="Brand" type="text"></app-input>
+    </div>
+    <div footer>
+        <button (click)="showCategoryDialog=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"
+            icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
+        <button pButton pRipple type="button" label=" {{'Save' |translate}}"
+            (click)="AddCat()" class="p-button-primary"></button>
+    </div>
+</app-modal>
+
 
 <div *ngIf="detailMode">
     <div [class]="lang=='en'?'fixed rightFilter':'fixed leftFilter'">

@@ -39,6 +39,7 @@ export class ProductsService {
         brand: product?.brand,
         suppliers: product?.suppliers,
         details: product?.details,
+        category: product?.category,
 
       }
     }

@@ -54,13 +54,17 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
   showOrderSidebar: boolean = false
   showSuppliersDialog: boolean = false
   showInfoDialog: boolean = false
+  showCategoryDialog: boolean = false
   contactInfo = { header: null, body: null }
+  showUpdateCatDialog: boolean = false; 
+  selectedCategory: any={name:null,id:null}; 
   supplierInfo:any = { name: null, phone: null, email: null, note: null, address: null }
   editContactIndex
   ediContactMode
   fromDate: any
   toDate: any
   dashboardResults
+  catName
   displayDate = false
   productChart
   dashboardDetails
@@ -75,9 +79,20 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
   @Output() refreshLish: EventEmitter<boolean> = new EventEmitter();
 
   constructor(public translates: TranslateService, public messageService: MessageService, public permissionService: PermissionService,
-    private confirmationService: ConfirmationService, private productsService: ProductsService) { super(messageService, translates) }
+    private confirmationService: ConfirmationService, private productsService: ProductsService) { super(messageService, translates)
+      
+     }
 
   ngOnInit(): void {
+    this.acions = [
+      {
+        label:this.trans('Add a new Category'),
+        icon: 'pi pi-refresh',
+        command: () => {
+          this.showCategoryDialog=true
+        }
+      },
+    ]
     this.productInfo({ fromDate: new Date(), toDate: new Date() });
     this.items = [
       {
@@ -107,7 +122,12 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
     if (!this.selectedProduct.stocks) {
       this.selectedProduct.stocks = 0
     }
-
+  if (this.selectedProduct.category) {
+    this.selectedOrder.category.forEach(cat => {
+      cat.selectedItem = cat.subCategory.find(item => item.selected) || null;
+    });
+  }
+    
   }
 
   onHide() {
@@ -132,6 +152,23 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
       this.loading = false
       subscription.unsubscribe()
     })
+  }
+  AddCat(){
+    if (!isSet(this.selectedProduct.category)) {
+      this.selectedProduct.category=[]
+
+    }
+    this.selectedProduct.category.push({category:this.catName,subCategory:[{name: `<span class="font-bold text-primary">${this.trans('Create New')}</span>`,id:0}]})
+    this.showCategoryDialog=false
+  }
+ 
+
+  selectItem(categoryIndex: number, selectedItem: any) {
+    // Update selected item and set others to false
+    this.selectedProduct.category[categoryIndex].subCategory.forEach(item => {
+      item = (item === selectedItem);
+    });
+    this.selectedProduct.category[categoryIndex].selectedItem = selectedItem;
   }
   updateProduct() {
     this.loading = true
@@ -328,7 +365,6 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
     }
     this.selectedProduct.details.push(this.contactInfo)
     this.showInfoDialog = false
-    console.log(this.selectedProduct.details);
 
 
   }
@@ -357,5 +393,24 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
   }
   removeDetails(index){
     this.selectedProduct.details.splice(index, 1)
+  }
+  showUpdateDialog(item: any) {
+    this.selectedCategory = { ...item }; 
+    this.showUpdateCatDialog = true; 
+  }
+  updateCategory() {
+    const categoryIndex = this.selectedProduct.category
+      .findIndex(cat => cat.subCategory.some(subCat => subCat.id === this.selectedCategory.id));
+
+    if (categoryIndex !== -1) {
+      const subCategoryIndex =this.selectedProduct.category[categoryIndex].subCategory
+        .findIndex(subCat => subCat.id === this.selectedCategory.id);
+      
+      if (subCategoryIndex !== -1) {
+        this.selectedProduct.category[categoryIndex].subCategory[subCategoryIndex].name = this.selectedCategory.name; 
+      }
+    }
+
+    this.showUpdateCatDialog = false; 
   }
 }
