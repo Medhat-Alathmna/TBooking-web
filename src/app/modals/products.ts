@@ -13,7 +13,7 @@ export class Products {
     suppliers?: any;
     details?: any;
     attributes?: any;
-    category?: any;
+    category?: any[];
     selectCat?: any;
 
 

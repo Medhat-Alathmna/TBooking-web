@@ -71,7 +71,7 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
   textSecondaryColor = getComputedStyle(document.documentElement).getPropertyValue('--surface-500')
 
 
-  @Input() selectedProduct: Products
+  @Input() selectedProduct: Products| any
   @Input() id: any
   @Input() display: boolean = false
   @Input() detailMode: boolean = true
@@ -122,11 +122,13 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
     if (!this.selectedProduct.stocks) {
       this.selectedProduct.stocks = 0
     }
-  if (this.selectedProduct.category) {
-    this.selectedOrder.category.forEach(cat => {
-      cat.selectedItem = cat.subCategory.find(item => item.selected) || null;
-    });
+  if (!this.selectedProduct.category) {
+    this.selectedProduct.category=[]
   }
+  this.selectedProduct.category.forEach(cat => {
+    // cat.selectedItem = cat.subCategory[0] || null;
+    cat.subCategory.unshift({name: `<span class="font-bold text-primary">${this.trans('Create New')}</span>`,id:0})    
+  });
     
   }
 
@@ -160,6 +162,7 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
     }
     this.selectedProduct.category.push({category:this.catName,subCategory:[{name: `<span class="font-bold text-primary">${this.trans('Create New')}</span>`,id:0}]})
     this.showCategoryDialog=false
+    this.catName=null
   }
  
 

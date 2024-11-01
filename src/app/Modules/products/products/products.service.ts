@@ -28,6 +28,15 @@ export class ProductsService {
     return this.api.post<any>(`products`, body);
   }
   updateProduct(product: Products, id): Observable<any> {
+    product.category.forEach(cat => {
+      // Remove all subCategory items with id 0
+      cat.subCategory = cat.subCategory.filter(item => item.id !== 0);
+    
+      // Set selectedItem to the first subcategory item if available
+      cat.selectedItem = cat.subCategory.length > 0 ? cat.subCategory[0] : null;
+    
+      console.log(cat);  // For debugging, log each category object
+    });
     let body = {
       data: {
         name: product?.name,

@@ -92,7 +92,7 @@
                 <app-input [(ngModel)]="selectedProduct.stocks" [number]="number" name="stocks"
                     title="{{'Stock'|translate}}" type="number"></app-input>
             </div>
-            <div class="col-12 py-4" *ngIf="selectedProduct.category && selectedProduct.category.length">
+            <div class="col-12 py-4" style="flex-direction: row;display: flex;flex-wrap: wrap;" *ngIf="selectedProduct.category && selectedProduct.category.length">
                 <div class="lg:col-4 sm:col-6 " *ngFor="let cat of selectedProduct.category ; let i=index">
                     <ng-container>
                         <div class="text-lg font-semibold mb-2" translate>
