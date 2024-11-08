@@ -95,30 +95,34 @@
             <div class="col-12 py-4" style="flex-direction: row;display: flex;flex-wrap: wrap;" *ngIf="selectedProduct.category && selectedProduct.category.length">
                 <div class="lg:col-4 sm:col-6 " *ngFor="let cat of selectedProduct.category ; let i=index">
                     <ng-container>
+                        <div class="flex" style="justify-content: space-between;align-items: baseline;">
                         <div class="text-lg font-semibold mb-2" translate>
                             {{cat.category}}
                         </div>
+                        <button pButton pRipple type="button" icon="pi pi-trash" (click)="confirmCancelCat(i)"
+                        class="p-button-rounded p-button-danger p-button-text  "></button>
+                    </div>
                     </ng-container>
                     <p-dropdown [options]="cat.subCategory" [ngModelOptions]="{standalone: true}" *ngIf="cat.subCategory"
-                    [(ngModel)]="cat.selectedItem"
-                    (onChange)="selectItem(categoryIndex, $event.value)" [filter]="true" appendTo="body" 
+                    [(ngModel)]="cat.selectedItem" 
+                    (onChange)="selectItem(i, $event.value)" [filter]="true" appendTo="body" 
                         filterBy="name" optionLabel="name">
                         <ng-template pTemplate="selectedItem" let-selectedOption>
                             <div class="flex align-items-center gap-2" >
-                                <div>{{  selectedOption?.name }}</div>
+                                <div [innerHTML]="selectedOption.name">{{  selectedOption?.name }}</div>
                             </div>
                         </ng-template>
-                        <ng-template let-item pTemplate="item">
+                        <ng-template let-item let-s="rowIndex" pTemplate="item">
                             <div class="grid">
                                 <div class="col-10" style=" margin-top: 10px;font-size: 17px">
                                     <span [innerHTML]="item.name"></span>
                                 </div>
                                 <div class="col-2" *ngIf="(item.id != 0) && item.id != -1">
                                     <button style="z-index: 10000; color: #000000;" pButton pTooltip="Edit"
-                                        tooltipPosition="bottom" (click)="showUpdateDialog(item)"
+                                        tooltipPosition="bottom" (click)="showUpdateDialog(cat, item,s)"
                                         class="p-button-text  ml-sm-1" type="button" icon="fas fa-edit"></button>
                                     <button style="z-index: 10000" pButton pTooltip="Delete"
-                                        (click)="confirmCancel(item.id)" tooltipPosition="bottom"
+                                        (click)="confirmCancelSubCat(cat, item)" tooltipPosition="bottom"
                                         class="p-button-text p-button-danger" type="button" icon="fas fa-trash"></button>
                                 </div>
                             </div>
@@ -407,27 +411,31 @@
     </div>
 </app-modal>
 
-<app-modal [(display)]="showUpdateCatDialog" title="Category" class="modal-sm">
+<app-modal [(display)]="showUpdateCatDialog" title="{{'Sub Category'|translate}}" class="modal-sm">
     <div body>
-        <app-input [(ngModel)]="selectedCategory.name" name="selectedCategory" type="text"></app-input>
+        <app-input [(ngModel)]="selectedCategory.name" [title]="'Sub Category'|translate" name="selectedCategory" type="text"></app-input>
     </div>
     <div footer>
         <button (click)="showUpdateCatDialog=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"
             icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
-        <button pButton pRipple type="button" label=" {{'Save' |translate}}"
+        <button pButton pRipple type="button" label=" {{'Update' |translate}}"
             (click)="updateCategory()" class="p-button-primary"></button>
     </div>
 </app-modal>
 
-<app-modal [(display)]="showCategoryDialog" title="New Category" class="modal-sm">
+<app-modal [(display)]="showCategoryDialog" title="{{'New Category'|translate}}" class="modal-sm">
     <div body>
-        <app-input [(ngModel)]="catName" name="brandName" title="Brand" type="text"></app-input>
+        <app-input *ngIf="!subCatMode" [(ngModel)]="catName"  class="mb-2" name="catName" [title]="'Category'|translate" type="text"></app-input>
+
+        <app-input [(ngModel)]="subCat" name="subCat" [title]="'Sub Category'|translate"  type="text"></app-input>
     </div>
     <div footer>
         <button (click)="showCategoryDialog=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"
             icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
-        <button pButton pRipple type="button" label=" {{'Save' |translate}}"
+        <button *ngIf="!subCatMode" pButton pRipple type="button" label=" {{'Add' |translate}}"
             (click)="AddCat()" class="p-button-primary"></button>
+        <button *ngIf="subCatMode" pButton pRipple type="button" label=" {{'Add' |translate}}"
+            (click)="subAddCat()" class="p-button-primary"></button>
     </div>
 </app-modal>
 

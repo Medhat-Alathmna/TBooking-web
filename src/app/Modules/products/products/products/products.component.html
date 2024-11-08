@@ -130,7 +130,7 @@
 
                 </p-columnFilter>
                 </th>
-                <th translate>Bar Code
+                <!-- <th translate>Bar Code
                     <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
                         [ngClass]="fillterFildes?.status?.status?'status-filter':null" type="text" field="id"
                         matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
@@ -159,7 +159,7 @@
                             </div>
                         </ng-template>
                     </p-columnFilter>
-                </th>
+                </th> -->
                 <!-- <th translate>Creation Date</th> -->
                 <th style="width: 10% !important" translate>Actions</th>
             </tr>
@@ -181,11 +181,11 @@
                         {{ser.attributes?.price}} {{getCurrencySymbol(cur.code)}}
                     </span>
                 </td>
-                <td>
+                <!-- <td>
                     <span class="text-xl text-primary  bold">
                         <span>{{ser?.attributes?.barcode ? ser?.attributes?.barcode:'ـــ'}}</span>
                     </span>
-                </td>
+                </td> -->
                 <!-- <td>
                     <span class="text-xl text-primary  bold">
                         {{ ser?.attributes?.createdAt| date: 'dd/MM/yyyy hh:mm' }}
@@ -206,4 +206,5 @@
     </p-table>
 </div>
 
-<app-add-edit-products *ngIf="showProductSidebar" [id]="id" [detailMode]="detailMode" (refreshLish)="getProducts(1,null)" [selectedProduct]="selectedProduct" [(display)]="showProductSidebar"></app-add-edit-products>
+<app-add-edit-products *ngIf="showProductSidebar" [id]="id" [detailMode]="detailMode"
+ (refreshLish)="getProducts(1,null)" [(display)]="showProductSidebar"></app-add-edit-products>

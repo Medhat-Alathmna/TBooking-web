@@ -8,10 +8,16 @@ import { Products } from 'src/app/modals/products';
   providedIn: 'root'
 })
 export class ProductsService {
-
+  userAuth = JSON.parse(localStorage.getItem('userAuth'))?.user
   constructor(private api: ApiService) { }
 
   createProduct(product: Products): Observable<any> {
+    product.category.forEach(cat => {
+      cat.subCategory = cat.subCategory.filter(item => item.id !== 0);
+      if (cat.selectedItem.id===0) {
+        cat.selectedItem=null
+      }
+    });
     let body = {
       data: {
         name: product?.name,
@@ -23,19 +29,22 @@ export class ProductsService {
         brand: product?.brand,
         suppliers: product?.suppliers,
         details: product?.details,
+        hide:false,
+        category: product?.category,
+
       }
     }
     return this.api.post<any>(`products`, body);
   }
-  updateProduct(product: Products, id): Observable<any> {
+  getProduct(id): Observable<any> {
+    return this.api.get<any>(`products/${id}`);
+  }
+  updateProduct(product: Products, id ,type): Observable<any> {
     product.category.forEach(cat => {
-      // Remove all subCategory items with id 0
       cat.subCategory = cat.subCategory.filter(item => item.id !== 0);
-    
-      // Set selectedItem to the first subcategory item if available
-      cat.selectedItem = cat.subCategory.length > 0 ? cat.subCategory[0] : null;
-    
-      console.log(cat);  // For debugging, log each category object
+      if (cat.selectedItem.id===0) {
+        cat.selectedItem=null
+      }
     });
     let body = {
       data: {
@@ -52,7 +61,8 @@ export class ProductsService {
 
       }
     }
-    return this.api.put<any>(`products/${id}`, body);
+    let delte ={data:{hide:true,deletedBy:this.userAuth.username}}
+    return this.api.put<any>(`products/${id}`, type=='update'?body:delte);
   }
   getBrands(): Observable<any> {
     return this.api.get<any>(`brands?sort[0]=createdAt:desc&pagination[pageSize]=1000&filters[hide][$eq]=false`);

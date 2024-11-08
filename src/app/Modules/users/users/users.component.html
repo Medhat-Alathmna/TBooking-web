@@ -29,7 +29,36 @@
                 <tr>
                     <th style="width: 30vw" translate>Users</th>
                     <th style="width: 40vw" translate>Email</th>
-                    <th translate>Role</th>
+                    <th translate>Role
+                        <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
+                        [ngClass]="fillterFildes?.privilege?.status?'status-filter':null" type="text" field="id"
+                        matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
+                        [showAddButton]="false">
+                        <ng-template pTemplate="filter">
+                            <p-dropdown [disabled]="fillterFildes?.privilege?.status" [options]="privileges"
+                                [showClear]="true" [(ngModel)]="fillterFildes.privilege.value"
+                                placeholder="{{'Select privilege'|translate}}" optionValue="attributes.role" optionLabel="attributes.role">
+                                <ng-template let-item pTemplate="item">
+                                    <span>{{item.attributes.role |translate}}</span>
+                                </ng-template>
+                            </p-dropdown>
+                            <div class="grid mt-2">
+                                <div class="col-6">
+                                    <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
+                                        (click)="fillterFildes.privilege.value=null;fillterFildes.privilege.status=flase;getUsers(1,null)"
+                                        type="button">
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button pButton [disabled]="!fillterFildes.privilege.value" label="{{'Apply'|translate}}"
+                                        (click)="fillterFildes.privilege.name='privilege';fillterFildes.privilege.status=true;fillterFildes.privilege.type='$eq';filterUsers(fillterFildes?.privilege)"
+                                        type="button">
+                                    </button>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-columnFilter>
+                    </th>
                     <th translate>Status</th>
                     <th translate>Availbale Today</th>
                     <th style="width: 10% !important" translate>Actions</th>
