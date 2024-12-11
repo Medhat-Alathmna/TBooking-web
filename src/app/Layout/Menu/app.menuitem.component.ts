@@ -27,7 +27,7 @@ import { MenuService } from './app.menu.service';
 				<span class="layout-menuitem-text" translate>{{item.label}}</span>
 				<i class="pi pi-fw pi-chevron-down layout-submenu-toggler" *ngIf="item.items"></i>
 			</a>
-            <div class="layout-menu-tooltip" >
+            <div class="layout-menu-tooltip" [style]='item.style'>
                 <div  [class.tooltip-arrow-ar]="currentlang!='en'" class="layout-menu-tooltip-arrow"></div>
                 <div class="layout-menu-tooltip-text" translate>{{item.label}}</div>
             </div>

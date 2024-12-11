@@ -69,15 +69,11 @@ export class AddEditRoleComponent extends BaseComponent implements OnInit {
   
   selectedFiles
   ngOnInit(): void {
-    console.log(this.detailMode);
-
     this.selectedRole = this.detailMode ? this.selectedRole.attributes : new RoleInfo()
-
     if ( this.detailMode) {
       this.pages= this.selectedRole.pages
       this.selectedRole.id=this.id
     }
-
     // this.selectedRole.description=this.selectedRole.attributes.description
     // this.selectedRole.pages=this.selectedRole.pages
   }

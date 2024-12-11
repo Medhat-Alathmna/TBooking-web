@@ -99,8 +99,14 @@
                         <div class="text-lg font-semibold mb-2" translate>
                             {{cat.category}}
                         </div>
-                        <button pButton pRipple type="button" icon="pi pi-trash" (click)="confirmCancelCat(i)"
-                        class="p-button-rounded p-button-danger p-button-text  "></button>
+                        <div> <button *ngIf="permissionService.hasPermission('Products', 'update')" (click)="catMenu.toggle($event);selectedApplyCategory.index=i;selectedApplyCategory.cat=cat" pButton
+                            pRipple type="button" icon="pi pi-ellipsis-v"
+                            class="p-button-rounded mr-2 p-button-secondary p-button-lg p-button-text btn-white "></button>
+                        <p-menu #catMenu id="meetingActinos" styleClass="meetingActinos" [popup]="true" appendTo="body"
+                            [model]="catsMenu"></p-menu></div>
+                       
+                        <!-- <button pButton pRipple type="button" icon="pi pi-trash" (click)="confirmCancelCat(i)"
+                        class="p-button-rounded p-button-danger p-button-text  "></button> -->
                     </div>
                     </ng-container>
                     <p-dropdown [options]="cat.subCategory" [ngModelOptions]="{standalone: true}" *ngIf="cat.subCategory"
@@ -118,10 +124,10 @@
                                     <span [innerHTML]="item.name"></span>
                                 </div>
                                 <div class="col-2" *ngIf="(item.id != 0) && item.id != -1">
-                                    <button style="z-index: 10000; color: #000000;" pButton pTooltip="Edit"
+                                    <button style="z-index: 10000; color: #000000;" pButton pTooltip="{{'Edit'|translate}}"
                                         tooltipPosition="bottom" (click)="showUpdateDialog(cat, item,s)"
                                         class="p-button-text  ml-sm-1" type="button" icon="fas fa-edit"></button>
-                                    <button style="z-index: 10000" pButton pTooltip="Delete"
+                                    <button style="z-index: 10000" pButton pTooltip="{{'Delete'|translate}}"
                                         (click)="confirmCancelSubCat(cat, item)" tooltipPosition="bottom"
                                         class="p-button-text p-button-danger" type="button" icon="fas fa-trash"></button>
                                 </div>

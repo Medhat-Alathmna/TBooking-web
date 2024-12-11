@@ -7,11 +7,11 @@
             <a tabindex="0" id="logo-link" class="layout-topbar-logo relative"
                 (click)="appMain.onMenuButtonClick($event)">
                 <ng-container *ngIf="!currentLogo" class="col-6">
-                    <!-- <span [style.left.px]="lang=='en'?62:null" [style.right.px]="lang=='ar'?62:null"
+                    <span *ngIf="clientName =='LBC'" [style.left.px]="lang=='en'?62:null" [style.right.px]="lang=='ar'?62:null"
                         [style.top]="lang=='ar'?'10%':'12%'" style="display: contents;"
                         class="text-4xl  absolute font-bold logo-text" translate>
-                        Luxury Beatuy Center</span> -->
-                    <span [style.left.px]="lang=='en'?62:null" [style.right.px]="lang=='ar'?62:null"
+                        Luxury Beatuy Center</span>
+                    <span *ngIf="clientName =='local'||'Demo'"  [style.left.px]="lang=='en'?62:null" [style.right.px]="lang=='ar'?62:null"
                         [style.top]="lang=='ar'?'10%':'12%'" style="display: contents; color:#e59e5a"
                         class="text-5xl  absolute font-bold " translate>
                       <label style="color: #4F7EEA;" >T</label>Booking</span>
@@ -98,6 +98,16 @@
                                 </span>
                             </a>
                         </li> -->
+                        <!-- <li (click)="showPriv=true">
+                            <a>
+                                <span>
+                                    <span class="mx-2 pi pi-sign-out"></span>
+
+                                    {{'Permissions'|translate}}
+
+                                </span>
+                            </a>
+                        </li> -->
                         <li (click)="logOut()">
                             <a>
                                 <span>
@@ -129,3 +139,23 @@
         </div>
     </div>
 </div>
+<p-dialog  modal="true" [resizable]="false"
+    [draggable]="false" [(visible)]="showPriv" [style]="{width: '64vw'}">
+    <div class="role-manager-container">
+        <h2 translate>Permission Manager</h2>
+        <div class="permission-list">
+          <!-- Iterate over resources and actions -->
+          <div class="resource" *ngFor="let resource of resources">
+            <h4>{{ resource.name |translate  }}</h4>
+            
+            <div class="actions">
+              <p-checkbox *ngFor="let action of resource?.actions" 
+                          [(ngModel)]="pages[resource.name][action]"
+                          binary="true" 
+                          label="{{ action |translate }}"></p-checkbox>
+            </div>
+          </div>
+        </div>
+      </div>
+
+</p-dialog>

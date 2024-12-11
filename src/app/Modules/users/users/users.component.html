@@ -3,13 +3,12 @@
 <div style="height:calc(100vh - 80px) ;" class="  pt-0 card ">
     <p-tabMenu class="col-12" [model]="tabIndex" [activeItem]="tabIndex[0]"></p-tabMenu>
     <div *ngIf="tabSelected=='users'" class=" grid col-12">
-        <p-table #kt [value]="users"
-        currentPageReportTemplate="Showing {first} to {last} entries"
-        [scrollable]="true" [tableStyle]="{'width.%': 100}" scrollHeight="70vh">
+        <p-table #kt [value]="users" currentPageReportTemplate="Showing {first} to {last} entries" [scrollable]="true"
+            [tableStyle]="{'width.%': 100}" scrollHeight="70vh">
             <ng-template pTemplate="caption">
                 <div class="flex align-items-center justify-content-between">
                     <div>
-                        <h5 class="m-0 primary" >{{'Users Manager'|translate}}</h5>
+                        <h5 class="m-0 primary">{{'Users Manager'|translate}}</h5>
                         <label class="text-600 ">
                             In total there are <label class="text-primary font-bold ">
                                 {{users ? users.length : 0 }}</label> Users .
@@ -18,8 +17,8 @@
                     <div class="table-header inputgroup-stopwords block ">
                         <div class="p-inputgroup inputgroup-stopwords">
                             <div>
-                                <button type="button" (click)="showUserSide()" label="{{'Add User'|translate}}" pRipple pButton
-                                    icon="pi pi-plus" class="p-button-success "></button>
+                                <button type="button" (click)="showUserSide()" label="{{'Add User'|translate}}" pRipple
+                                    pButton icon="pi pi-plus" class="p-button-success "></button>
                             </div>
                         </div>
                     </div>
@@ -27,37 +26,66 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th style="width: 30vw" translate>Users</th>
+                    <th style="width: 30vw" translate>Users
+                        <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
+                            [ngClass]="fillterFildes?.username?.status?'status-filter':null" type="text" field="id"
+                            matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
+                            [showAddButton]="false">
+                            <ng-template pTemplate="filter">
+                                <div class="mt-3">
+                                    <input [disabled]="fillterFildes?.username?.status"
+                                        [(ngModel)]="fillterFildes.username.value" type="text" pInputText>
+                                </div>
+                                <div class="grid mt-2">
+                                    <div class="col-6">
+                                        <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
+                                            (click)="fillterFildes.username.value=null;fillterFildes.username.status=flase;getUsers(1,null)"
+                                            type="button">
+                                        </button>
+                                    </div>
+                                    <div class="col-6">
+                                        <button pButton [disabled]="!fillterFildes.username.value"
+                                            label="{{'Apply'|translate}}"
+                                            (click)="fillterFildes.username.name='username';filterUsers(fillterFildes?.username,'users')"
+                                            type="button">
+                                        </button>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </p-columnFilter>
+                    </th>
                     <th style="width: 40vw" translate>Email</th>
                     <th translate>Role
                         <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
-                        [ngClass]="fillterFildes?.privilege?.status?'status-filter':null" type="text" field="id"
-                        matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
-                        [showAddButton]="false">
-                        <ng-template pTemplate="filter">
-                            <p-dropdown [disabled]="fillterFildes?.privilege?.status" [options]="privileges"
-                                [showClear]="true" [(ngModel)]="fillterFildes.privilege.value"
-                                placeholder="{{'Select privilege'|translate}}" optionValue="attributes.role" optionLabel="attributes.role">
-                                <ng-template let-item pTemplate="item">
-                                    <span>{{item.attributes.role |translate}}</span>
-                                </ng-template>
-                            </p-dropdown>
-                            <div class="grid mt-2">
-                                <div class="col-6">
-                                    <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
-                                        (click)="fillterFildes.privilege.value=null;fillterFildes.privilege.status=flase;getUsers(1,null)"
-                                        type="button">
-                                    </button>
+                            [ngClass]="fillterFildes?.privilege?.status?'status-filter':null" type="text" field="id"
+                            matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
+                            [showAddButton]="false">
+                            <ng-template pTemplate="filter">
+                                <p-dropdown [disabled]="fillterFildes?.privilege?.status" [options]="privileges"
+                                    [showClear]="true" [(ngModel)]="fillterFildes.privilege.value"
+                                    placeholder="{{'Select privilege'|translate}}" optionValue="attributes.role"
+                                    optionLabel="attributes.role">
+                                    <ng-template let-item pTemplate="item">
+                                        <span>{{item.attributes.role |translate}}</span>
+                                    </ng-template>
+                                </p-dropdown>
+                                <div class="grid mt-2">
+                                    <div class="col-6">
+                                        <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
+                                            (click)="fillterFildes.privilege.value=null;fillterFildes.privilege.status=flase;getUsers(1,null)"
+                                            type="button">
+                                        </button>
+                                    </div>
+                                    <div class="col-6">
+                                        <button pButton [disabled]="!fillterFildes.privilege.value"
+                                            label="{{'Apply'|translate}}"
+                                            (click)="fillterFildes.privilege.name='privilege';fillterFildes.privilege.status=true;fillterFildes.privilege.type='$eq';filterUsers(fillterFildes?.privilege,'prev')"
+                                            type="button">
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="col-6">
-                                    <button pButton [disabled]="!fillterFildes.privilege.value" label="{{'Apply'|translate}}"
-                                        (click)="fillterFildes.privilege.name='privilege';fillterFildes.privilege.status=true;fillterFildes.privilege.type='$eq';filterUsers(fillterFildes?.privilege)"
-                                        type="button">
-                                    </button>
-                                </div>
-                            </div>
-                        </ng-template>
-                    </p-columnFilter>
+                            </ng-template>
+                        </p-columnFilter>
                     </th>
                     <th translate>Status</th>
                     <th translate>Availbale Today</th>
@@ -72,13 +100,13 @@
                         </span>
                     </td>
                     <td style="width: 30vw">
-                        <span  (click)="showUserDeatil(ser)" class="text-xl text-primary pointer ">
+                        <span (click)="showUserDeatil(ser)" class="text-xl text-primary pointer ">
                             {{minString(ser?.email,15)}}
                         </span>
                     </td>
-                    <td style="width: 10vw"> 
+                    <td style="width: 10vw">
                         <span class="text-xl text-primary ">
-                            {{ser?.privilege?.role}} 
+                            {{ser?.privilege?.role}}
                         </span>
                     </td>
                     <td style="width: 5vw">
@@ -111,7 +139,10 @@
 
     <div *ngIf="tabSelected=='roles'" class=" grid col-12">
         <app-roles></app-roles>
-</div>
+    </div>
+    <div *ngIf="tabSelected=='logs'" class=" grid col-12">
+        <app-logs></app-logs>
+    </div>
 </div>
 
 <app-add-edit-user *ngIf='showUserSidebar' (refreshLish)="getUsers()" [selectedUser]="selectedUser"

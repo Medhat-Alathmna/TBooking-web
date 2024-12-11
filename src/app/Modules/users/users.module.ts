@@ -12,6 +12,7 @@ import { SidebarComponent } from 'src/app/Shared/sidebar/sidebar.component';
 import { EntityViewerComponent } from 'src/app/Shared/entity-viewer/entity-viewer.component';
 import { RolesComponent } from './roles/roles.component';
 import { AddEditRoleComponent } from './roles/add-edit-role/add-edit-role.component';
+import { LogsComponent } from './logs/logs/logs.component';
 
 
 export const routes: Routes = [
@@ -20,7 +21,7 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [UsersComponent, RolesComponent, ],
+  declarations: [UsersComponent, RolesComponent, LogsComponent, ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),

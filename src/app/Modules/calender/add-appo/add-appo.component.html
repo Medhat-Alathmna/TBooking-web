@@ -181,7 +181,7 @@
                                     <div class="pi pi-circle-fill text-primary text-xs pt-2"></div>
                                     <span class="  font-bold "> {{ser[lang]}} </span>
                                     <span class="  font-bold">
-                                        <input type="number" name="price{{i}}{{c}}" pInputText [(ngModel)]="ser.price" />
+                                        <input type="number"[min]="0" name="price{{i}}{{c}}" pInputText [(ngModel)]="ser.price" />
 
                                     </span>
                                 </div>
@@ -211,7 +211,7 @@
                                     <td class=" px-2 font-bold">{{ product.name }}</td>
                                     <td>
                                         <span class=" px-2 font-bold">
-                                            <input type="number" [value]="product.price"
+                                            <input type="number" [value]="product.price" [min]="0"
                                                 [ngModelOptions]="{standalone: true}" pInputText
                                                 [(ngModel)]="product.price" />
                                         </span>

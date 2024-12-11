@@ -274,7 +274,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
         setTimeout(() => {
           prod.qty = prod.stocks
           this.errorMessage(this.trans('The Quantity must not be more than Stocks'))
-        }, 300);
+        }, 500);
       }
     })
   }

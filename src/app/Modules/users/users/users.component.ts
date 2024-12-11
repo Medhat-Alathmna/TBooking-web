@@ -26,6 +26,7 @@ export class UsersComponent extends BaseComponent implements OnInit {
   tabIndex=[]
   fillterFildes = {
     privilege: new Filter(),
+    username: new Filter(),
   }
   privileges=[]
   @ViewChild('kt') table: any;
@@ -50,6 +51,12 @@ export class UsersComponent extends BaseComponent implements OnInit {
           label: this.trans('Roles'),
           command: event => {
             this.tabSelected = 'roles'
+          }
+        },
+        {
+          label: this.trans('Logs'),
+          command: event => {
+            this.tabSelected = 'logs'
           }
         },
         
@@ -99,8 +106,13 @@ export class UsersComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     })
   }
-  filterUsers(query){
+  filterUsers(query,type){    
+    console.log(query);
+    if (type=='users') {
+      this.users= this.users.filter(x=>x.username.toLocaleLowerCase()== query.value.toLocaleLowerCase())
+    }else{
+      this.users= this.users.filter(x=>x.privilege.role.toLocaleLowerCase()== query.value.toLocaleLowerCase())    
 
-    this.users= this.users.filter(x=>x.privilege.role== query.value)    
+    }
   }
 }

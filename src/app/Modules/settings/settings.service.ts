@@ -59,6 +59,21 @@ export class SettingsService {
     }
     return this.api.put<any>(`general-setting`, body);
   }
+  updateOrderPicSettings(data: any): Observable<any> {
+    let body = {
+      data: {
+        name:data.name,
+        phone:data.phone,
+        address:data.address,
+        footer:data.footer,
+       
+      }
+    }
+    return this.api.put<any>(`site-info`, body);
+  }
+  getOrderPicSettings(): Observable<any> {
+    return this.api.get<any>(`site-info`);
+  }
   updateCurrency(cur: any): Observable<any> {
     let body = {data: {name:cur.name,code:cur.code}}
     return this.api.put<any>(`currency`, body);

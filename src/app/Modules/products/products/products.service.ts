@@ -67,6 +67,9 @@ export class ProductsService {
   getBrands(): Observable<any> {
     return this.api.get<any>(`brands?sort[0]=createdAt:desc&pagination[pageSize]=1000&filters[hide][$eq]=false`);
   }
+  applayCatProducts(selectedCat): Observable<any> {
+    return this.api.post<any>(`applayCatProducts`,selectedCat);
+  }
   productInfo(id,from, to): Observable<any> {
     const date = isSet(from) ? `?startDate=${from.toISOString()}&endDate=${to.toISOString()}` : ''
     return this.api.get<any>(`productInfo/${id}${date}`);

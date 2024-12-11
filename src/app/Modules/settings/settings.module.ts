@@ -14,6 +14,7 @@ import { InputMaskComponent } from 'src/app/Shared/input-mask/input-mask.compone
 import { SiteSettingsComponent } from './site-settings/site-settings.component';
 import { ColorInputComponent } from 'src/app/Shared/color-input/color-input.component';
 import { AppoSettingsComponent } from './appo-settings/appo-settings.component';
+import { OrdersSettingsComponent } from './orders-settings/orders-settings.component';
 
 
 export const routes: Routes = [
@@ -26,7 +27,8 @@ export const routes: Routes = [
     NotificationsComponent,
     ForbiddenNumbersComponent,
     SiteSettingsComponent,
-    AppoSettingsComponent
+    AppoSettingsComponent,
+    OrdersSettingsComponent
   ],
   imports: [
     CommonModule,

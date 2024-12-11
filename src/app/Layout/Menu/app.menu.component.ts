@@ -34,10 +34,7 @@ export class AppMenuComponent extends BaseComponent implements AfterViewInit, On
   ngAfterViewInit() {
 
   }
-  async ngOnInit() {
-    // console.log(this.checkUrl('/settings'));
-
-
+   ngOnInit() {
 
   }
   initModules() {

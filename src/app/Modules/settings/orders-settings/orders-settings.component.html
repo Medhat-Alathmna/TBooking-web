@@ -1,0 +1,41 @@
+<app-loading *ngIf="loading" display="full"></app-loading>
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog containerStyleClass="vw" acceptButtonStyleClass="p-button-danger"
+    rejectButtonStyleClass="p-button-text" appendTo="body"></p-confirmDialog>
+<div class="overflow-y-auto" style="height:calc( 92vh - 100px);">
+    <div class=" mx-3">
+        <ng-container >
+            <div class="flex pt-4 pb-2  border-bottom-0" style="width: 100%;justify-content: space-between">
+                <div class="text-xl font-semibold" translate>Orders Settings
+                </div>
+                <div class="text-xl font-semibold" translate>
+                    <button pButton pRipple  label="{{'Update'|translate}}" class="p-button-sm "  [disabled]="form?.invalid"
+                    (click)="updateOrderPicSettings()"></button>
+                </div>
+            </div>
+            <form #form="ngForm" body class="px-5 " style="margin-bottom: 6rem;">
+
+            <div class="grid pt-3">
+                <div class="lg:col-4 sm:col-6">
+                    <app-input [(ngModel)]="data.name" name="name" [title]="'Name'|translate"
+                        [required]="true"></app-input>
+                </div>
+               
+                <div class="lg:col-4 sm:col-6 ">
+                    <app-input-mask name="phone" [(ngModel)]="data.phone" [required]="true"
+                        [title]="'Phone'|translate"></app-input-mask>
+                </div>
+                <div class="lg:col-4 sm:col-6 ">
+                    <app-input [(ngModel)]="data.address" name="address" [title]="'Address'|translate"></app-input>
+                </div>
+                <div class="lg:col-4 sm:col-6 ">
+                    <app-input [(ngModel)]="data.footer" name="footer" [title]="'Footer'|translate"
+                        [required]="true"></app-input>
+                </div>
+            </div>
+        </form>
+
+        </ng-container>
+       
+    </div>
+</div>

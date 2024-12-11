@@ -60,7 +60,15 @@ export class SettingsMainComponent extends BaseComponent implements AfterViewIni
         command: (event) => {
           this.selectedView = 'Appointments Settings'
           this.selectActiveMenu(event?.item?.id)
+        }
+      },
+      {
+        id: 4, label: 'Orders Settings',  icon: this.angleIcon() + ' px-2',
+        disabled:!this.permissionService.hasPermission('SiteSittengs','AppointmentsSettings'),
 
+        command: (event) => {
+          this.selectedView = 'Orders Settings'
+          this.selectActiveMenu(event?.item?.id)
         }
       }
     ]

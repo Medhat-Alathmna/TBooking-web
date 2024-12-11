@@ -1,0 +1,45 @@
+<app-loading *ngIf="loading" display="full"></app-loading>
+<p-toast position="top-right"></p-toast>
+<div style="height:calc(100vh - 80px) ;" class="  pt-0 card ">
+
+        <p-table #kt [value]="logs"
+        currentPageReportTemplate="Showing {first} to {last} entries"
+        [scrollable]="true" [tableStyle]="{'width.%': 100}" scrollHeight="70vh">
+            <ng-template pTemplate="caption">
+                <div class="flex align-items-center justify-content-between">
+                    <div>
+                        <h5 class="m-0 primary" >{{'Logs Manager'|translate}}</h5>
+                    </div>
+                    <!-- <div class="table-header inputgroup-stopwords block ">
+                        <div class="p-inputgroup inputgroup-stopwords">
+                            <div>
+                                <button type="button" (click)="showRoleSide()" label="{{'Add Role'|translate}}" pRipple pButton
+                                    icon="pi pi-plus" class="p-button-success "></button>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 30vw" translate>Logs</th>
+                  
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-ser let-i="rowIndex">
+                <tr>
+                    <td style="width: 30vw">
+                        <span (click)="showRoleDeatil(ser)" class="text-xl text-primary pointer font-bold">
+                            {{ser?.attributes?.role}}
+                        </span>
+                    </td>
+
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="4">No Roles .</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>

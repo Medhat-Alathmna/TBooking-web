@@ -29,11 +29,8 @@ import { SupplierContact } from 'src/app/modals/supplierContact';
     PrimengComponentsModule,
     InputComponent,
     SidebarComponent,
-    CalenderComponent,
-    EntityViewerComponent,
     TextAreaComponent,
     ModalComponent,
-    InputMaskComponent,
     AddEditOrderComponent,
     LoadingComponent,
     FromToDateComponent,
@@ -42,6 +39,7 @@ import { SupplierContact } from 'src/app/modals/supplierContact';
 export class AddEditProductsComponent extends BaseComponent implements OnInit {
   items
   acions
+  catsMenu
   number
   headerDialog
   brandName: string
@@ -56,9 +54,10 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
   showInfoDialog: boolean = false
   showCategoryDialog: boolean = false
   contactInfo = { header: null, body: null }
-  showUpdateCatDialog: boolean = false; 
-  selectedCategory: any={name:null,id:null}; 
-  supplierInfo:any = { name: null, phone: null, email: null, note: null, address: null }
+  showUpdateCatDialog: boolean = false;
+  selectedCategory: any = { name: null, id: null };
+  selectedApplyCategory: any = { index: null, cat: null };
+  supplierInfo: any = { name: null, phone: null, email: null, note: null, address: null }
   editContactIndex
   ediContactMode
   fromDate: any
@@ -68,14 +67,14 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
   subCat
   editingCategoryIndex: number;
   editingItemIndex: number;
-  subCatMode=false
+  subCatMode = false
   displayDate = false
   productChart
   dashboardDetails
   textSecondaryColor = getComputedStyle(document.documentElement).getPropertyValue('--surface-500')
 
 
-  selectedProduct: Products| any
+  selectedProduct: Products | any
   @Input() id: any
   @Input() display: boolean = false
   @Input() detailMode: boolean = true
@@ -83,29 +82,47 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
   @Output() refreshLish: EventEmitter<boolean> = new EventEmitter();
 
   constructor(public translates: TranslateService, public messageService: MessageService, public permissionService: PermissionService,
-    private confirmationService: ConfirmationService, private productsService: ProductsService) { super(messageService, translates)
-      
-     }
+    private confirmationService: ConfirmationService, private productsService: ProductsService) {
+      super(messageService, translates)
 
-  ngOnInit(): void {    
+  }
+
+  ngOnInit(): void {
     this.acions = [
       {
-        label:this.trans('New Category'),
-        icon: 'pi pi-refresh',
+        label: this.trans('New Category'),
+        icon: 'pi pi-plus',
         command: () => {
-          this.showCategoryDialog=true
+          this.showCategoryDialog = true
         }
       },
       {
         label: this.trans('Delete'),
-        icon: 'pi pi-times',
-        disabled:!this.permissionService.hasPermission('Products','delete'),
+        icon: 'pi pi-trash',
+        disabled: !this.permissionService.hasPermission('Products', 'delete'),
         command: () => {
           this.confirmProductDelete()
         }
       }
     ]
-   this.detailMode? this.getProduct():this.initProduct()
+    this.catsMenu = [
+      {
+        label: this.trans('Add this Category for all products'),
+        icon: 'pi pi-plus',
+        command: () => {
+          this.selectedApplyCategory.cat.subCategory.splice(0,1)   
+          this.applayCatProducts()
+        }
+      },
+      {
+        label: this.trans('Delete'),
+        icon: 'pi pi-trash',
+        command: () => {
+          // this.confirmProductDelete()
+        }
+      }
+    ]
+    this.detailMode ? this.getProduct() : this.initProduct()
     this.items = [
       {
         icon: 'pi pi-calendar text-primary',
@@ -132,10 +149,10 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
 
     this.getBrands()
   }
-initProduct(){
-  this.selectedProduct=new Products
-  this.selectedProduct.stocks = 0
-}
+  initProduct() {
+    this.selectedProduct = new Products
+    this.selectedProduct.stocks = 0
+  }
   onHide() {
 
     this.display = false
@@ -150,7 +167,7 @@ initProduct(){
         return
       }
       this.loading = false
-      this.successMessage(null,'The product has been created')
+      this.successMessage(null, 'The product has been created')
       this.refreshLish.emit(true)
       this.display = false
       subscription.unsubscribe()
@@ -159,39 +176,40 @@ initProduct(){
       subscription.unsubscribe()
     })
   }
-  AddCat(){
+  AddCat() {
     if (!isSet(this.selectedProduct.category)) {
-      this.selectedProduct.category=[]
+      this.selectedProduct.category = []
 
     }
-    this.selectedProduct.category.push({category:this.catName,subCategory:[
-      {name: `<span class="font-bold text-primary">${this.trans('Create New')}</span>`,id:0}
-      ,{name:this.subCat}
-    ],selectedItem:{name:this.subCat}
-  })
-    this.showCategoryDialog=false
-    this.catName=null
+    this.selectedProduct.category.push({
+      category: this.catName, subCategory: [
+        { name: `<span class="font-bold text-primary">${this.trans('Create New')}</span>`, id: 0 }
+        , { name: this.subCat }
+      ], selectedItem: { name: this.subCat }
+    })
+    this.showCategoryDialog = false
+    this.catName = null
   }
-  selectItem(categoryIndex: number, selectedItem: any) {    
-    this.editingCategoryIndex=categoryIndex
-    if (selectedItem.id ==0) {
-      this.showCategoryDialog=true
-      this.subCatMode=true
-      this.subCat=null
-    }else{
+  selectItem(categoryIndex: number, selectedItem: any) {
+    this.editingCategoryIndex = categoryIndex
+    if (selectedItem.id == 0) {
+      this.showCategoryDialog = true
+      this.subCatMode = true
+      this.subCat = null
+    } else {
       this.selectedProduct.category[categoryIndex].selectedItem = selectedItem;
-    }   
-    
+    }
+
   }
   updateProduct() {
     this.loading = true
-    const subscription = this.productsService.updateProduct(this.selectedProduct, this.id,'update').subscribe((data) => {
+    const subscription = this.productsService.updateProduct(this.selectedProduct, this.id, 'update').subscribe((data) => {
       if (!isSet(data)) {
         return
       }
       this.loading = false
       this.refreshLish.emit(true)
-      this.successMessage(null,'This Product has been changed')
+      this.successMessage(null, 'This Product has been changed')
       this.display = false
       subscription.unsubscribe()
     }, error => {
@@ -199,10 +217,10 @@ initProduct(){
       subscription.unsubscribe()
     })
   }
-  subAddCat(){  
-    this.selectedProduct.category[this.editingCategoryIndex].subCategory.push({name:this.subCat})
-    this.selectedProduct.category[this.editingCategoryIndex].selectedItem={name:this.subCat}
-    this.showCategoryDialog=false
+  subAddCat() {
+    this.selectedProduct.category[this.editingCategoryIndex].subCategory.push({ name: this.subCat })
+    this.selectedProduct.category[this.editingCategoryIndex].selectedItem = { name: this.subCat }
+    this.showCategoryDialog = false
   }
   getProduct() {
     this.loading = true
@@ -211,16 +229,16 @@ initProduct(){
         return
       }
       this.loading = false
-      this.selectedProduct=data.data.attributes
+      this.selectedProduct = data.data.attributes
       this.productInfo({ fromDate: new Date(), toDate: new Date() });
       if (!this.selectedProduct.category) {
-        this.selectedProduct.category=[]
+        this.selectedProduct.category = []
       }
-      this.selectedProduct.category.forEach(cat => {
-        cat.subCategory.unshift({name: `<span class="font-bold text-primary">${this.trans('Create New')}</span>`,id:0})  
+      this.selectedProduct.category?.forEach(cat => {
+        cat?.subCategory?.unshift({ name: `<span class="font-bold text-primary">${this.trans('Create New')}</span>`, id: 0 })
         if (!cat.selectedItem) {
-          cat.selectedItem=cat.subCategory[1]
-        }  
+          cat.selectedItem = cat.subCategory[1]
+        }
       });
       subscription.unsubscribe()
     }, error => {
@@ -390,23 +408,42 @@ initProduct(){
     this.selectedOrder = event
     this.showOrderSidebar = true
   }
-  confirmProductDelete(){
+  confirmProductDelete() {
     this.confirmationService.confirm({
       message: this.trans('Are you sure that you want to Delete this Entry ?'),
+      acceptLabel: this.trans('Yes'),
+      rejectLabel: this.trans('No'),
       icon: 'pi pi-exclamation-triangle',
       accept: () => { this.hideProduct() },
     });
   }
-  hideProduct(){
+  hideProduct() {
     this.loading = true
-    const subscription = this.productsService.updateProduct(this.selectedProduct, this.id,'delete').subscribe((data) => {
+    const subscription = this.productsService.updateProduct(this.selectedProduct, this.id, 'delete').subscribe((data) => {
       if (!isSet(data)) {
         return
       }
       this.loading = false
       this.refreshLish.emit(true)
-      this.successMessage(null,'This Product has been deleted')
+      this.successMessage(null, 'This Product has been deleted')
       this.display = false
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+      subscription.unsubscribe()
+    })
+  }
+  applayCatProducts() {
+    this.loading = true
+    const subscription = this.productsService.applayCatProducts(this.selectedApplyCategory.cat).subscribe((data) => {
+      if (!isSet(data)) {
+        return
+      }
+      this.loading = false
+      this.successMessage(null, 'This Category has been added for all products')
+      this.selectedApplyCategory= { index: null, cat: null };       
+
+      // this.display = false
       subscription.unsubscribe()
     }, error => {
       this.loading = false
@@ -434,57 +471,57 @@ initProduct(){
     if (!isSet(this.selectedProduct.suppliers)) {
       this.selectedProduct.suppliers = []
     }
-    this.ediContactMode=false
+    this.ediContactMode = false
     this.selectedProduct.suppliers.push(this.supplierInfo)
     this.showSuppliersDialog = false
 
   }
-  removeContact(index){
+  removeContact(index) {
     this.selectedProduct.suppliers.splice(index, 1)
   }
-  showEidtContact(index){
-    this.ediContactMode=true
-    this.editContactIndex=index
-    this.supplierInfo=Products.cloneObject(this.selectedProduct.suppliers[index])
-    this.showSuppliersDialog=true
+  showEidtContact(index) {
+    this.ediContactMode = true
+    this.editContactIndex = index
+    this.supplierInfo = Products.cloneObject(this.selectedProduct.suppliers[index])
+    this.showSuppliersDialog = true
   }
-  editContact(){ 
-    this.selectedProduct.suppliers[this.editContactIndex]=this.supplierInfo
-    this.showSuppliersDialog=false
+  editContact() {
+    this.selectedProduct.suppliers[this.editContactIndex] = this.supplierInfo
+    this.showSuppliersDialog = false
   }
-  removeDetails(index){
+  removeDetails(index) {
     this.selectedProduct.details.splice(index, 1)
   }
 
   showUpdateDialog(category: any, item: any) {
-    this.catName=null
-    this.subCat=null
+    this.catName = null
+    this.subCat = null
     this.editingCategoryIndex = this.selectedProduct.category.indexOf(category);
-    this.editingItemIndex = this.selectedProduct.category[ this.editingCategoryIndex].subCategory.indexOf(item);
+    this.editingItemIndex = this.selectedProduct.category[this.editingCategoryIndex].subCategory.indexOf(item);
     this.selectedCategory = { ...item }; // Make a copy to edit
     this.showUpdateCatDialog = true;
   }
-  updateCategory() {    
+  updateCategory() {
     if (
       this.editingCategoryIndex !== undefined &&
       this.editingItemIndex !== undefined
     ) {
       const category = this.selectedProduct.category[this.editingCategoryIndex];
       category.subCategory[this.editingItemIndex] = { ...this.selectedCategory };
-      this.selectedProduct.category[this.editingCategoryIndex].selectedItem= { ...this.selectedCategory }
+      this.selectedProduct.category[this.editingCategoryIndex].selectedItem = { ...this.selectedCategory }
       this.showUpdateCatDialog = false;
     }
   }
-  deleteSubCat(category: any, item: any){
+  deleteSubCat(category: any, item: any) {
     this.editingCategoryIndex = this.selectedProduct.category.indexOf(category);
-    this.editingItemIndex = this.selectedProduct.category[ this.editingCategoryIndex].subCategory.indexOf(item);
-    this.selectedProduct.category[this.editingCategoryIndex].subCategory.splice(this.editingItemIndex,1)
-    this.selectedProduct.category[this.editingCategoryIndex].selectedItem= this.selectedProduct.category[this.editingCategoryIndex].subCategory[1]
+    this.editingItemIndex = this.selectedProduct.category[this.editingCategoryIndex].subCategory.indexOf(item);
+    this.selectedProduct.category[this.editingCategoryIndex].subCategory.splice(this.editingItemIndex, 1)
+    this.selectedProduct.category[this.editingCategoryIndex].selectedItem = this.selectedProduct.category[this.editingCategoryIndex].subCategory[1]
   }
-  confirmCancelSubCat(category,item) {    
-    if (category.subCategory.length==2) {
-      this.errorMessage(null,this.trans('Must be there at least 1 Sub Category'))
-     return
+  confirmCancelSubCat(category, item) {
+    if (category.subCategory.length == 2) {
+      this.errorMessage(null, this.trans('Must be there at least 1 Sub Category'))
+      return
     }
     this.confirmationService.confirm({
       message: this.trans('Are you sure that you want to Delete this Entry ?'),
@@ -499,7 +536,7 @@ initProduct(){
       accept: () => { this.deleteCat(index) },
     });
   }
-  deleteCat(index){
-    this.selectedProduct.category.splice(index,1)
+  deleteCat(index) {
+    this.selectedProduct.category.splice(index, 1)
   }
 }
