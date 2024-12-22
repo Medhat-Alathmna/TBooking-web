@@ -8,7 +8,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AppComponent } from 'src/app/app.component';
-import { environment, getLocalConfig,clientName } from 'src/environments/environment';
 
 @Component({
     selector: 'app-topbar',

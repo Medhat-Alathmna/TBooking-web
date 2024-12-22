@@ -9,6 +9,7 @@ import { InputComponent } from 'src/app/Shared/input/input.component';
 import { GallaryComponent } from './gallary/gallary.component';
 import { SafePipe } from 'src/app/Shared/safe.pipe';
 import { InputMaskComponent } from 'src/app/Shared/input-mask/input-mask.component';
+import { LoadingComponent } from 'src/app/Shared/loading/loading.component';
 
 export const routes: Routes = [
   { path: '', component: MobileAppComponent },
@@ -19,13 +20,14 @@ export const routes: Routes = [
   declarations: [
     MobileAppComponent,
     GallaryComponent,
-    SafePipe
+    SafePipe,
+    
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
     PrimengComponentsModule,
-    TranslateModule,
+    TranslateModule,LoadingComponent,
     InputComponent,InputMaskComponent
   ]
 })

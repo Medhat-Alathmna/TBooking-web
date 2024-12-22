@@ -65,7 +65,9 @@ export class GallaryComponent extends BaseComponent implements OnInit {
     })
   }
   createPost() {
+    this.loading = true
     const subscription = this.mobileService.createPost(this.post).subscribe((data) => {
+      this.loading = false
       if (!isSet(data)) {
         return
       }
@@ -74,6 +76,7 @@ export class GallaryComponent extends BaseComponent implements OnInit {
 
       subscription.unsubscribe()
     }, error => {
+      this.loading = false
       subscription.unsubscribe()
     })
   }
@@ -142,7 +145,9 @@ export class GallaryComponent extends BaseComponent implements OnInit {
     })
   }
   publishedPost(published, id) {    
+    this.loading = true
     const subscription = this.mobileService.publishedPost(published, id).subscribe((data) => {
+      this.loading = false
       if (!isSet(data)) {
         return
       }
@@ -150,12 +155,15 @@ export class GallaryComponent extends BaseComponent implements OnInit {
       this.getPosts()
       subscription.unsubscribe()
     }, error => {
+      this.loading = false
       subscription.unsubscribe()
     })
   }
 
   pinPost(pin, id) {
+    this.loading = true
     const subscription = this.mobileService.pinPost(pin, id).subscribe((data) => {
+      this.loading = false
       if (!isSet(data)) {
         return
       }
@@ -163,6 +171,7 @@ export class GallaryComponent extends BaseComponent implements OnInit {
       this.getPosts()
       subscription.unsubscribe()
     }, error => {
+      this.loading = false
       subscription.unsubscribe()
     })
   }
@@ -175,7 +184,9 @@ export class GallaryComponent extends BaseComponent implements OnInit {
 
   }
   onDeleteImage(id) {
+    this.loading = true
     const subscription = this.mobileService.deleteMedia(id).subscribe((data) => {
+      this.loading = false
       if (!isSet(data)) {
         return
       }
@@ -185,6 +196,7 @@ export class GallaryComponent extends BaseComponent implements OnInit {
       this.getPosts()
       subscription.unsubscribe()
     }, error => {
+      this.loading = false
       subscription.unsubscribe()
     })
 

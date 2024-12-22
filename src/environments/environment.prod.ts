@@ -14,8 +14,8 @@ const clientConfigs: { [key: string]: ClientConfig } = {
     logoUrl: "assets/logos/client1.png",
   },
   Demo: {
-    apiUrl: "https://octopus-app-9koya.ondigitalocean.app/api",
-    imgUrl: "https://octopus-app-9koya.ondigitalocean.app",
+    apiUrl: "https://orca-app-n5847.ondigitalocean.app/api",
+    imgUrl: "https://orca-app-n5847.ondigitalocean.app",
     logoUrl: "assets/logos/client2.png",
   },
 };
