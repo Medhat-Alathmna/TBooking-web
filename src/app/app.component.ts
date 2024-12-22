@@ -32,7 +32,8 @@ export class AppComponent implements OnInit {
   constructor(private primengConfig: PrimeNGConfig, private PermissionService:PermissionService,
     private translate: TranslateService, private router: Router,private settingsServices:SettingsService,
      private calenderService: CalenderService,private orderService:OrdersService,
-    @Inject(DOCUMENT) private document: Document) { }
+    @Inject(DOCUMENT) private document: Document) { 
+    }
 
   async ngOnInit() {
     this.primengConfig.ripple = false;
@@ -42,6 +43,7 @@ export class AppComponent implements OnInit {
   
 
   } 
+  
 
   getLang() {
     if (!localStorage.getItem('currentLang')) {

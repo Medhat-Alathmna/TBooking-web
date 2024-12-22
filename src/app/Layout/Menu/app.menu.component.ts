@@ -74,10 +74,16 @@ export class AppMenuComponent extends BaseComponent implements AfterViewInit, On
       subscription.unsubscribe()
     }, error => {
       this.loading=false
+      this.logOut()
       subscription.unsubscribe()
     })
   }
-
+  logOut() {
+    localStorage.removeItem('userAuth')
+    localStorage.removeItem('role')
+    sessionStorage.clear()
+  location.reload()
+  }
 
 
 }
