@@ -10,11 +10,7 @@ import { Order } from 'src/app/modals/order';
 export class OrdersService {
 
   userAuth = JSON.parse(localStorage.getItem('userAuth'))?.user
-
-  public checkRole: BehaviorSubject<any> = new BehaviorSubject<boolean>(null);
-  public checkRoleEmitter: Observable<any> = this.checkRole.asObservable();
-
-
+  
   constructor(private api: ApiService) { }
   addOrder(order, orderNO, totalPrice, id): Observable<Appointment> {
     let body = {

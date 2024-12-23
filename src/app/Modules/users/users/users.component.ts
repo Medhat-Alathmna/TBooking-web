@@ -53,12 +53,12 @@ export class UsersComponent extends BaseComponent implements OnInit {
             this.tabSelected = 'roles'
           }
         },
-        {
-          label: this.trans('Logs'),
-          command: event => {
-            this.tabSelected = 'logs'
-          }
-        },
+        // {
+        //   label: this.trans('Logs'),
+        //   command: event => {
+        //     this.tabSelected = 'logs'
+        //   }
+        // },
         
       ]
     });
