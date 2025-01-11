@@ -17,8 +17,6 @@ export class OrdersService {
       data: {
         appointment: id,
         orderNo: orderNO,
-        services: order.services,
-        products: order.products,
         status: order.status,
         discountType: order.discountType,
         orderBy: this.userAuth.username,
@@ -56,15 +54,15 @@ export class OrdersService {
     return this.api.get<Order>(`/orders/${id}?populate=*`);
 
   }
-
-  draftAppointment(appointment: any): Observable<any> {
+  cancelAppointment(appointment: any): Observable<Order> {
     let body = {
       data: {
-        status: 'Draft'
+        status: 'Canceled',
       }
     }
     return this.api.put<any>(`/appointments/${appointment.id}`, body);
   }
+ 
   search(val): Observable<any> {
     return this.api.get<any>(`/searchOR?search=${val}`);
   }

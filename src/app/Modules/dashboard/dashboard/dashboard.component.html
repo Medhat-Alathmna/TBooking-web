@@ -147,7 +147,7 @@
 
 </div>
 <div class="w-screen">
-    <div style="right: 5vw;top: 74vh;" class="fixed">
+    <div style="right: 5vw;top: 74vh;" class="fixed qur">
         <p-speedDial buttonClassName="dashbored-btn" showIcon="pi pi-filter " [model]="items"></p-speedDial>
     </div>
 </div>
@@ -199,8 +199,8 @@
                     <span pTooltip="{{'Creation Date'|translate}}" showDelay="1000" hideDelay="1000"
                         tooltipPosition="bottom" class="vertical-align-middle py-2">{{body.createdAt | date: 'dd/MM/yyyy hh:mm A'}}</span>
                     <span pTooltip="{{'Cash'|translate}}" showDelay="1000" hideDelay="1000" tooltipPosition="bottom"
-                        class="vertical-align-middle">{{body.cash}} {{getCurrencySymbol(cur.code)}}</span>
-                    <span pTooltip="{{'Cash'|translate}}" showDelay="1000" hideDelay="1000" tooltipPosition="bottom"
+                        class="vertical-align-middle">{{body.cash + body.appointment.deposit}} {{getCurrencySymbol(cur.code)}}</span>
+                    <span pTooltip="{{'Status'|translate}}" showDelay="1000" hideDelay="1000" tooltipPosition="bottom"
                         [class]="body.status">{{body.status |translate}} </span>
                 </ng-template>
                 <ng-template pTemplate="content">
@@ -233,12 +233,12 @@
                                 </div>
 
                             </div>
-                            <p-divider *ngIf="item.services?.length"></p-divider>
+                            <p-divider *ngIf="item.appointment?.services?.length"></p-divider>
                         </div>
                     </div>
-                    <p-divider *ngIf="body.products?.length"></p-divider>
-                    <div *ngIf="body.products?.length" class="mt-3">
-                        <p-table [value]="body.products" [tableStyle]="{'width.%': 100}">
+                    <p-divider *ngIf="body.appointment.products?.length"></p-divider>
+                    <div *ngIf="body.appointment.products?.length" class="mt-3">
+                        <p-table [value]="body.appointment.products" [tableStyle]="{'width.%': 100}">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th translate>Product Name</th>

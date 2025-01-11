@@ -1,3 +1,11 @@
 ::ng-deep .p-accordion-header-link {
 justify-content: space-around;
 }
+
+
+@media screen and (min-width: 720px) {
+   .qur{
+    right: 5vw;
+    top: 33vh;
+   }
+  }

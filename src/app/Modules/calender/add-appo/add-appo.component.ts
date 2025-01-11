@@ -117,9 +117,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
         this.appointment?.products?.map(item => {
           this.selectProducts.push({ id: item?.id, name: item?.name, stocks: item?.stocks, price: item?.price, qty: item?.qty, brand: item.brand })
         })
-      }
-      console.log();
-      
+      }      
       this.getNotfi()
       this.acions = [
         {
@@ -129,14 +127,14 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
             this.appointment.approved ? this.confirmCancel() : this.convertApprove();this.display=false
           }
         },
-        {
-          label: this.trans('Convert to Order'),
-          icon: 'pi pi-money-bill',
-          command: () => {
-           this.getLastNumberOrder()
+        // {
+        //   label: this.trans('Convert to Order'),
+        //   icon: 'pi pi-money-bill',
+        //   command: () => {
+        //    this.getLastNumberOrder()
           
-          }
-        },
+        //   }
+        // },
         {
           label: this.trans('Delete'),
           icon: 'pi pi-times',
@@ -303,14 +301,17 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
     this.appointment.products = this.selectProducts
     this.loading = true
-    const subscription = this.calenderService.addAppominets(this.appointment).subscribe((data) => {
+    const subscription = this.calenderService.addAppominets(this.appointment).subscribe((data:any) => {
       if (!isSet(data)) {
         return
       }
       this.refreshLish.emit(true)
       this.display = false
+      this.id=data.data.id
       this.loading = false
       this.successMessage(null,'The Appoiment has been Created')
+      this.getLastNumberOrder()
+    
       subscription.unsubscribe()
     }, error => {
       this.loading = false
@@ -387,14 +388,14 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
             this.appointment.approved ? this.confirmCancel() : this.convertApprove()
           }
         },
-        {
-          label: this.trans('Convert to Order'),
-          icon: 'pi pi-money-bill',
-          command: () => {
-            this.orderNo = moment(new Date()).format('YY-MM-D') + '-00'
-            this.toOrderDialog = true
-          }
-        },
+        // {
+        //   label: this.trans('Convert to Order'),
+        //   icon: 'pi pi-money-bill',
+        //   command: () => {
+        //     this.orderNo = moment(new Date()).format('YY-MM-D') + '-00'
+        //     this.toOrderDialog = true
+        //   }
+        // },
         {
           label: this.trans('Delete'),
           icon: 'pi pi-times',
@@ -491,36 +492,30 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     })
   }
-seq(){
-  new Promise(res=>{
-    this.updateAppominet()
-  }).then(tt=>{this.addOrder()}).catch(tt=>this.errorMessage(null,'Something wrong happen'))
-}
+
   addOrder() {
-    if (this.appointment.deposit>this.getTotalPrice().products) {
-      this.errorMessage(null,"It's not allowe to be a deposit more then services Total")
-      return
-    }
+    // if (this.appointment.deposit>this.getTotalPrice().products) {
+    //   this.errorMessage(null,"It's not allowe to be a deposit more then services Total")
+    //   return
+    // }
     this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
     this.appointment.products = this.selectProducts
-    this.appointment.status = this.getTotalPrice().total == 0 ? "Paid" : "Unpaid"
+    this.appointment.status = "Draft"
     if (!this.appointment.employee) {
       this.errorMessage('Please choose Employee !')
     }
-    this.updateAppominet()
-
     this.loading = true
     const subscription = this.orderService.addOrder(this.appointment, this.orderNo, this.getTotalPrice(), this.id).subscribe((data) => {
       if (!isSet(data)) {
         return
       }
-      if (this.selectProducts.length) {
-        this.selectProducts.map(prod => {  
-          this.updateProduct(prod, prod.id)
-        })
-      }
-      this.completeAppointment()
+      // if (this.selectProducts.length) {
+      //   this.selectProducts.map(prod => {  
+      //     this.updateProduct(prod, prod.id)
+      //   })
+      // }
+      // this.completeAppointment()
       this.loading = false
       subscription.unsubscribe()
     }, error => {
@@ -593,19 +588,7 @@ seq(){
       subscription.unsubscribe()
     })
   }
-  updateProduct(prod, id) {
-    const subscription = this.calenderService.updateProduct(prod, id).subscribe((results: any) => {
-      this.loading = false
-      if (!isSet(results)) {
-        return
-      }
-      subscription.unsubscribe()
-    }, error => {
-      this.loading = false
-
-      subscription.unsubscribe()
-    })
-  }
+  
   getLastNumber() {
     const subscription = this.calenderService.getLastNumber().subscribe((results: any) => {
       this.loading = false
@@ -627,7 +610,8 @@ seq(){
       this.orderNo=results.newNumber
       this.appointment.cash = 0
       this.appointment.discount = 0
-      this.toOrderDialog = true
+      this.addOrder()
+      // this.toOrderDialog = true
       subscription.unsubscribe()
     }, error => {
       this.loading = false

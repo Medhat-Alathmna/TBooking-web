@@ -10,6 +10,7 @@ export class Order {
     notes:any;
     discountType:any;
     data:any;
+    appointment:any;
 
 
     public constructor(params?: Order) {

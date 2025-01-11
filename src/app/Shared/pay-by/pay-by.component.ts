@@ -117,7 +117,6 @@ export class PayByComponent extends BaseComponent implements ControlValueAccesso
       if (!isSet(data)) {
         return
       }
-      console.log(data);
       this.loading = false
       this.PayByDialog = false
       this.payByMode=false
@@ -134,7 +133,6 @@ export class PayByComponent extends BaseComponent implements ControlValueAccesso
       if (!isSet(data)) {
         return
       }
-      console.log(data);
       this.loading = false
       this.PayByDialog = false
       this.payByMode = false

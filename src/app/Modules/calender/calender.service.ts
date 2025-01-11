@@ -97,9 +97,9 @@ export class CalenderService {
         notes: appointment?.notes,
         number: appointment.number,
         customer: {
-          firstName: appointment.firstName,
-          middleName: appointment.middleName,
-          lastName: appointment.lastName,
+          firstName: appointment?.firstName,
+          middleName: appointment?.middleName,
+          lastName: appointment?.lastName,
         },
         phone: appointment.phone,
        
@@ -115,6 +115,9 @@ export class CalenderService {
         employee: appointment?.employee,
       }
     }
+    console.log(body);
+    console.log(appointment);
+    
     return this.api.put<Appointment>(`/appointments/${appointment.id}`, body);
   }
 
