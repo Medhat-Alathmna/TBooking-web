@@ -62,10 +62,10 @@
                 <app-input type="email" [(ngModel)]="selectedUser.email" name="email" [title]="'Email'|translate" [required]="true"></app-input>
             </div>
             <div class="lg:col-6 sm:col-12">
-                <app-input type="text" [(ngModel)]="selectedUser.password" name="password" [title]="'Password'|translate" [required]="true"></app-input>
+                <app-input type="text" [(ngModel)]="selectedUser.password" show="true" type="password" name="password" [title]="'Password'|translate" [required]="true"></app-input>
             </div>
             <div class="lg:col-6 sm:col-12">
-                <app-input type="text" [(ngModel)]="selectedUser.confirmPassword" name="confirmPassword" [title]="'Confirm Password'|translate" [required]="true"></app-input>
+                <app-input type="text" [(ngModel)]="selectedUser.confirmPassword" type="password" name="confirmPassword" [title]="'Confirm Password'|translate" [required]="true"></app-input>
             </div>
             <div class="lg:col-6 sm:col-12">
                 <app-input type="text" [(ngModel)]="selectedUser.phone" [title]="'Phone'|translate" name="phone"></app-input>

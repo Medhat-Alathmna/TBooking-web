@@ -86,9 +86,6 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
 
   ngOnInit(): void {
     this.getOrder(this.selectedOrder.id)
-    this.listServices()
-    this.getUsers()
-    this.getProducts()
   }
   onHide() {
 
@@ -106,7 +103,7 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
         serviceAmount += rs?.price
       })
     })
-    this.selectedOrder?.appointment?.products?.map(x => {
+    this.selectProducts?.map(x => {
       productsAmount += x.price * x.qty
     })
     const products = serviceAmount + productsAmount
@@ -127,11 +124,18 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
     }
   }
   getUsers() {
+    if (this.users.length) {
+      this.showEmployiesDialog = true
+      this.newValue = null
+      return
+    }
     const subscription = this.calenderService.getEmployee().subscribe((data) => {
       if (!isSet(data)) {
         return
       }
       this.users = data
+      this.showEmployiesDialog = true
+      this.newValue = null
       subscription.unsubscribe()
     }, error => {
       subscription.unsubscribe()
@@ -139,6 +143,10 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
   }
 
   listServices() {
+    if (this.services.length) {
+      this.showAddValue = true
+      return
+    }
     this.loading = true
     const subscription = this.productsService.getServices().subscribe((results: any) => {
       this.loading = false
@@ -148,6 +156,7 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
       results.data.map(item => {
         this.services.push({ id: item?.id, ar: item?.attributes?.ar, en: item?.attributes?.en, price: item?.attributes?.price })
       })
+      this.showAddValue = true
       subscription.unsubscribe()
     }, error => {
       this.loading = false
@@ -165,15 +174,18 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
       this.selectedOrder.cash = 0
       return
     }
-    if (this.selectedOrder.cash == 0) {
+
+    if (this.selectedOrder.cash == 0 && this.getTotalPrice().total != 0) {
       this.selectedOrder.status = 'Draft'
     } else if ( this.getTotalPrice().total == 0) {
       this.selectedOrder.status = 'Paid'
     } else {
       this.selectedOrder.status = 'Unpaid'
-    }    
+    }  
+  
+    if (this.selectedOrder.attributes.status == 'Draft') this.updateAppointemt()
+
     if(this.coCash> this.selectedOrder.cash) return this.errorMessage('fuck you')
-    if (this.selectedOrder.status == 'Draft') this.updateAppointemt()
     
     this.loading = true
     const subscription = this.orderService.updateOrder(this.selectedOrder).subscribe((data) => {
@@ -183,22 +195,22 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
       this.refreshLish.emit(true)
       this.display = false
       this.loading = false
-      if (data.data.attributes.cash != 0 && this.selectedOrder.appointment.status=='Draft') this.completeAppointment()
+      if ((data.data.attributes.cash != 0 && this.selectedOrder.appointment.status=='Draft')||data.data.attributes.status =="Paid") this.completeAppointment()
       subscription.unsubscribe()
     }, error => {
       this.loading = false
       subscription.unsubscribe()
     })
   }
-  showAddNewServ(type, index?) {
+  showAddNewServProd(type, index?) {
     this.title = type == 'ser' ? this.trans('New Service') : this.trans('New Product')
+    type == 'ser' ? this.listServices() : this.getProducts(1, null)
     if (!this.selectedOrder.appointment.employee[index]?.services && type == 'ser') {
       this.selectedOrder.appointment.employee[index] = Object.assign(this.selectedOrder.appointment.employee[index], {
         services: []
       });
     }
     this.selectEmployee = index
-    this.showAddValue = true
     this.newValue = ''
     this.servType = type
   }
@@ -283,6 +295,10 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
       this.selectedOrder.appointment.employee[i].services.splice(child, 1)
     }
     getProducts(pageNum?: number, query?: any) {
+      if (this.products.length) {
+        this.showAddValue = true
+        return
+      }
       this.loading = true
       const subscription = this.calenderService.getlist('products', pageNum, 1000, query).subscribe((results: any) => {
         this.loading = false
@@ -292,6 +308,7 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
         results.data.map(item => {
           this.products.push({ id: item?.id, name: item?.attributes?.name, stocks: item?.attributes?.stocks, price: item?.attributes?.price, brand: item?.attributes?.brand?.data?.attributes })
         })
+        this.showAddValue = true
         subscription.unsubscribe()
       }, error => {
         this.loading = false
@@ -539,8 +556,7 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
       } else {
         this.
           payByMode = false
-      }
-      
+      }      
       this.coCash= this.selectedOrder.cash
       this.acions = [
         {

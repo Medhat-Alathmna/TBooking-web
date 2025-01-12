@@ -53,8 +53,8 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   acions: any[] = []
   services: Services[] = []
   Products: Products[] = []
-  selectEmployee: any 
-  newEmpe: any 
+  selectEmployee: any
+  newEmpe: any
   selectServices: Services[] = []
   selectProducts: Products[] = []
   notfiItems: any = []
@@ -83,7 +83,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
 
   @ViewChild('MultiSelect') MultiSelect: ElementRef;
 
-  constructor(public translates: TranslateService,public permissionService:PermissionService,
+  constructor(public translates: TranslateService, public permissionService: PermissionService,
     public messageService: MessageService, private cd: ChangeDetectorRef, private calenderService: CalenderService, private settingsService: SettingsService,
     private confirmationService: ConfirmationService, private productsService: ProductsService, private orderService: OrdersService
   ) { super(messageService, translates) }
@@ -91,9 +91,9 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
 
     // this.appointment.employee= this.appointment?.employee.data.attributes
-    this.getUsers()
-    this.listServices()
-    this.getProducts(1, null)
+    // this.getUsers()
+    // this.listServices()
+    // this.getProducts(1, null)
     if (!this.detailMode || !this.appointment) {
       this.appointment = new Appointment
       this.getLastNumber()
@@ -117,14 +117,14 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
         this.appointment?.products?.map(item => {
           this.selectProducts.push({ id: item?.id, name: item?.name, stocks: item?.stocks, price: item?.price, qty: item?.qty, brand: item.brand })
         })
-      }      
+      }
       this.getNotfi()
       this.acions = [
         {
           label: this.appointment.approved ? this.trans('Cancel the Appointment') : this.trans('Convert to Approved'),
           icon: 'pi pi-refresh',
           command: () => {
-            this.appointment.approved ? this.confirmCancel() : this.convertApprove();this.display=false
+            this.appointment.approved ? this.confirmCancel() : this.convertApprove(); this.display = false
           }
         },
         // {
@@ -132,17 +132,17 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
         //   icon: 'pi pi-money-bill',
         //   command: () => {
         //    this.getLastNumberOrder()
-          
+
         //   }
         // },
-        {
-          label: this.trans('Delete'),
-          icon: 'pi pi-times',
-          disabled:!this.permissionService.hasPermission('Appointments','delete'),
-          command: () => {
-            this.confirm1Delete()
-          }
-        }
+        // {
+        //   label: this.trans('Delete'),
+        //   icon: 'pi pi-times',
+        //   disabled:!this.permissionService.hasPermission('Appointments','delete'),
+        //   command: () => {
+        //     this.confirm1Delete()
+        //   }
+        // }
       ]
       if (!this.appointment.approved) {
         this.acions.splice(1, 1)
@@ -186,34 +186,28 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
 
     }
   }
-  showAddNewServ(type, index?) {
+  showAddNewServProd(type, index?) {
     this.title = type == 'ser' ? this.trans('New Service') : this.trans('New Product')
+    type == 'ser' ? this.listServices() : this.getProducts(1, null)
     if (!this.appointment.employee[index]?.services && type == 'ser') {
       this.appointment.employee[index] = Object.assign(this.appointment.employee[index], {
         services: []
       });
     }
     this.selectEmployee = index
-    this.showAddValue = true
     this.newValue = ''
     this.servType = type
   }
-  showAddNewEmp(type) {
-    this.showEmployiesDialog = true
-
-    this.newValue = null
-  }
-
   selectEmployees(event) {
-    if (!this.appointment.employee) this.appointment.employee=[]
+    if (!this.appointment.employee) this.appointment.employee = []
     for (const employee of this.appointment.employee) {
       if (employee.username === event.username) {
         this.newEmpe = null
         this.errorMessage(this.trans('This employee has already been selected'))
         return;
       }
-    }  
-      this.appointment.employee.push(event)
+    }
+    this.appointment.employee.push(event)
     this.showAddValue = false
     this.showEmployiesDialog = false
     this.newEmpe = null
@@ -222,7 +216,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     if (!isSet(this.appointment.employee[this.selectEmployee].services)) {
       this.appointment.employee[this.selectEmployee].services = []
     }
-    const existServ =this.appointment.employee[this.selectEmployee].services.find(x => x.id == this.newValue.id)    
+    const existServ = this.appointment.employee[this.selectEmployee].services.find(x => x.id == this.newValue.id)
     if (existServ) {
       this.errorMessage(this.trans('This Service Already Selected'))
       return
@@ -301,17 +295,17 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     this.appointment.toDate = new Date(this.appointment.toDate).toISOString()
     this.appointment.products = this.selectProducts
     this.loading = true
-    const subscription = this.calenderService.addAppominets(this.appointment).subscribe((data:any) => {
+    const subscription = this.calenderService.addAppominets(this.appointment).subscribe((data: any) => {
       if (!isSet(data)) {
         return
       }
       this.refreshLish.emit(true)
       this.display = false
-      this.id=data.data.id
+      this.id = data.data.id
       this.loading = false
-      this.successMessage(null,'The Appoiment has been Created')
+      this.successMessage(null, 'The Appoiment has been Created')
       this.getLastNumberOrder()
-    
+
       subscription.unsubscribe()
     }, error => {
       this.loading = false
@@ -330,7 +324,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       }
       this.loading = false
       this.refreshLish.emit(true)
-      this.successMessage(null,'This Appoinment has been updated')
+      this.successMessage(null, 'This Appoinment has been updated')
       // this.display = false
       subscription.unsubscribe()
     }, error => {
@@ -341,11 +335,18 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
 
 
   getUsers() {
+    if (this.users.length) {
+      this.showEmployiesDialog = true
+      this.newValue = null
+      return
+    }
     const subscription = this.calenderService.getEmployee().subscribe((data) => {
       if (!isSet(data)) {
         return
       }
       this.users = data
+      this.showEmployiesDialog = true
+      this.newValue = null
       subscription.unsubscribe()
     }, error => {
       subscription.unsubscribe()
@@ -353,6 +354,10 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   }
 
   listServices() {
+    if (this.services.length) {
+      this.showAddValue = true
+      return
+    }
     this.loading = true
     const subscription = this.productsService.getServices().subscribe((results: any) => {
       this.loading = false
@@ -362,10 +367,10 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       results.data.map(item => {
         this.services.push({ id: item?.id, ar: item?.attributes?.ar, en: item?.attributes?.en, price: item?.attributes?.price })
       })
+      this.showAddValue = true
       subscription.unsubscribe()
     }, error => {
       this.loading = false
-
       subscription.unsubscribe()
     })
   }
@@ -396,14 +401,14 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
         //     this.toOrderDialog = true
         //   }
         // },
-        {
-          label: this.trans('Delete'),
-          icon: 'pi pi-times',
-          disabled:this.permissionService.hasPermission('Appointments','delete'),
-          command: () => {
-            this.confirm1Delete()
-          }
-        }
+        // {
+        //   label: this.trans('Delete'),
+        //   icon: 'pi pi-times',
+        //   disabled:this.permissionService.hasPermission('Appointments','delete'),
+        //   command: () => {
+        //     this.confirm1Delete()
+        //   }
+        // }
       ]
       this.appointment = Appointment.cloneObject(results.data.attributes)
       this.appointment.firstName = this.appointment?.customer?.firstName
@@ -572,6 +577,10 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     })
   }
   getProducts(pageNum?: number, query?: any) {
+    if (this.Products.length) {
+      this.showAddValue = true
+      return
+    }
     this.loading = true
     const subscription = this.calenderService.getlist('products', pageNum, 1000, query).subscribe((results: any) => {
       this.loading = false
@@ -581,6 +590,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       results.data.map(item => {
         this.Products.push({ id: item?.id, name: item?.attributes?.name, stocks: item?.attributes?.stocks, price: item?.attributes?.price, brand: item?.attributes?.brand?.data?.attributes })
       })
+      this.showAddValue = true
       subscription.unsubscribe()
     }, error => {
       this.loading = false
@@ -588,14 +598,14 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     })
   }
-  
+
   getLastNumber() {
     const subscription = this.calenderService.getLastNumber().subscribe((results: any) => {
       this.loading = false
       if (!isSet(results)) {
         return
       }
-      this.appointment.number=results.newNumber
+      this.appointment.number = results.newNumber
       subscription.unsubscribe()
     }, error => {
       this.loading = false
@@ -604,10 +614,10 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     })
   }
   getLastNumberOrder() {
-    this.loading=true
+    this.loading = true
     const subscription = this.calenderService.getLastNumberOrder().subscribe((results: any) => {
       this.loading = false
-      this.orderNo=results.newNumber
+      this.orderNo = results.newNumber
       this.appointment.cash = 0
       this.appointment.discount = 0
       this.addOrder()
