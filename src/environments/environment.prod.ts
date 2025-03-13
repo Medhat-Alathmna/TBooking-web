@@ -1,4 +1,4 @@
-const clientName = 'Demo'
+const clientName = 'LBC'
 
 
 export interface ClientConfig {
