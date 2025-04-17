@@ -129,7 +129,7 @@
 
                     </div>
                  
-                    <div class="block my-1" *ngFor="let item of selectedOrder?.attributes.employee;let i =index ">
+                    <div class="block my-1" *ngFor="let item of selectedOrder?.attributes?.appointment?.data?.attributes?.employee;let i =index ">
                         <ng-container>
                             <div class="text-lg font-semibold mb-2" translate>
                                 Employee
@@ -159,8 +159,8 @@
                             <p-divider *ngIf="item.services.length"></p-divider>
                         </div>
                     </div>
-                    <div *ngIf="selectedOrder?.attributes?.products?.length" class="mt-3">
-                        <p-table [value]="selectedOrder?.attributes?.products" [tableStyle]="{'width.%': 100}">
+                    <div *ngIf="selectedOrder?.attributes?.appointment?.data?.attributes?.products.length" class="mt-3">
+                        <p-table [value]="selectedOrder?.attributes?.appointment?.data?.attributes?.products" [tableStyle]="{'width.%': 100}">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th translate>Product Name</th>

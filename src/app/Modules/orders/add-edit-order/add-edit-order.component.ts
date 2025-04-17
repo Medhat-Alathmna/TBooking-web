@@ -80,12 +80,12 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
     let total = 0
     let serviceAmount: number = 0
     let productsAmount: number = 0
-    this.selectedOrder.attributes.employee?.map(x => {
+    this.selectedOrder.attributes.appointment.data.attributes.employee?.map(x => {
       x.services?.map(rs => {
         serviceAmount += rs?.price
       })
     })
-    this.selectedOrder.attributes.products?.map(x => {
+    this.selectedOrder.attributes.appointment.data.attributes.products?.map(x => {
       productsAmount += x.price * x.qty
     })
     const products = serviceAmount + productsAmount
@@ -157,8 +157,8 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
 
   confirm1Cancel() {
     this.confirmationService.confirm({
-      message: 'Are you sure that you want to Cancel this Order ?',
-      header: 'Confirmation',
+      message: this.trans('Are you sure that you want to Cancel this Order ?'),
+      header: this.trans('Confirmation'),
       icon: 'pi pi-exclamation-triangle',
       accept: () => { this.cancelOrder(); this.draftAppointment() },
     });
@@ -239,21 +239,22 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
     doc.text(`${new Date(this.selectedOrder?.attributes?.createdAt).toLocaleString()}`, 150, 80, { align: 'center' });
 
     // Table with autoTable
-    const tableBody = this.selectedOrder.attributes.products.map((product: any, index: number) => ([
+    const product=this.selectedOrder.attributes.appointment.data.attributes.products
+    const tableBody = product.map((product: any, index: number) => ([
       index + 1,
       product.name,
       product.qty,
       product.price,
       (product.qty * product.price).toFixed(2),
     ]));
-if (isSet(this.selectedOrder.attributes.products)) {
+if (isSet(product)) {
   autoTable(doc, {
     startY: 115,
     theme: 'grid',
     tableWidth:'auto',
     styles:{font:'amiri'},
     head: [[this.trans('Product Name'), this.trans('Quantity'),this.trans('Price')]],
-    body: this.selectedOrder.attributes.products.map((product) => [
+    body: product.map((product) => [
       product.name || 'N/A',   
       product.qty || 0,        
       product.price || 0       
@@ -263,8 +264,8 @@ if (isSet(this.selectedOrder.attributes.products)) {
 }
     
     // Employee Services Table (Ensure values are not undefined)
-if (isSet(this.selectedOrder.attributes.employee)) {
-  const employeeTableBody = this.selectedOrder.attributes.employee.map((employee: any, index: number) => {
+if (isSet(this.selectedOrder.attributes.appointment.data.attributes.employee)) {
+  const employeeTableBody = this.selectedOrder.attributes?.appointment?.data?.attributes?.employee.map((employee: any, index: number) => {
     const services = employee.services.map((service: any) => `${this.lang =='en'?service.en:service.ar} (${service.price})`).join(", ");
     return [
       index + 1,
@@ -273,7 +274,7 @@ if (isSet(this.selectedOrder.attributes.employee)) {
     ];
   });
   autoTable(doc, {
-    startY:isSet(this.selectedOrder.attributes.products)? (doc as any).lastAutoTable.finalY + 10:100,
+    startY:isSet(this.selectedOrder.attributes.appointment.data.attributes.products)? (doc as any).lastAutoTable.finalY + 10:100,
     styles:{font:'amiri'},
     tableWidth:'auto',
     head: [['#',this.trans('Employee'), this.trans('Services')]],

@@ -296,9 +296,9 @@
 
 
 
-<app-modal [(display)]="toOrderDialog" title="Convert To Order" class="modal-md">
+<app-modal [(display)]="toOrderDialog" title="{{'Convert to Order'| translate}}" class="modal-md">
     <div body>
-        <app-input [(ngModel)]="orderNo" name="orderNo" title="Order Number" type="text"></app-input>
+        <app-input [(ngModel)]="orderNo" name="orderNo" title="{{'Order Number'|translate}}" type="text"></app-input>
         <table class="py-4">
             <tr>
                 <th class="px-5">{{'Services Price'|translate}}:</th>

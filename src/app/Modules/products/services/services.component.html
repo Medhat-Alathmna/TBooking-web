@@ -5,7 +5,7 @@
 <div class="grid card h-full">
     <p-tabMenu class="col-12" [model]="tabIndex" [activeItem]="tabIndex[0]"></p-tabMenu>
     <div *ngIf="tabSelected=='service'" class=" grid col-12">
-        <p-table #kt [value]="services" (onPage)="listServices(($event?.first/rowNum)+1)" [paginator]="true"
+        <p-table #kt [value]="services" [rowHover]="true" (onPage)="listServices(($event?.first/rowNum)+1)" [paginator]="true"
             [rows]='rowNum' currentPageReportTemplate="Showing {first} to {last} entries" [scrollable]="true"
             [tableStyle]="{'width.%': 100}" scrollHeight="80vh">
             <ng-template pTemplate="caption">

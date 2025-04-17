@@ -5,7 +5,7 @@
     rejectButtonStyleClass="p-button-text" appendTo="body"></p-confirmDialog>
 <div class="grid card h-full">
     <p-table #kt [value]="orders"  (onPage)="getOrders(($event?.first/rowNum)+1)"
-    [paginator]="paginator" [rows]='rowNum' currentPageReportTemplate="Showing {first} to {last} entries"
+    [paginator]="paginator"  [rows]='rowNum' currentPageReportTemplate="Showing {first} to {last} entries"
     [scrollable]="true" [tableStyle]="{'width.%': 100}" scrollHeight="80vh">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">

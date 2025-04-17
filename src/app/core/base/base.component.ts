@@ -73,6 +73,13 @@ export class BaseComponent implements OnInit, OnDestroy {
     this.messageService.add({ severity: 'info', summary: header, detail: detail || '' });
 
   }
+  public warnMessage(header: string, detail?: string) {
+    if (!isSet(header)) {
+      header = 'Warning'
+    }
+    this.messageService.add({ severity: 'warning', summary: header, detail: detail || '' });
+
+  }
   minString(word: string, length?) {
     if (!isSet(length)) length = 25
     if (word?.length > length) {

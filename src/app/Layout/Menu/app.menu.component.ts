@@ -41,10 +41,10 @@ export class AppMenuComponent extends BaseComponent implements AfterViewInit, On
     this.model = [
       { label: 'Appointments', icon: 'pi pi-calendar-plus text-color', routerLink: ['/calender'], resource: 'Appointments' },
       { label: 'Orders', icon: 'pi pi-money-bill text-color', routerLink: ['/orders'], resource: 'Orders' },
-      { label: 'Users', icon: 'pi pi-users text-color', routerLink: ['/users'], resource: 'Users' },
       { label: 'Dashboard', icon: 'pi pi-chart-pie text-color', routerLink: ['/dashboard'], resource: 'Dashboard' },
       { label: 'Products', icon: 'pi pi-ticket text-color', routerLink: ['/products'], resource: 'Products' },
       { label: 'Mobile App', icon: 'pi pi-mobile text-color', routerLink: ['/mobile'], resource: 'Gallary' },
+      { label: 'Users', icon: 'pi pi-users text-color', routerLink: ['/users'], resource: 'Users' },
       { label: 'Settings', icon: 'pi pi-cog text-color', style: 'top: 70%;position: fixed', routerLink: ['/settings'], resource: 'SiteSittengs' },
     ];
     this.model = this.model.filter(item => this.hasPermission(item.resource, 'view'));

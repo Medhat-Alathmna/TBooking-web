@@ -125,8 +125,8 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
         {
           label: this.appointment.approved ? this.trans('Cancel the Appointment') : this.trans('Convert to Approved'),
           icon: 'pi pi-refresh',
-          command: () => {
-            this.appointment.approved ? this.confirmCancel() : this.convertApprove();this.display=false
+          command: () => {            
+            this.appointment.approved ? this.confirmCancel() : this.convertApprove() ;
           }
         },
         {
@@ -416,6 +416,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
           this.selectProducts.push({ id: item?.id, name: item?.name, stocks: item?.stocks, price: item?.price, qty: item?.qty, brand: item.brand })
         })
       }
+      this.display=false
       this.refreshLish.emit(true)
       subscription.unsubscribe()
     }, error => {
@@ -570,6 +571,7 @@ seq(){
         return
       }
       this.loading = false
+      this.successMessage(null,'This customer added at forbiden list')
       subscription.unsubscribe()
     }, error => {
       this.loading = false
