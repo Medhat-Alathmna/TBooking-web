@@ -3,6 +3,7 @@ import { isSet } from "../core/base/base.component"
 export class UserInfo {
   id:string
   address?: string
+  gender:any
   phone: string
   ext: string
   username: string

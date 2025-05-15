@@ -39,6 +39,8 @@ export class AddEditRoleComponent extends BaseComponent implements OnInit {
     resources = [
       { name: 'Appointments', actions: ['create', 'view', 'update', 'delete'] },
       { name: 'Orders', actions: ['create', 'view', 'update', 'cancel'] },
+      { name: 'PurchaseOrder', actions: ['create', 'view', 'update', 'cancel'] },
+      { name: 'Vendors', actions: ['create', 'view', 'update', 'cancel'] },
       { name: 'Users', actions: ['create', 'view', 'update', 'delete','Roles','suspend'] },
       { name: 'Roles', actions: ['create','update', 'delete'] },
       { name: 'Dashboard', actions: ['view',] },
@@ -54,6 +56,8 @@ export class AddEditRoleComponent extends BaseComponent implements OnInit {
     pages = {
       Appointments: { create: false, view: true, update: false, delete: false },
       Orders: { create: false, view: false, update: false, cancel: false },
+      PurchaseOrder: { create: false, view: false, update: false, cancel: false },
+      Vendors: { create: false, view: false, update: false, cancel: false },
       Users: { create: false, view: false, update: false, delete: false ,suspend:false,Roles:false},
       Roles: { create: false, update: false, delete: false },
       Dashboard: { view: false},
@@ -71,7 +75,88 @@ export class AddEditRoleComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
     this.selectedRole = this.detailMode ? this.selectedRole.attributes : new RoleInfo()
     if ( this.detailMode) {
-      this.pages= this.selectedRole.pages
+      if (this.selectedRole.pages !==this.pages) {
+        this.pages={
+          "Roles": {
+              "create": true,
+              "delete": true,
+              "update": true
+          },
+          "Users": {
+              "view": true,
+              "Roles": true,
+              "create": true,
+              "delete": true,
+              "update": true,
+              "suspend": true
+          },
+          "Orders": {
+              "view": true,
+              "cancel": true,
+              "create": true,
+              "update": true
+          },
+          "PurchaseOrder": {
+              "view": true,
+              "cancel": true,
+              "create": true,
+              "update": true
+          },
+          "Vendors": {
+              "view": true,
+              "cancel": true,
+              "create": true,
+              "update": true
+          },
+          "Gallary": {
+              "view": true,
+              "create": true,
+              "delete": true,
+              "update": true
+          },
+          "Products": {
+              "view": true,
+              "create": true,
+              "delete": true,
+              "update": true,
+              "Services": true
+          },
+          "Services": {
+              "create": true,
+              "delete": true,
+              "update": true
+          },
+          "Dashboard": {
+              "view": true
+          },
+          "Appointments": {
+              "view": true,
+              "create": true,
+              "delete": true,
+              "update": true
+          },
+          "SiteSittengs": {
+              "view": true,
+              "update": true,
+              "Notifications": true,
+              "ForbbidenNumber": true,
+              "AppointmentsSettings": true
+          },
+          "Notifications": {
+              "create": true,
+              "delete": true,
+              "update": true
+          },
+          "ForbbidenNumber": {
+              "create": true,
+              "delete": true,
+              "update": true
+          }
+      }
+      }else{
+        this.pages= this.selectedRole.pages
+
+      }
       this.selectedRole.id=this.id
     }
     // this.selectedRole.description=this.selectedRole.attributes.description

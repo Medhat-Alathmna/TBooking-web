@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild , forwardRef,ChangeDetectorRef} from '@angular/core';
 import { ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
@@ -15,11 +15,11 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: InputComponent,
+          useExisting: forwardRef(() => InputComponent),
       multi: true
     }]
 })
-export class InputComponent implements ControlValueAccessor {
+export class InputComponent implements ControlValueAccessor,AfterViewInit {
   
   @Input() title: string
   @Input() number: number =0
@@ -31,16 +31,28 @@ export class InputComponent implements ControlValueAccessor {
   @Input() placeholder: string
   @Input() hideTitle: boolean
   @Input() disabled: boolean
+  @Input() focus: boolean=false
 
   @ViewChild('op') op: any;
+  @ViewChild('inputShared') inputShared: ElementRef<HTMLInputElement>;
 
-  constructor() { }
+  constructor(private cdr: ChangeDetectorRef) { }
   innervalue
   innernumber
  
 
   private onTouchedCallback: () => void = () => {};
   private onChangeCallback: (_: any) => void = () => {};
+
+  ngAfterViewInit(): void {
+    if (this.focus) {
+       setTimeout(() => {
+      this.inputShared.nativeElement.select();
+          this.cdr.detectChanges();
+
+    });
+    }
+  }
 
   get value(): any {
     return this.innervalue;
@@ -75,7 +87,16 @@ export class InputComponent implements ControlValueAccessor {
     if (event.keyCode === 13) {
       this.op.hide()
       this.value=+this.number
-      
+      this.cdr.detectChanges();
+
+    }
+  }
+  public selectInput() {
+    if (this.focus) {
+      setTimeout(() => {
+        this.inputShared.nativeElement.select();
+        this.cdr.detectChanges();
+      });
     }
   }
 

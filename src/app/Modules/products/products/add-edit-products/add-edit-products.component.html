@@ -81,7 +81,7 @@
             </div>
 
             <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="selectedProduct.buyPrice" name="buyPrice" title="{{'Sell Price'|translate}}"
+                <app-input [(ngModel)]="selectedProduct.sellPrice" name="sellPrice" title="{{'Sell Price'|translate}}"
                     type="number"></app-input>
             </div>
             <div class="lg:col-4 sm:col-6 ">
@@ -89,7 +89,7 @@
                     type="text"></app-input>
             </div>
             <div class="lg:col-4 sm:col-6 ">
-                <app-input [(ngModel)]="selectedProduct.stocks" [number]="number" name="stocks"
+                <app-input [(ngModel)]="selectedProduct.stocks" disabled [number]="number" name="stocks"
                     title="{{'Stock'|translate}}" type="number"></app-input>
             </div>
             <div class="col-12 py-4" style="flex-direction: row;display: flex;flex-wrap: wrap;" *ngIf="selectedProduct.category && selectedProduct.category.length">

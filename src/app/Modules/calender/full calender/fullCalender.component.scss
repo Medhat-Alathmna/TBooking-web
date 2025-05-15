@@ -44,3 +44,6 @@ display: inline !important;
     display: flex;
     justify-content: space-between
   }
+  ::ng-deep .fc-button-group{
+    direction: initial;
+  }

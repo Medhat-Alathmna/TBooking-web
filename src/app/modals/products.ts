@@ -5,9 +5,9 @@ export class Products {
     name: string;
     barcode?: string;
     notes?: string;
-    price: number;
+    price?: number;
     stocks?: number;
-    buyPrice?: number;
+    sellPrice?: number;
     qty?: number;
     brand?: any;
     suppliers?: any;

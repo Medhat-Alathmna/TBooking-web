@@ -17,6 +17,7 @@ export class UsersService {
       username: user.username,
       password: user.password,
       phone: user.phone,
+      gender:user.gender?.name,
       privilege: user.privilege.id,
       role: {
         connect: [{ id: 3 }]
@@ -32,6 +33,7 @@ export class UsersService {
         username:user?.username, 
         password:user?.password, 
         phone: user?.phone,
+        gender:user?.gender?.name,
         privilege: user.privilege.id,
     }
     return this.api.put<UserInfo>(`/users/${user.id}`,body);

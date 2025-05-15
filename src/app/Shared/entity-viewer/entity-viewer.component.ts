@@ -28,6 +28,6 @@ export class EntityViewerComponent implements OnInit {
   ngOnInit(): void {
     if (this.showAll==true) {
       this.show = this.entity?.value?.length
-    }
+    }    
   }
 }

@@ -34,8 +34,16 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
   selectRold
   roles: any[] = []
   acions: any = []
+  genders: any[] = [
+    {name:'Male',src:'./assets/images/man.jpg'},
+    {name:'Female',src:'./assets/images/woman.png'}
+  ]
   roleMode: boolean = false
   selectedPrev
+  countries: any[] | undefined;
+
+  selectedCountry: string | undefined;
+
   @Input() selectedUser: UserInfo
   @Input() display: boolean = false
   @Input() detailMode: boolean = false
@@ -47,7 +55,9 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
     public translates: TranslateService,) { super(null,translates) }
 
   ngOnInit(): void {
+   
     // this.selectedUser.role=this.roles[0]
+    this.selectedUser.gender= this.selectedUser.gender=='Male'?{name:'Male',src:'./assets/images/man.jpg'}:{name:'Female',src:'./assets/images/woman.png'}
     if (this.detailMode) {
       this.selectedUser.createdAt = moment(this.selectedUser.createdAt).format('YYYY-MM-DD HH:ss')
       this.selectRold = this.selectedUser.role
@@ -87,7 +97,7 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
       this.displayChange.emit(false)
     }, 300);
   }
-  createUser() {
+  createUser() {    
     this.loading = true
     const subscription = this.userService.createUser(this.selectedUser).subscribe((data) => {
       if (!isSet(data)) {
@@ -208,9 +218,7 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
     })
   }
   selectRole(event) {
-    this.selectedUser.privilege = event 
-    console.log(event);
-    
+    this.selectedUser.privilege = event     
     this.roleMode = true
 
   }

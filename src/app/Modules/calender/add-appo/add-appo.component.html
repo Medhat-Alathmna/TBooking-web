@@ -92,7 +92,7 @@
                 <span class="text-3xl ont-semibold font-bold" translate>Customer Details </span>
             </div>
             <div class="lg:col-4 sm:col-6">
-                <app-input [(ngModel)]="appointment.firstName" name="firstName" [title]="'First Name'|translate"
+                <app-input [focus]="true" [(ngModel)]="appointment.firstName" name="firstName" [title]="'First Name'|translate"
                     [required]="true"></app-input>
             </div>
             <div class="lg:col-4 sm:col-6 ">

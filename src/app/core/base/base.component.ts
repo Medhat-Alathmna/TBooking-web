@@ -115,6 +115,12 @@ export class BaseComponent implements OnInit, OnDestroy {
     }    
     return new Blob([bytes], { type: `${doctype}` });
   }
+   onKeyEnter(event,temp) {//test
+    if (event.keyCode === 13) {
+     temp=false
+
+    }
+  }
 }
 export const isSet = (value: any): boolean => {
   return value !== null && value !== undefined && value !== '' && value?.length !== 0 ;;

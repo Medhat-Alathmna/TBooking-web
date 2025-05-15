@@ -15,6 +15,8 @@ import { DashboardModule } from './Modules/dashboard/dashboard.module';
 import { ProductsModule } from './Modules/products/services.module';
 import { MobileAppModule } from './Modules/mobile-app/mobile-app.module';
 import { PermissionGuard } from './Modules/auth/guards/permission.guard';
+import { PurchaseOrderModule } from './Modules/purchase-order/purchase-order.module';
+import { VendorsModule } from './Modules/vendors/vendors.module';
 
 
 
@@ -52,6 +54,14 @@ import { PermissionGuard } from './Modules/auth/guards/permission.guard';
                     {
                         path: 'settings', loadChildren: () => SettingsModule, canActivate: [PermissionGuard],
                         data: { resource: 'SiteSittengs', action: 'view' }
+                    },
+                    {
+                        path: 'purchase-order', loadChildren: () => PurchaseOrderModule, canActivate: [PermissionGuard],
+                        data: { resource: 'PurchaseOrder', action: 'view' }
+                    },
+                    {
+                        path: 'vendors', loadChildren: () => VendorsModule, canActivate: [PermissionGuard],
+                        data: { resource: 'Vendors', action: 'view' }
                     },
                     {
                         path: 'dashboard', loadChildren: () => DashboardModule, canActivate: [PermissionGuard],

@@ -1,6 +1,7 @@
 <app-loading *ngIf="loading" display="full"></app-loading>
 <p-toast position="top-right"></p-toast>
-<p-confirmDialog containerStyleClass="vw" acceptButtonStyleClass="p-button-danger" acceptIcon="pi pi-trash"></p-confirmDialog>
+<p-confirmDialog containerStyleClass="vw" acceptButtonStyleClass="p-button-danger"
+    acceptIcon="pi pi-trash"></p-confirmDialog>
 <app-sidebar [display]="display" (displayChange)="onHide()">
     <div header>
         <div class="flex justify-content-between flex-wrap ">
@@ -33,19 +34,21 @@
                 </div>
             </div>
             <div class="flex align-items-center justify-content-center mx-2 ">
-                    <div class="flex align-items-center justify-content-center mx-2 ">
-                        <button *ngIf="detailMode" (click)="menu.toggle($event)" pButton pRipple type="button"
-                            icon="pi pi-ellipsis-v"
-                            class="p-button-rounded mr-2 p-button-secondary p-button-lg p-button-text btn-white "></button>
-                        <p-menu #menu id="meetingActinos" styleClass="meetingActinos" [popup]="true" appendTo="body"
-                            [model]="acions"></p-menu>
-                            <button *ngIf="!detailMode&&permissionService.hasPermission('Users', 'create')" pButton [disabled]="form?.invalid || !selectedUser.username ||!selectedUser.email || !selectedUser.password || !selectedUser.confirmPassword || !selectedUser.privilege" pRipple type="button"
-                            [label]="'Save'|translate" icon="pi pi-check " (click)="createUser()"
-                            class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
-                            <button *ngIf="detailMode&&permissionService.hasPermission('Users', 'update')" pButton [disabled]=" !selectedUser.username ||!selectedUser.email  || !selectRold" pRipple type="button"
-                            [label]="'Save'|translate" icon="pi pi-check " (click)="updateUser()"
-                            class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
-                    </div>
+                <div class="flex align-items-center justify-content-center mx-2 ">
+                    <button *ngIf="detailMode" (click)="menu.toggle($event)" pButton pRipple type="button"
+                        icon="pi pi-ellipsis-v"
+                        class="p-button-rounded mr-2 p-button-secondary p-button-lg p-button-text btn-white "></button>
+                    <p-menu #menu id="meetingActinos" styleClass="meetingActinos" [popup]="true" appendTo="body"
+                        [model]="acions"></p-menu>
+                    <button *ngIf="!detailMode&&permissionService.hasPermission('Users', 'create')" pButton
+                        [disabled]="form?.invalid || !selectedUser.username ||!selectedUser.email || !selectedUser.password || !selectedUser.confirmPassword || !selectedUser.privilege"
+                        pRipple type="button" [label]="'Save'|translate" icon="pi pi-check " (click)="createUser()"
+                        class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
+                    <button *ngIf="detailMode&&permissionService.hasPermission('Users', 'update')" pButton
+                        [disabled]=" !selectedUser.username ||!selectedUser.email  || !selectRold" pRipple type="button"
+                        [label]="'Save'|translate" icon="pi pi-check " (click)="updateUser()"
+                        class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
+                </div>
 
             </div>
         </div>
@@ -56,19 +59,24 @@
                 <span class="text-3xl ont-semibold font-bold" translate>User Details </span>
             </div>
             <div class="lg:col-6 sm:col-12">
-                <app-input  [(ngModel)]="selectedUser.username" name="username" [title]="'User Name'|translate" [required]="true"></app-input>
+                <app-input [(ngModel)]="selectedUser.username" name="username" [title]="'User Name'|translate"
+                    [required]="true"></app-input>
             </div>
             <div class="lg:col-6 sm:col-12">
-                <app-input type="email" [(ngModel)]="selectedUser.email" name="email" [title]="'Email'|translate" [required]="true"></app-input>
+                <app-input type="email" [(ngModel)]="selectedUser.email" name="email" [title]="'Email'|translate"
+                    [required]="true"></app-input>
             </div>
             <div class="lg:col-6 sm:col-12">
-                <app-input type="text" [(ngModel)]="selectedUser.password" name="password" [title]="'Password'|translate" [required]="true"></app-input>
+                <app-input type="text" [(ngModel)]="selectedUser.password" name="password"
+                    [title]="'Password'|translate" [required]="true"></app-input>
             </div>
             <div class="lg:col-6 sm:col-12">
-                <app-input type="text" [(ngModel)]="selectedUser.confirmPassword" name="confirmPassword" [title]="'Confirm Password'|translate" [required]="true"></app-input>
+                <app-input type="text" [(ngModel)]="selectedUser.confirmPassword" name="confirmPassword"
+                    [title]="'Confirm Password'|translate" [required]="true"></app-input>
             </div>
             <div class="lg:col-6 sm:col-12">
-                <app-input type="text" [(ngModel)]="selectedUser.phone" [title]="'Phone'|translate" name="phone"></app-input>
+                <app-input type="text" [(ngModel)]="selectedUser.phone" [title]="'Phone'|translate"
+                    name="phone"></app-input>
             </div>
             <!-- <div class="lg:col-4 sm:col-6">
                 <app-input type="text" [(ngModel)]="selectedUser.address" name="title" title="Address" [required]="false"></app-input>
@@ -76,19 +84,56 @@
             <div class="lg:col-6 sm:col-12">
                 <!-- <app-dropdown [(ngModel)]="selectRold" optionLabel="name" optionValue="id" [required]="true" name="selectRold" [filter]="false"
                     title="Role" [data]="roles" [showColor]="false"></app-dropdown> -->
-                    <div class="block my-1">
-                        <ng-container >
-                            <div class="text-lg font-semibold mb-2">
-                                {{'Role'|translate}}
-                            </div>
-                        </ng-container>
-                        <p-dropdown *ngIf="!roleMode" [required]="true" [(ngModel)]="selectedUser.privilege" placeholder="Select a Role" appendTo="body" [filter]="true" [options]="roles" (onChange)="selectRole($event.value)"
-                        optionLabel="role"></p-dropdown>
-                        <p-button *ngIf="roleMode" [label]="selectedUser.privilege?.role" [style]="{'width': '46vw'}" (click)="roleMode=false" styleClass="p-button-outlined p-button-success"></p-button>
+                <div class="block my-1">
+                    <ng-container>
+                        <div class="text-lg font-semibold mb-2">
+                            {{'Role'|translate}}
+                        </div>
+                    </ng-container>
+                    <p-dropdown *ngIf="!roleMode" [required]="true" [(ngModel)]="selectedUser.privilege" name="role"
+                       placeholder="Select a Role" appendTo="body"
+                        [options]="roles" (onChange)="selectRole($event.value)" optionLabel="role"></p-dropdown>
+                    <p-button *ngIf="roleMode" [label]="selectedUser.privilege?.role" [style]="{'width': '46vw'}"
+                        (click)="roleMode=false" styleClass="p-button-outlined p-button-success"></p-button>
 
-                    </div>
+                </div>
+            </div>
+            <div class="lg:col-6 sm:col-12">
+                <div class="block my-1">
+                    <ng-container>
+                        <div class="text-lg font-semibold mb-2">
+                            {{'Gender'|translate}}
+                        </div>
+                    </ng-container>
+                    <p-dropdown 
+                    [options]="genders" 
+                    [(ngModel)]="selectedUser.gender"
+                    optionLabel="name"
+                    appendTo="body"
+                    name="gender"
+                    placeholder="Select a Gender">
+                        <ng-template pTemplate="selectedItem">
+                            <div class="flex align-items-center gap-2" *ngIf="selectedUser.gender">
+                                <img 
+                                    [src]="selectedUser.gender.src"
+                                    style="width: 18px" />
+                                <div style="font-size: large;">{{ selectedUser.gender.name |translate}}</div>
+                            </div>
+                        </ng-template>
+                        <ng-template let-gender pTemplate="item">
+                            <div class="flex align-items-center gap-2">
+                                <img 
+                                [src]="gender.src"
+                                    style="width: 18px" />
+                                <div>{{ gender.name |translate}}</div>
+                            </div>
+                        </ng-template>
+                </p-dropdown>
+
+                </div>
             </div>
            
+
         </div>
     </form>
 

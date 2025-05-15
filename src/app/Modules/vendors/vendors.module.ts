@@ -1,0 +1,28 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { VendorsListComponent } from './vendors-list/vendors-list.component';
+import { Routes, RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { PrimengComponentsModule } from 'src/app/primeng-components.module';
+import { VendorsFormComponent } from './vendors-form/vendors-form.component';
+
+
+
+export const routes: Routes = [
+  { path: '', component: VendorsListComponent },
+
+];
+
+
+@NgModule({
+  declarations: [VendorsListComponent],
+  imports: [
+      CommonModule,
+        RouterModule.forChild(routes),
+        PrimengComponentsModule,
+        TranslateModule,
+        VendorsFormComponent
+    
+  ]
+})
+export class VendorsModule { }

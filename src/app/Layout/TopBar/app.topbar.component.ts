@@ -17,12 +17,13 @@ export class AppTopBarComponent extends BaseComponent implements OnDestroy, OnIn
 
     subscription: Subscription;
     items: MenuItem[];
-    user = {displayName:this.userAuth.username,photo:null}
+    user = {displayName:this.userAuth.username,gender:this.userAuth.gender}
     currentLogo: any
     showPriv:boolean=false
     resources = [
         { name: 'Appointments', actions: ['create', 'view', 'update', 'delete'] },
         { name: 'Orders', actions: ['create', 'view', 'update', 'cancel'] },
+        { name: 'Vendors', actions: ['create', 'view', 'update', 'cancel'] },
         { name: 'Users', actions: ['create', 'view', 'update', 'delete','Roles','suspend'] },
         { name: 'Roles', actions: ['create','update', 'delete'] },
         { name: 'Dashboard', actions: ['view',] },
@@ -38,6 +39,7 @@ export class AppTopBarComponent extends BaseComponent implements OnDestroy, OnIn
       pages = {
         Appointments: { create: false, view: true, update: false, delete: false },
         Orders: { create: false, view: false, update: false, cancel: false },
+        Vendors: { create: false, view: false, update: false, delete: false },
         Users: { create: false, view: false, update: false, delete: false ,suspend:false,Roles:false},
         Roles: { create: false, update: false, delete: false },
         Dashboard: { view: false},
