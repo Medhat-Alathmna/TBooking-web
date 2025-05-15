@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild,OnChanges, SimpleChanges  } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild,OnChanges, SimpleChanges, ChangeDetectionStrategy  } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { BaseComponent, isSet } from 'src/app/core/base/base.component';
@@ -23,6 +23,8 @@ import { PermissionService } from 'src/app/core/permission.service';
   selector: 'app-purchase-order-form',
   templateUrl: './purchase-order-form.component.html',
   styleUrls: ['./purchase-order-form.component.scss'],
+      changeDetection: ChangeDetectionStrategy.OnPush,
+  
   standalone: true,
   imports: [FormsModule,
     TranslateModule,
@@ -34,7 +36,7 @@ import { PermissionService } from 'src/app/core/permission.service';
     LoadingComponent,
   ],
 })
-export class PurchaseOrderFormComponent extends BaseComponent implements OnInit,OnChanges  {
+export class PurchaseOrderFormComponent extends BaseComponent implements OnInit  {
 
  
   vendors: Vendor[] | any
@@ -59,17 +61,19 @@ export class PurchaseOrderFormComponent extends BaseComponent implements OnInit,
   async ngOnInit(): Promise<void> {
     await this.getVendorsList(1,null)
    await this.getProducts(1,null)
-  }
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['po'] && changes['po'].currentValue) {      
-      this.getPO(changes['po'].currentValue.id)
-    }else{
-       this.po = new PurchaseOrder
+   console.log(this.po);
+   
+   if (isSet(this.po)) {
+    this.getPO(this.po)
+    
+   }else{
+ this.po = new PurchaseOrder
       this.selectProducts = []
       this.payments = []
       this.po.selectedVendor = null
-    }
+   }
   }
+
   onHide() {
 
     this.display = false
@@ -233,6 +237,7 @@ export class PurchaseOrderFormComponent extends BaseComponent implements OnInit,
         this.payments?.map(x => {
          totalPayments += JSON.parse(x?.pay) 
         })        
+console.log(totalPayments);
 
         return {
           productsAmount,totalPayments

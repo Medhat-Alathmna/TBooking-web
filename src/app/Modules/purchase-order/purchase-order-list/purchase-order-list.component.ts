@@ -11,6 +11,7 @@ import { DatePipe } from '@angular/common';
 })
 export class PurchaseOrderListComponent extends BaseComponent implements OnInit {
   purchaseOrders
+  selectedPo
   rowNum: any = 10
   currentPage: any = 1
   total
@@ -111,6 +112,7 @@ export class PurchaseOrderListComponent extends BaseComponent implements OnInit 
       })
     }
     showPurSide(){
+      this.selectedPo=null
       this.showSidebar=true
       this.detailMode=false
     }
@@ -118,7 +120,7 @@ export class PurchaseOrderListComponent extends BaseComponent implements OnInit 
     openPO(id){
       this.showSidebar=true
       this.detailMode=true
-      this.purchaseOrders.id=id.id
+      this.selectedPo=id.id
 
     }
     clearAllFillter() {

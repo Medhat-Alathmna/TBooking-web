@@ -223,4 +223,4 @@
     </p-table>
 </div>
 
-<app-purchase-order-form *ngIf="showSidebar" [po]="purchaseOrders"  (refreshLish)="getPurchaseOrders(1,null)" [(display)]="showSidebar" [detailMode]="detailMode"></app-purchase-order-form>
+<app-purchase-order-form *ngIf="showSidebar" [po]="selectedPo"  (refreshLish)="getPurchaseOrders(1,null)" [(display)]="showSidebar" [detailMode]="detailMode"></app-purchase-order-form>

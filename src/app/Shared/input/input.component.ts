@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Input, ViewChild , forwardRef,ChangeDetectorRef} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild , forwardRef,ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
 import { ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
@@ -11,6 +11,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss'],
   standalone:true,
+    changeDetection: ChangeDetectionStrategy.OnPush,
   imports:[InputTextModule,CommonModule,FormsModule,TranslateModule,OverlayPanelModule,ButtonModule ],
   providers: [
     {
