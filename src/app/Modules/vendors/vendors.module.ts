@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { PrimengComponentsModule } from 'src/app/primeng-components.module';
 import { VendorsFormComponent } from './vendors-form/vendors-form.component';
+import { StaticsComponent } from './statics/statics.component';
 
 
 
@@ -21,6 +22,7 @@ export const routes: Routes = [
         RouterModule.forChild(routes),
         PrimengComponentsModule,
         TranslateModule,
+        StaticsComponent,
         VendorsFormComponent
     
   ]

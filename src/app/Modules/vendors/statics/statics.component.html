@@ -1,0 +1,100 @@
+<div class="grid trs">
+    <div class="row p-3">
+        <span class="text-3xl ont-semibold font-bold mx-2" translate>Vendor Statistics</span>
+    </div>
+    <div class="col-12 flex">
+
+        <div class=" col-3">
+            <div style="background: linear-gradient(131deg, #007f136e, transparent);"
+                class="card flex flex-row justify-content-evenly align-items-center">
+                <div class="flex">
+                    <i class="pi pi-wallet text-4xl text-green-400"></i>
+                </div>
+                <div class="flex-column">
+                    <span class="text-lg font-semibold" translate>Paid Amount</span>
+                    <div class="text-2xl font-bold text-green-600 mt-2">
+                        {{data?.cash| number:'1.2-2'}} {{getCurrencySymbol(cur.code)}}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class=" col-3">
+            <div style="background: linear-gradient(270deg, #007f136e, transparent);"
+                class="card flex flex-row justify-content-evenly align-items-center">
+                <div class="flex">
+                    <i class="pi pi-ticket text-4xl text-green-400"></i>
+                </div>
+                <div class="flex-column">
+                    <span class="text-lg font-semibold" translate>Purchase Orders</span>
+                    <div class="text-2xl font-bold text-green-600 mt-2">
+                        {{data?.count}}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class=" col-3">
+            <div style="background: linear-gradient(131deg, #007f136e, transparent);"
+                class="card flex flex-row justify-content-evenly align-items-center">
+                <div class="flex">
+                    <i class="pi pi-dollar text-4xl text-green-400"></i>
+                </div>
+                <div class="flex-column">
+                    <span class="text-lg font-semibold" translate>Cost Price</span>
+                    <div class="text-2xl font-bold text-green-600 mt-2">
+                        {{data?.cost| number:'1.2-2'}} {{getCurrencySymbol(cur.code)}}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class=" col-3">
+            <div style="background: linear-gradient(270deg, #007f136e, transparent);"
+                class="card flex flex-row justify-content-evenly align-items-center">
+                <div class="flex">
+                    <i class="pi pi-wallet text-4xl text-green-400"></i>
+                </div>
+                <div class="flex-column">
+                    <span class="text-lg font-semibold" translate>Cash Amount</span>
+                    <div class="text-2xl font-bold text-green-600 mt-2">
+                        $12,345.67
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-12">
+       <div class="col-12 lg:col-6">
+        <div class="grid flex-column grid-nogutter">
+            <div class="col-12">
+                <div class="card cardColor">
+                    <div class="row flex justify-content-between">
+
+                    <div class="col-6">
+
+                        <h5>{{"Top 5 Products"| translate}}</h5>
+                    </div>
+                    <div class="col-6" style="display: flex;align-items: flex-end;flex-direction: column">
+                        <h5 style="font-size: small">{{'Date'|translate}} :{{fromDate | date:'YYYY-MM-dd'}}</h5>
+                        <h5 style="font-size: small"
+                            *ngIf="(fromDate| date:'YYYY-MM-dd') != (toDate| date:'YYYY-MM-dd')">{{'To Date'|translate}}
+                            :{{toDate | date:'YYYY-MM-dd'}}</h5>
+                    </div>
+                    </div>
+                    <!-- <p-chart type="bar" *ngIf="results.topServices?.length" [data]="topServicesChart"
+                        [options]="basicOptions" height="51vh"></p-chart>
+                    <div style="height:51vh" *ngIf="!results.topServices?.length" class="text-center">
+                        <h4 style="padding-top: 21vh;" translate>
+                            <i class="mx-2 pi pi-exclamation-circle text-xl font-bold" 
+                                style=" color:var(--danger)  !important;"></i>
+                            No Data to View Chart
+                        </h4>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>

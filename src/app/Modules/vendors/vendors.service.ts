@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/core/api.service';
+import { isSet } from 'src/app/core/base/base.component';
 import { Vendor } from 'src/app/modals/vendors';
 
 @Injectable({
@@ -65,4 +66,9 @@ export class VendorsService {
     getVendor(id): Observable<any> {
       return this.api.get<any>(`vendors/${id}?populate=*`);
     }
+    getVendorStatics(id,from,to): Observable<any> {
+       const date = isSet(from) ? `?startDate=${from.toISOString()}&endDate=${to.toISOString()}` : ''
+        return this.api.get<any>(`/statics/${id}${date}`);
+    }
+    
 }

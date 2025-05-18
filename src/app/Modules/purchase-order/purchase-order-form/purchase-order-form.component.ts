@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild,OnChanges, SimpleChanges, ChangeDetectionStrategy  } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild,OnChanges, SimpleChanges, ChangeDetectionStrategy, ChangeDetectorRef  } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { BaseComponent, isSet } from 'src/app/core/base/base.component';
@@ -22,9 +22,7 @@ import { PermissionService } from 'src/app/core/permission.service';
 @Component({
   selector: 'app-purchase-order-form',
   templateUrl: './purchase-order-form.component.html',
-  styleUrls: ['./purchase-order-form.component.scss'],
-      changeDetection: ChangeDetectionStrategy.OnPush,
-  
+  styleUrls: ['./purchase-order-form.component.scss'],  
   standalone: true,
   imports: [FormsModule,
     TranslateModule,
@@ -55,14 +53,12 @@ export class PurchaseOrderFormComponent extends BaseComponent implements OnInit 
   @Output() refreshLish: EventEmitter<boolean> = new EventEmitter();
   @ViewChild('payInput') payInput:InputComponent
 
-  constructor(public translates: TranslateService, public messageService: MessageService,
+  constructor(public translates: TranslateService, public messageService: MessageService,private cdr: ChangeDetectorRef,
     private calenderService: CalenderService,private purchaseOrderService:PurchaseOrderService,private confirmationService: ConfirmationService,public permisionServices:PermissionService,) {super(messageService,translates) }
 
   async ngOnInit(): Promise<void> {
     await this.getVendorsList(1,null)
-   await this.getProducts(1,null)
-   console.log(this.po);
-   
+   await this.getProducts(1,null)   
    if (isSet(this.po)) {
     this.getPO(this.po)
     
@@ -236,9 +232,8 @@ export class PurchaseOrderFormComponent extends BaseComponent implements OnInit 
         })
         this.payments?.map(x => {
          totalPayments += JSON.parse(x?.pay) 
-        })        
-console.log(totalPayments);
-
+        })  
+      
         return {
           productsAmount,totalPayments
     

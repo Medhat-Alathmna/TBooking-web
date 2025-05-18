@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Vendor } from 'src/app/modals/vendors';
@@ -14,6 +14,8 @@ import { VendorsService } from '../vendors.service';
 import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { PermissionService } from 'src/app/core/permission.service';
+import { StaticsComponent } from '../statics/statics.component';
+import { Menu } from 'primeng/menu';
 
 @Component({
   selector: 'app-vendors-form',
@@ -26,34 +28,50 @@ import { PermissionService } from 'src/app/core/permission.service';
     InputComponent,
     SidebarComponent,
     EntityViewerComponent,
+    StaticsComponent,
     ModalComponent,
     InputMaskComponent],
 })
 export class VendorsFormComponent extends BaseComponent implements OnInit {
 
-  vendorTypes=[]
-  vendorTypeDialog=false
+
+  vendor: Vendor | any
+  vendorTypes = []
+  vendorTypeDialog = false
   headerDialog
   vendorName
-  vendorEdit=false
+  vendorEdit = false
+  formTypes
+
+  acions = []
+
 
   @Input() id
-   vendor: Vendor | any
-
   @Input() display: boolean = false
   @Input() detailMode: boolean = false
-
   @Output() displayChange: EventEmitter<boolean> = new EventEmitter();
   @Output() refreshLish: EventEmitter<boolean> = new EventEmitter();
-  constructor(private vendorService:VendorsService,public translates: TranslateService, public messageService: MessageService, public permissionService: PermissionService,
-      private confirmationService: ConfirmationService,) {super(messageService, translates) }
+  @ViewChild('menu') menu: Menu
+  constructor(private vendorService: VendorsService, public translates: TranslateService, public messageService: MessageService, public permissionService: PermissionService,
+    private confirmationService: ConfirmationService,) { super(messageService, translates) }
 
   ngOnInit(): void {
+    this.formTypes = 'vendor'
+    this.acions = [
+      {
+        label: this.formTypes == 'vendor' ? this.trans('Statistics') : this.trans('Details'),
+        icon: 'pi pi-chart-pie',
+        command: (tt) => {          
+          this.formTypes = this.formTypes =='vendor' ? 'statics' : 'vendor'
+         
+        }
+      },
+    ]
     if (!this.detailMode || !this.id) {
-      this.vendor=new Vendor
+      this.vendor = new Vendor
       this.getVendorTypes()
 
-    }else{
+    } else {
       this.getVendor(this.id)
     }
   }
@@ -75,29 +93,29 @@ export class VendorsFormComponent extends BaseComponent implements OnInit {
     })
   }
 
-   getVendorTypes() {
-      const subscription = this.vendorService.getVendorType().subscribe((results) => {
-        if (!isSet(results)) {
-          return
-        }
-        this.vendorTypes = []
-        this.vendorTypes.push({
-          id: 0, name: `<span class="font-bold text-primary">${this.trans('New Vendor Type')}</span>`
-        })
-        results.data.map(item => {
-          this.vendorTypes.push({
-            id: item?.id, name: item?.attributes?.name
-          })
-        })
-        if (this.vendor.vendor_type) {
-          this.vendor.vendorType = this.vendorTypes.find(x => x.id == this.vendor.vendor_type.data.id)
-        }
-  
-        subscription.unsubscribe()
-      }, error => {
-        subscription.unsubscribe()
+  getVendorTypes() {
+    const subscription = this.vendorService.getVendorType().subscribe((results) => {
+      if (!isSet(results)) {
+        return
+      }
+      this.vendorTypes = []
+      this.vendorTypes.push({
+        id: 0, name: `<span class="font-bold text-primary">${this.trans('New Vendor Type')}</span>`
       })
-    }
+      results.data.map(item => {
+        this.vendorTypes.push({
+          id: item?.id, name: item?.attributes?.name
+        })
+      })
+      if (this.vendor.vendor_type) {
+        this.vendor.vendorType = this.vendorTypes.find(x => x.id == this.vendor.vendor_type.data.id)
+      }
+
+      subscription.unsubscribe()
+    }, error => {
+      subscription.unsubscribe()
+    })
+  }
   onHide() {
 
     this.display = false
@@ -159,14 +177,14 @@ export class VendorsFormComponent extends BaseComponent implements OnInit {
     });
   }
 
-  getVendor(id){
+  getVendor(id) {
     this.loading = true
     const subscription = this.vendorService.getVendor(id).subscribe((data) => {
       if (!isSet(data)) {
         return
       }
-     this.vendor= data.data.attributes
-     this.getVendorTypes()
+      this.vendor = data.data.attributes
+      this.getVendorTypes()
 
       subscription.unsubscribe()
     }, error => {
@@ -174,7 +192,9 @@ export class VendorsFormComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     })
   }
-  updateVendor(){
+
+
+  updateVendor() {
     this.loading = true
     const subscription = this.vendorService.updateVendor(this.vendor, this.id, 'update').subscribe((data) => {
       if (!isSet(data)) {

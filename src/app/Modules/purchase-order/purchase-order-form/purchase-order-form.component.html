@@ -155,7 +155,7 @@
                                     </td>
     
                                     <td>
-                                        <span class="  font-bold">
+                                        <span *ngIf="po.status =='Draft'&& !po.addedToStuck" class="  font-bold">
                                             <button pButton pRipple type="button" (click)="deleteValue(s)"
                                                 icon="pi pi-trash "
                                                 class="p-button-rounded p-button-danger p-button-text  "></button>

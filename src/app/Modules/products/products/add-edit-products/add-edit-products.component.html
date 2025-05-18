@@ -237,7 +237,12 @@
                 </div>
             </div>
         </div>
+         <div [class]="lang=='en'?'fixed rightFilter':'fixed leftFilter'" *ngIf="detailMode">
+        <p-speedDial appendTo="body" buttonClassName="dashbored-btn" showIcon="pi pi-filter "
+        [model]="items"></p-speedDial>
+</div>
     </form>
+   
 </app-sidebar>
 
 <p-dialog modal="true" [resizable]="false" [draggable]="false" [(visible)]="showInfoDialog"
@@ -446,12 +451,7 @@
 </app-modal>
 
 
-<div *ngIf="detailMode">
-    <div [class]="lang=='en'?'fixed rightFilter':'fixed leftFilter'">
-        <p-speedDial appendTo="body" buttonClassName="dashbored-btn" showIcon="pi pi-filter "
-            [model]="items"></p-speedDial>
-    </div>
-</div>
+
 <app-from-to-date (displayChange)="displayDate=false" [(display)]="displayDate"
     (dateChange)="productInfo($event)"></app-from-to-date>
 
