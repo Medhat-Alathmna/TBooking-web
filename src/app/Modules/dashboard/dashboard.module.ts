@@ -7,6 +7,7 @@ import { LoadingComponent } from 'src/app/Shared/loading/loading.component';
 import { PrimengComponentsModule } from 'src/app/primeng-components.module';
 import { ModalComponent } from 'src/app/Shared/modal/modal.component';
 import { AddEditOrderComponent } from '../orders/add-edit-order/add-edit-order.component';
+import { PurchaseOrderFormComponent } from '../purchase-order/purchase-order-form/purchase-order-form.component';
 
 
 
@@ -26,6 +27,7 @@ export const routes: Routes = [
     PrimengComponentsModule,
     TranslateModule,
     AddEditOrderComponent,
+    PurchaseOrderFormComponent,
     ModalComponent,
     LoadingComponent
   ]

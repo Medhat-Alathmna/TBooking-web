@@ -8,82 +8,104 @@ import * as moment from 'moment';
 import { Router } from '@angular/router';
 import { OrdersService } from '../../orders/orders.service';
 import { Order } from 'src/app/modals/order';
+import { PurchaseOrder } from 'src/app/modals/po';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent extends BaseComponent implements OnInit {
-
-  results: any = []
-  selectedOrder:any
-  items
-  totalcash
-  toDayChart
-  basicOptions
-  todayCashChart
-  orderStutsChart
-  topProductsChart
-  topServicesChart
-  fromDate: any = new Date()
-  toDate: any = new Date()
-  dashboardDatesDialog: boolean = false
-  dashboardDetails: boolean = false
-  showOrderSidebar: boolean = false
-  textSecondaryColor = getComputedStyle(document.documentElement).getPropertyValue('--surface-500')
+  results: any = [];
+  selectedOrder: any;
+  selectedPo;
+  items;
+  totalcash;
+  toDayChart;
+  basicOptions;
+  todayCashChart;
+  orderStutsChart;
+  topProductsChart;
+  topServicesChart;
+  poDashboard: boolean = false;
+  fromDate: any = new Date();
+  toDate: any = new Date();
+  dashboardDatesDialog: boolean = false;
+  dashboardDetails: boolean = false;
+  showOrderSidebar: boolean = false;
+  showPoOrderSidebar: boolean = false;
+  textSecondaryColor = getComputedStyle(
+    document.documentElement
+  ).getPropertyValue('--surface-500');
 
   @ViewChild('printOrder') printOrder: ElementRef;
 
-  constructor(public translates: TranslateService, public messageService: MessageService, private router: Router, private orderService: OrdersService,
-    private dashboardService: DashboardService, private datePipe: DatePipe) { super(messageService, translates) }
+  constructor(
+    public translates: TranslateService,
+    public messageService: MessageService,
+    private router: Router,
+    private orderService: OrdersService,
+    private dashboardService: DashboardService,
+    private datePipe: DatePipe
+  ) {
+    super(messageService, translates);
+  }
 
   ngOnInit(): void {
-    this.count()
+    this.count();
     this.items = [
       {
         icon: 'pi pi-calendar text-primary',
         command: () => {
-          this.dashboardDatesDialog = true
-        }
+          this.dashboardDatesDialog = true;
+        },
       },
       {
-        icon: 'pi pi-file text-primary',
+        icon: 'pi pi-money-bill text-primary',
         command: () => {
-          this.dashboardDetails = true
-        }
+          this.dashboardDetails = true;
+        },
+      },
+      {
+        icon: 'pi pi-ticket text-primary',
+        command: () => {
+          this.poDashboard = true;
+        },
       },
       {
         icon: 'pi pi-refresh text-primary',
         command: () => {
-          this.fromDate = new Date()
-          this.toDate = new Date()
-          this.count()
-        }
+          this.fromDate = new Date();
+          this.toDate = new Date();
+          this.count();
+        },
       },
-
     ];
-   
   }
   count() {
-    this.loading = true
-    const subscription = this.dashboardService.count(this.fromDate, this.toDate).subscribe((data: any) => {
-      this.loading = false
-      if (!isSet(data)) {
-        return
-      }
-      this.results = data
-      this.totalcash = data.sum
-      this.toDayOrdersCharts()
-      this.todayCashCharts()
-      this.orderStutsCharts()
-      this.topProductsCharts()
-      this.topServicesChartCharts()
-      subscription.unsubscribe()
-    }, error => {
-      this.loading = false
-      subscription.unsubscribe()
-    })
+    this.loading = true;
+    const subscription = this.dashboardService
+      .count(this.fromDate, this.toDate)
+      .subscribe(
+        (data: any) => {
+          this.loading = false;
+          if (!isSet(data)) {
+            return;
+          }
+          this.results = data;
+          this.totalcash = data.sum;
+          // this.toDayOrdersCharts()
+          // this.todayCashCharts()
+          this.orderStutsCharts();
+          this.topProductsCharts();
+          this.topServicesChartCharts();
+          subscription.unsubscribe();
+        },
+        (error) => {
+          this.loading = false;
+          subscription.unsubscribe();
+        }
+      );
   }
   toDayOrdersCharts() {
     this.toDayChart = {
@@ -92,27 +114,37 @@ export class DashboardComponent extends BaseComponent implements OnInit {
         {
           label: this.trans('Orders'),
           data: [this.results.entities.length],
-          backgroundColor: ['rgba(255, 159, 64, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)'],
-          borderColor: ['rgb(255, 159, 64)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)'],
-          borderWidth: 1
-        }
-      ]
+          backgroundColor: [
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+          ],
+          borderColor: [
+            'rgb(255, 159, 64)',
+            'rgb(75, 192, 192)',
+            'rgb(54, 162, 235)',
+            'rgb(153, 102, 255)',
+          ],
+          borderWidth: 1,
+        },
+      ],
     };
     this.basicOptions = {
-      plugins: { legend: { labels: { boxWidth: 10, color: this.textSecondaryColor } } },
+      plugins: {
+        legend: { labels: { boxWidth: 10, color: this.textSecondaryColor } },
+      },
       scales: {
         x: {
           ticks: {
             display: false,
-
-          }, grid: { color: 'white' }
+          },
+          grid: { color: 'white' },
         },
         y: {
-          grid: { color: 'white' }
+          grid: { color: 'white' },
         },
-
-
-      }
+      },
     };
   }
   todayCashCharts() {
@@ -122,175 +154,228 @@ export class DashboardComponent extends BaseComponent implements OnInit {
         {
           label: this.trans(this.cur.name),
           data: [this.totalcash],
-          backgroundColor: ['rgba(255, 159, 64, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)'],
-          borderColor: ['rgb(255, 159, 64)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)'],
-          borderWidth: 1
-        }
-      ]
+          backgroundColor: [
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+          ],
+          borderColor: [
+            'rgb(255, 159, 64)',
+            'rgb(75, 192, 192)',
+            'rgb(54, 162, 235)',
+            'rgb(153, 102, 255)',
+          ],
+          borderWidth: 1,
+        },
+      ],
     };
     this.basicOptions = {
-      plugins: { legend: { labels: { boxWidth: 10, color: this.textSecondaryColor } } },
+      plugins: {
+        legend: { labels: { boxWidth: 10, color: this.textSecondaryColor } },
+      },
       scales: {
         x: {
           ticks: {
             display: false,
-
-          }, grid: { color: 'white' }
+          },
+          grid: { color: 'white' },
         },
         y: {
-          grid: { color: 'white' }
+          grid: { color: 'white' },
         },
-
-
-      }
+      },
     };
   }
   orderStutsCharts() {
     this.orderStutsChart = {
-      labels: [this.trans('Paid'), this.trans('Unpaid'), this.trans('Draft'), this.trans('Canceled')],
+      labels: [
+        this.trans('Paid'),
+        this.trans('Unpaid'),
+        this.trans('Canceled'),
+      ],
       datasets: [
         {
           label: this.trans('Orders'),
-          data: [this.results.paidLenght, this.results.unpaidLenght, this.results.draftLenght, this.results.canceldLenght],
-          backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)'],
-          borderColor: ['rgb(75, 192, 192)', 'rgb(255, 159, 64)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)'],
-          borderWidth: 1
-        }
-      ]
+          data: [
+            this.results.paidLenght,
+            this.results.unpaidLenght,
+            this.results.draftLenght,
+            this.results.canceldLenght,
+          ],
+          backgroundColor: [
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 0, 0, 0.2)',
+          ],
+          borderColor: [
+            'rgb(75, 192, 192)',
+            'rgb(255, 159, 64)',
+            'rgb(255, 0, 0)',
+          ],
+          borderWidth: 1,
+        },
+      ],
     };
     this.basicOptions = {
-      plugins: { legend: { labels: { boxWidth: 10, color: this.textSecondaryColor } } },
+      plugins: {
+        legend: { labels: { boxWidth: 10, color: this.textSecondaryColor } },
+      },
       scales: {
         x: {
           ticks: {
             display: true,
-
-          }, grid: { color: 'white' }
+          },
+          grid: { color: 'white' },
         },
         y: {
-          grid: { color: 'white' }
+          grid: { color: 'white' },
         },
-
-
-      }
+      },
     };
   }
   topProductsCharts() {
-    let name = []
-    let qty = []
-    let price = []
+    let name = [];
+    let qty = [];
+    let price = [];
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
-    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
+    const textColorSecondary = documentStyle.getPropertyValue(
+      '--text-color-secondary'
+    );
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-    this.results.topProducts.map(x => {
-      name.push(x.name)
-      qty.push(x.qty)
-      price.push(x.price)
-    })
+    this.results.topProducts.map((x) => {
+      name.push(x.name);
+      qty.push(x.qty);
+      price.push(x.price);
+    });
     this.topProductsChart = {
       labels: name,
       datasets: [
         {
           label: this.trans('Selling Times'),
           data: qty,
-          backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)'],
-          borderColor: ['rgb(75, 192, 192)', 'rgb(255, 159, 64)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)'],
-          borderWidth: 1
-        }, {
-          label:(this.trans('Cash') + ' ' + this.getCurrencySymbol(this.cur.code)),
-          data: price,
-          backgroundColor: [ 'rgba(255, 159, 64, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)'],
-          borderColor: [ 'rgb(255, 159, 64)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)'],
-          borderWidth: 1
+          backgroundColor: [
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+          ],
+          borderColor: [
+            'rgb(75, 192, 192)',
+            'rgb(255, 159, 64)',
+            'rgb(54, 162, 235)',
+            'rgb(153, 102, 255)',
+          ],
+          borderWidth: 1,
         },
-      ]
+        {
+          label:
+            this.trans('Cash') + ' ' + this.getCurrencySymbol(this.cur.code),
+          data: price,
+          backgroundColor: [
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+          ],
+          borderColor: [
+            'rgb(255, 159, 64)',
+            'rgb(54, 162, 235)',
+            'rgb(153, 102, 255)',
+          ],
+          borderWidth: 1,
+        },
+      ],
     };
     this.basicOptions = {
       maintainAspectRatio: false,
       aspectRatio: 0.8,
       plugins: {
-          legend: {
-              labels: {
-                  color: textColor
-              }
-          }
+        legend: {
+          labels: {
+            color: textColor,
+          },
+        },
       },
       scales: {
-          x: {
-              ticks: {
-                  color: textColorSecondary,
-                  font: {
-                      weight: 500
-                  }
-              },
-              grid: {
-                  color: surfaceBorder,
-                  drawBorder: false
-              }
+        x: {
+          ticks: {
+            color: textColorSecondary,
+            font: {
+              weight: 500,
+            },
           },
-          y: {
-              ticks: {
-                  color: textColorSecondary
-              },
-              grid: {
-                  color: surfaceBorder,
-                  drawBorder: false
-              }
-          }
-
-      }
-  };
+          grid: {
+            color: surfaceBorder,
+            drawBorder: false,
+          },
+        },
+        y: {
+          ticks: {
+            color: textColorSecondary,
+          },
+          grid: {
+            color: surfaceBorder,
+            drawBorder: false,
+          },
+        },
+      },
+    };
   }
   topServicesChartCharts() {
     const documentStyle = getComputedStyle(document.documentElement);
-    let name = []
-    let cash = []
-    let times = []
-    this.results.topServices.map(x => {
-      name.push(this.lang == 'ar' ? x.ar : x.en)
-      cash.push(x.price)
-      times.push(x.count)
-    })
+    let name = [];
+    let cash = [];
+    let times = [];
+    this.results.topServices.map((x) => {
+      name.push(this.lang == 'ar' ? x.ar : x.en);
+      cash.push(x.price);
+      times.push(x.count);
+    });
     this.topServicesChart = {
       labels: name,
       datasets: [
         {
-          label: (this.trans('Cash') + ' ' + this.getCurrencySymbol(this.cur.code)),
+          label:
+            this.trans('Cash') + ' ' + this.getCurrencySymbol(this.cur.code),
           data: cash,
           backgroundColor: documentStyle.getPropertyValue('--blue-500'),
           borderColor: documentStyle.getPropertyValue('--blue-500'),
-          borderWidth: 1
+          borderWidth: 1,
         },
         {
           label: this.trans('Used Times'),
           data: times,
           backgroundColor: documentStyle.getPropertyValue('--pink-500'),
           borderColor: documentStyle.getPropertyValue('--pink-500'),
-          borderWidth: 1
+          borderWidth: 1,
         },
-      ]
+      ],
     };
     this.basicOptions = {
-      plugins: { legend: { labels: { boxWidth: 10, color: this.textSecondaryColor } } },
+      plugins: {
+        legend: { labels: { boxWidth: 10, color: this.textSecondaryColor } },
+      },
       scales: {
         x: {
           ticks: {
             display: true,
-
-          }, grid: { color: 'white' }
+          },
+          grid: { color: 'white' },
         },
         y: {
-          grid: { color: 'white' }
+          grid: { color: 'white' },
         },
-
-
-      }
+      },
     };
   }
 
-  viewOrder(event){
-this.selectedOrder=Order.cloneObject(event)
-this.showOrderSidebar=true
+  viewOrder(event) {
+    this.selectedOrder = Order.cloneObject(event);
+    this.showOrderSidebar = true;
+  }
+  viewPoOrder(event) {
+    this.selectedPo = event.id;
+    this.showPoOrderSidebar = true;
   }
 }

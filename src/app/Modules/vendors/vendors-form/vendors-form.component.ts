@@ -57,16 +57,6 @@ export class VendorsFormComponent extends BaseComponent implements OnInit {
 
   ngOnInit(): void {
     this.formTypes = 'vendor'
-    this.acions = [
-      {
-        label: this.formTypes == 'vendor' ? this.trans('Statistics') : this.trans('Details'),
-        icon: 'pi pi-chart-pie',
-        command: (tt) => {          
-          this.formTypes = this.formTypes =='vendor' ? 'statics' : 'vendor'
-         
-        }
-      },
-    ]
     if (!this.detailMode || !this.id) {
       this.vendor = new Vendor
       this.getVendorTypes()
@@ -75,7 +65,20 @@ export class VendorsFormComponent extends BaseComponent implements OnInit {
       this.getVendor(this.id)
     }
   }
+  onActionClick(event: MouseEvent) {
+    this.acions = [
+      {
+        label: this.formTypes == 'vendor' ? this.trans('Statistics') : this.trans('Details'),
+        icon: this.formTypes == 'vendor' ? 'pi pi-chart-pie' : 'pi pi-file',
+        command: () => {
+          this.formTypes = this.formTypes == 'vendor' ? 'statics' : 'vendor'
 
+        }
+      },
+    ]
+    this.menu.hide();
+    setTimeout(() => this.menu.show(event), 0);
+  }
   createVendor() {
     this.loading = true
     const subscription = this.vendorService.createVendor(this.vendor).subscribe((data) => {
