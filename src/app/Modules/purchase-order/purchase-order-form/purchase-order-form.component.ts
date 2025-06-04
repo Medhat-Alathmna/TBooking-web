@@ -31,7 +31,7 @@ import { PurchaseOrderService } from '../purchase-order.service';
 import { PermissionService } from 'src/app/core/permission.service';
 import { FileUpload } from 'primeng/fileupload';
 import { fi } from 'date-fns/locale';
-import { Observable, of } from 'rxjs';
+import { catchError, from, Observable, of, switchMap, tap, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-purchase-order-form',
@@ -103,48 +103,38 @@ export class PurchaseOrderFormComponent
     }, 300);
   }
 
-  async createPO(addedToStuck?) {
-    if (
-      this.getTotalPrice().totalPayments > this.getTotalPrice().productsAmount
-    ) {
-      this.errorMessage(
-        null,
-        'The payment amount should not be more than the total amount'
-      );
+  createPO(addedToStuck?: boolean) {
+    const { totalPayments, productsAmount } = this.getTotalPrice();
+
+    if (totalPayments > productsAmount) {
+      this.errorMessage(null, 'The payment amount should not be more than the total amount');
       return;
     }
+
     this.po.products = this.selectProducts;
-    this.payments.map((x) => {
-      x.approved = true;
-    });
-    this.po.payments = this.payments;
-    this.po.cash = this.getTotalPrice().totalPayments;
+    this.po.payments = this.payments.map(p => ({ ...p, approved: true }));
+    this.po.cash = totalPayments;
     this.po.addedToStuck = addedToStuck;
-    if (this.getTotalPrice().totalPayments == 0) {
-      this.po.status = 'Draft';
-    } else if (
-      this.getTotalPrice().totalPayments == this.getTotalPrice().productsAmount
-    ) {
-      this.po.status = 'Paid';
+
+    this.po.status = totalPayments === 0 ? 'Draft' : totalPayments === productsAmount ? 'Paid' : 'Unpaid';
+
+    if (this.po.status === 'Paid') {
       this.po.addedToStuck = true;
-    } else {
-      this.po.status = 'Unpaid';
     }
-   await this.uploadFiles();
-  const subscription = this.purchaseOrderService.createPO(this.po).subscribe(
-      (data) => {
-        if (!isSet(data)) {
-          return;
-        }
-        this.successMessage(null, 'The pruchase order has been created');
-        this.display = false;
-        this.refreshLish.emit(true);
-        subscription.unsubscribe();
-      },
-      (error) => {
-        subscription.unsubscribe();
-      }
-    );
+
+   this.uploadFiles().pipe(
+    switchMap(() => this.purchaseOrderService.createPO(this.po))
+  ).subscribe({
+    next: (data) => {
+      if (!isSet(data)) return;
+      this.successMessage(null, 'The purchase order has been created');
+      this.display = false;
+      this.refreshLish.emit(true);
+    },
+    error: (err) => {
+      this.errorMessage(null, 'Failed to create purchase order');
+    }
+  });
   }
   updatePo(addedToStuck?) {
     if (
@@ -425,29 +415,30 @@ export class PurchaseOrderFormComponent
     });
   }
 
-  uploadFiles():  Observable<FormData | any> {
+  uploadFiles(): Observable<any> {
     const files = this.fileUploader.files;
     if (files && files.length) {
       const formData = new FormData();
       files.forEach((po) => {
         formData.append('files', po);
       });
-      return of(this.uploadMedia(formData));
+      return this.uploadMedia(formData);
     }
-    return of({});
+    return of(null);
   }
-  uploadMedia(body) {
-    this.loading = true
-    const subscription = this.purchaseOrderService.uploadMedia(body).subscribe((data) => {
-      this.loading = false
-      if (!isSet(data)) {
-        return
-      }
-      this.po.pic = data
-      subscription.unsubscribe()
-    }, error => {
-      this.loading = false
-      subscription.unsubscribe()
-    })
+  uploadMedia(body: FormData): Observable<any> {
+    this.loading = true;
+    return this.purchaseOrderService.uploadMedia(body).pipe(
+      tap((data) => {
+        this.loading = false;
+        if (isSet(data)) {
+          this.po.pic = data;
+        }
+      }),
+      catchError(error => {
+        this.loading = false;
+        return throwError(() => error);
+      })
+    );
   }
 }

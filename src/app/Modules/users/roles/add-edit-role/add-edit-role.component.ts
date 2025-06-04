@@ -36,132 +36,65 @@ export class AddEditRoleComponent extends BaseComponent implements OnInit {
 
   constructor(public translates: TranslateService,
     public messageService: MessageService, private roleService: RolesService) { super(messageService, translates) }
-    resources = [
-      { name: 'Appointments', actions: ['create', 'view', 'update', 'delete'] },
-      { name: 'Orders', actions: ['create', 'view', 'update', 'cancel'] },
-      { name: 'PurchaseOrder', actions: ['create', 'view', 'update', 'cancel'] },
-      { name: 'Vendors', actions: ['create', 'view', 'update', 'cancel'] },
-      { name: 'Users', actions: ['create', 'view', 'update', 'delete','Roles','suspend'] },
-      { name: 'Roles', actions: ['create','update', 'delete'] },
-      { name: 'Dashboard', actions: ['view',] },
-      { name: 'Products', actions: ['create', 'view', 'update', 'delete','Services'] },
-      { name: 'Services', actions: ['create','update', 'delete'] },
-      { name: 'Gallary', actions: ['create', 'view', 'update', 'delete'] },
-      // { name: 'MobileApp', actions: ['create', 'view', 'update', 'delete'] },
-      { name: 'SiteSittengs', actions: [ 'view', 'update','Notifications','ForbbidenNumber','AppointmentsSettings'] },
-      { name: 'Notifications', actions: ['create',  'update', 'delete'] },
-      { name: 'ForbbidenNumber', actions: ['create','update', 'delete'] },
-    ];
-  
-    pages = {
-      Appointments: { create: false, view: true, update: false, delete: false },
-      Orders: { create: false, view: false, update: false, cancel: false },
-      PurchaseOrder: { create: false, view: false, update: false, cancel: false },
-      Vendors: { create: false, view: false, update: false, cancel: false },
-      Users: { create: false, view: false, update: false, delete: false ,suspend:false,Roles:false},
-      Roles: { create: false, update: false, delete: false },
-      Dashboard: { view: false},
-      Products: { create: false, view: false, update: false, delete: false,Services:false },
-      Services: { create: false, update: false, delete: false },
-      Gallary: { create: false, view: false, update: false, delete: false },
-      // MobileApp: { create: false, view: false, update: false, delete: false },
-      SiteSittengs: {  view: false, update: false,Notifications:false,ForbbidenNumber:false,AppointmentsSettings:false},
-      Notifications: { create: false, update: false, delete: false },
-      ForbbidenNumber: { create: false, update: false, delete: false },
+  resources = [
+    { name: 'Appointments', actions: ['create', 'view', 'update', 'delete'] },
+    { name: 'Orders', actions: ['create', 'view', 'update', 'cancel'] },
+    { name: 'PurchaseOrder', actions: ['create', 'view', 'update', 'cancel'] },
+    { name: 'Vendors', actions: ['create', 'view', 'update', 'cancel'] },
+    { name: 'Users', actions: ['create', 'view', 'update', 'delete', 'Roles', 'suspend'] },
+    { name: 'Roles', actions: ['create', 'update', 'delete'] },
+    { name: 'Dashboard', actions: ['view',] },
+    { name: 'Products', actions: ['create', 'view', 'update', 'delete', 'Services'] },
+    { name: 'Services', actions: ['create', 'update', 'delete'] },
+    { name: 'Gallary', actions: ['create', 'view', 'update', 'delete'] },
+    // { name: 'MobileApp', actions: ['create', 'view', 'update', 'delete'] },
+    { name: 'SiteSittengs', actions: ['view', 'update', 'Notifications', 'ForbbidenNumber', 'AppointmentsSettings'] },
+    { name: 'Notifications', actions: ['create', 'update', 'delete'] },
+    { name: 'ForbbidenNumber', actions: ['create', 'update', 'delete'] },
+  ];
 
-    };
-  
+  pages = {
+    Appointments: { create: false, view: true, update: false, delete: false },
+    Orders: { create: false, view: false, update: false, cancel: false },
+    PurchaseOrder: { create: false, view: false, update: false, cancel: false },
+    Vendors: { create: false, view: false, update: false, cancel: false },
+    Users: { create: false, view: false, update: false, delete: false, suspend: false, Roles: false },
+    Roles: { create: false, update: false, delete: false },
+    Dashboard: { view: false },
+    Products: { create: false, view: false, update: false, delete: false, Services: false },
+    Services: { create: false, update: false, delete: false },
+    Gallary: { create: false, view: false, update: false, delete: false },
+    // MobileApp: { create: false, view: false, update: false, delete: false },
+    SiteSittengs: { view: false, update: false, Notifications: false, ForbbidenNumber: false, AppointmentsSettings: false },
+    Notifications: { create: false, update: false, delete: false },
+    ForbbidenNumber: { create: false, update: false, delete: false },
+
+  };
+
   selectedFiles
   ngOnInit(): void {
-    this.selectedRole = this.detailMode ? this.selectedRole.attributes : new RoleInfo()
-    if ( this.detailMode) {
-      if (this.selectedRole.pages !==this.pages) {
-        this.pages={
-          "Roles": {
-              "create": true,
-              "delete": true,
-              "update": true
-          },
-          "Users": {
-              "view": true,
-              "Roles": true,
-              "create": true,
-              "delete": true,
-              "update": true,
-              "suspend": true
-          },
-          "Orders": {
-              "view": true,
-              "cancel": true,
-              "create": true,
-              "update": true
-          },
-          "PurchaseOrder": {
-              "view": true,
-              "cancel": true,
-              "create": true,
-              "update": true
-          },
-          "Vendors": {
-              "view": true,
-              "cancel": true,
-              "create": true,
-              "update": true
-          },
-          "Gallary": {
-              "view": true,
-              "create": true,
-              "delete": true,
-              "update": true
-          },
-          "Products": {
-              "view": true,
-              "create": true,
-              "delete": true,
-              "update": true,
-              "Services": true
-          },
-          "Services": {
-              "create": true,
-              "delete": true,
-              "update": true
-          },
-          "Dashboard": {
-              "view": true
-          },
-          "Appointments": {
-              "view": true,
-              "create": true,
-              "delete": true,
-              "update": true
-          },
-          "SiteSittengs": {
-              "view": true,
-              "update": true,
-              "Notifications": true,
-              "ForbbidenNumber": true,
-              "AppointmentsSettings": true
-          },
-          "Notifications": {
-              "create": true,
-              "delete": true,
-              "update": true
-          },
-          "ForbbidenNumber": {
-              "create": true,
-              "delete": true,
-              "update": true
-          }
-      }
-      }else{
-        this.pages= this.selectedRole.pages
+   this.selectedRole = this.detailMode ? this.selectedRole.attributes : new RoleInfo();
 
-      }
-      this.selectedRole.id=this.id
-    }
-    // this.selectedRole.description=this.selectedRole.attributes.description
-    // this.selectedRole.pages=this.selectedRole.pages
+  if (this.detailMode) {
+    this.selectedRole.id = this.id;
+
+    this.syncPagesWithResourcesFromHttp();
   }
+  }
+  private syncPagesWithResourcesFromHttp(): void {
+    this.pages= this.selectedRole.pages
+  this.resources.forEach(resource => {
+    if (!this.pages[resource.name]) {
+      this.pages[resource.name] = {};
+    }
+
+    resource.actions.forEach(action => {
+      if (typeof this.pages[resource.name][action] !== 'boolean') {
+        this.pages[resource.name][action] = false;
+      }
+    });
+  });
+}
   onHide() {
     this.display = false
     setTimeout(() => {
@@ -169,7 +102,7 @@ export class AddEditRoleComponent extends BaseComponent implements OnInit {
     }, 300);
   }
   createRole() {
-    this.selectedRole.pages=this.pages
+    this.selectedRole.pages = this.pages
     this.loading = true
     const subscription = this.roleService.createRole(this.selectedRole).subscribe((data) => {
       if (!isSet(data)) {
@@ -177,7 +110,7 @@ export class AddEditRoleComponent extends BaseComponent implements OnInit {
       }
       this.loading = false
       this.refreshLish.emit(true)
-      this.successMessage(null,'The new role has been created')
+      this.successMessage(null, 'The new role has been created')
       this.display = false
       subscription.unsubscribe()
     }, error => {
@@ -186,7 +119,7 @@ export class AddEditRoleComponent extends BaseComponent implements OnInit {
     })
   }
   updateRole() {
-    this.selectedRole.pages=this.pages
+    this.selectedRole.pages = this.pages
     this.loading = true
     const subscription = this.roleService.updateRole(this.selectedRole).subscribe((data) => {
       if (!isSet(data)) {
@@ -194,7 +127,7 @@ export class AddEditRoleComponent extends BaseComponent implements OnInit {
       }
       this.loading = false
       this.refreshLish.emit(true)
-      this.successMessage(null,'This role has been Changed')
+      this.successMessage(null, 'This role has been Changed')
       this.display = false
       subscription.unsubscribe()
     }, error => {

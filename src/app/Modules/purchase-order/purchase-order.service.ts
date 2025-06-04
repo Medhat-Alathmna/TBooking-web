@@ -22,6 +22,8 @@ export class PurchaseOrderService {
       addedToStuck: po.addedToStuck,
       createBy: this.userAuth.user,
     }
+    console.log(body);
+    
     return this.api.post<any>(`po`, body);
   }
   updatePO(po: PurchaseOrder, id): Observable<any> {
