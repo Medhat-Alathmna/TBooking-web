@@ -1,4 +1,5 @@
 <app-loading *ngIf="loading" display="full"></app-loading>
+<p-toast position="top-right"></p-toast>
 <div class="grid layout-dashboard relative" style="overflow-x: hidden">
   <!-- <div class="col-6 card">
         <h5> {{"Total of today's orders"| translate}}</h5>
@@ -6,19 +7,17 @@
     </div> -->
   <div class="col-12 flex">
     <div class="col-3 flipup animation-duration-1000">
-      <div
-        style="background: linear-gradient(#007f6a5c, transparent)"
-        class="card flex flex-row justify-content-evenly align-items-center"
-      >
+      <div style="background: linear-gradient(#007f6a5c, transparent)"
+        class="card flex flex-row justify-content-evenly align-items-center">
         <div class="flex">
           <i class="pi pi-dollar text-4xl text-green-400"></i>
         </div>
         <div class="flex-column">
           <span class="text-lg font-semibold">{{
             (fromDate | date : "YYYY-MM-dd") == (toDate | date : "YYYY-MM-dd")
-              ? ("Today's Cash" | translate)
-              : ("Total of Cash" | translate)
-          }}</span>
+            ? ("Today's Cash" | translate)
+            : ("Total of Cash" | translate)
+            }}</span>
           <div class="text-2xl font-bold text-green-600 mt-2">
             {{ totalcash | number : "1.2-2" }} {{ getCurrencySymbol(cur.code) }}
           </div>
@@ -26,19 +25,17 @@
       </div>
     </div>
     <div class="col-3 flipup animation-duration-1000">
-      <div
-        style="background: linear-gradient(#007f6a5c, transparent)"
-        class="card flex flex-row justify-content-evenly align-items-center"
-      >
+      <div style="background: linear-gradient(#007f6a5c, transparent)"
+        class="card flex flex-row justify-content-evenly align-items-center">
         <div class="flex">
           <i class="pi pi-money-bill text-4xl text-green-400"></i>
         </div>
         <div class="flex-column">
           <span class="text-lg font-semibold">{{
             (fromDate | date : "YYYY-MM-dd") == (toDate | date : "YYYY-MM-dd")
-              ? ("Total of today's orders" | translate)
-              : ("Total of orders" | translate)
-          }}</span>
+            ? ("Total of today's orders" | translate)
+            : ("Total of orders" | translate)
+            }}</span>
           <div class="text-2xl font-bold text-green-600 mt-2">
             {{ results?.entities?.length }}
           </div>
@@ -46,19 +43,17 @@
       </div>
     </div>
     <div class="col-3 flipup animation-duration-1000">
-      <div
-        style="background: linear-gradient(#007f6a5c, transparent)"
-        class="card flex flex-row justify-content-evenly align-items-center"
-      >
+      <div style="background: linear-gradient(#007f6a5c, transparent)"
+        class="card flex flex-row justify-content-evenly align-items-center">
         <div class="flex">
           <i class="pi pi-money-bill text-4xl text-green-400"></i>
         </div>
         <div class="flex-column">
           <span class="text-lg font-semibold">{{
             (fromDate | date : "YYYY-MM-dd") == (toDate | date : "YYYY-MM-dd")
-              ? ("Total of today's purchase orders" | translate)
-              : ("Total of purchase orders" | translate)
-          }}</span>
+            ? ("Total of today's purchase orders" | translate)
+            : ("Total of purchase orders" | translate)
+            }}</span>
           <div class="text-2xl font-bold text-green-600 mt-2">
             {{ results?.poLength }}
           </div>
@@ -66,19 +61,17 @@
       </div>
     </div>
     <div class="col-3 flipup animation-duration-1000">
-      <div
-        style="background: linear-gradient(#007f6a5c, transparent)"
-        class="card flex flex-row justify-content-evenly align-items-center"
-      >
+      <div style="background: linear-gradient(#007f6a5c, transparent)"
+        class="card flex flex-row justify-content-evenly align-items-center">
         <div class="flex">
           <i class="pi pi-dollar text-4xl text-green-400"></i>
         </div>
         <div class="flex-column">
           <span class="text-lg font-semibold">{{
             (fromDate | date : "YYYY-MM-dd") == (toDate | date : "YYYY-MM-dd")
-              ? ("Total of today's cost" | translate)
-              : ("Total of cost" | translate)
-          }}</span>
+            ? ("Total of today's cost" | translate)
+            : ("Total of cost" | translate)
+            }}</span>
           <div class="text-2xl font-bold text-green-600 mt-2">
             {{ results?.cashPo }} {{ getCurrencySymbol(cur.code) }}
           </div>
@@ -150,53 +143,33 @@
   <div class="col-12 lg:col-6">
     <div class="grid flex-column grid-nogutter">
       <div class="col-12">
-        <div
-          class="card cardColor animation-duration-1000"
-          [ngClass]="{ fadeinrigth: lang == 'en', fadeinleft: lang == 'ar' }"
-        >
+        <div class="card cardColor animation-duration-1000"
+          [ngClass]="{ fadeinrigth: lang == 'en', fadeinleft: lang == 'ar' }">
           <div class="row flex justify-content-between">
             <div class="col-6">
               <h5>{{ "Top 5 Services" | translate }}</h5>
             </div>
-            <div
-              class="col-6"
-              style="
+            <div class="col-6" style="
                 display: flex;
                 align-items: flex-end;
                 flex-direction: column;
-              "
-            >
+              ">
               <h5 style="font-size: small">
                 {{ "Date" | translate }} :{{ fromDate | date : "YYYY-MM-dd" }}
               </h5>
-              <h5
-                style="font-size: small"
-                *ngIf="
+              <h5 style="font-size: small" *ngIf="
                   (fromDate | date : 'YYYY-MM-dd') !=
                   (toDate | date : 'YYYY-MM-dd')
-                "
-              >
+                ">
                 {{ "To Date" | translate }} :{{ toDate | date : "YYYY-MM-dd" }}
               </h5>
             </div>
           </div>
-          <p-chart
-            type="bar"
-            *ngIf="results.topServices?.length"
-            [data]="topServicesChart"
-            [options]="basicOptions"
-            height="51vh"
-          ></p-chart>
-          <div
-            style="height: 51vh"
-            *ngIf="!results.topServices?.length"
-            class="text-center"
-          >
+          <p-chart type="bar" *ngIf="results.topServices?.length" [data]="topServicesChart" [options]="basicOptions"
+            height="51vh"></p-chart>
+          <div style="height: 51vh" *ngIf="!results.topServices?.length" class="text-center">
             <h4 style="padding-top: 21vh" translate>
-              <i
-                class="mx-2 pi pi-exclamation-circle text-xl font-bold"
-                style="color: var(--danger) !important"
-              ></i>
+              <i class="mx-2 pi pi-exclamation-circle text-xl font-bold" style="color: var(--danger) !important"></i>
               No Data to View Chart
             </h4>
           </div>
@@ -207,53 +180,32 @@
   <div class="col-12 lg:col-6">
     <div class="grid flex-column grid-nogutter">
       <div class="col-12">
-        <div
-          class="card cardColor animation-duration-1000"
-          [ngClass]="{ fadeinrigth: lang == 'en', fadeinleft: lang == 'ar' }"
-        >
+        <div class="card cardColor animation-duration-1000">
           <div class="row flex justify-content-between">
             <div class="col-6">
               <h5>{{ "Top 5 Products" | translate }}</h5>
             </div>
-            <div
-              class="col-6"
-              style="
+            <div class="col-6" style="
                 display: flex;
                 align-items: flex-end;
                 flex-direction: column;
-              "
-            >
+              ">
               <h5 style="font-size: small">
                 {{ "Date" | translate }} :{{ fromDate | date : "YYYY-MM-dd" }}
               </h5>
-              <h5
-                style="font-size: small"
-                *ngIf="
+              <h5 style="font-size: small" *ngIf="
                   (fromDate | date : 'YYYY-MM-dd') !=
                   (toDate | date : 'YYYY-MM-dd')
-                "
-              >
+                ">
                 {{ "To Date" | translate }} :{{ toDate | date : "YYYY-MM-dd" }}
               </h5>
             </div>
           </div>
-          <p-chart
-            type="bar"
-            *ngIf="results.topProducts?.length"
-            [data]="topProductsChart"
-            [options]="basicOptions"
-            height="51vh"
-          ></p-chart>
-          <div
-            style="height: 51vh"
-            *ngIf="!results.topProducts?.length"
-            class="text-center"
-          >
+          <p-chart type="bar" *ngIf="results.topProducts?.length" [data]="topProductsChart" [options]="basicOptions"
+            height="51vh"></p-chart>
+          <div style="height: 51vh" *ngIf="!results.topProducts?.length" class="text-center">
             <h4 style="padding-top: 21vh" translate>
-              <i
-                class="mx-2 pi pi-exclamation-circle text-xl font-bold"
-                style="color: var(--danger) !important"
-              ></i>
+              <i class="mx-2 pi pi-exclamation-circle text-xl font-bold" style="color: var(--danger) !important"></i>
               No Data to View Chart
             </h4>
           </div>
@@ -266,19 +218,10 @@
       <div class="col-12">
         <div class="card cardColor animation-duration-1000 flip">
           <h5>{{ "Orders Status" | translate }}</h5>
-          <p-chart
-            type="bar"
-            *ngIf="results"
-            [data]="orderStutsChart"
-            [options]="basicOptions"
-            height="51vh"
-          ></p-chart>
+          <p-chart type="bar" *ngIf="results" [data]="orderStutsChart" [options]="basicOptions" height="51vh"></p-chart>
           <div style="height: 51vh" *ngIf="!results" class="text-center">
             <h4 style="padding-top: 21vh" translate>
-              <i
-                class="mx-2 pi pi-exclamation-circle text-xl font-bold"
-                style="color: var(--danger) !important"
-              ></i>
+              <i class="mx-2 pi pi-exclamation-circle text-xl font-bold" style="color: var(--danger) !important"></i>
               No Data to View Chart
             </h4>
           </div>
@@ -289,11 +232,7 @@
 </div>
 <div class="w-screen">
   <div style="right: 5vw; top: 62vh" class="fixed">
-    <p-speedDial
-      buttonClassName="dashbored-btn"
-      showIcon="pi pi-filter "
-      [model]="items"
-    ></p-speedDial>
+    <p-speedDial buttonClassName="dashbored-btn" showIcon="pi pi-filter " [model]="items"></p-speedDial>
   </div>
 </div>
 <app-modal [(display)]="dashboardDatesDialog" class="modal-sm">
@@ -302,14 +241,8 @@
       <div class="col-6 mt-3">
         <div class="p-inputgroup">
           <span class="p-float-label">
-            <p-calendar
-              dateFormat="dd-mm-yy"
-              [(ngModel)]="fromDate"
-              appendTo="body"
-              [style]="{ width: '100%' }"
-              [showIcon]="true"
-              yearNavigator="true"
-            >
+            <p-calendar dateFormat="dd-mm-yy" [(ngModel)]="fromDate" appendTo="body" [style]="{ width: '100%' }"
+              [showIcon]="true" yearNavigator="true">
             </p-calendar>
             <label for="vat-input" translate>From Date</label>
           </span>
@@ -318,14 +251,8 @@
       <div class="col-6 mt-3">
         <div class="p-inputgroup">
           <span class="p-float-label">
-            <p-calendar
-              dateFormat="dd-mm-yy"
-              appendTo="body"
-              [(ngModel)]="toDate"
-              [style]="{ width: '100%' }"
-              [showIcon]="true"
-              yearNavigator="true"
-            >
+            <p-calendar dateFormat="dd-mm-yy" appendTo="body" [(ngModel)]="toDate" [style]="{ width: '100%' }"
+              [showIcon]="true" yearNavigator="true">
             </p-calendar>
             <label for="vat-input" translate>To Date</label>
           </span>
@@ -334,23 +261,10 @@
     </div>
   </div>
   <div footer>
-    <button
-      pButton
-      pRipple
-      (click)="dashboardDatesDialog = false"
-      type="button"
-      label=" {{ 'Cancel' | translate }}"
-      icon="pi pi-times {{ 'css.mr-2' | translate }}"
-      class="p-button-secondary p-button-outlined"
-    ></button>
-    <button
-      pButton
-      pRipple
-      (click)="count(); dashboardDatesDialog = false"
-      type="button"
-      label=" {{ 'Apply' | translate }}"
-      class="p-button-primary"
-    ></button>
+    <button pButton pRipple (click)="dashboardDatesDialog = false" type="button" label=" {{ 'Cancel' | translate }}"
+      icon="pi pi-times {{ 'css.mr-2' | translate }}" class="p-button-secondary p-button-outlined"></button>
+    <button pButton pRipple (click)="count(); dashboardDatesDialog = false" type="button"
+      label=" {{ 'Apply' | translate }}" class="p-button-primary"></button>
   </div>
 </app-modal>
 <app-modal [(display)]="dashboardDetails" class="modal-lg">
@@ -361,94 +275,43 @@
             </p-accordionTab> -->
       <p-accordionTab>
         <ng-template pTemplate="header">
-          <span
-            pTooltip="{{ 'Customer' | translate }}"
-            showDelay="1000"
-            hideDelay="1000"
-            tooltipPosition="bottom"
-            class="vertical-align-middle py-2"
-            >{{ body.appointment?.customer?.firstName }}
+          <span pTooltip="{{ 'Customer' | translate }}" showDelay="1000" hideDelay="1000" tooltipPosition="bottom"
+            class="vertical-align-middle py-2">{{ body.appointment?.customer?.firstName }}
             {{ body.appointment?.customer?.middleName }}
-            {{ body.appointment?.customer?.lastName }}</span
-          >
-          <span
-            pTooltip="{{ 'Order No.' | translate }}"
-            showDelay="1000"
-            hideDelay="1000"
-            tooltipPosition="bottom"
-            class="vertical-align-middle"
-            >{{ body.orderNo }}</span
-          >
-          <span
-            pTooltip="{{ 'Creation Date' | translate }}"
-            showDelay="1000"
-            hideDelay="1000"
-            tooltipPosition="bottom"
-            class="vertical-align-middle py-2"
-            >{{ body.createdAt | date : "dd/MM/yyyy hh:mm A" }}</span
-          >
-          <span
-            pTooltip="{{ 'Cash' | translate }}"
-            showDelay="1000"
-            hideDelay="1000"
-            tooltipPosition="bottom"
-            class="vertical-align-middle"
-            >{{ body.cash }} {{ getCurrencySymbol(cur.code) }}</span
-          >
-          <span
-            pTooltip="{{ 'Cash' | translate }}"
-            showDelay="1000"
-            hideDelay="1000"
-            tooltipPosition="bottom"
-            [class]="body.status"
-            >{{ body.status | translate }}
+            {{ body.appointment?.customer?.lastName }}</span>
+          <span pTooltip="{{ 'Order No.' | translate }}" showDelay="1000" hideDelay="1000" tooltipPosition="bottom"
+            class="vertical-align-middle">{{ body.orderNo }}</span>
+          <span pTooltip="{{ 'Creation Date' | translate }}" showDelay="1000" hideDelay="1000" tooltipPosition="bottom"
+            class="vertical-align-middle py-2">{{ body.createdAt | date : "dd/MM/yyyy hh:mm A" }}</span>
+          <span pTooltip="{{ 'Cash' | translate }}" showDelay="1000" hideDelay="1000" tooltipPosition="bottom"
+            class="vertical-align-middle">{{ body.cash }} {{ getCurrencySymbol(cur.code) }}</span>
+          <span pTooltip="{{ 'Cash' | translate }}" showDelay="1000" hideDelay="1000" tooltipPosition="bottom"
+            [class]="body.status">{{ body.status | translate }}
           </span>
         </ng-template>
         <ng-template pTemplate="content">
-          <div
-            class="block my-1"
-            *ngFor="let item of body?.appointment?.employee; let i = index"
-          >
+          <div class="block my-1" *ngFor="let item of body?.appointment?.employee; let i = index">
             <ng-container>
               <div class="text-lg font-semibold mb-2" translate>Employee</div>
             </ng-container>
             <div class="flex">
               <div class="block" style="width: 75%">
-                <p-button
-                  *ngIf="item"
-                  [label]="item?.username"
-                  [style]="{ width: '50%' }"
-                  (click)="employeeMode = false"
-                  styleClass="p-button-outlined p-button-success"
-                ></p-button>
+                <p-button *ngIf="item" [label]="item?.username" [style]="{ width: '50%' }"
+                  (click)="employeeMode = false" styleClass="p-button-outlined p-button-success"></p-button>
               </div>
             </div>
             <div *ngIf="item.services" class="mt-3 mx-2">
-              <div
-                *ngFor="let ser of item.services; let c = index"
-                class="flex justify-content-between flex-wrap mb-2"
-              >
-                <div
-                  class="text-base font-semibold justify-content-between"
-                  style="
+              <div *ngFor="let ser of item.services; let c = index" class="flex justify-content-between flex-wrap mb-2">
+                <div class="text-base font-semibold justify-content-between" style="
                     display: flex;
                     align-items: center;
                     justify-content: space-around;
                     width: 23vw;
-                  "
-                >
-                  <div
-                    class="pi pi-circle-fill text-primary text-xs pt-2"
-                  ></div>
+                  ">
+                  <div class="pi pi-circle-fill text-primary text-xs pt-2"></div>
                   <span class="font-bold"> {{ ser[lang] }} </span>
                   <span class="font-bold">
-                    <input
-                      type="number"
-                      disabled
-                      name="price{{ i }}{{ c }}"
-                      pInputText
-                      [(ngModel)]="ser.price"
-                    />
+                    <input type="number" disabled name="price{{ i }}{{ c }}" pInputText [(ngModel)]="ser.price" />
                   </span>
                 </div>
               </div>
@@ -472,25 +335,13 @@
                   <td class="px-2 font-bold">{{ product.name }}</td>
                   <td>
                     <span class="px-2 font-bold">
-                      <input
-                        type="number"
-                        [value]="product.price"
-                        disabled
-                        [ngModelOptions]="{ standalone: true }"
-                        pInputText
-                        [(ngModel)]="product.price"
-                      />
+                      <input type="number" [value]="product.price" disabled [ngModelOptions]="{ standalone: true }"
+                        pInputText [(ngModel)]="product.price" />
                     </span>
                   </td>
                   <td>
                     <span class="font-bold">
-                      <input
-                        type="number"
-                        name="qty{{ s }}"
-                        disabled
-                        pInputText
-                        [(ngModel)]="product.qty"
-                      />
+                      <input type="number" name="qty{{ s }}" disabled pInputText [(ngModel)]="product.qty" />
                     </span>
                   </td>
                   <td>
@@ -510,12 +361,8 @@
           </div>
           <div class="grid">
             <div class="col-12">
-              <h4
-                class="text-primary text-center pointer"
-                (click)="viewOrder(body)"
-                style="font-size: 1rem; margin: auto; padding-top: 1rem"
-                translate
-              >
+              <h4 class="text-primary text-center pointer" (click)="viewOrder(body)"
+                style="font-size: 1rem; margin: auto; padding-top: 1rem" translate>
                 View Order
               </h4>
             </div>
@@ -533,45 +380,16 @@
             </p-accordionTab> -->
       <p-accordionTab>
         <ng-template pTemplate="header">
-          <span
-            pTooltip="{{ 'Company' | translate }}"
-            showDelay="1000"
-            hideDelay="1000"
-            tooltipPosition="bottom"
-            class="vertical-align-middle py-2"
-            >{{ body.vendor.company }}</span
-          >
-          <span
-            pTooltip="{{ 'PO No.' | translate }}"
-            showDelay="1000"
-            hideDelay="1000"
-            tooltipPosition="bottom"
-            class="vertical-align-middle"
-            >{{ body.no }}</span
-          >
-          <span
-            pTooltip="{{ 'Creation Date' | translate }}"
-            showDelay="1000"
-            hideDelay="1000"
-            tooltipPosition="bottom"
-            class="vertical-align-middle py-2"
-            >{{ body.createdAt | date : "dd/MM/yyyy hh:mm A" }}</span
-          >
-          <span
-            pTooltip="{{ 'Cash' | translate }}"
-            showDelay="1000"
-            hideDelay="1000"
-            tooltipPosition="bottom"
-            class="vertical-align-middle"
-            >{{ body.cash }} {{ getCurrencySymbol(cur.code) }}</span
-          >
-          <span
-            pTooltip="{{ 'Status' | translate }}"
-            showDelay="1000"
-            hideDelay="1000"
-            tooltipPosition="bottom"
-            [class]="body.status"
-            >{{ body.status | translate }}
+          <span pTooltip="{{ 'Company' | translate }}" showDelay="1000" hideDelay="1000" tooltipPosition="bottom"
+            class="vertical-align-middle py-2">{{ body.vendor.company }}</span>
+          <span pTooltip="{{ 'PO No.' | translate }}" showDelay="1000" hideDelay="1000" tooltipPosition="bottom"
+            class="vertical-align-middle">{{ body.no }}</span>
+          <span pTooltip="{{ 'Creation Date' | translate }}" showDelay="1000" hideDelay="1000" tooltipPosition="bottom"
+            class="vertical-align-middle py-2">{{ body.createdAt | date : "dd/MM/yyyy hh:mm A" }}</span>
+          <span pTooltip="{{ 'Cash' | translate }}" showDelay="1000" hideDelay="1000" tooltipPosition="bottom"
+            class="vertical-align-middle">{{ body.cash }} {{ getCurrencySymbol(cur.code) }}</span>
+          <span pTooltip="{{ 'Status' | translate }}" showDelay="1000" hideDelay="1000" tooltipPosition="bottom"
+            [class]="body.status">{{ body.status | translate }}
           </span>
         </ng-template>
         <ng-template pTemplate="content">
@@ -591,25 +409,13 @@
                   <td class="px-2 font-bold">{{ product.name }}</td>
                   <td>
                     <span class="px-2 font-bold">
-                      <input
-                        type="number"
-                        [value]="product.price"
-                        disabled
-                        [ngModelOptions]="{ standalone: true }"
-                        pInputText
-                        [(ngModel)]="product.sellPrice"
-                      />
+                      <input type="number" [value]="product.price" disabled [ngModelOptions]="{ standalone: true }"
+                        pInputText [(ngModel)]="product.sellPrice" />
                     </span>
                   </td>
                   <td>
                     <span class="font-bold">
-                      <input
-                        type="number"
-                        name="qty{{ s }}"
-                        disabled
-                        pInputText
-                        [(ngModel)]="product.qty"
-                      />
+                      <input type="number" name="qty{{ s }}" disabled pInputText [(ngModel)]="product.qty" />
                     </span>
                   </td>
                   <td>
@@ -629,12 +435,8 @@
           </div>
           <div class="grid">
             <div class="col-12">
-              <h4
-                class="text-primary text-center pointer"
-                (click)="viewPoOrder(body)"
-                style="font-size: 1rem; margin: auto; padding-top: 1rem"
-                translate
-              >
+              <h4 class="text-primary text-center pointer" (click)="viewPoOrder(body)"
+                style="font-size: 1rem; margin: auto; padding-top: 1rem" translate>
                 View Purchase Order
               </h4>
             </div>
@@ -644,16 +446,8 @@
     </p-accordion>
   </div>
 </app-modal>
-<app-add-edit-order
-  *ngIf="showOrderSidebar"
-  [selectedOrder]="selectedOrder"
-  [detailMode]="true"
-  [(display)]="showOrderSidebar"
-></app-add-edit-order>
+<app-add-edit-order *ngIf="showOrderSidebar" [selectedOrder]="selectedOrder" [detailMode]="true"
+  [(display)]="showOrderSidebar"></app-add-edit-order>
 
-<app-purchase-order-form
-  *ngIf="showPoOrderSidebar"
-  [po]="selectedPo"
-  [(display)]="showPoOrderSidebar"
-  [detailMode]="true"
-></app-purchase-order-form>
+<app-purchase-order-form *ngIf="showPoOrderSidebar" [po]="selectedPo" [(display)]="showPoOrderSidebar"
+  [detailMode]="true"></app-purchase-order-form>

@@ -63,7 +63,7 @@ export class BaseComponent implements OnInit, OnDestroy {
     if (!isSet(header)) {
       header = 'Error'
     }
-    this.messageService?.add({ severity: 'error', summary: header, detail: detail || '' });
+    this.messageService?.add({ severity: 'error', summary: this.trans(header), detail: this.trans(detail) || '' });
 
   }
   public infoMessage(header: string, detail?: string) {

@@ -1,7 +1,7 @@
 <ng-container *ngIf="entity?.type=='user'">
     <div *ngIf="entity?.value;else notFound">
         <div *ngIf="!entity.invert" class="flex">
-            <p-avatar #avatar [image]="entity.value.gender==='Male'?'./assets/images/man.jpg' : './assets/images/woman.png'" styleClass="m-2 avatar-lg"
+            <p-avatar #avatar [image]="entity.gender=='Male'?'./assets/images/man.jpg' : './assets/images/woman.png'" styleClass="m-2 avatar-lg"
                 shape="circle"></p-avatar>
             <div class="mt-2">
                 <div class="mb-1 font-semibold" [class]="darkMode?'text-100':'text-500'" translate
@@ -10,7 +10,7 @@
                     [class]="darkMode?'entiy-value':!entity.color?'text-color':null">{{entity?.value}}</div>
             </div>
         </div>
-        <div *ngIf="entity.invert" class="flex">
+        <!-- <div *ngIf="entity.invert" class="flex">
             <p-avatar #avatar [image]="entity?.value?.gender=='Male'?'./assets/images/man.jpg' : './assets/images/woman.png'" styleClass="m-2 avatar-lg"
                 shape="circle"></p-avatar>
             <div class="mt-2">
@@ -19,7 +19,7 @@
                 <div class="mb-1 font-semibold" [class]="darkMode?'text-100':'text-500'" [innerHtml]="entity.title"></div>
     
             </div>
-        </div>
+        </div> -->
     </div>
     <ng-template #notFound>
         <div class="mb-1 font-semibold" [class]="darkMode?'text-100':'text-500'" translate [innerHtml]="entity.title"></div>

@@ -63,13 +63,13 @@ export class DashboardComponent extends BaseComponent implements OnInit {
       {
         icon: 'pi pi-money-bill text-primary',
         command: () => {
-          this.dashboardDetails = true;
+          this.results.entities.length ? this.dashboardDetails = true : this.errorMessage('Empty', 'No Data to View');
         },
       },
       {
         icon: 'pi pi-ticket text-primary',
         command: () => {
-          this.poDashboard = true;
+           this.results.po.length ? this.poDashboard = true : this.errorMessage('Empty', 'No Data to View');
         },
       },
       {
@@ -253,7 +253,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
       labels: name,
       datasets: [
         {
-          label: this.trans('Selling Times'),
+          label: this.trans('Buying Times'),
           data: qty,
           backgroundColor: [
             'rgba(75, 192, 192, 0.2)',

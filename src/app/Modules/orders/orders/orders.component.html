@@ -1,17 +1,16 @@
-
 <app-loading *ngIf="loading" display="full"></app-loading>
 <p-toast position="top-right"></p-toast>
 <p-confirmDialog containerStyleClass="vw" acceptButtonStyleClass="p-button-danger" acceptIcon="pi pi-trash"
     rejectButtonStyleClass="p-button-text" appendTo="body"></p-confirmDialog>
 <div class="grid card h-full">
-    <p-table #kt [value]="orders"  (onPage)="getOrders(($event?.first/rowNum)+1)"
-    [paginator]="paginator"  [rows]='rowNum' currentPageReportTemplate="Showing {first} to {last} entries"
-    [scrollable]="true" [tableStyle]="{'width.%': 100}" scrollHeight="80vh">
+    <p-table #kt [value]="orders" (onPage)="getOrders(($event?.first/rowNum)+1)" [paginator]="paginator" [rows]='rowNum'
+        currentPageReportTemplate="Showing {first} to {last} entries" [scrollable]="true"
+        [tableStyle]="{'width.%': 100}" scrollHeight="80vh">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
                 <div>
                     <h5 class="m-0 primary" translate>Orders Manager</h5>
-                  
+
                 </div>
             </div>
         </ng-template>
@@ -19,84 +18,86 @@
             <tr>
                 <th style="width: 30vw" translate>Order No.
                     <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
-                    [ngClass]="fillterFildes?.orderNo?.status?'status-filter':null" type="text" field="id"
-                    matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
-                    [showAddButton]="false">
-                    <ng-template pTemplate="filter">
-                        <div class="mt-3">
-                            <input [disabled]="fillterFildes?.orderNo?.status" [(ngModel)]="fillterFildes.orderNo.value"
-                                type="text" pInputText>
-                        </div>
-                        <div class="grid mt-2">
-                            <div class="col-6">
-                                <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
-                                    (click)="fillterFildes.orderNo.value=null;fillterFildes.orderNo.status=flase;clearAllFillter()"
-                                    type="button">
-                                </button>
+                        [ngClass]="fillterFildes?.orderNo?.status?'status-filter':null" type="text" field="id"
+                        matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
+                        [showAddButton]="false">
+                        <ng-template pTemplate="filter">
+                            <div class="mt-3">
+                                <input [disabled]="fillterFildes?.orderNo?.status"
+                                    [(ngModel)]="fillterFildes.orderNo.value" type="text" pInputText>
                             </div>
-                            <div class="col-6">
-                                <button pButton [disabled]="!fillterFildes.orderNo.value" label="{{'Apply'|translate}}" 
-                                    (click)="fillterFildes.orderNo.name='orderNo';fillterFildes.orderNo.status=true;fillterFildes.orderNo.type='$contains';getOrders(1,fillterFildes?.orderNo)"
-                                    type="button">
-                                </button>
+                            <div class="grid mt-2">
+                                <div class="col-6">
+                                    <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
+                                        (click)="fillterFildes.orderNo.value=null;fillterFildes.orderNo.status=flase;clearAllFillter()"
+                                        type="button">
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button pButton [disabled]="!fillterFildes.orderNo.value"
+                                        label="{{'Apply'|translate}}"
+                                        (click)="fillterFildes.orderNo.name='orderNo';fillterFildes.orderNo.status=true;fillterFildes.orderNo.type='$contains';getOrders(1,fillterFildes?.orderNo)"
+                                        type="button">
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </ng-template>
-                </p-columnFilter>
-            </th>
+                        </ng-template>
+                    </p-columnFilter>
+                </th>
                 <th style="width: 30vw" translate>Customer
                     <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
-                    [ngClass]="fillterFildes?.number?.status?'status-filter':null" type="text" field="id"
-                    matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
-                    [showAddButton]="false">
-                    <ng-template pTemplate="filter">
-                        <div class="mt-3">
-                            <input [disabled]="fillterFildes?.customer?.status" [(ngModel)]="fillterFildes.customer.value"
-                                type="text" pInputText>
-                        </div>
-                        <div class="grid mt-2">
-                            <div class="col-6">
-                                <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
-                                    (click)="fillterFildes.customer.value=null;fillterFildes.customer.status=flase;clearAllFillter()"
-                                    type="button">
-                                </button>
+                        [ngClass]="fillterFildes?.number?.status?'status-filter':null" type="text" field="id"
+                        matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
+                        [showAddButton]="false">
+                        <ng-template pTemplate="filter">
+                            <div class="mt-3">
+                                <input [disabled]="fillterFildes?.customer?.status"
+                                    [(ngModel)]="fillterFildes.customer.value" type="text" pInputText>
                             </div>
-                            <div class="col-6">
-                                <button pButton [disabled]="!fillterFildes.customer.value" label="{{'Apply'|translate}}"
-                                    (click)="fillterFildes.customer.status=true;search()"
-                                    type="button">
-                                </button>
+                            <div class="grid mt-2">
+                                <div class="col-6">
+                                    <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
+                                        (click)="fillterFildes.customer.value=null;fillterFildes.customer.status=flase;clearAllFillter()"
+                                        type="button">
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button pButton [disabled]="!fillterFildes.customer.value"
+                                        label="{{'Apply'|translate}}"
+                                        (click)="fillterFildes.customer.status=true;search()" type="button">
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </ng-template>
-                </p-columnFilter>
-            </th>
+                        </ng-template>
+                    </p-columnFilter>
+                </th>
                 <th translate>Appointment No.
                     <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
-                    [ngClass]="fillterFildes?.number?.status?'status-filter':null" type="text" field="id"
-                    matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
-                    [showAddButton]="false">
-                    <ng-template pTemplate="filter">
-                        <div class="mt-3">
-                            <input [disabled]="fillterFildes?.number?.status" [(ngModel)]="fillterFildes.number.value"
-                                type="text" pInputText>
-                        </div>
-                        <div class="grid mt-2">
-                            <div class="col-6">
-                                <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
-                                    (click)="fillterFildes.number.value=null;fillterFildes.number.status=flase;clearAllFillter()"
-                                    type="button">
-                                </button>
+                        [ngClass]="fillterFildes?.number?.status?'status-filter':null" type="text" field="id"
+                        matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
+                        [showAddButton]="false">
+                        <ng-template pTemplate="filter">
+                            <div class="mt-3">
+                                <input [disabled]="fillterFildes?.number?.status"
+                                    [(ngModel)]="fillterFildes.number.value" type="text" pInputText>
                             </div>
-                            <div class="col-6">
-                                <button pButton [disabled]="!fillterFildes.number.value" label="{{'Apply'|translate}}"
-                                    (click)="fillterFildes.number.name='number';fillterFildes.number.parent='[appointment]';fillterFildes.number.status=true;fillterFildes.number.type='$contains';getOrders(1,fillterFildes?.number)"
-                                    type="button">
-                                </button>
+                            <div class="grid mt-2">
+                                <div class="col-6">
+                                    <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
+                                        (click)="fillterFildes.number.value=null;fillterFildes.number.status=flase;clearAllFillter()"
+                                        type="button">
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button pButton [disabled]="!fillterFildes.number.value"
+                                        label="{{'Apply'|translate}}"
+                                        (click)="fillterFildes.number.name='number';fillterFildes.number.parent='[appointment]';fillterFildes.number.status=true;fillterFildes.number.type='$contains';getOrders(1,fillterFildes?.number)"
+                                        type="button">
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </ng-template>
-                </p-columnFilter>
+                        </ng-template>
+                    </p-columnFilter>
                 </th>
                 <th translate>Status
                     <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
@@ -104,9 +105,9 @@
                         matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
                         [showAddButton]="false">
                         <ng-template pTemplate="filter">
-                            <p-dropdown [disabled]="fillterFildes?.status?.status" [options]="status"
-                                [showClear]="true" [(ngModel)]="fillterFildes.status.value"
-                                placeholder="{{'Select Status'|translate}}" optionValue="label" optionLabel="label">
+                            <p-dropdown [disabled]="fillterFildes?.status?.status" [options]="status" [showClear]="true"
+                                [(ngModel)]="fillterFildes.status.value" placeholder="{{'Select Status'|translate}}"
+                                optionValue="label" optionLabel="label">
                                 <ng-template let-item pTemplate="item">
                                     <span [class]="item.label">{{item.label |translate}}</span>
                                 </ng-template>
@@ -119,7 +120,8 @@
                                     </button>
                                 </div>
                                 <div class="col-6">
-                                    <button pButton [disabled]="!fillterFildes.status.value" label="{{'Apply'|translate}}"
+                                    <button pButton [disabled]="!fillterFildes.status.value"
+                                        label="{{'Apply'|translate}}"
                                         (click)="fillterFildes.status.name='status';fillterFildes.status.status=true;fillterFildes.status.type='$eq';getOrders(1,fillterFildes?.status)"
                                         type="button">
                                     </button>
@@ -130,44 +132,42 @@
                 </th>
                 <th translate>Creation Date
                     <p-columnFilter #fitlercreatedAt [showApplyButton]="false" [showClearButton]="false"
-                    [ngClass]="fillterFildes?.createdAt?.status?'active-filter':null" type="date"
-                    field="createdAt" matchMode="equals" display="menu" [showMatchModes]="false"
-                    [showOperator]="false" [showAddButton]="false">
-                    <ng-template pTemplate="filter">
-                        <p-dropdown [disabled]="fillterFildes?.createdAt?.status"
-                            [options]="queryTypes"
-                            [(ngModel)]="fillterFildes.createdAt.type" placeholder='{{"Select filter Type"|translate}}'
-                            optionValue="value" optionLabel="type">
-                            <ng-template let-item pTemplate="item">
-                                <span>{{item.type |translate}}</span>
-                            </ng-template>
-                        </p-dropdown>
-                        <div class="mt-3">
-                            <p-calendar [disabled]="fillterFildes?.createdAt?.status" dateFormat="dd-mm-yy"
-                                [showIcon]="true" yearNavigator=true 
-                                [(ngModel)]="fillterFildes.createdAt.value">
-                            </p-calendar>
-                        </div>
-                        <div class="grid mt-2">
-                            <div class="col-6">
-                                <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
-                                    (click)="fitlercreatedAt.overlayVisible=false;fillterFildes.createdAt.value=null;fillterFildes.createdAt.status=flase;clearAllFillter()"
-                                    type="button">
-                                </button>
+                        [ngClass]="fillterFildes?.createdAt?.status?'active-filter':null" type="date" field="createdAt"
+                        matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
+                        [showAddButton]="false">
+                        <ng-template pTemplate="filter">
+                            <p-dropdown [disabled]="fillterFildes?.createdAt?.status" [options]="queryTypes"
+                                [(ngModel)]="fillterFildes.createdAt.type"
+                                placeholder='{{"Select filter Type"|translate}}' optionValue="value" optionLabel="type">
+                                <ng-template let-item pTemplate="item">
+                                    <span>{{item.type |translate}}</span>
+                                </ng-template>
+                            </p-dropdown>
+                            <div class="mt-3">
+                                <p-calendar [disabled]="fillterFildes?.createdAt?.status" dateFormat="dd-mm-yy"
+                                    [showIcon]="true" yearNavigator=true [(ngModel)]="fillterFildes.createdAt.value">
+                                </p-calendar>
                             </div>
-                            <div class="col-6">
-                                <button pButton
-                                    [disabled]="!fillterFildes.createdAt.type||!fillterFildes.createdAt.value"
-                                    label="{{'Apply'|translate}}"
-                                    (click)="fillterFildes.createdAt.name='createdAt';fillterFildes.createdAt.status=true;getOrders(1,fillterFildes?.createdAt)"
-                                    type="button">
-                                </button>
+                            <div class="grid mt-2">
+                                <div class="col-6">
+                                    <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
+                                        (click)="fitlercreatedAt.overlayVisible=false;fillterFildes.createdAt.value=null;fillterFildes.createdAt.status=flase;clearAllFillter()"
+                                        type="button">
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button pButton
+                                        [disabled]="!fillterFildes.createdAt.type||!fillterFildes.createdAt.value"
+                                        label="{{'Apply'|translate}}"
+                                        (click)="fillterFildes.createdAt.name='createdAt';fillterFildes.createdAt.status=true;getOrders(1,fillterFildes?.createdAt)"
+                                        type="button">
+                                    </button>
 
+                                </div>
                             </div>
-                        </div>
-                    </ng-template>
+                        </ng-template>
 
-                </p-columnFilter>
+                    </p-columnFilter>
                 </th>
                 <th style="width: 10% !important" translate>Actions</th>
             </tr>
@@ -180,7 +180,7 @@
                     </span>
                 </td>
                 <td style="width: 30vw">
-                    <span  (click)="getOrder(ser)" class="text-xl text-primary pointer ">
+                    <span (click)="getOrder(ser)" class="text-xl text-primary pointer ">
                         {{ser?.attributes?.appointment?.data?.attributes?.customer?.firstName}}
                         {{ser?.attributes?.appointment?.data?.attributes?.customer?.middleName}}
                         {{ser?.attributes?.appointment?.data?.attributes?.customer?.lastName}}
@@ -200,7 +200,7 @@
                     <span class="text-xl text-primary  bold">
                         {{ ser?.attributes?.createdAt| date: 'dd/MM/yyyy hh:mm a' }}
                     </span>
-                   
+
                 </td>
                 <td style="width: 10%">
                     <button (click)="getOrder(ser)" pButton pRipple icon="pi pi-pencil text-base"
@@ -217,5 +217,6 @@
 </div>
 
 
- <app-add-edit-order [isAttributes]="true" *ngIf="showOrderSidebar" (refreshLish)="getOrders(1,null,false)" [selectedOrder]="selectedOrder"
-    [id]="id" [detailMode]="detailMode" [(display)]="showOrderSidebar"></app-add-edit-order>
+<app-add-edit-order [isAttributes]="true" *ngIf="showOrderSidebar" (refreshLish)="getOrders(1,null,false)"
+    [selectedOrder]="selectedOrder" [id]="id" [detailMode]="detailMode"
+    [(display)]="showOrderSidebar"></app-add-edit-order>

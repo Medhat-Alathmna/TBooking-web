@@ -1,178 +1,86 @@
 <app-loading *ngIf="loading" display="full"></app-loading>
 <p-toast position="top-right"></p-toast>
 <p-confirmDialog containerStyleClass="vw" acceptButtonStyleClass="p-button-danger" acceptIcon="pi pi-trash"
-    rejectButtonStyleClass="p-button-text" appendTo="body"></p-confirmDialog>
+  rejectButtonStyleClass="p-button-text" appendTo="body"></p-confirmDialog>
 <div class="grid card h-full">
-    <p-table #kt [value]="vendors" 
-    [paginator]="paginator"  [rows]='rowNum' currentPageReportTemplate="Showing {first} to {last} entries"
-    [scrollable]="true" [tableStyle]="{'width.%': 100}" scrollHeight="80vh">
-        <ng-template pTemplate="caption">
-            <div class="flex align-items-center justify-content-between">
-                <div>
-                    <h5 class="m-0 primary" translate>Vendors Manager</h5>
-                  
-                </div>
-                <div class="table-header inputgroup-stopwords block ">
-                    <div class="p-inputgroup inputgroup-stopwords">
-                        <div>
-                            <button type="button" (click)="showVendorSidebar()" label="{{'Add Vendor'|translate}}" pRipple pButton
-                                icon="pi pi-plus" class="p-button-success "></button>
-                        </div>
-                    </div>
-                </div>
+  <p-table #kt [value]="vendors" [paginator]="paginator" [rows]="rowNum"
+    currentPageReportTemplate="Showing {first} to {last} entries" [scrollable]="true" [tableStyle]="{ 'width.%': 100 }"
+    scrollHeight="80vh">
+    <ng-template pTemplate="caption">
+      <div class="flex align-items-center justify-content-between">
+        <div>
+          <h5 class="m-0 primary" translate>Vendors Manager</h5>
+        </div>
+        <div class="table-header inputgroup-stopwords block">
+          <div class="p-inputgroup inputgroup-stopwords">
+            <div>
+              <button type="button" (click)="showVendorSidebar()" label="{{ 'Add Vendor' | translate }}" pRipple pButton
+                icon="pi pi-plus" class="p-button-success"></button>
             </div>
-        </ng-template>
-        <ng-template pTemplate="header">
-            <tr>
-                <th style="width: 30vw" translate>Company
-                    <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
-                    [ngClass]="fillterFildes?.orderNo?.status?'status-filter':null" type="text" field="id"
-                    matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
-                    [showAddButton]="false">
-                    <ng-template pTemplate="filter">
-                        <div class="mt-3">
-                            <input [disabled]="fillterFildes?.orderNo?.status" [(ngModel)]="fillterFildes.orderNo.value"
-                                type="text" pInputText>
-                        </div>
-                        <div class="grid mt-2">
-                            <div class="col-6">
-                                <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
-                                    (click)="fillterFildes.orderNo.value=null;fillterFildes.orderNo.status=flase;clearAllFillter()"
-                                    type="button">
-                                </button>
-                            </div>
-                            <div class="col-6">
-                                <button pButton [disabled]="!fillterFildes.orderNo.value" label="{{'Apply'|translate}}" 
-                                    (click)="fillterFildes.orderNo.name='orderNo';fillterFildes.orderNo.status=true;fillterFildes.orderNo.type='$contains';getOrders(1,fillterFildes?.orderNo)"
-                                    type="button">
-                                </button>
-                            </div>
-                        </div>
-                    </ng-template>
-                </p-columnFilter>
-            </th>
-                <th style="width: 30vw" translate>Vendor
-                    <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
-                    [ngClass]="fillterFildes?.orderNo?.status?'status-filter':null" type="text" field="id"
-                    matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
-                    [showAddButton]="false">
-                    <ng-template pTemplate="filter">
-                        <div class="mt-3">
-                            <input [disabled]="fillterFildes?.orderNo?.status" [(ngModel)]="fillterFildes.orderNo.value"
-                                type="text" pInputText>
-                        </div>
-                        <div class="grid mt-2">
-                            <div class="col-6">
-                                <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
-                                    (click)="fillterFildes.orderNo.value=null;fillterFildes.orderNo.status=flase;clearAllFillter()"
-                                    type="button">
-                                </button>
-                            </div>
-                            <div class="col-6">
-                                <button pButton [disabled]="!fillterFildes.orderNo.value" label="{{'Apply'|translate}}" 
-                                    (click)="fillterFildes.orderNo.name='orderNo';fillterFildes.orderNo.status=true;fillterFildes.orderNo.type='$contains';getOrders(1,fillterFildes?.orderNo)"
-                                    type="button">
-                                </button>
-                            </div>
-                        </div>
-                    </ng-template>
-                </p-columnFilter>
-            </th>
-                <th style="width: 30vw" translate>Phone
-                    <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
-                    [ngClass]="fillterFildes?.number?.status?'status-filter':null" type="text" field="id"
-                    matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
-                    [showAddButton]="false">
-                    <ng-template pTemplate="filter">
-                        <div class="mt-3">
-                            <input [disabled]="fillterFildes?.customer?.status" [(ngModel)]="fillterFildes.customer.value"
-                                type="text" pInputText>
-                        </div>
-                        <div class="grid mt-2">
-                            <div class="col-6">
-                                <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
-                                    (click)="fillterFildes.customer.value=null;fillterFildes.customer.status=flase;clearAllFillter()"
-                                    type="button">
-                                </button>
-                            </div>
-                            <div class="col-6">
-                                <button pButton [disabled]="!fillterFildes.customer.value" label="{{'Apply'|translate}}"
-                                    (click)="fillterFildes.customer.status=true;search()"
-                                    type="button">
-                                </button>
-                            </div>
-                        </div>
-                    </ng-template>
-                </p-columnFilter>
-            </th>             
-                <th translate>Email
-                    <p-columnFilter [showApplyButton]="false" [showClearButton]="false"
-                        [ngClass]="fillterFildes?.status?.status?'status-filter':null" type="text" field="id"
-                        matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false"
-                        [showAddButton]="false">
-                        <ng-template pTemplate="filter">
-                            <p-dropdown [disabled]="fillterFildes?.status?.status" [options]="status"
-                                [showClear]="true" [(ngModel)]="fillterFildes.status.value"
-                                placeholder="{{'Select Status'|translate}}" optionValue="label" optionLabel="label">
-                                <ng-template let-item pTemplate="item">
-                                    <span [class]="item.label">{{item.label |translate}}</span>
-                                </ng-template>
-                            </p-dropdown>
-                            <div class="grid mt-2">
-                                <div class="col-6">
-                                    <button pButton label="{{'Clear'|translate}}" class="p-button-outlined"
-                                        (click)="fillterFildes.status.value=null;fillterFildes.status.status=flase;clearAllFillter()"
-                                        type="button">
-                                    </button>
-                                </div>
-                                <div class="col-6">
-                                    <button pButton [disabled]="!fillterFildes.status.value" label="{{'Apply'|translate}}"
-                                        (click)="fillterFildes.status.name='status';fillterFildes.status.status=true;fillterFildes.status.type='$eq';getOrders(1,fillterFildes?.status)"
-                                        type="button">
-                                    </button>
-                                </div>
-                            </div>
-                        </ng-template>
-                    </p-columnFilter>
-                </th>
-              
-                <th style="width: 10% !important" translate>Actions</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-ser let-i="rowIndex">
-            <tr>
-                <td style="width: 30vw">
-                    <span (click)="getVendor(ser)" class="text-xl text-primary pointer font-bold">
-                        {{ser?.attributes?.company}}
-                    </span>
-                </td>
-                <td style="width: 30vw">
-                    <span (click)="getVendor(ser)" class="text-xl text-primary pointer font-bold">
-                        {{ser?.attributes?.name}}
-                    </span>
-                </td>
-                <td style="width: 30vw">
-                    <span  (click)="getVendor(ser)" class="text-xl text-primary pointer ">
-                        {{ser?.attributes?.phone}}
-                    </span>
-                </td>
-                <td style="width: 30vw">
-                    <span  (click)="getVendor(ser)" class="text-xl text-primary pointer ">
-                        {{ser?.attributes?.email}}
-                    </span>
-                </td>
-           
-                <td style="width: 10%">
-                    <button (click)="getOrder(ser)" pButton pRipple icon="pi pi-pencil text-base"
-                        class="p-button-sm  p-button-primary mr-1"></button>
-                </td>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="emptymessage">
-            <tr>
-                <td colspan="4" translate>No Vendors</td>
-            </tr>
-        </ng-template>
-    </p-table>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 30vw" translate>
+          Company
+          <app-column-filter [filterValue]="fillterFildes.company" (clear)="clearFilter(); getVendorsList(1, null)"
+            (refresh)="getVendorsList(1, $event)"></app-column-filter>
+        </th>
+        <th style="width: 30vw" translate>
+          Vendor
+          <app-column-filter [filterValue]="fillterFildes.name" (clear)="clearFilter(); getVendorsList(1, null)"
+            (refresh)="getVendorsList(1, $event)"></app-column-filter>
+        </th>
+        <th style="width: 30vw" translate>
+          Phone
+          <app-column-filter [filterValue]="fillterFildes.phone" (clear)="clearFilter(); getVendorsList(1, null)"
+            (refresh)="getVendorsList(1, $event)"></app-column-filter>
+        </th>
+        <th translate>
+          Email
+          <app-column-filter [filterValue]="fillterFildes.email" (clear)="clearFilter(); getVendorsList(1, null)"
+            (refresh)="getVendorsList(1, $event)"></app-column-filter>
+        </th>
+
+        <th style="width: 10% !important" translate>Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-ser let-i="rowIndex">
+      <tr>
+        <td style="width: 30vw">
+          <span (click)="getVendor(ser)" class="text-xl text-primary pointer font-bold">
+            {{ ser?.attributes?.company }}
+          </span>
+        </td>
+        <td style="width: 30vw">
+          <span (click)="getVendor(ser)" class="text-xl text-primary pointer font-bold">
+            {{ ser?.attributes?.name }}
+          </span>
+        </td>
+        <td style="width: 30vw">
+          <span (click)="getVendor(ser)" class="text-xl text-primary pointer">
+            {{ ser?.attributes?.phone }}
+          </span>
+        </td>
+        <td style="width: 30vw">
+          <span (click)="getVendor(ser)" class="text-xl text-primary pointer">
+            {{ ser?.attributes?.email }}
+          </span>
+        </td>
+
+        <td style="width: 10%">
+          <button (click)="getOrder(ser)" pButton pRipple icon="pi pi-pencil text-base"
+            class="p-button-sm p-button-primary mr-1"></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="4" translate>No Vendors</td>
+      </tr>
+    </ng-template>
+  </p-table>
 </div>
-<app-vendors-form  *ngIf="showSidebar" [id]="id" [(display)]="showSidebar" [detailMode]="detailMode"></app-vendors-form>
+<app-vendors-form *ngIf="showSidebar" [id]="id" (refreshLish)="getVendorsList(1, null)" [(display)]="showSidebar" [detailMode]="detailMode"></app-vendors-form>

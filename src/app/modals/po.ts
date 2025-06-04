@@ -10,6 +10,7 @@ export class PurchaseOrder {
   payments:any
   products:Products|any
   createdAt:any
+  pic:any
   selectedVendor:any
   addedToStuck:boolean
   public constructor(params?: PurchaseOrder) {

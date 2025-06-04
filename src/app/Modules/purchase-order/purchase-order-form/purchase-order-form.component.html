@@ -1,7 +1,7 @@
 <app-loading *ngIf="loading" display="full"></app-loading>
 <p-toast position="top-right"></p-toast>
 
-<app-sidebar style="z-index: 99999;" [display]="display" (displayChange)="onHide()">
+<app-sidebar [display]="display" (displayChange)="onHide()">
     <div header>
         <div class="flex justify-content-between flex-wrap ">
             <div *ngIf="detailMode" class="flex align-items-center justify-content-center   ">
@@ -12,15 +12,13 @@
                 <div class="flex align-items-center justify-content-center border-break"></div>
                 <div class="flex-initial flex align-items-center justify-content-center px-3">
                     <i class="pi pi-receipt text-100 text-3xl " [class]="'css.mr-2'|translate"></i>
-                    <entity-viewer
-                        [entity]="{type:'text',title:'PO No.' | translate,value:this.po.no}"
+                    <entity-viewer [entity]="{type:'text',title:'PO No.' | translate,value:this.po.no}"
                         [darkMode]="true"></entity-viewer>
                 </div>
                 <div class="flex align-items-center justify-content-center border-break"></div>
                 <div class="flex-initial flex align-items-center justify-content-center px-3">
                     <i class="pi pi-calendar text-100 text-3xl " [class]="'css.mr-2'|translate"></i>
-                    <entity-viewer
-                        [entity]="{type:'text',title:'CREATION DATE' | translate,value:this.po.createdAt}"
+                    <entity-viewer [entity]="{type:'text',title:'CREATION DATE' | translate,value:this.po.createdAt}"
                         [darkMode]="true"></entity-viewer>
                 </div>
                 <div class="flex align-items-center justify-content-center border-break"></div>
@@ -28,8 +26,7 @@
                     <span [class]="'css.mr-2'|translate">
                         <i class="pi pi-tags text-100 text-3xl "></i>
                     </span>
-                    <entity-viewer
-                        [entity]="{type:'text',title:'Status'| translate,value:po.status| translate}"
+                    <entity-viewer [entity]="{type:'text',title:'Status'| translate,value:po.status| translate}"
                         [darkMode]="true"></entity-viewer>
                 </div>
                 <div class="flex align-items-center justify-content-center border-break"></div>
@@ -46,7 +43,7 @@
                 <div class="flex align-items-center justify-content-center border-break"></div>
                 <div class="flex-initial flex align-items-center justify-content-center px-3">
                     <entity-viewer
-                        [entity]="{type:'user',title:'CREATED BY'|translate,value:po?.createBy?.username ,gender:po?.createBy?.gender}"
+                        [entity]="{type:'user',title:'CREATED BY'|translate,value:po?.createBy?.username ,gender:userAuth?.gender}"
                         [darkMode]="true"></entity-viewer>
                 </div>
             </div>
@@ -61,12 +58,14 @@
                 </div>
             </div>
             <div class="flex align-items-center justify-content-center mx-2 ">
-                <button *ngIf="(this.po.status != 'Canceled' && this.po.status !='Paid')&&permisionServices.hasPermission('PurchaseOrder', 'update')&&detailMode" pButton
-                [disabled]="!selectProducts.length || !po.vendor" pRipple type="button"
-                [label]="'Save'|translate" icon="pi pi-check " (click)="updateOptions()"
-                class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
+                <button
+                    *ngIf="(this.po.status != 'Canceled' && this.po.status !='Paid')&&permisionServices.hasPermission('PurchaseOrder', 'update')&&detailMode"
+                    pButton [disabled]="!selectProducts.length || !po.vendor" pRipple type="button"
+                    [label]="'Save'|translate" icon="pi pi-check " (click)="updateOptions()"
+                    class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
 
-                <button *ngIf="!detailMode" pButton pRipple (click)="saveOptions()" type="button" [label]="'Save'|translate" icon="pi pi-check " [disabled]="!selectProducts.length || !po.vendor"
+                <button *ngIf="!detailMode" pButton pRipple (click)="saveOptions()" type="button"
+                    [label]="'Save'|translate" icon="pi pi-check " [disabled]="!selectProducts.length || !po.vendor"
                     class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
             </div>
         </div>
@@ -80,37 +79,42 @@
                             Company
                         </div>
                     </ng-container>
-                    <p-dropdown appendTo="body" [filter]="true" class="text-xl" [options]="vendors"
+                    <p-dropdown [disabled]="detailMode" appendTo="body" [filter]="true" class="text-xl" [options]="vendors"
                         (onChange)="selectVendor($event)" [(ngModel)]="po.vendor"
                         placeholder="{{'Select a'|translate}} {{'Vendor'|translate}}" name="newValue"
                         optionLabel="attributes.company"></p-dropdown>
-                        <div class="grid px-3" style="justify-content: space-between">
-                            <div *ngIf="po?.selectedVendor">
-                                <div class="col-12">
-                                    <ul>
-                                        <li *ngIf=" po.selectedVendor.phone"><i class="tags">{{"Vendor"| translate}} : </i> {{
-                                            po.selectedVendor.name }}
-                                        </li>
-                                        <li *ngIf=" po.selectedVendor.phone"><i class="tags">{{"Phone"| translate}} : </i> {{
-                                            po.selectedVendor.phone }}
-                                        </li>
-                                        <li *ngIf="po.selectedVendor.email"><i class="tags">{{"Email"| translate}} : </i>
-                                            {{po.selectedVendor.email }}
-                                        </li>
-                                        <li *ngIf=" po.selectedVendor.address"><i class="tags">{{"Address"| translate}} : </i>
-                                            {{ po.selectedVendor.address }}</li>
-        
-                                    </ul>
-                                </div>
+                    <div class="grid px-3" style="justify-content: space-between">
+                        <div *ngIf="po?.selectedVendor">
+                            <div class="col-12">
+                                <ul>
+                                    <li *ngIf=" po.selectedVendor.phone"><i class="tags">{{"Vendor"| translate}} : </i>
+                                        {{
+                                        po.selectedVendor.name }}
+                                    </li>
+                                    <li *ngIf=" po.selectedVendor.phone"><i class="tags">{{"Phone"| translate}} : </i>
+                                        {{
+                                        po.selectedVendor.phone }}
+                                    </li>
+                                    <li *ngIf="po.selectedVendor.email"><i class="tags">{{"Email"| translate}} : </i>
+                                        {{po.selectedVendor.email }}
+                                    </li>
+                                    <li *ngIf=" po.selectedVendor.address"><i class="tags">{{"Address"| translate}} :
+                                        </i>
+                                        {{ po.selectedVendor.address }}</li>
+
+                                </ul>
                             </div>
                         </div>
+                    </div>
                 </div>
 
-                
+
                 <div class="col-12" *ngIf="po.selectedVendor">
                     <div class="col-6">
-                        <button pButton pRipple type="button" *ngIf="po.status =='Draft'&& !po.addedToStuck" icon="pi pi pi-plus " (click)="showProductsDialog=true"
-                            [label]="'Add Product'|translate" class="p-button-rounded p-button-outlined text-btn"></button>
+                        <button pButton pRipple type="button"
+                            *ngIf="(po.status =='Draft'&& !po.addedToStuck)||!detailMode" icon="pi pi pi-plus "
+                            (click)="showProductsDialog=true" [label]="'Add Product'|translate"
+                            class="p-button-rounded p-button-outlined text-btn"></button>
                     </div>
                     <div *ngIf="selectProducts.length" class="mt-3 col-12">
                         <p-table [value]="selectProducts" [tableStyle]="{'width.%': 100}">
@@ -136,10 +140,8 @@
                                     </td>
                                     <td>
                                         <span class="  font-bold">
-                                            <input type="number" name="qty{{s}}"
-                                                
-                                                showDelay="1000" hideDelay="1000" tooltipPosition="bottom" [min]="0"
-                                                  pInputText
+                                            <input type="number" name="qty{{s}}" showDelay="1000" hideDelay="1000"
+                                                tooltipPosition="bottom" [min]="0" pInputText
                                                 [(ngModel)]="product.qty" />
                                         </span>
                                     </td>
@@ -153,7 +155,7 @@
                                             {{product?.sellPrice*product?.qty}} {{getCurrencySymbol(cur.code)}}
                                         </span>
                                     </td>
-    
+
                                     <td>
                                         <span *ngIf="po.status =='Draft'&& !po.addedToStuck" class="  font-bold">
                                             <button pButton pRipple type="button" (click)="deleteValue(s)"
@@ -167,33 +169,53 @@
                     </div>
                 </div>
             </div>
-           <div *ngIf="selectProducts.length" class="col-4 card" style="border-style: groove;border-color: #003da85e;max-height: fit-content;">
-            <div class="flex justify-content-between" style="margin: -5px;">
-                    <button *ngIf="po.status!='Paid'" pButton pRipple type="button" (click)="openPaymentDialog()"
-                    icon="pi pi-plus " style="background-color: transparent;"
-                    class="p-button-rounded p-button-primary "></button>
-                <h4 translate>Payments</h4>
-                    <button *ngIf="po.status!='Paid'" pButton pRipple type="button" (click)="cashAllAmount()"
-                    icon="pi pi-plus " style="background-color: transparent;"
-                    class="p-button-rounded p-button-primary "></button>
-                
-            </div>
-            <div *ngFor="let pay of payments; let i=index" class="flex justify-content-between align-items-baseline mb-1" style="border-style: groove;border-color: #003da85e;border-radius: 10px;">
-                <div class="flex align-items-baseline" style="padding-inline: 1rem;"><h6 translate>Amount</h6> <h6>: {{pay.pay}} {{getCurrencySymbol(cur.code)}}</h6></div>
-                <div class="flex align-items-center">
-                    <p-tag styleClass="tag-secondary mx-2" icon="pi pi-tag" showDelay="1000"
-                    hideDelay="1000" tooltipPosition="bottom" pTooltip="Payment Date"
-                   [value]="pay.date"></p-tag>
-                   <button *ngIf="!pay.approved" pButton pRipple type="button" (click)="removePay(i)"
-                   icon="pi pi-trash "
-                   class="p-button-rounded p-button-danger p-button-text  "></button>
+            <div *ngIf="selectProducts.length" class="col-4">
+                <div class="card" style="border-style: groove;border-color: #003da85e;max-height: fit-content;">
+                    <div class="flex justify-content-between" style="margin: -5px;">
+                        <button *ngIf="po.status!='Paid'" pButton pRipple type="button" (click)="openPaymentDialog()"
+                            icon="pi pi-plus " style="background-color: transparent;"
+                            class="p-button-rounded p-button-primary "></button>
+                        <h4 translate>Payments</h4>
+                        <button *ngIf="po.status!='Paid'" pButton pRipple type="button" (click)="cashAllAmount()"
+                            icon="pi pi-plus " style="background-color: transparent;"
+                            class="p-button-rounded p-button-primary "></button>
+
+                    </div>
+                    <div *ngFor="let pay of payments; let i=index"
+                        class="flex justify-content-between align-items-baseline mb-1"
+                        style="border-style: groove;border-color: #003da85e;border-radius: 10px;">
+                        <div class="flex align-items-baseline" style="padding-inline: 1rem;">
+                            <h6 translate>Amount</h6>
+                            <h6>: {{pay.pay}} {{getCurrencySymbol(cur.code)}}</h6>
+                        </div>
+                        <div class="flex align-items-center">
+
+                            <p-tag styleClass="tag-secondary mx-2" icon="pi pi-user" showDelay="1000" hideDelay="1000"
+                                tooltipPosition="bottom" pTooltip="Paid by" [value]="pay.by"></p-tag>
+                            <p-tag styleClass="tag-secondary mx-2" icon="pi pi-tag" showDelay="1000" hideDelay="1000"
+                                tooltipPosition="bottom" pTooltip="Payment Date" [value]="pay.date"></p-tag>
+                            <button *ngIf="!pay.approved" pButton pRipple type="button" (click)="removePay(i)"
+                                icon="pi pi-trash " class="p-button-rounded p-button-danger p-button-text  "></button>
+                        </div>
+                    </div>
+                    <div class="m-0 flex justify-content-between">
+                        <div class="flex align-items-baseline">
+                            <h6 translate>Total Amount</h6>
+                            <h6>: {{getTotalPrice().productsAmount}} {{getCurrencySymbol(cur.code)}}</h6>
+                        </div>
+                        <div class="flex align-items-baseline">
+                            <h6 translate>Payments</h6>
+                            <h6>: {{getTotalPrice().totalPayments}} {{getCurrencySymbol(cur.code)}}</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full">
+                    <p-fileUpload #fileUploader name="demo[]" showUploadButton="false" accept="image/*" dragDropSupport="true"
+                        rendered="true" style="width: 100%"></p-fileUpload>
                 </div>
             </div>
-            <div class="m-0 flex justify-content-between">
-                <div class="flex align-items-baseline"><h6 translate>Total Amount</h6> <h6>: {{getTotalPrice().productsAmount}} {{getCurrencySymbol(cur.code)}}</h6></div>
-                <div class="flex align-items-baseline"><h6 translate>Payments</h6><h6>: {{getTotalPrice().totalPayments}} {{getCurrencySymbol(cur.code)}}</h6></div>
-            </div>
-           </div>
+
+
         </div>
 
     </form>
@@ -201,9 +223,8 @@
 
 <app-modal [(display)]="showProductsDialog" title="{{'Add Product'|translate}}" class="modal-sm">
     <div body>
-        <p-dropdown appendTo="body" [filter]="true" [options]="products" 
-            [placeholder]="'Select a Product'|translate" (onChange)="selectedProduct($event.value)"
-            optionLabel="name"></p-dropdown>
+        <p-dropdown appendTo="body" [filter]="true" [options]="products" [placeholder]="'Select a Product'|translate"
+            (onChange)="selectedProduct($event.value)" optionLabel="name"></p-dropdown>
 
 
     </div>
@@ -212,18 +233,19 @@
             icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
     </div>
 </app-modal>
-<app-modal [(display)]="showPaymentDialog"  class="modal-sm">
+<app-modal [(display)]="showPaymentDialog" class="modal-sm">
     <div body>
-        
+
         <div class="lg:col-4 sm:col-6 w-full">
-            <app-input #payInput (keydown)="onKeyEnterPay($event)" [focus]="true" [(ngModel)]="paymentAmount" type="number" name="amount" [title]="'Amount'|translate"></app-input>
+            <app-input #payInput (keydown)="onKeyEnterPay($event)" [focus]="true" [(ngModel)]="paymentAmount"
+                type="number" name="amount" [title]="'Amount'|translate"></app-input>
         </div>
 
     </div>
     <div footer>
         <button (click)="showPaymentDialog=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"
             icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
-        <button [disabled]="paymentAmount<=0"  (click)="addPayments()" pButton pRipple type="button" label=" {{'Add' |translate}}"
-           class="p-button-primary"></button>
+        <button [disabled]="paymentAmount<=0" (click)="addPayments()" pButton pRipple type="button"
+            label=" {{'Add' |translate}}" class="p-button-primary"></button>
     </div>
 </app-modal>

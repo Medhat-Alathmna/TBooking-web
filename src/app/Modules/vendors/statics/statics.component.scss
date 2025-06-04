@@ -1,3 +1,12 @@
 .trs{
     transition: all 0.9s ease-in;
 }
+
+::ng-deep .p-accordion-header-link {
+justify-content: space-around;
+}
+
+::ng-deep .p-speeddial-button.p-button.p-button-icon-only {
+    width: 3rem;
+    height: 3rem;
+}

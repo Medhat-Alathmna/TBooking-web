@@ -7,131 +7,133 @@ import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-purchase-order-list',
   templateUrl: './purchase-order-list.component.html',
-  styleUrls: ['./purchase-order-list.component.scss']
+  styleUrls: ['./purchase-order-list.component.scss'],
 })
-export class PurchaseOrderListComponent extends BaseComponent implements OnInit {
-  purchaseOrders
-  selectedPo
-  rowNum: any = 10
-  currentPage: any = 1
-  total
-  paginator: boolean = true
-  showSidebar=false
-  detailMode: boolean = false
+export class PurchaseOrderListComponent
+  extends BaseComponent
+  implements OnInit
+{
+  purchaseOrders;
+  selectedPo;
+  rowNum: any = 10;
+  currentPage: any = 1;
+  total;
+  paginator: boolean = true;
+  showSidebar = false;
+  detailMode: boolean = false;
   fillterFildes = {
-    no: new Filter(),
-    createdAt: new Filter(),
-    status: new Filter(),
-    company: new Filter(),
-    addedToStuck: new Filter(),
-  }
-  status = [
-    { label: 'Paid' },
-    { label: 'Unpaid' },
-    { label: 'Draft' },
-    { label: 'Canceled' }
-  ]
-  queryTypes = [
-    {
-      type: 'Not Equal',
-      value: '$ne'
+    no: { name: 'no', type: '$contains', filter: 'text' },
+    createdAt:{ name: 'createdAt', filter: 'date' },
+    status: {
+      name: 'status',
+      type: '$eq',
+      filter: 'dropdown',
+      data: [
+        { label: 'Paid' },
+        { label: 'Unpaid' },
+        { label: 'Draft' },
+        { label: 'Canceled' },
+      ],
     },
-    {
-      type: 'Equal',
-      value: '$containsi'
+    company: {
+      name: 'company',
+      type: '$contains',
+      filter: 'text',
+      parent: `[${'vendor'}]`,
     },
-    {
-      type: 'Less than',
-      value: '$lte'
+    addedToStuck: {
+      name: 'addedToStuck',
+      type: '$eq',
+      filter: 'boolean',
+     
     },
-    {
-      type: 'Greater Than',
-      value: '$gte'
-    },
-  ]
-  isAddedList=[
-    {label:'Yes',value:true},
-    {label:'No',value:false}
-  ]
+  };
+
+ 
   @ViewChild('kt') table: any;
 
-  constructor(private calenderService: CalenderService,private datePipe: DatePipe,) {super() }
-
-  ngOnInit(): void {
-    this.clearAllFillter()
+  constructor(
+    private calenderService: CalenderService,
+    private datePipe: DatePipe
+  ) {
+    super();
   }
 
-   getPurchaseOrders(pageNum?: number, query?: any) {
-    isSet(this.fillterFildes.createdAt.value) ? this.fillterFildes.createdAt.value = this.datePipe.transform(this.fillterFildes.createdAt.value, 'yyyy-MM-dd') : null
+  ngOnInit(): void {
+    this.clearAllFillter();
+  }
 
-      this.loading = true
-      const subscription = this.calenderService.getlist('purchase-orders', pageNum, 10, query).subscribe((results: any) => {
-        this.loading = false
-        if (!isSet(results)) {
-          return
-        }
-        this.paginator=true
-        this.purchaseOrders=[]
-        const clone = results.data
-        this.total = results.meta.pagination.total
-        if (!isSet(this.purchaseOrders)) {
-          this.purchaseOrders = Array(this.total).fill(0)
-        }
-        if (clone.length < this.rowNum) {
-          for (let index = clone.length; index < this.rowNum; index++) {
-            clone[index] = null
+  getPurchaseOrders(pageNum?: number, query?: any) {        
+    (query?.name=='createdAt'&& query)? (query.value = this.datePipe.transform(query.value,'yyyy-MM-dd')): null;
+    
+    this.loading = true;
+    const subscription = this.calenderService
+      .getlist('purchase-orders', pageNum, 10, query)
+      .subscribe(
+        (results: any) => {
+          this.loading = false;
+          if (!isSet(results)) {
+            return;
           }
-        }
-        //
-        if (!isSet(pageNum)) {
-          clone.map((item, index) => {
-            this.purchaseOrders[index] = item
-          })
-  
-        } else {
-          const currentPage = pageNum * this.rowNum
-          let cloneObjIndex = 0
-          for (let index = currentPage - this.rowNum; index < currentPage; index++) {
-            this.purchaseOrders[index] = clone[cloneObjIndex++]
+          this.paginator = true;
+          this.purchaseOrders = [];
+          const clone = results.data;
+          this.total = results.meta.pagination.total;
+          if (!isSet(this.purchaseOrders)) {
+            this.purchaseOrders = Array(this.total).fill(0);
           }
-        }
-        //
-        if (!isSet(this.purchaseOrders?.next)) {
-          this.purchaseOrders = this.purchaseOrders.filter(item => {
-            return isSet(item)
-          })
-        }
-        setTimeout(() => {
-          this.table.first = pageNum > 1 ? (pageNum - 1) * this.rowNum : 0
-        });
-  
-        subscription.unsubscribe()
-      }, error => {
-        this.loading = false
-        subscription.unsubscribe()
-      })
-    }
-    showPurSide(){
-      this.selectedPo=null
-      this.showSidebar=true
-      this.detailMode=false
-    }
+          if (clone.length < this.rowNum) {
+            for (let index = clone.length; index < this.rowNum; index++) {
+              clone[index] = null;
+            }
+          }
+          //
+          if (!isSet(pageNum)) {
+            clone.map((item, index) => {
+              this.purchaseOrders[index] = item;
+            });
+          } else {
+            const currentPage = pageNum * this.rowNum;
+            let cloneObjIndex = 0;
+            for (
+              let index = currentPage - this.rowNum;
+              index < currentPage;
+              index++
+            ) {
+              this.purchaseOrders[index] = clone[cloneObjIndex++];
+            }
+          }
+          //
+          if (!isSet(this.purchaseOrders?.next)) {
+            this.purchaseOrders = this.purchaseOrders.filter((item) => {
+              return isSet(item);
+            });
+          }
+          setTimeout(() => {
+            this.table.first = pageNum > 1 ? (pageNum - 1) * this.rowNum : 0;
+          });
 
-    openPO(id){
-      this.showSidebar=true
-      this.detailMode=true
-      this.selectedPo=id.id
+          subscription.unsubscribe();
+        },
+        (error) => {
+          this.loading = false;
+          subscription.unsubscribe();
+        }
+      );
+  }
+  showPurSide() {
+    this.selectedPo = null;
+    this.showSidebar = true;
+    this.detailMode = false;
+  }
 
-    }
-    clearAllFillter() {
-      this.fillterFildes = {
-        no: new Filter(),
-        createdAt: new Filter(),
-        status: new Filter(),
-        company: new Filter(),
-        addedToStuck: new Filter(),
-      }
-      this.calenderService.queryFilters = []
-      this.getPurchaseOrders(1, null)
-    }
+  openPO(id) {
+    this.showSidebar = true;
+    this.detailMode = true;
+    this.selectedPo = id.id;
+  }
+  clearAllFillter() {
+    this.calenderService.queryFilters = [];
+    this.getPurchaseOrders(1, null);
+  }
 }

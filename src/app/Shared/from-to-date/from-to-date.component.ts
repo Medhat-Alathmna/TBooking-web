@@ -27,6 +27,7 @@ export class FromToDateComponent implements OnInit {
   }
   emitDates() {
     this.dateChange.emit({ fromDate: this.fromDate, toDate: this.toDate });
+    this.display=false
   }
   onHide() {
     this.displayChange.emit(false)

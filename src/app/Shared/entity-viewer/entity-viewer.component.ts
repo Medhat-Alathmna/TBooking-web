@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { AvatarModule } from 'primeng/avatar';
@@ -11,6 +11,7 @@ import { TooltipModule } from 'primeng/tooltip';
   selector: 'entity-viewer',
   templateUrl: './entity-viewer.component.html',
   styleUrls: ['./entity-viewer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, AvatarModule, AvatarGroupModule, TranslateModule, ButtonModule, TooltipModule],
   standalone: true,
 })
@@ -25,9 +26,9 @@ export class EntityViewerComponent implements OnInit {
   show = 5
 
 
-  ngOnInit(): void {
-    if (this.showAll==true) {
+  ngOnInit(): void {    
+    if (this.showAll == true) {
       this.show = this.entity?.value?.length
-    }    
+    }
   }
 }

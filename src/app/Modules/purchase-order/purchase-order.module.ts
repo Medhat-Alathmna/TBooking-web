@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { PrimengComponentsModule } from 'src/app/primeng-components.module';
 import { PurchaseOrderFormComponent } from './purchase-order-form/purchase-order-form.component';
+import { ColumnFilterComponent } from 'src/app/Shared/column-filter/column-filter.component';
 
 
 export const routes: Routes = [
@@ -20,7 +21,8 @@ export const routes: Routes = [
         RouterModule.forChild(routes),
         PrimengComponentsModule,
         TranslateModule,
-        PurchaseOrderFormComponent
+        PurchaseOrderFormComponent,
+        ColumnFilterComponent
     
   ]
 })
