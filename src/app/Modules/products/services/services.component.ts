@@ -26,7 +26,11 @@ export class ServicesComponent extends BaseComponent implements OnInit {
   currentPage: any = 1
   total=0
   tabIndex=[]
-
+keys = [
+    { header:this.lang=='en'? 'Service EN':' الخدمة بالنجلزية', key: 'en' },
+    { header:this.lang=='en'? 'Service AR':' الخدمة بالعربية', key: 'ar' },
+    { header: this.lang=='en'?'Price':'سعر', key: 'price' },
+  ]
   fillterFildes = {
     en: new Filter(),
     ar: new Filter(),

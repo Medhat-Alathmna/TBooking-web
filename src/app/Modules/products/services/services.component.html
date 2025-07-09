@@ -5,9 +5,9 @@
 <div class="grid card h-full">
     <p-tabMenu class="col-12" [model]="tabIndex" [activeItem]="tabIndex[0]"></p-tabMenu>
     <div *ngIf="tabSelected=='service'" class=" grid col-12">
-        <p-table #kt [value]="services" [rowHover]="true" (onPage)="listServices(($event?.first/rowNum)+1)" [paginator]="true"
-            [rows]='rowNum' currentPageReportTemplate="Showing {first} to {last} entries" [scrollable]="true"
-            [tableStyle]="{'width.%': 100}" scrollHeight="80vh">
+        <p-table #kt [value]="services" [rowHover]="true" (onPage)="listServices(($event?.first/rowNum)+1)"
+            [paginator]="true" [rows]='rowNum' currentPageReportTemplate="Showing {first} to {last} entries"
+            [scrollable]="true" [tableStyle]="{'width.%': 100}" scrollHeight="80vh">
             <ng-template pTemplate="caption">
                 <div class="flex align-items-center justify-content-between">
                     <div>
@@ -19,10 +19,12 @@
                     </div>
                     <div class="table-header inputgroup-stopwords block ">
                         <div class="p-inputgroup inputgroup-stopwords">
-                            <div>
+                            <div class="flex">
+                                <app-excel-export [keys]="keys" [collection]="'service'"></app-excel-export>
+
                                 <button type="button" [iconPos]="lang =='ar'?'right':'left'"
                                     (click)="showcreateDialog()" [label]="'Add Service'|translate" pRipple pButton
-                                    icon="pi pi-plus" class="p-button-success "></button>
+                                    icon="pi pi-plus" class="p-button-success mx-2"></button>
                             </div>
                         </div>
                     </div>
@@ -48,7 +50,8 @@
                                         </button>
                                     </div>
                                     <div class="col-6">
-                                        <button pButton [disabled]="!fillterFildes.en.value" label="{{'Apply'|translate}}"
+                                        <button pButton [disabled]="!fillterFildes.en.value"
+                                            label="{{'Apply'|translate}}"
                                             (click)="fillterFildes.en.name='en';fillterFildes.en.status=true;fillterFildes.en.type='$contains';listServices(1,fillterFildes?.en)"
                                             type="button">
                                         </button>
@@ -75,7 +78,8 @@
                                         </button>
                                     </div>
                                     <div class="col-6">
-                                        <button pButton [disabled]="!fillterFildes.ar.value" label="{{'Apply'|translate}}"
+                                        <button pButton [disabled]="!fillterFildes.ar.value"
+                                            label="{{'Apply'|translate}}"
                                             (click)="fillterFildes.ar.name='ar';fillterFildes.ar.status=true;fillterFildes.ar.type='$contains';listServices(1,fillterFildes?.ar)"
                                             type="button">
                                         </button>
@@ -146,7 +150,8 @@
                     <td style="width: 10%">
                         <button pButton pRipple icon="pi pi-pencil text-base" (click)="showServices(ser)"
                             class="p-button-sm  p-button-primary mr-1"></button>
-                        <button pButton *ngIf="permissionService.hasPermission('Services', 'delete')" (click)="confirm1Delete(ser.id)" pRipple icon="pi pi-trash text-base"
+                        <button pButton *ngIf="permissionService.hasPermission('Services', 'delete')"
+                            (click)="confirm1Delete(ser.id)" pRipple icon="pi pi-trash text-base"
                             class="p-button-sm  p-button-danger mr-1 "></button>
                     </td>
                 </tr>
@@ -184,10 +189,12 @@
         </div>
     </div>
     <p-footer>
-        <button type="button" *ngIf="editMode&&permissionService.hasPermission('Services', 'update')" [disabled]="!Service.price ||!Service.ar||!Service.en" pButton
-            (click)="updateService()" [label]='"Update"|translate'></button>
-        <button type="button" *ngIf="!editMode&&permissionService.hasPermission('Services', 'create')" [disabled]="!Service.price ||!Service.ar||!Service.en" pButton
-            (click)="createService()" [label]='"Save"|translate'></button>
+        <button type="button" *ngIf="editMode&&permissionService.hasPermission('Services', 'update')"
+            [disabled]="!Service.price ||!Service.ar||!Service.en" pButton (click)="updateService()"
+            [label]='"Update"|translate'></button>
+        <button type="button" *ngIf="!editMode&&permissionService.hasPermission('Services', 'create')"
+            [disabled]="!Service.price ||!Service.ar||!Service.en" pButton (click)="createService()"
+            [label]='"Save"|translate'></button>
         <button type="button" (click)="showServ=false" class="p-button-secondary " pButton
             [label]='"Cancel"|translate'></button>
     </p-footer>

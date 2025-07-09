@@ -8,6 +8,7 @@ import { PrimengComponentsModule } from 'src/app/primeng-components.module';
 import { InputComponent } from 'src/app/Shared/input/input.component';
 import { ProductsComponent } from './products/products/products.component';
 import { AddEditProductsComponent } from './products/add-edit-products/add-edit-products.component';
+import { ExcelExportComponent } from 'src/app/Shared/excel-export/excel-export.component';
 
 
 export const routes: Routes = [
@@ -28,6 +29,7 @@ export const routes: Routes = [
     PrimengComponentsModule,
     TranslateModule,
     InputComponent,
+    ExcelExportComponent,
     AddEditProductsComponent,
     LoadingComponent
   ]

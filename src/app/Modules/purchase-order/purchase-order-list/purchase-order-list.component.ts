@@ -48,7 +48,17 @@ export class PurchaseOrderListComponent
      
     },
   };
-
+  keys = [
+    { header:this.lang=='en'? 'PO No':' رقم فاتورة مشتريات ' , key: 'no' },
+    { header:this.lang=='en'? 'Vendor Name':'اسم المزود', key: 'vendor.name' },
+    { header: this.lang=='en'?'Cash':'نقدي', key: 'cash' },
+     { header: this.lang=='en'?'Payments':'الدفعات', key: 'payments.list' },
+    { header: this.lang=='en'?'Status':'الحالة', key: 'status' },
+    { header: this.lang=='en'?'Products (Sell Price)':'المنتج (سعر شراء)', key: 'products.sell' },
+    { header: this.lang=='en'?'Create By':'إنشاء بواسطة', key: 'createBy.username' },
+    { header: this.lang=='en'?'Added to Stock':'مضاف إلى المخزن', key: 'addedToStuck' },
+    { header:this.lang=='en'? 'Created At':'تاريخ الإنشاء', key: 'createdAt', format: 'YYYY-MM-DD HH:mm' },
+  ]
  
   @ViewChild('kt') table: any;
 

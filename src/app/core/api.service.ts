@@ -45,6 +45,13 @@ export class ApiService {
       headers: this.getHeaders()
     });
   }
+postBlob(url: string, body: any | null): Observable<Blob> {
+  url = url.charAt(0) === '/' ? url : `/${url}`;
+  return this.httpClient.post(`${this.apiUrl}${url}`, body, {
+    headers: this.getHeaders(),
+    responseType: 'blob' 
+  });
+}
 
   patch<T>(url: string, body: any | null): Observable<T> {
     url = url.charAt(0) === '/' ? url : `/${url}`;

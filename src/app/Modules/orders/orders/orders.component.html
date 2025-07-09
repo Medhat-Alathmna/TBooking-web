@@ -3,16 +3,26 @@
 <p-confirmDialog containerStyleClass="vw" acceptButtonStyleClass="p-button-danger" acceptIcon="pi pi-trash"
     rejectButtonStyleClass="p-button-text" appendTo="body"></p-confirmDialog>
 <div class="grid card h-full">
+
+
     <p-table #kt [value]="orders" (onPage)="getOrders(($event?.first/rowNum)+1)" [paginator]="paginator" [rows]='rowNum'
         currentPageReportTemplate="Showing {first} to {last} entries" [scrollable]="true"
         [tableStyle]="{'width.%': 100}" scrollHeight="80vh">
         <ng-template pTemplate="caption">
-            <div class="flex align-items-center justify-content-between">
-                <div>
-                    <h5 class="m-0 primary" translate>Orders Manager</h5>
+            <div class="flex justify-content-between">
+                <div class="flex align-items-center justify-content-between">
+                    <div>
+                        <h5 class="m-0 primary" translate>Orders Manager</h5>
 
+                    </div>
+                </div>
+                <div class="table-header inputgroup-stopwords block ">
+                    <div class="p-inputgroup inputgroup-stopwords">
+                            <app-excel-export [keys]="keys" [collection]="'order'"></app-excel-export>
+                    </div>
                 </div>
             </div>
+
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
@@ -214,6 +224,20 @@
             </tr>
         </ng-template>
     </p-table>
+    <div class="chat-container">
+        <div class="chat-box" #chatBox>
+            <div *ngFor="let msg of messages">
+                <div [ngClass]="msg.sender === 'user' ? 'user-msg' : 'ai-msg'">
+                    <strong>{{ msg.sender === 'user' ? 'You' : 'AI' }}:</strong> {{ msg.text }}
+                </div>
+            </div>
+        </div>
+
+        <form (submit)="sendMessage()" class="chat-input">
+            <input type="text" [(ngModel)]="userInput" name="message" required placeholder="Ask the ERP assistant..." />
+            <button type="submit">Send</button>
+        </form>
+    </div>
 </div>
 
 

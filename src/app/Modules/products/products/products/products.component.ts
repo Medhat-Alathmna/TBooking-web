@@ -48,7 +48,15 @@ export class ProductsComponent extends BaseComponent implements OnInit {
     },
 
   ]
+  keys = [
+    { header:this.lang=='en'? 'Product':'اسم المنتج', key: 'name' },
+    { header: this.lang=='en'?'Price':'سعر', key: 'price' },
+    { header: this.lang=='en'?'Stocks':'المخزون', key: 'stocks' },
+    { header: this.lang=='en'?'Barcode':'الباركود', key: 'barcode' },
+    { header: this.lang=='en'?'Brand':'العلامة التجارية', key: 'brand.name' },
+    { header: this.lang=='en'?'Sell Price':'سعر شراء', key: 'sellPrice' },
 
+  ]
   @ViewChild('kt') table: Table;
 
   constructor(public translates: TranslateService, public messageService: MessageService,public permissionService:PermissionService,

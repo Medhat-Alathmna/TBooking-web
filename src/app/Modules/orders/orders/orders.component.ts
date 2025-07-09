@@ -7,6 +7,7 @@ import { CalenderService } from '../../calender/calender.service';
 import { Filter } from 'src/app/modals/filter';
 import { Order } from 'src/app/modals/order';
 import { DatePipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-orders',
@@ -14,10 +15,12 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./orders.component.scss']
 })
 export class OrdersComponent extends BaseComponent implements OnInit {
-
+  userInput: string = '';
+  messages: { sender: 'user' | 'ai', text: string }[] = [];
   rowNum: any = 10
   currentPage: any = 1
   orders: any = []
+  selectedKey
   searchCustomer
   total
   showOrderSidebar: boolean = false
@@ -31,6 +34,12 @@ export class OrdersComponent extends BaseComponent implements OnInit {
     createdAt: new Filter(),
     name: new Filter(),
   }
+  keys = [
+    { header:this.lang=='en'? 'Order No':'رقم الفاتورة', key: 'orderNo' },
+    { header:this.lang=='en'? 'Customer Name':'اسم زبون', key: 'appointment.customer.fullName' },
+    { header: this.lang=='en'?'Status':'الحالة', key: 'status' },
+    { header:this.lang=='en'? 'Created At':'تاريخ الإنشاء', key: 'createdAt', format: 'YYYY-MM-DD HH:mm' },
+  ]
   status = [
     { label: 'Paid' },
     { label: 'Unpaid' },
@@ -60,13 +69,32 @@ export class OrdersComponent extends BaseComponent implements OnInit {
   ]
   @ViewChild('kt') table: any;
 
-  constructor(public translates: TranslateService,
+  constructor(public translates: TranslateService, private http: HttpClient,
     public messageService: MessageService, private ordersService: OrdersService, private datePipe: DatePipe,
     private calenderService: CalenderService,) { super(messageService, translates) }
 
   ngOnInit(): void {
     this.clearAllFillter()
   }
+  sendMessage() {
+    if (!this.userInput.trim()) return;
+
+    const userMessage = this.userInput.trim();
+    this.messages.push({ sender: 'user', text: userMessage });
+    this.userInput = '';
+
+    this.http.post<any>('http://localhost:1337/api/ai-assistant', { query: userMessage })
+      .subscribe({
+        next: (response) => {
+          this.messages.push({ sender: 'ai', text: response.reply });
+        },
+        error: () => {
+          this.messages.push({ sender: 'ai', text: 'Sorry, something went wrong.' });
+        }
+      });
+  }
+
+
   getOrders(pageNum?: number, query?: any) {
     isSet(this.fillterFildes.createdAt.value) ? this.fillterFildes.createdAt.value = this.datePipe.transform(this.fillterFildes.createdAt.value, 'yyyy-MM-dd') : null
 
@@ -76,8 +104,8 @@ export class OrdersComponent extends BaseComponent implements OnInit {
       if (!isSet(results)) {
         return
       }
-      this.paginator=true
-      this.orders=[]
+      this.paginator = true
+      this.orders = []
       const clone = results.data
       this.total = results.meta.pagination.total
       if (!isSet(this.orders)) {
@@ -142,19 +170,20 @@ export class OrdersComponent extends BaseComponent implements OnInit {
       if (!isSet(data)) {
         return
       }
-      this.paginator=false
+      this.paginator = false
       data.customer.map((x: any) => {
         x.attributes = x;
         x.attributes.appointment.data = x?.appointment
         x.attributes.appointment.data.attributes = x.attributes.appointment.data
       })
       this.orders = data.customer
-      console.log(this.orders );
-      
       subscription.unsubscribe()
     }, error => {
       this.loading = false
       subscription.unsubscribe()
     })
   }
+
+
+
 }

@@ -20,6 +20,7 @@ import { InputMaskComponent } from 'src/app/Shared/input-mask/input-mask.compone
 import { AppointmentsComponent } from './appointments/appointments.component';
 import { TableComponent } from 'src/app/Shared/table/table.component';
 import { PermissionService } from 'src/app/core/permission.service';
+import { ExcelExportComponent } from 'src/app/Shared/excel-export/excel-export.component';
 
 
 FullCalendarModule.registerPlugins([
@@ -47,6 +48,7 @@ export const routes: Routes = [
     FindUserComponent,
     TextAreaComponent,
     InputMaskComponent,
+    ExcelExportComponent,
     EntityViewerComponent,
     TableComponent,
     InputComponent,

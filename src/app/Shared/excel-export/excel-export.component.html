@@ -1,0 +1,12 @@
+<form #exampleForm="ngForm" (ngSubmit)="onSubmit(exampleForm)"
+    class="flex justify-center flex-col gap-4 w-full md:w-80">
+
+
+    <div class="flex">
+        <p-multiSelect [(ngModel)]="selectedKeys" [options]="keys" optionLabel="header" [filter]="false" name="header"></p-multiSelect>
+
+        <button pButton severity="secondary" type="submit"><span pButtonLabel>Export
+                Excel</span></button>
+    </div>
+
+</form>

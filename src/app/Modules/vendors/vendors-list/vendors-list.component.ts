@@ -25,6 +25,18 @@ export class VendorsListComponent extends BaseComponent implements OnInit {
     email: {name:'email',type:'$contains',filter:'text'},
     createdAt: new Filter(),
   };
+
+  keys = [
+    { header:this.lang=='en'? 'Vendor Name':'اسم المزود', key: 'name' },
+    { header: this.lang=='en'?'Status':'الحالة', key: 'status' },
+    { header: this.lang=='en'?'Email':'البريد الإلكتروني', key: 'email' },
+    { header: this.lang=='en'?'Phone':'الهاتف', key: 'phone' },
+    { header: this.lang=='en'?'Company':'الشركة', key: 'company' },
+    { header: this.lang=='en'?'Company Phone':'هاتف الشركة', key: 'companyPhone' },
+    { header: this.lang=='en'?'Address':'العنوان', key: 'address' },
+    { header: this.lang=='en'?'Vendor Type':'نوع المزود', key: 'vendor_type.name' },
+    { header:this.lang=='en'? 'Created At':'تاريخ الإنشاء', key: 'createdAt', format: 'YYYY-MM-DD HH:mm' },
+  ]
   @ViewChild('kt') table: any;
 
   constructor(private calenderService: CalenderService) {

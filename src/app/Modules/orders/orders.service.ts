@@ -71,4 +71,5 @@ export class OrdersService {
   siteInfo(): Observable<any> {
     return this.api.get<any>(`/site-info`);
   }
+
 }

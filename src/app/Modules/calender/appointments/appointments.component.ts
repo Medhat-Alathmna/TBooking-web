@@ -62,6 +62,22 @@ export class AppointmentsComponent extends BaseComponent implements OnInit {
     approved: new Filter()
   }
 
+    keys = [
+    { header:this.lang=='en'? 'Appointment No':' رقم الحجز ' , key: 'number' },
+    { header:this.lang=='en'? 'Customer Name':'اسم الزبون', key: 'customer.fullName' },
+    { header: this.lang=='en'?'Phone':'الهاتف', key: 'phone' },
+    { header: this.lang=='en'?'Address':'العنوان', key: 'address' },
+    { header: this.lang=='en'?'Deposit':'العربون', key: 'deposit' },
+    { header: this.lang=='en'?'Appointment Time':'وقت الحجز', key: 'fromDate.toDate' },
+    { header: this.lang=='en'?'approved':'مؤكد', key: 'approved' },
+    { header: this.lang=='en'?'Appointment By':'حجز بواسطة', key: 'appoBy' },
+    { header: this.lang=='en'?'Status':'الحالة', key: 'status' },
+    { header: this.lang=='en'?'Employee':'الموظف', key: 'employees.services' },
+    { header: this.lang=='en'?'Products(Price)':' (السعر)المنتجات', key: 'products.list' },
+    { header:this.lang=='en'? 'Created At':'تاريخ الإنشاء', key: 'createdAt', format: 'YYYY-MM-DD HH:mm' },
+  ]
+ 
+
   @ViewChild('kt') table: any;
 
   constructor(public translates: TranslateService,

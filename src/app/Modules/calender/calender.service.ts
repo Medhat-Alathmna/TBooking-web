@@ -205,4 +205,8 @@ export class CalenderService {
     let body = {qty:product.qty}
     return this.api.put<any>(`discountQTY/${id}`, body);
   }
+    exportExcel(columns,collection): Observable<any> {
+      let body={columns,collection}
+    return this.api.postBlob('/export-excel', body, );
+  }
 }

@@ -13,9 +13,11 @@
         </div>
         <div class="table-header inputgroup-stopwords block">
           <div class="p-inputgroup inputgroup-stopwords">
-            <div>
+            <div class="flex justify-content-between w-full">
+              <app-excel-export [keys]="keys" [collection]="'vendor'"></app-excel-export>
+
               <button type="button" (click)="showVendorSidebar()" label="{{ 'Add Vendor' | translate }}" pRipple pButton
-                icon="pi pi-plus" class="p-button-success"></button>
+                icon="pi pi-plus" class="p-button-success mx-2"></button>
             </div>
           </div>
         </div>
@@ -83,4 +85,5 @@
     </ng-template>
   </p-table>
 </div>
-<app-vendors-form *ngIf="showSidebar" [id]="id" (refreshLish)="getVendorsList(1, null)" [(display)]="showSidebar" [detailMode]="detailMode"></app-vendors-form>
+<app-vendors-form *ngIf="showSidebar" [id]="id" (refreshLish)="getVendorsList(1, null)" [(display)]="showSidebar"
+  [detailMode]="detailMode"></app-vendors-form>

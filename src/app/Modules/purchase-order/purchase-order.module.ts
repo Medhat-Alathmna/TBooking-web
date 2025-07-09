@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PrimengComponentsModule } from 'src/app/primeng-components.module';
 import { PurchaseOrderFormComponent } from './purchase-order-form/purchase-order-form.component';
 import { ColumnFilterComponent } from 'src/app/Shared/column-filter/column-filter.component';
+import { ExcelExportComponent } from 'src/app/Shared/excel-export/excel-export.component';
 
 
 export const routes: Routes = [
@@ -22,6 +23,7 @@ export const routes: Routes = [
         PrimengComponentsModule,
         TranslateModule,
         PurchaseOrderFormComponent,
+        ExcelExportComponent,
         ColumnFilterComponent
     
   ]
