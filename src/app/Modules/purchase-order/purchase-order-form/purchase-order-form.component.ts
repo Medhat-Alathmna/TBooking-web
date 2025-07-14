@@ -32,6 +32,7 @@ import { PermissionService } from 'src/app/core/permission.service';
 import { FileUpload } from 'primeng/fileupload';
 import { fi } from 'date-fns/locale';
 import { catchError, from, Observable, of, switchMap, tap, throwError } from 'rxjs';
+import { MobileAppService } from '../../mobile-app/mobile-app.service';
 
 @Component({
   selector: 'app-purchase-order-form',
@@ -77,7 +78,8 @@ export class PurchaseOrderFormComponent
     private calenderService: CalenderService,
     private purchaseOrderService: PurchaseOrderService,
     private confirmationService: ConfirmationService,
-    public permisionServices: PermissionService
+    public permisionServices: PermissionService,
+    private mobileService: MobileAppService,
   ) {
     super(messageService, translates);
   }
@@ -122,9 +124,7 @@ export class PurchaseOrderFormComponent
       this.po.addedToStuck = true;
     }
 
-   this.uploadFiles().pipe(
-    switchMap(() => this.purchaseOrderService.createPO(this.po))
-  ).subscribe({
+   this.uploadFiles().pipe(switchMap(() => this.purchaseOrderService.createPO(this.po))).subscribe({
     next: (data) => {
       if (!isSet(data)) return;
       this.successMessage(null, 'The purchase order has been created');
@@ -163,22 +163,17 @@ export class PurchaseOrderFormComponent
     } else {
       this.po.status = 'Unpaid';
     }
-    const subscription = this.purchaseOrderService
-      .updatePO(this.po, this.id)
-      .subscribe(
-        (data) => {
-          if (!isSet(data)) {
-            return;
-          }
-          this.successMessage(null, 'The pruchase order has been updated');
-          this.display = false;
-          this.refreshLish.emit(true);
-          subscription.unsubscribe();
-        },
-        (error) => {
-          subscription.unsubscribe();
-        }
-      );
+   this.uploadFiles().pipe(switchMap(() => this.purchaseOrderService.updatePO(this.po,this.id))).subscribe({
+    next: (data) => {
+      if (!isSet(data)) return;
+      this.successMessage(null, 'The purchase order has been updated');
+      this.display = false;
+      this.refreshLish.emit(true);
+    },
+    error: (err) => {
+      this.errorMessage(null, 'Failed to create purchase order');
+    }
+  });
   }
   getPO(id) {
     const subscription = this.purchaseOrderService.getPO(id).subscribe(
@@ -421,6 +416,8 @@ export class PurchaseOrderFormComponent
       const formData = new FormData();
       files.forEach((po) => {
         formData.append('files', po);
+        console.log('files:'+files);
+        
       });
       return this.uploadMedia(formData);
     }
@@ -433,12 +430,34 @@ export class PurchaseOrderFormComponent
         this.loading = false;
         if (isSet(data)) {
           this.po.pic = data;
-        }
+        }        
       }),
       catchError(error => {
         this.loading = false;
         return throwError(() => error);
       })
     );
+  }
+  onDeleteImage() {
+    this.po.pic=null
+   this.purchaseOrderService.updatePO(this.po,this.id).subscribe({
+    next: () => this.successMessage(null, 'the image has been deleted'),
+    
+   })
+  }
+  deleteMedia(id) {
+    this.loading = true
+    const subscription = this.mobileService.deleteMedia(id).subscribe((data) => {
+      this.loading = false
+      if (!isSet(data)) {
+        return
+      }
+     this.onDeleteImage()
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+      subscription.unsubscribe()
+    })
+
   }
 }

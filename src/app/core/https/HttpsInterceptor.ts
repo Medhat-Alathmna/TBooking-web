@@ -1,59 +1,47 @@
+import {
+  HttpEvent,
+  HttpInterceptor,
+  HttpHandler,
+  HttpRequest,
+  HttpErrorResponse,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, tap } from "rxjs/operators";
-import { BaseComponent, isSet } from '../base/base.component';
-import { MessageService } from 'primeng/api';
-import { TranslateService } from '@ngx-translate/core';
+import { Observable, throwError, from } from 'rxjs';
+import { catchError, mergeMap } from 'rxjs/operators';
 
 @Injectable()
-export class HttpsInterceptor extends BaseComponent implements HttpInterceptor {
+export class ErrorBlobInterceptor implements HttpInterceptor {
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    return next.handle(req).pipe(
+      catchError((err: HttpErrorResponse) => {
+        if (
+          err.error instanceof Blob &&
+          err.error.type === 'application/json'
+        ) {
+          return from(err.error.text()).pipe(
+            mergeMap((text) => {
+              let jsonError;
+              try {
+                jsonError = JSON.parse(text);
+              } catch (e) {
+                jsonError = { message: 'Unknown error occurred' };
+              }
 
-   constructor(public messageService?: MessageService, public translates?: TranslateService) {
-      super(messageService, translates)
-   }
+              return throwError(() =>
+                new HttpErrorResponse({
+                  error: jsonError,
+                  headers: err.headers,
+                  status: err.status,
+                  statusText: err.statusText,
+                  url: err.url ?? undefined,
+                })
+              );
+            })
+          );
+        }
 
-   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-
-      return next.handle(request)
-         .pipe(
-
-            tap(
-               (event: any) => {
-                  // console.log(request);
-                  if (!request.url.includes('users/authenticate')) {
-
-
-                     if (request.method == 'POST') {
-                        if (event.status == 200) {
-                           this.successMessage(isSet(event?.body?.message) ? event?.body?.message : this.trans('New Entry Added Successfully'))
-                        }
-                     }
-                  }
-                  if (request.method == 'PUT') {
-                     if (event.status == 200) {
-                        console.log(event);
-                        
-                        this.successMessage(isSet(event?.body?.message) ? event?.body?.message : this.trans('Entry Updated Successfully'))
-                     }
-                  }
-
-               },
-               (err: any) => {
-                  if (err.status == 500) {
-                     this.errorMessage(this.trans('Server Side Error'))
-                  }if(err.status == 401){
-                     return
-                  } else {
-                     console.log(err);
-                     
-                     this.errorMessage(err?.error?.error?.message)
-
-                  }
-
-
-               }
-            )
-         )
-   }
+        return throwError(() => err);
+      })
+    );
+  }
 }

@@ -25,10 +25,10 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from './Layout/ThemeConfig/service/app.config.service';
 import { AppMenuitemComponent } from './Layout/Menu/app.menuitem.component';
-import { HttpsInterceptor } from './core/https/HttpsInterceptor';
 import { ConfigEnvironmentService } from './core/config.service';
 import { AppComponent } from './app.component';
 import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
+import { ErrorBlobInterceptor } from './core/https/HttpsInterceptor';
 
 
 
@@ -64,7 +64,12 @@ import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
     ],
     providers: [
        
-        { provide: LocationStrategy, useClass: PathLocationStrategy }
+        { provide: LocationStrategy, useClass: PathLocationStrategy },
+         {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorBlobInterceptor,
+      multi: true,
+    },
         , MenuService, ConfigService, DatePipe, MessageService, ConfirmationService,
         ConfigEnvironmentService,
     ],

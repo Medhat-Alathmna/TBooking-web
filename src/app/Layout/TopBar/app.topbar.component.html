@@ -139,23 +139,3 @@
         </div>
     </div>
 </div>
-<p-dialog  modal="true" [resizable]="false"
-    [draggable]="false" [(visible)]="showPriv" [style]="{width: '64vw'}">
-    <div class="role-manager-container">
-        <h2 translate>Permission Manager</h2>
-        <div class="permission-list">
-          <!-- Iterate over resources and actions -->
-          <div class="resource" *ngFor="let resource of resources">
-            <h4>{{ resource.name |translate  }}</h4>
-            
-            <div class="actions">
-              <p-checkbox *ngFor="let action of resource?.actions" 
-                          [(ngModel)]="pages[resource.name][action]"
-                          binary="true" 
-                          label="{{ action |translate }}"></p-checkbox>
-            </div>
-          </div>
-        </div>
-      </div>
-
-</p-dialog>

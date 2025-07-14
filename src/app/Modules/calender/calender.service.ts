@@ -52,7 +52,7 @@ export class CalenderService {
         phone: appointment.phone,
         products: appointment.products.map((prod: Products) => {
           return {
-            id:prod.id,
+            id: prod.id,
             name: prod.name,
             qty: prod.qty,
             price: prod.price,
@@ -102,10 +102,10 @@ export class CalenderService {
           lastName: appointment.lastName,
         },
         phone: appointment.phone,
-       
+
         products: appointment.products.map((prod: Products) => {
           return {
-            id:prod.id,
+            id: prod.id,
             name: prod.name,
             qty: prod.qty,
             price: prod.price,
@@ -158,8 +158,6 @@ export class CalenderService {
     }
     let filter = ''
     if (typeof query == 'object' || this.queryFilters?.length) {
-      console.log(this.queryFilters);
-      
       filter = this.handleQuery(query)
     } else filter = isSet(query) ? query : ''
     return this.api.get<any[]>(`${moduleName}?populate=${pop}&sort[0]=createdAt:desc&pagination[pageSize]=${rows}&pagination[page]=${pageNum}&filters[hide][$eq]=false${filter}`);
@@ -201,12 +199,12 @@ export class CalenderService {
     } else return ''
   }
 
-  updateProduct(product: Products,id): Observable<any> {
-    let body = {qty:product.qty}
+  updateProduct(product: Products, id): Observable<any> {
+    let body = { qty: product.qty }
     return this.api.put<any>(`discountQTY/${id}`, body);
   }
-    exportExcel(columns,collection): Observable<any> {
-      let body={columns,collection}
-    return this.api.postBlob('/export-excel', body, );
+  exportExcel(columns, collection, password): Observable<any> {
+    let body = { columns, collection, password }
+    return this.api.postBlob('/export-excel', body);
   }
 }

@@ -49,18 +49,18 @@ export class ProductsComponent extends BaseComponent implements OnInit {
 
   ]
   keys = [
-    { header:this.lang=='en'? 'Product':'اسم المنتج', key: 'name' },
-    { header: this.lang=='en'?'Price':'سعر', key: 'price' },
-    { header: this.lang=='en'?'Stocks':'المخزون', key: 'stocks' },
-    { header: this.lang=='en'?'Barcode':'الباركود', key: 'barcode' },
-    { header: this.lang=='en'?'Brand':'العلامة التجارية', key: 'brand.name' },
-    { header: this.lang=='en'?'Sell Price':'سعر شراء', key: 'sellPrice' },
+    { header: this.lang == 'en' ? 'Product' : 'اسم المنتج', key: 'name' },
+    { header: this.lang == 'en' ? 'Price' : 'سعر', key: 'price' },
+    { header: this.lang == 'en' ? 'Sell Price' : 'سعر شراء', key: 'sellPrice' },
+    { header: this.lang == 'en' ? 'Stocks' : 'المخزون', key: 'stocks' },
+    { header: this.lang == 'en' ? 'Barcode' : 'الباركود', key: 'barcode' },
+    { header: this.lang == 'en' ? 'Brand' : 'العلامة التجارية', key: 'brand.name' },
 
   ]
   @ViewChild('kt') table: Table;
 
-  constructor(public translates: TranslateService, public messageService: MessageService,public permissionService:PermissionService,
-     private calenderService: CalenderService,) { super(messageService, translates) }
+  constructor(public translates: TranslateService, public messageService: MessageService, public permissionService: PermissionService,
+    private calenderService: CalenderService,) { super(messageService, translates) }
 
   ngOnInit(): void {
     this.clearAllFillter()
@@ -73,7 +73,7 @@ export class ProductsComponent extends BaseComponent implements OnInit {
       if (!isSet(results)) {
         return
       }
-      this.products=[]
+      this.products = []
       const clone = results.data
       this.total = results.meta.pagination.total
       if (!isSet(this.products)) {
@@ -113,16 +113,16 @@ export class ProductsComponent extends BaseComponent implements OnInit {
     })
   }
 
-  showProdSide(){
-    this.selectedProduct=new Products
-    this.showProductSidebar=true
-    this.detailMode=false
+  showProdSide() {
+    this.selectedProduct = new Products
+    this.showProductSidebar = true
+    this.detailMode = false
   }
-  selectProd(prod:Products){
-    this.id=prod.id
-this.selectedProduct=prod.attributes
-this.showProductSidebar=true
-this.detailMode=true
+  selectProd(prod: Products) {
+    this.id = prod.id
+    this.selectedProduct = prod.attributes
+    this.showProductSidebar = true
+    this.detailMode = true
 
   }
   clearAllFillter() {

@@ -1,12 +1,29 @@
-<form #exampleForm="ngForm" (ngSubmit)="onSubmit(exampleForm)"
-    class="flex justify-center flex-col gap-4 w-full md:w-80">
+<p-toast position="top-right"></p-toast>
+
+<form [style]="lang=='ar'?'direction:ltr;':'direction: rtl;'" *ngIf="permissionService.hasPermission(page, 'export')" #exampleForm="ngForm" (ngSubmit)="onSubmit(exampleForm)"
+    class="flex w-full px-2">
 
 
     <div class="flex">
         <p-multiSelect [(ngModel)]="selectedKeys" [options]="keys" optionLabel="header" [filter]="false" name="header"></p-multiSelect>
 
-        <button pButton severity="secondary" type="submit"><span pButtonLabel>Export
-                Excel</span></button>
+        <button pButton severity="secondary" type="submit" label="{{ 'Export Excel' | translate }}" translate></button>
     </div>
 
 </form>
+
+<p-dialog  modal="true"
+    [resizable]="false" [draggable]="false" [(visible)]="showDialog" [style]="{width: '30vw'}">
+    <div class="grid textl-left">
+        <div class=" lg:col-6  sm:col-12 w-full">
+            <app-input [(ngModel)]="password" type="password" name="password" [title]="'Password'|translate"
+                [required]="true"></app-input>
+        </div>
+
+    </div>
+    <p-footer>
+       
+        <button [disabled]="!password" type="button" (click)="exportExcel()" class="p-button-primary " pButton
+            [label]='"Export"|translate'></button>
+    </p-footer>
+</p-dialog>

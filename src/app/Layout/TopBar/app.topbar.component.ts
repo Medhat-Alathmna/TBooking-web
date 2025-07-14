@@ -20,38 +20,7 @@ export class AppTopBarComponent extends BaseComponent implements OnDestroy, OnIn
     user = {displayName:this.userAuth.username,gender:this.userAuth.gender}
     currentLogo: any
     showPriv:boolean=false
-    resources = [
-        { name: 'Appointments', actions: ['create', 'view', 'update', 'delete'] },
-        { name: 'Orders', actions: ['create', 'view', 'update', 'cancel'] },
-        { name: 'Vendors', actions: ['create', 'view', 'update', 'cancel'] },
-        { name: 'Users', actions: ['create', 'view', 'update', 'delete','Roles','suspend'] },
-        { name: 'Roles', actions: ['create','update', 'delete'] },
-        { name: 'Dashboard', actions: ['view',] },
-        { name: 'Products', actions: ['create', 'view', 'update', 'delete','Services'] },
-        { name: 'Services', actions: ['create','update', 'delete'] },
-        { name: 'Gallary', actions: ['create', 'view', 'update', 'delete'] },
-        // { name: 'MobileApp', actions: ['create', 'view', 'update', 'delete'] },
-        { name: 'SiteSittengs', actions: [ 'view', 'update','Notifications','ForbbidenNumber','AppointmentsSettings'] },
-        { name: 'Notifications', actions: ['create',  'update', 'delete'] },
-        { name: 'ForbbidenNumber', actions: ['create','update', 'delete'] },
-      ];
-    
-      pages = {
-        Appointments: { create: false, view: true, update: false, delete: false },
-        Orders: { create: false, view: false, update: false, cancel: false },
-        Vendors: { create: false, view: false, update: false, delete: false },
-        Users: { create: false, view: false, update: false, delete: false ,suspend:false,Roles:false},
-        Roles: { create: false, update: false, delete: false },
-        Dashboard: { view: false},
-        Products: { create: false, view: false, update: false, delete: false,Services:false },
-        Services: { create: false, update: false, delete: false },
-        Gallary: { create: false, view: false, update: false, delete: false },
-        // MobileApp: { create: false, view: false, update: false, delete: false },
-        SiteSittengs: {  view: false, update: false,Notifications:false,ForbbidenNumber:false,AppointmentsSettings:false},
-        Notifications: { create: false, update: false, delete: false },
-        ForbbidenNumber: { create: false, update: false, delete: false },
-  
-      };
+   
     constructor(public app: AppComponent, public appMain: AppMainComponent, public translate: TranslateService,
         private sanitizer: DomSanitizer,
         private route: ActivatedRoute, private router: Router,) {

@@ -13,7 +13,7 @@
         </div>
         <div class="table-header inputgroup-stopwords block">
           <div class="p-inputgroup inputgroup-stopwords">
-            <app-excel-export [keys]="keys" [collection]="'purchase-order'"></app-excel-export>
+            <app-excel-export [keys]="keys" [page]="'PurchaseOrders'" [collection]="'purchase-order'"></app-excel-export>
 
             <div class="px-2">
               <button type="button" (click)="showPurSide()" label="{{ 'Add Purchase Orders' | translate }}" pRipple

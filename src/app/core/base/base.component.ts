@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { ToastModule } from 'primeng/toast';
 import { LoadingComponent } from 'src/app/Shared/loading/loading.component';
 import { DatePipe, getCurrencySymbol } from '@angular/common';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-base',
@@ -16,9 +17,9 @@ export class BaseComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
   public loading = false;
+  imgUrl = environment.imgUrl
   lang = localStorage.getItem('currentLang')
   cur:any =JSON.parse(localStorage.getItem('currency')) 
-  jod=this.trans('JOD')
   userAuth =JSON.parse(localStorage.getItem('userAuth'))?.user
   role =JSON.parse(localStorage.getItem('role'))
 

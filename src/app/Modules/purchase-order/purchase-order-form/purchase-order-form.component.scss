@@ -7,3 +7,53 @@
     margin: 8px;
     margin-bottom: 1rem
 }
+
+
+.delete-icon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 24px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 4px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-icon:hover {
+    background-color: rgba(255, 0, 0, 0.8);
+}
+
+/* carousel.component.css */
+
+
+.overlay-buttons {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 5px;
+
+    /* Space between buttons */
+}
+
+.overlay-btn {
+    background-color: rgba(255, 255, 255, 0.8);
+    /* Semi-transparent background */
+    border: none;
+    color: #333;
+    /* Button icon color */
+    border-radius: 4px;
+    /* Rounded corners */
+    padding: 5px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    /* Optional: shadow for a lifted look */
+}
+
+.overlay-btn:hover {
+    background-color: rgba(238, 19, 19, 0.801);
+    /* Button color on hover */
+}

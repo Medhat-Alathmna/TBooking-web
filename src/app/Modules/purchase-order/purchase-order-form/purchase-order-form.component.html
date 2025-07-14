@@ -64,7 +64,7 @@
                     [label]="'Save'|translate" icon="pi pi-check " (click)="updateOptions()"
                     class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
 
-                <button *ngIf="!detailMode" pButton pRipple (click)="saveOptions()" type="button"
+                <button *ngIf="!detailMode&&permisionServices.hasPermission('PurchaseOrder', 'create')" pButton pRipple (click)="saveOptions()" type="button"
                     [label]="'Save'|translate" icon="pi pi-check " [disabled]="!selectProducts.length || !po.vendor"
                     class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
             </div>
@@ -176,9 +176,9 @@
                             icon="pi pi-plus " style="background-color: transparent;"
                             class="p-button-rounded p-button-primary "></button>
                         <h4 translate>Payments</h4>
-                        <button *ngIf="po.status!='Paid'" 
-                         pButton pRipple type="button" (click)="cashAllAmount()" label="100%"
-                            style="background-color: transparent;" class="p-button-rounded p-button-primary fullb"></button>
+                        <button *ngIf="po.status!='Paid'" pButton pRipple type="button" (click)="cashAllAmount()"
+                            label="100%" style="background-color: transparent;"
+                            class="p-button-rounded p-button-primary fullb"></button>
 
                     </div>
                     <div *ngFor="let pay of payments; let i=index"
@@ -209,9 +209,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="w-full">
-                    <p-fileUpload #fileUploader name="demo[]" showUploadButton="false" accept="image/*"
-                        dragDropSupport="true" rendered="true" style="width: 100%"></p-fileUpload>
+                <div class="w-full flex justify-content-center">
+                    <p-fileUpload *ngIf="!po.pic|| !po.pic.data" #fileUploader name="demo[]" [showUploadButton]="false"
+                        accept="image/*" dragDropSupport="true" rendered="true" style="width: 100%"></p-fileUpload>
+                    <div *ngIf="po.pic && po.pic.data ">
+                        <div style="position: relative;top: 39px;z-index: 9999;padding-inline: 1rem;width: min-content;">
+                            <button pButton icon="pi pi-trash delete-icon" (click)="deleteMedia(po.pic.data[0].id)"
+                                class="overlay-btn"></button>
+                        </div>
+                        <p-image *ngIf="permisionServices.hasPermission('PurchaseOrder', 'update')"  [preview]="true" width="400" height="400" [imageStyle]="{'object-fit': 'contain'}"
+                            [src]="imgUrl+po.pic.data[0].attributes.url"></p-image>
+
+                    </div>
+
                 </div>
             </div>
 

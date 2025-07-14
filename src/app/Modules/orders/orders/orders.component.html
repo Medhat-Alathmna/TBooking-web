@@ -18,7 +18,7 @@
                 </div>
                 <div class="table-header inputgroup-stopwords block ">
                     <div class="p-inputgroup inputgroup-stopwords">
-                            <app-excel-export [keys]="keys" [collection]="'order'"></app-excel-export>
+                            <app-excel-export [keys]="keys" [page]="'Orders'" [collection]="'order'"></app-excel-export>
                     </div>
                 </div>
             </div>
@@ -224,20 +224,6 @@
             </tr>
         </ng-template>
     </p-table>
-    <div class="chat-container">
-        <div class="chat-box" #chatBox>
-            <div *ngFor="let msg of messages">
-                <div [ngClass]="msg.sender === 'user' ? 'user-msg' : 'ai-msg'">
-                    <strong>{{ msg.sender === 'user' ? 'You' : 'AI' }}:</strong> {{ msg.text }}
-                </div>
-            </div>
-        </div>
-
-        <form (submit)="sendMessage()" class="chat-input">
-            <input type="text" [(ngModel)]="userInput" name="message" required placeholder="Ask the ERP assistant..." />
-            <button type="submit">Send</button>
-        </form>
-    </div>
 </div>
 
 

@@ -76,23 +76,7 @@ export class OrdersComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
     this.clearAllFillter()
   }
-  sendMessage() {
-    if (!this.userInput.trim()) return;
 
-    const userMessage = this.userInput.trim();
-    this.messages.push({ sender: 'user', text: userMessage });
-    this.userInput = '';
-
-    this.http.post<any>('http://localhost:1337/api/ai-assistant', { query: userMessage })
-      .subscribe({
-        next: (response) => {
-          this.messages.push({ sender: 'ai', text: response.reply });
-        },
-        error: () => {
-          this.messages.push({ sender: 'ai', text: 'Sorry, something went wrong.' });
-        }
-      });
-  }
 
 
   getOrders(pageNum?: number, query?: any) {

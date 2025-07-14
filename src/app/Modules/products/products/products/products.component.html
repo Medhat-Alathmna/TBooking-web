@@ -17,7 +17,7 @@
                 <div class="table-header inputgroup-stopwords block ">
                     <div class="p-inputgroup inputgroup-stopwords">
                         <div class="flex justify-content-between w-full">
-                                        <app-excel-export [keys]="keys" [collection]="'product'"></app-excel-export>
+                                        <app-excel-export [keys]="keys" [page]="'Products'" [collection]="'product'"></app-excel-export>
 
                             <button type="button" (click)="showProdSide()" label="{{'Add Product'|translate}}" pRipple pButton
                                 icon="pi pi-plus" class="p-button-success mx-2"></button>

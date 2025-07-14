@@ -20,7 +20,7 @@
                     <div class="table-header inputgroup-stopwords block ">
                         <div class="p-inputgroup inputgroup-stopwords">
                             <div class="flex">
-                                <app-excel-export [keys]="keys" [collection]="'service'"></app-excel-export>
+                                <app-excel-export [keys]="keys" [page]="'Services'" [collection]="'service'"></app-excel-export>
 
                                 <button type="button" [iconPos]="lang =='ar'?'right':'left'"
                                     (click)="showcreateDialog()" [label]="'Add Service'|translate" pRipple pButton

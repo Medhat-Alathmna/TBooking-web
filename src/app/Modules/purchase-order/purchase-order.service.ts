@@ -34,13 +34,12 @@ export class PurchaseOrderService {
         status: po.status,
         payments: po.payments,
         products: po.products,
+        pic:po.pic,
         addedToStuck: po.addedToStuck,
         createBy: this.userAuth.user,
       }
 
     }
-    console.log(po);
-
     return this.api.put<any>(`/purchase-orders/${id}`, body);
   }
   getPO(id): Observable<any> {

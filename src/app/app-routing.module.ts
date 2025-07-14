@@ -57,7 +57,7 @@ import { VendorsModule } from './Modules/vendors/vendors.module';
                     },
                     {
                         path: 'purchase-order', loadChildren: () => PurchaseOrderModule, canActivate: [PermissionGuard],
-                        data: { resource: 'PurchaseOrder', action: 'view' }
+                        data: { resource: 'PurchaseOrders', action: 'view' }
                     },
                     {
                         path: 'vendors', loadChildren: () => VendorsModule, canActivate: [PermissionGuard],
