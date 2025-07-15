@@ -1,6 +1,6 @@
 <app-loading *ngIf="loading" display="full"></app-loading>
 <p-toast position="top-right"></p-toast>
-<p-confirmDialog containerStyleClass="vw" acceptButtonStyleClass="p-button-danger" acceptIcon="pi pi-trash"
+<p-confirmDialog containerStyleClass="vw" 
   rejectButtonStyleClass="p-button-text" appendTo="body"></p-confirmDialog>
 <div class="grid card h-full">
   <p-table #kt [value]="purchaseOrders" (onPage)="getPurchaseOrders($event?.first / rowNum + 1)" [paginator]="paginator"

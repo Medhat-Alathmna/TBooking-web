@@ -43,9 +43,25 @@
                 <div class="flex align-items-center justify-content-center border-break"></div>
                 <div class="flex-initial flex align-items-center justify-content-center px-3">
                     <entity-viewer
-                        [entity]="{type:'user',title:'CREATED BY'|translate,value:po?.createBy?.username ,gender:userAuth?.gender}"
+                        [entity]="{type:'user',title:'CREATED BY'|translate,value:po?.createBy?.username ,gender:po.createBy?.gender}"
                         [darkMode]="true"></entity-viewer>
                 </div>
+                <ng-container *ngIf="po.status=='Canceled'">
+                    <div class="flex align-items-center justify-content-center border-break">
+                    </div>
+                    <div class="flex-initial flex align-items-center justify-content-center px-3">
+                        <entity-viewer
+                            [entity]="{type:'user',title:'Cancelled By'|translate,value:po?.canceledBy.username??'Unknow' ,gender:po.canceledBy?.gender}"
+                            [darkMode]="true"></entity-viewer>
+                    </div>
+                    <div class="flex align-items-center justify-content-center border-break"></div>
+                    <div class="flex-initial flex align-items-center justify-content-center px-3">
+                        <i class="pi pi-calendar text-100 text-3xl " [class]="'css.mr-2'|translate"></i>
+                        <entity-viewer
+                            [entity]="{type:'text',title:'Cancellation Date' | translate,value:this.po.canceledAt}"
+                            [darkMode]="true"></entity-viewer>
+                    </div>
+                </ng-container>
             </div>
             <div *ngIf="!detailMode" class="flex align-items-center justify-content-center   ">
                 <div class="flex-initial flex align-items-center justify-content-center mx-2">
@@ -58,15 +74,22 @@
                 </div>
             </div>
             <div class="flex align-items-center justify-content-center mx-2 ">
+                <button *ngIf="po.status == 'Draft'&&!po.addedToStuck" (click)="menu.toggle($event)" pButton pRipple
+                    type="button" icon="pi pi-ellipsis-v"
+                    class="p-button-rounded mr-2 p-button-secondary p-button-lg p-button-text btn-white "></button>
+                <p-menu #menu id="meetingActinos" styleClass="meetingActinos" [popup]="true" appendTo="body"
+                    [model]="acions"></p-menu>
                 <button
                     *ngIf="(this.po.status != 'Canceled' && this.po.status !='Paid')&&permisionServices.hasPermission('PurchaseOrder', 'update')&&detailMode"
                     pButton [disabled]="!selectProducts.length || !po.vendor" pRipple type="button"
                     [label]="'Save'|translate" icon="pi pi-check " (click)="updateOptions()"
                     class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
 
-                <button *ngIf="!detailMode&&permisionServices.hasPermission('PurchaseOrder', 'create')" pButton pRipple (click)="saveOptions()" type="button"
-                    [label]="'Save'|translate" icon="pi pi-check " [disabled]="!selectProducts.length || !po.vendor"
+                <button *ngIf="!detailMode&&permisionServices.hasPermission('PurchaseOrder', 'create')" pButton pRipple
+                    (click)="saveOptions()" type="button" [label]="'Save'|translate" icon="pi pi-check "
+                    [disabled]="!selectProducts.length || !po.vendor"
                     class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
+
             </div>
         </div>
     </div>
@@ -106,6 +129,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
 
 
@@ -167,6 +191,11 @@
                             </ng-template>
                         </p-table>
                     </div>
+                    <div *ngIf="po.status=='Canceled'" class="w-full block pt-3">
+                        <div class="text-lg font-semibold mb-2" translate>Reasons for cancellation</div>
+                        <textarea [(ngModel)]="po.cancellationNote" [rows]="5" name="note" [cols]="30" pInputTextarea
+                            [autoResize]="true"></textarea>
+                    </div>
                 </div>
             </div>
             <div *ngIf="selectProducts.length" class="col-4">
@@ -211,13 +240,14 @@
                 </div>
                 <div class="w-full flex justify-content-center">
                     <p-fileUpload *ngIf="!po.pic|| !po.pic.data" #fileUploader name="demo[]" [showUploadButton]="false"
-                        accept="image/*" dragDropSupport="true" rendered="true" style="width: 100%"></p-fileUpload>
+                        accept="image/*" dragDropSupport="true" [chooseLabel]="'Choose' | translate" [cancelLabel]="'Cancel' | translate" rendered="true" style="width: 100%"></p-fileUpload>
                     <div *ngIf="po.pic && po.pic.data ">
-                        <div style="position: relative;top: 39px;z-index: 9999;padding-inline: 1rem;width: min-content;">
+                        <div *ngIf="po.status!='Paid'" style="position: relative;top: 39px;z-index: 999;padding-inline: 1rem;width: min-content;">
                             <button pButton icon="pi pi-trash delete-icon" (click)="deleteMedia(po.pic.data[0].id)"
                                 class="overlay-btn"></button>
                         </div>
-                        <p-image *ngIf="permisionServices.hasPermission('PurchaseOrder', 'update')"  [preview]="true" width="400" height="400" [imageStyle]="{'object-fit': 'contain'}"
+                        <p-image *ngIf="permisionServices.hasPermission('PurchaseOrder', 'update')" [preview]="true"
+                            width="400" height="400" [imageStyle]="{'object-fit': 'contain'}"
                             [src]="imgUrl+po.pic.data[0].attributes.url"></p-image>
 
                     </div>
@@ -257,5 +287,21 @@
             icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
         <button [disabled]="paymentAmount<=0" (click)="addPayments()" pButton pRipple type="button"
             label=" {{'Add' |translate}}" class="p-button-primary"></button>
+    </div>
+</app-modal>
+<app-modal [(display)]="showCancelltionNote" class="modal-sm">
+    <div body>
+
+        <div class="lg:col-4 sm:col-6 w-full">
+            <app-input #payInput (keydown)="onKeyEnterPay($event)" [focus]="true" [(ngModel)]="po.cancellationNote"
+                type="text" name="amount" [title]="'Cancellation Resone'|translate"></app-input>
+        </div>
+
+    </div>
+    <div footer>
+        <button (click)="showCancelltionNote=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"
+            icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
+        <button [disabled]="!po.cancellationNote" (click)="cancelPO()" pButton pRipple type="button"
+            label=" {{'Apply' |translate}}" class="p-button-primary"></button>
     </div>
 </app-modal>

@@ -10,6 +10,9 @@ export class PurchaseOrder {
   payments:any
   products:Products|any
   createdAt:any
+  canceledAt:any
+  cancellationNote:any
+  canceledBy:any
   pic:any
   selectedVendor:any
   addedToStuck:boolean

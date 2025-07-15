@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/core/api.service';
 import { PurchaseOrder } from 'src/app/modals/po';
@@ -46,7 +47,18 @@ export class PurchaseOrderService {
     return this.api.get<any>(`/purchase-orders/${id}?populate=*`);
 
   }
-
+  cancelPO(po:PurchaseOrder,id): Observable<PurchaseOrder> {
+  let  date=moment(new Date()).format('YYYY-MM-DD HH:mm')
+    let body = {
+      data: {
+        status: 'Canceled',
+        canceledBy: this.userAuth.user,
+        canceledAt:date,
+        cancellationNote:po.cancellationNote
+      }
+    }
+    return this.api.put<PurchaseOrder>(`/purchase-orders/${id}`, body);
+  }
   updateStock(products) {
     let body = {
       products

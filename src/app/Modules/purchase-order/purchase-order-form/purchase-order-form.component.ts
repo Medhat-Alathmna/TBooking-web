@@ -47,6 +47,7 @@ import { MobileAppService } from '../../mobile-app/mobile-app.service';
     SidebarComponent,
     EntityViewerComponent,
     ModalComponent,
+    TextAreaComponent,
     LoadingComponent,
   ],
 })
@@ -56,8 +57,10 @@ export class PurchaseOrderFormComponent
   vendors: Vendor[] | any;
   showProductsDialog: boolean = false;
   showPaymentDialog: boolean = false;
+  showCancelltionNote: boolean = false;
   products = [];
   selectProducts: Products[] = [];
+  acions: any[] = []
   payments: any[] = [];
   id;
   paymentAmount: number = 0;
@@ -96,8 +99,42 @@ export class PurchaseOrderFormComponent
       this.payments = [];
       this.po.selectedVendor = null;
     }
+    this.acions = [
+        {
+          label: this.trans('Cancel the Order'),
+          icon: 'pi pi-times-circle',
+          disabled: !this.permisionServices.hasPermission('PurchaseOrder', 'cancel'),
+          command: () => {
+            this.showCancelltionNote=true
+            this.po.cancelNote=null
+          }
+        },
+  
+      ]
   }
-
+  confirm1Cancel() {
+    this.confirmationService.confirm({
+      message: this.trans('Are you sure that you want to Cancel this Purchase Order ?'),
+      header: this.trans('Confirmation'),
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => { this.cancelPO(); },
+    });
+  }
+   cancelPO() {
+    this.loading = true
+    const subscription = this.purchaseOrderService.cancelPO(this.po,this.id).subscribe((data) => {
+      if (!isSet(data)) {
+        return
+      }
+      this.refreshLish.emit(true)
+      this.display = false
+      this.loading = false
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+      subscription.unsubscribe()
+    })
+  }
   onHide() {
     this.display = false;
     setTimeout(() => {
@@ -189,6 +226,9 @@ export class PurchaseOrderFormComponent
         this.po.vendor = this.po.vendor.data;
         this.payments = this.po.payments;
         this.po.createdAt = moment(this.po.createdAt).format(
+          'YYYY-MM-DD HH:mm'
+        );
+        this.po.canceledAt = moment(this.po.canceledAt).format(
           'YYYY-MM-DD HH:mm'
         );
         subscription.unsubscribe();
