@@ -55,6 +55,7 @@ export class PurchaseOrderListComponent
      { header: this.lang=='en'?'Payments':'الدفعات', key: 'payments.list' },
     { header: this.lang=='en'?'Status':'الحالة', key: 'status' },
     { header: this.lang=='en'?'Products (Sell Price)':'المنتج (سعر شراء)', key: 'products.sell' },
+    { header: this.lang=='en'?'Products (QTY)':'المنتج (الكمية)', key: 'products.qty' },
     { header: this.lang=='en'?'Create By':'إنشاء بواسطة', key: 'createBy.username' },
     { header: this.lang=='en'?'Added to Stock':'مضاف إلى المخزن', key: 'addedToStuck' },
     { header:this.lang=='en'? 'Created At':'تاريخ الإنشاء', key: 'createdAt', format: 'YYYY-MM-DD HH:mm' },
