@@ -15,6 +15,7 @@ import { SiteSettingsComponent } from './site-settings/site-settings.component';
 import { ColorInputComponent } from 'src/app/Shared/color-input/color-input.component';
 import { AppoSettingsComponent } from './appo-settings/appo-settings.component';
 import { OrdersSettingsComponent } from './orders-settings/orders-settings.component';
+import { PushNotifictionComponent } from './push-notifiction/push-notifiction.component';
 
 
 export const routes: Routes = [
@@ -28,7 +29,8 @@ export const routes: Routes = [
     ForbiddenNumbersComponent,
     SiteSettingsComponent,
     AppoSettingsComponent,
-    OrdersSettingsComponent
+    OrdersSettingsComponent,
+    PushNotifictionComponent
   ],
   imports: [
     CommonModule,

@@ -53,8 +53,8 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   acions: any[] = []
   services: Services[] = []
   Products: Products[] = []
-  selectEmployee: any 
-  newEmpe: any 
+  selectEmployee: any
+  newEmpe: any
   selectServices: Services[] = []
   selectProducts: Products[] = []
   notfiItems: any = []
@@ -83,7 +83,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
 
   @ViewChild('MultiSelect') MultiSelect: ElementRef;
 
-  constructor(public translates: TranslateService,public permissionService:PermissionService,
+  constructor(public translates: TranslateService, public permissionService: PermissionService,
     public messageService: MessageService, private cd: ChangeDetectorRef, private calenderService: CalenderService, private settingsService: SettingsService,
     private confirmationService: ConfirmationService, private productsService: ProductsService, private orderService: OrdersService
   ) { super(messageService, translates) }
@@ -91,6 +91,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
 
     // this.appointment.employee= this.appointment?.employee.data.attributes
+    // this.pushNotfi()
     this.getUsers()
     this.listServices()
     this.getProducts(1, null)
@@ -118,37 +119,29 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
           this.selectProducts.push({ id: item?.id, name: item?.name, stocks: item?.stocks, price: item?.price, qty: item?.qty, brand: item.brand })
         })
       }
-      console.log();
-      
       this.getNotfi()
-      this.acions = [
-        {
-          label: this.appointment.approved ? this.trans('Cancel the Appointment') : this.trans('Convert to Approved'),
-          icon: 'pi pi-refresh',
-          command: () => {            
-            this.appointment.approved ? this.confirmCancel() : this.convertApprove() ;
-          }
-        },
-        {
-          label: this.trans('Convert to Order'),
-          icon: 'pi pi-money-bill',
-          command: () => {
-           this.getLastNumberOrder()
-          
-          }
-        },
-        {
-          label: this.trans('Delete'),
-          icon: 'pi pi-times',
-          disabled:!this.permissionService.hasPermission('Appointments','delete'),
-          command: () => {
-            this.confirm1Delete()
-          }
-        }
-      ]
       if (!this.appointment.approved) {
-        this.acions.splice(1, 1)
+        this.getMobileNotfi()
       }
+
+      this.acions = [{
+        label: this.trans('Convert to Order'),
+        icon: 'pi pi-money-bill',
+        command: () => {
+          this.getLastNumberOrder()
+
+        }
+      },
+      {
+        label: this.trans('Delete'),
+        icon: 'pi pi-times',
+        disabled: !this.permissionService.hasPermission('Appointments', 'delete'),
+        command: () => {
+          this.confirm1Delete()
+        }
+      }
+      ]
+
       if (this.appointment.status == 'Canceled') {
         this.acions = [
           {
@@ -207,15 +200,15 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   }
 
   selectEmployees(event) {
-    if (!this.appointment.employee) this.appointment.employee=[]
+    if (!this.appointment.employee) this.appointment.employee = []
     for (const employee of this.appointment.employee) {
       if (employee.username === event.username) {
         this.newEmpe = null
         this.errorMessage(this.trans('This employee has already been selected'))
         return;
       }
-    }  
-      this.appointment.employee.push(event)
+    }
+    this.appointment.employee.push(event)
     this.showAddValue = false
     this.showEmployiesDialog = false
     this.newEmpe = null
@@ -224,7 +217,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     if (!isSet(this.appointment.employee[this.selectEmployee].services)) {
       this.appointment.employee[this.selectEmployee].services = []
     }
-    const existServ =this.appointment.employee[this.selectEmployee].services.find(x => x.id == this.newValue.id)    
+    const existServ = this.appointment.employee[this.selectEmployee].services.find(x => x.id == this.newValue.id)
     if (existServ) {
       this.errorMessage(this.trans('This Service Already Selected'))
       return
@@ -310,7 +303,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       this.refreshLish.emit(true)
       this.display = false
       this.loading = false
-      this.successMessage(null,'The Appoiment has been Created')
+      this.successMessage(null, 'The Appoiment has been Created')
       subscription.unsubscribe()
     }, error => {
       this.loading = false
@@ -329,7 +322,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       }
       this.loading = false
       this.refreshLish.emit(true)
-      this.successMessage(null,'This Appoinment has been updated')
+      this.successMessage(null, 'This Appoinment has been updated')
       // this.display = false
       subscription.unsubscribe()
     }, error => {
@@ -378,45 +371,8 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       if (!isSet(results)) {
         return
       }
-      // this.successMessage('This appontment has been converted')
-      this.acions = [
-        {
-          label: this.appointment.approved ? this.trans('Cancel the Appointment') : this.trans('Convert to Approved'),
-          icon: 'pi pi-refresh',
-          command: () => {
-            this.appointment.approved ? this.confirmCancel() : this.convertApprove()
-          }
-        },
-        {
-          label: this.trans('Convert to Order'),
-          icon: 'pi pi-money-bill',
-          command: () => {
-            this.orderNo = moment(new Date()).format('YY-MM-D') + '-00'
-            this.toOrderDialog = true
-          }
-        },
-        {
-          label: this.trans('Delete'),
-          icon: 'pi pi-times',
-          disabled:this.permissionService.hasPermission('Appointments','delete'),
-          command: () => {
-            this.confirm1Delete()
-          }
-        }
-      ]
-      this.appointment = Appointment.cloneObject(results.data.attributes)
-      this.appointment.firstName = this.appointment?.customer?.firstName
-      this.appointment.middleName = this.appointment?.customer?.middleName
-      this.appointment.lastName = this.appointment?.customer?.lastName
-      this.appointment.fromDate = new Date(this.appointment.fromDate)
-      this.appointment.toDate = new Date(this.appointment.toDate)
-      this.appointment.createdAt = moment(this.appointment.createdAt).format('YYYY-MM-DD HH:ss')
-      if (this.appointment.products) {
-        this.appointment?.products?.map(item => {
-          this.selectProducts.push({ id: item?.id, name: item?.name, stocks: item?.stocks, price: item?.price, qty: item?.qty, brand: item.brand })
-        })
-      }
-      this.display=false
+      
+      this.display = false
       this.refreshLish.emit(true)
       subscription.unsubscribe()
     }, error => {
@@ -492,14 +448,14 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     })
   }
-seq(){
-  new Promise(res=>{
-    this.updateAppominet()
-  }).then(tt=>{this.addOrder()}).catch(tt=>this.errorMessage(null,'Something wrong happen'))
-}
+  seq() {
+    new Promise(res => {
+      this.updateAppominet()
+    }).then(tt => { this.addOrder() }).catch(tt => this.errorMessage(null, 'Something wrong happen'))
+  }
   addOrder() {
-    if (this.appointment.deposit>this.getTotalPrice().products) {
-      this.errorMessage(null,"It's not allowe to be a deposit more then services Total")
+    if (this.appointment.deposit > this.getTotalPrice().products) {
+      this.errorMessage(null, "It's not allowe to be a deposit more then services Total")
       return
     }
     this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()
@@ -517,7 +473,7 @@ seq(){
         return
       }
       if (this.selectProducts.length) {
-        this.selectProducts.map(prod => {  
+        this.selectProducts.map(prod => {
           this.updateProduct(prod, prod.id)
         })
       }
@@ -549,6 +505,50 @@ seq(){
       subscription.unsubscribe()
     })
   }
+  getMobileNotfi() {
+    const subscription = this.settingsService.getMobileNotifications().subscribe((results: any) => {
+      if (!isSet(results)) {
+        return
+      }
+      const types = ['Approved Appointments', 'Rejected Appointments']; // Add more if needed
+
+      this.acions = [];
+      const displayLabels = {
+        'Approved Appointments': 'Confirm appointment',
+        'Rejected Appointments': 'Refuse the appointment'
+      };
+      types.forEach(type => {
+        const filtered = results.data.filter(x => x.attributes.type === type);
+
+        if (filtered.length === 0) return;
+
+        const items = filtered.map(notf => ({
+          label: notf.attributes.title,
+          command: () => {
+             if (type === 'Approved Appointments') {
+            this.pushNotfi(notf.attributes.title, notf.attributes.body);
+            this.convertApprove()
+      } else if (type === 'Rejected Appointments') {
+            this.pushNotfi(notf.attributes.title, notf.attributes.body);
+            this.cancelAppointment()
+      }
+    
+          }
+        }));
+
+        this.acions.push({
+          label: this.trans(displayLabels[type] || this.trans(type)),
+          items: items
+        });
+      });
+
+      subscription.unsubscribe()
+    }, error => {
+
+      subscription.unsubscribe()
+    })
+  }
+
 
   replaceValuesStrings(body) {
     var startDate = moment(this.appointment.fromDate).format('YYYY-MM-D')
@@ -571,7 +571,7 @@ seq(){
         return
       }
       this.loading = false
-      this.successMessage(null,'This customer added at forbiden list')
+      this.successMessage(null, 'This customer added at forbiden list')
       subscription.unsubscribe()
     }, error => {
       this.loading = false
@@ -614,7 +614,7 @@ seq(){
       if (!isSet(results)) {
         return
       }
-      this.appointment.number=results.newNumber
+      this.appointment.number = results.newNumber
       subscription.unsubscribe()
     }, error => {
       this.loading = false
@@ -623,10 +623,10 @@ seq(){
     })
   }
   getLastNumberOrder() {
-    this.loading=true
+    this.loading = true
     const subscription = this.calenderService.getLastNumberOrder().subscribe((results: any) => {
       this.loading = false
-      this.orderNo=results.newNumber
+      this.orderNo = results.newNumber
       this.appointment.cash = 0
       this.appointment.discount = 0
       this.toOrderDialog = true
@@ -643,4 +643,31 @@ seq(){
     }
   }
 
+  pushNotfi(title, msg) {
+    this.loading = true;
+
+    const body = {
+      to: [this.appointment.expoPushToken],
+      title,
+      body: msg,
+      data: this.appointment
+    };
+
+    const subscription = this.calenderService.pushNotfi(body).subscribe({
+      next: (data) => {
+        if (!data) {
+          return;
+        }
+        this.successMessage(null, 'Notification has been sent');
+      },
+      error: (error) => {
+        console.error('Push notification error:', error);
+        this.errorMessage(null, 'Something went wrong');
+      },
+      complete: () => {
+        this.loading = false;
+        subscription.unsubscribe();
+      }
+    });
+  }
 }

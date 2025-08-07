@@ -80,12 +80,12 @@
                 <p-menu #menu id="meetingActinos" styleClass="meetingActinos" [popup]="true" appendTo="body"
                     [model]="acions"></p-menu>
                 <button
-                    *ngIf="(this.po.status != 'Canceled' && this.po.status !='Paid')&&permisionServices.hasPermission('PurchaseOrder', 'update')&&detailMode"
+                    *ngIf="(this.po.status != 'Canceled' && this.po.status !='Paid')&&permisionServices.hasPermission('PurchaseOrders', 'update')&&detailMode"
                     pButton [disabled]="!selectProducts.length || !po.vendor" pRipple type="button"
                     [label]="'Save'|translate" icon="pi pi-check " (click)="updateOptions()"
                     class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
 
-                <button *ngIf="!detailMode&&permisionServices.hasPermission('PurchaseOrder', 'create')" pButton pRipple
+                <button *ngIf="!detailMode&&permisionServices.hasPermission('PurchaseOrders', 'create')" pButton pRipple
                     (click)="saveOptions()" type="button" [label]="'Save'|translate" icon="pi pi-check "
                     [disabled]="!selectProducts.length || !po.vendor"
                     class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
@@ -246,7 +246,7 @@
                             <button pButton icon="pi pi-trash delete-icon" (click)="deleteMedia(po.pic.data[0].id)"
                                 class="overlay-btn"></button>
                         </div>
-                        <p-image *ngIf="permisionServices.hasPermission('PurchaseOrder', 'update')" [preview]="true"
+                        <p-image *ngIf="permisionServices.hasPermission('PurchaseOrders', 'update')" [preview]="true"
                             width="400" height="400" [imageStyle]="{'object-fit': 'contain'}"
                             [src]="imgUrl+po.pic.data[0].attributes.url"></p-image>
 

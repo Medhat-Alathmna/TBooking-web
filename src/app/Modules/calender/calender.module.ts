@@ -21,6 +21,7 @@ import { AppointmentsComponent } from './appointments/appointments.component';
 import { TableComponent } from 'src/app/Shared/table/table.component';
 import { PermissionService } from 'src/app/core/permission.service';
 import { ExcelExportComponent } from 'src/app/Shared/excel-export/excel-export.component';
+import { TieredMenu } from 'primeng/tieredmenu';
 
 
 FullCalendarModule.registerPlugins([

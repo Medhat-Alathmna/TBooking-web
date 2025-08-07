@@ -4,3 +4,7 @@
 .leftRight{
     border-right-style: inset
 }
+
+::ng-deep .p-tieredmenu .p-menuitem-link {
+    direction: initial !important;
+}

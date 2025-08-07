@@ -70,8 +70,8 @@
                 <button *ngIf="detailMode && this.appointment.status != 'Completed'" (click)="menu.toggle($event)"
                     pButton pRipple type="button" icon="pi pi-ellipsis-v"
                     class="p-button-rounded mr-2 p-button-secondary p-button-lg p-button-text btn-white "></button>
-                <p-menu #menu id="meetingActinos" styleClass="meetingActinos" [popup]="true" appendTo="body"
-                    [model]="acions"></p-menu>
+                <p-tieredMenu  #menu id="meetingActinos" styleClass="meetingActinos" [popup]="true" appendTo="body"
+                    [model]="acions"></p-tieredMenu>
                 <button *ngIf="(this.appointment.status != 'Canceled' && this.appointment.status !='Completed')&&permissionService.hasPermission('Appointments', 'update')&&detailMode" pButton
                     [disabled]="form?.invalid || !appointment?.firstName ||!appointment?.middleName ||
                      ! appointment?.lastName ||!appointment?.fromDate " pRipple type="button"
@@ -293,6 +293,7 @@
             icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
     </div>
 </app-modal>
+
 
 
 

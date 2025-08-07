@@ -148,6 +148,14 @@ export class CalenderService {
   search(val): Observable<any> {
     return this.api.get<any>(`/searchCU?search=${val}`);
   }
+  pushNotfi(data): Observable<any> {
+    let body={
+      token:data.to,
+      title:data.title,
+      body:data.body,
+    }
+    return this.api.postGuest<any>(`/sendPush`,body);
+  }
 
   getlist(moduleName: string, pageNum?: number, rows?: number, query?: any, pop?): Observable<any[]> {
     if (!isSet(pageNum)) {

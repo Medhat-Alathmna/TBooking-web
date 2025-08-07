@@ -103,7 +103,7 @@ export class PurchaseOrderFormComponent
         {
           label: this.trans('Cancel the Order'),
           icon: 'pi pi-times-circle',
-          disabled: !this.permisionServices.hasPermission('PurchaseOrder', 'cancel'),
+          disabled: !this.permisionServices.hasPermission('PurchaseOrders', 'cancel'),
           command: () => {
             this.showCancelltionNote=true
             this.po.cancelNote=null

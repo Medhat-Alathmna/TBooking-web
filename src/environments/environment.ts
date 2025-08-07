@@ -21,8 +21,8 @@ const clientConfigs: { [key: string]: ClientConfig } = {
     logoUrl: "assets/logos/client2.png",
   },
   local: {
-    apiUrl: "http://localhost:1337/api",
-    imgUrl: "http://localhost:1337",
+    apiUrl: "http://localhost:1338/api",
+    imgUrl: "http://localhost:1338",
     logoUrl: "assets/logos/client2.png",
   },
 };

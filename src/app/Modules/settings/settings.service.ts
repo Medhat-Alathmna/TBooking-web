@@ -14,6 +14,9 @@ export class SettingsService {
   getNotifications(): Observable<any[]> {
     return this.api.get<any[]>(`notifications`);
   }
+  getMobileNotifications(): Observable<any[]> {
+    return this.api.get<any[]>(`mobile-notifications`);
+  }
   getGeneralSettings(): Observable<any> {
     return this.api.get<any>(`/general-setting`); 
    }
@@ -37,6 +40,17 @@ export class SettingsService {
     }
     return this.api.post<Notifications[]>(`notifications`, body);
   }
+  createMobileNotifications(notfi: Notifications): Observable<Notifications[]> {
+    let body = {
+      data: {
+        title: notfi.title,
+        body: notfi.body,
+        type: notfi.type,
+        hide: false
+      }
+    }
+    return this.api.post<Notifications[]>(`mobile-notifications`, body);
+  }
   updateNotifications(notfi: Notifications): Observable<Notifications[]> {
     let body = {
       data: {
@@ -47,6 +61,17 @@ export class SettingsService {
       }
     }
     return this.api.put<Notifications[]>(`notifications/${notfi.id}`, body);
+  }
+  updateMobileNotifications(notfi: Notifications): Observable<Notifications[]> {
+    let body = {
+      data: {
+        title: notfi.title,
+        body: notfi.body,
+        type: notfi.type,
+        hide: false
+      }
+    }
+    return this.api.put<Notifications[]>(`mobile-notifications/${notfi.id}`, body);
   }
   updateGeneralSettings(color: any): Observable<any> {
     let body = {
@@ -80,6 +105,9 @@ export class SettingsService {
   }
   deleteNotifications(notfi: Notifications): Observable<Notifications[]> {
     return this.api.delete<Notifications[]>(`notifications/${notfi.id}`);
+  }
+  deleteMobileNotifications(notfi: Notifications): Observable<Notifications[]> {
+    return this.api.delete<Notifications[]>(`mobile-notifications/${notfi.id}`);
   }
   deletenumber(number: any): Observable<Notifications[]> {
     return this.api.delete<Notifications[]>(`forbidden-numbers/${number}`);

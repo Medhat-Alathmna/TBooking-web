@@ -1,0 +1,57 @@
+<app-loading *ngIf="loading" display="full"></app-loading>
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog containerStyleClass="vw" acceptButtonStyleClass="p-button-danger" acceptIcon="pi pi-trash"
+    rejectButtonStyleClass="p-button-text" appendTo="body"></p-confirmDialog>
+
+<div class="overflow-y-auto" style="height:calc( 92vh - 100px);">
+    <p-tabMenu class="col-12" [model]="tabIndex" [activeItem]="tabIndex[0]"></p-tabMenu>
+
+
+    <div *ngIf="tabSelected =='Approved Appointments'">
+        <p-accordion *ngFor="let body of appointmentsApproved">
+            <p-accordionTab [header]="body.attributes.title">
+                <p (click)="showNotfi(body)">{{body.attributes.body}}</p>
+            </p-accordionTab>
+        </p-accordion>
+        <div class="col-6">
+            <button pButton pRipple type="button" icon="pi pi pi-plus " label="{{'Add New Notification'| translate}}"
+                (click)="initNotfi('Approved Appointments')"
+                class="p-button-rounded p-button-outlined p-button-secondary2 text-btn "></button>
+            <i class="pi pi-exclamation-circle pr-3 pointer" (click)="info=true" style="font-size: 1.5rem"></i>
+        </div>
+    </div>
+    <div *ngIf="tabSelected =='Rejected Appointments'">
+        <p-accordion *ngFor="let body of appointmentsRejected">
+            <p-accordionTab [header]="body.attributes.title">
+                <p (click)="showNotfi(body)">{{body.attributes.body}}</p>
+            </p-accordionTab>
+        </p-accordion>
+        <div class="col-6">
+            <button pButton pRipple type="button" icon="pi pi pi-plus " label="{{'Add New Notification'| translate}}"
+                (click)="initNotfi('Rejected Appointments')"
+                class="p-button-rounded p-button-outlined p-button-secondary2 text-btn "></button>
+            <i class="pi pi-exclamation-circle pr-3 pointer" (click)="info=true" style="font-size: 1.5rem"></i>
+        </div>
+    </div>
+
+</div>
+
+<p-dialog  [header]="editMode?('Edit Notification'|translate):('Create Notification'|translate)" [(visible)]="bodyDialog" [modal]="true"
+    [style]="{ width: '50vw',height:'50vh' }" [draggable]="false" [resizable]="false">
+    <div class="col-12">
+        <app-input name="title" title="{{'Notification Title'| translate}}" [(ngModel)]="selectedBody.title" type="text"></app-input>
+
+    </div>
+    <div class="col-12">
+        <app-text-area name="body" title="{{'Body of message'| translate}}" [(ngModel)]="selectedBody.body"></app-text-area>
+
+    </div>
+    <ng-template pTemplate="footer">
+        <button *ngIf="!editMode&&permissionService.hasPermission('Notifications', 'create')" (click)="createNotfication()" pButton pRipple type="button"
+            label=" {{'Save' |translate}}" class="p-button-primary"></button>
+        <button *ngIf="editMode&&permissionService.hasPermission('Notifications', 'update')"  (click)="updateNotifications()" pButton pRipple type="button"
+            label=" {{'Update' |translate}}" class="p-button-primary"></button>
+        <button *ngIf="editMode &&permissionService.hasPermission('Notifications', 'delete')" (click)="confirmDelete()" pButton pRipple type="button"
+            label=" {{'Delete' |translate}}" class="p-button-danger"></button>
+    </ng-template>
+</p-dialog>

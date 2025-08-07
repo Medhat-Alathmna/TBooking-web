@@ -15,6 +15,7 @@ export class Appointment {
     services?: any;
     status?: any;
     payBy?: any;
+    expoPushToken?: any;
     employee?: any | [];
     approved?: boolean;
     hide?: boolean;

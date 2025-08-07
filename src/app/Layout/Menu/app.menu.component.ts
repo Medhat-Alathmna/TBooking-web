@@ -42,7 +42,7 @@ export class AppMenuComponent extends BaseComponent implements AfterViewInit, On
       { label: 'Appointments', icon: 'pi pi-calendar-plus text-color', routerLink: ['/calender'], resource: 'Appointments' },
       { label: 'Orders', icon: 'pi pi-money-bill text-color', routerLink: ['/orders'], resource: 'Orders' },
       { label: 'Purchase Orders', icon: 'pi pi-ticket text-color', routerLink: ['/purchase-order'], resource: 'PurchaseOrders' },
-      { label: 'Vendors', icon: 'pi pi-users text-color', routerLink: ['/vendors'], resource: 'Vendors' },
+      { label: 'Vendors', icon: 'pi pi-shopping-cart text-color', routerLink: ['/vendors'], resource: 'Vendors' },
       { label: 'Dashboard', icon: 'pi pi-chart-pie text-color', routerLink: ['/dashboard'], resource: 'Dashboard' },
       { label: 'Products', icon: 'pi pi-box text-color', routerLink: ['/products'], resource: 'Products' },
       { label: 'Mobile App', icon: 'pi pi-mobile text-color', routerLink: ['/mobile'], resource: 'Gallary' },
