@@ -180,7 +180,7 @@ setTimeout(() => {
       for (let index = 0; index < results.data?.length; index++) {
         results.data[index].attributes.fromDate = this.datePipe.transform(results.data[index].attributes.fromDate, 'hh:mm A')
       }
-      this.unapprovedAppoit = objects.filter(x => x.attributes.approved == false)
+      this.unapprovedAppoit = objects.filter(x => x.attributes.approved == false && x.attributes.status != 'Canceled')
       this.approvedAppointments = objects.filter(x => x.attributes.approved == true && x.attributes.status === 'Draft')
       this.completedAppoit = objects.filter(x => x.attributes.status === 'Completed')
       subscription.unsubscribe()

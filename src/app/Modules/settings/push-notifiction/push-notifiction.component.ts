@@ -15,6 +15,7 @@ export class PushNotifictionComponent extends BaseComponent implements OnInit {
   tabSelected='Approved Appointments'
   appointmentsApproved=[]
   appointmentsRejected=[]
+  allUsers=[]
   bodyDialog: boolean = false
   info: boolean = false
   editMode: boolean = false
@@ -39,6 +40,12 @@ export class PushNotifictionComponent extends BaseComponent implements OnInit {
         this.tabSelected = 'Rejected Appointments'
       }
     },
+    {
+      label: this.trans('All users'),
+      command: event => {
+        this.tabSelected = 'All users'
+      }
+    },
   
   ]
     });
@@ -52,10 +59,10 @@ export class PushNotifictionComponent extends BaseComponent implements OnInit {
       this.loading=false
       this.appointmentsApproved = results.data.filter(x => x.attributes.type == 'Approved Appointments')
       this.appointmentsRejected = results.data.filter(x => x.attributes.type == 'Rejected Appointments')
+      this.allUsers = results.data.filter(x => x.attributes.type == 'All users')
       subscription.unsubscribe()
     }, error => {
       this.loading=false
-      console.log(error);
       subscription.unsubscribe()
     })
   }

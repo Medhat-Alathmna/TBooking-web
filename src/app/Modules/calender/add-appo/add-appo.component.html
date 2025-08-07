@@ -40,12 +40,12 @@
 
                 <div class="flex align-items-center justify-content-center border-break"></div>
                 <div class="flex-initial flex align-items-center justify-content-center px-3">
-                    <entity-viewer [entity]="{type:'user',title:'Confirmed BY'|translate,value:appointment?.appoBy}"
+                    <entity-viewer [entity]="{type:'user',title:'Confirmed BY'|translate,value:appointment?.appoBy?.username??null,gender:appointment?.appoBy?.gender}"
                         [darkMode]="true"></entity-viewer>
                 </div>
                 <div class="flex align-items-center justify-content-center border-break"></div>
                 <div class="flex-initial flex align-items-center justify-content-center px-3">
-                    <entity-viewer [entity]="{type:'user',title:'CREATED BY'|translate,value:appointment?.createBy | translate}"
+                    <entity-viewer [entity]="{type:'user',title:'CREATED BY'|translate,value:appointment?.createBy?.username??'Mobile User'| translate,gender:appointment?.createBy?.gender}"
                         [darkMode]="true"></entity-viewer>
                 </div>
             </div>
@@ -67,10 +67,10 @@
                     [model]="notfiItems"></p-menu>
 
 
-                <button *ngIf="detailMode && this.appointment.status != 'Completed'" (click)="menu.toggle($event)"
+                <button *ngIf="detailMode && (this.appointment.status != 'Completed'&&this.appointment.status != 'Canceled')" (click)="menu.toggle($event)"
                     pButton pRipple type="button" icon="pi pi-ellipsis-v"
                     class="p-button-rounded mr-2 p-button-secondary p-button-lg p-button-text btn-white "></button>
-                <p-tieredMenu  #menu id="meetingActinos" styleClass="meetingActinos" [popup]="true" appendTo="body"
+                <p-tieredMenu   #menu id="meetingActinos" styleClass="meetingActinos" [popup]="true" appendTo="body"
                     [model]="acions"></p-tieredMenu>
                 <button *ngIf="(this.appointment.status != 'Canceled' && this.appointment.status !='Completed')&&permissionService.hasPermission('Appointments', 'update')&&detailMode" pButton
                     [disabled]="form?.invalid || !appointment?.firstName ||!appointment?.middleName ||
