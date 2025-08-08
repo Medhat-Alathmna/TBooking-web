@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
   prev: any = localStorage.getItem('prev')
 
   isTabActive = true;
-blinkInterval
+  blinkInterval
 
   constructor(private primengConfig: PrimeNGConfig, private PermissionService: PermissionService,
     private socketService: SocketService, private zone: NgZone
@@ -41,32 +41,29 @@ blinkInterval
     private calenderService: CalenderService, private orderService: OrdersService,
     @Inject(DOCUMENT) private document: Document) {
   }
-originalTitle = this.document.title;
+  originalTitle = this.document.title;
   async ngOnInit() {
     if ('Notification' in window && Notification.permission !== 'granted') {
       Notification.requestPermission().then((permission) => {
         console.log('Notification permission:', permission);
       });
     }
-this.originalTitle = document.title;
+    this.originalTitle = document.title;
 
-  document.addEventListener('visibilitychange', () => {
-    this.isTabActive = !document.hidden;
+    document.addEventListener('visibilitychange', () => {
+      this.isTabActive = !document.hidden;
 
-    if (this.isTabActive) {
-      this.stopTitleBlink();
-    }
-  });
+      if (this.isTabActive) {
+        this.stopTitleBlink();
+      }
+    });
 
-  this.socketService.listen('new-appointment').subscribe((appointment) => {
-    this.showBrowserNotification(appointment);
-    
-    if (!this.isTabActive) {
-      this.startTitleBlink();
-    }
-  });
     this.socketService.listen('new-appointment').subscribe((appointment) => {
       this.showBrowserNotification(appointment);
+      this.playSound();
+      if (!this.isTabActive) {
+        this.startTitleBlink();
+      }
     });
     this.primengConfig.ripple = false;
     this.getLang()
@@ -138,7 +135,7 @@ this.originalTitle = document.title;
         window.focus();
         notification.close();
         this.zone.run(() => {
-          this.router.navigate(['/appointments', appointment.id]); 
+          this.router.navigate(['/appointments', appointment.id]);
         });
       };
     }
@@ -151,21 +148,21 @@ this.originalTitle = document.title;
   }
 
   startTitleBlink() {
-  let toggle = false;
+    let toggle = false;
 
-  if (this.blinkInterval) return; // Don't start multiple intervals
+    if (this.blinkInterval) return; // Don't start multiple intervals
 
-  this.blinkInterval = setInterval(() => {
-    document.title = toggle ? '📅 New Appointment!' : this.originalTitle;
-    toggle = !toggle;
-  }, 1000);
-}
-
-stopTitleBlink() {
-  if (this.blinkInterval) {
-    clearInterval(this.blinkInterval);
-    this.blinkInterval = null;
-    document.title = this.originalTitle;
+    this.blinkInterval = setInterval(() => {
+      document.title = toggle ? '📅 New Appointment!' : this.originalTitle;
+      toggle = !toggle;
+    }, 1000);
   }
-}
+
+  stopTitleBlink() {
+    if (this.blinkInterval) {
+      clearInterval(this.blinkInterval);
+      this.blinkInterval = null;
+      document.title = this.originalTitle;
+    }
+  }
 }

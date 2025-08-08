@@ -1,4 +1,4 @@
-const clientName = 'Demo'
+export var clientName = 'Demo'
 
 
 export interface ClientConfig {
