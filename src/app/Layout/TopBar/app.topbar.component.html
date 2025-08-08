@@ -7,14 +7,14 @@
             <a tabindex="0" id="logo-link" loading="eager" class="layout-topbar-logo relative"
                 (click)="appMain.onMenuButtonClick($event)">
                 <ng-container *ngIf="!currentLogo" class="col-6">
-                    <span *ngIf="clientName =='LBC'" [style.left.px]="lang=='en'?62:null" [style.right.px]="lang=='ar'?62:null"
-                        [style.top]="lang=='ar'?'10%':'12%'" style="display: contents;"
-                        class="text-4xl  absolute font-bold logo-text" translate>
+                    <span *ngIf="clientName =='LBC'" [style.left.px]="lang=='en'?62:null"
+                        [style.right.px]="lang=='ar'?62:null" [style.top]="lang=='ar'?'10%':'12%'"
+                        style="display: contents;" class="text-4xl  absolute font-bold logo-text" translate>
                         Luxury Beatuy Center</span>
-                    <span *ngIf="clientName =='local'||'Demo'"  [style.left.px]="lang=='en'?62:null" [style.right.px]="lang=='ar'?62:null"
-                        [style.top]="lang=='ar'?'10%':'12%'" style="display: contents; color:#e59e5a"
-                        class="text-5xl  absolute font-bold " translate>
-                      <label style="color: #4F7EEA;" >T</label>Booking</span>
+                    <span *ngIf="clientName =='local'||'Demo'" [style.left.px]="lang=='en'?62:null"
+                        [style.right.px]="lang=='ar'?62:null" [style.top]="lang=='ar'?'10%':'12%'"
+                        style="display: contents; color:#e59e5a" class="text-5xl  absolute font-bold " translate>
+                        <label style="color: #4F7EEA;">T</label>Booking</span>
                 </ng-container>
 
                 <ng-container *ngIf="currentLogo">
@@ -75,17 +75,50 @@
                     </ul>
                 </li>
 
-                <li #notification class="topbar-item search-item ml-3"
-                    [ngClass]="{'active-topmenuitem': appMain.search}">
-                    <a tabindex="0">
-                        <i class="topbar-icon pi pi-bell "></i>
+                <li #notification class="topbar-item user-profile"
+                    [ngClass]="{ 'active-topmenuitem fadeInDown': appMain.activeTopbarItem === notification }">
+                    <a href="#" (click)="appMain.onTopbarItemClick($event, notification)">
+                        <i class="topbar-icon pi pi-bell"></i>
+
                     </a>
+
+                    <!-- Dropdown -->
+                    <ul class="notification-dropdown fadeInDown">
+                        <div class="notification-panel">
+                            <div class="header">
+                                <h2>Notifications</h2>
+                                <div class="tabs">
+                                    <span class="active">All</span>
+                                    <span>Unread</span>
+                                </div>
+                            </div>
+
+                            <div class="notification-list">
+                                <div class="notification-item" *ngFor="let notif of notifications">
+                                    <img class="avatar" [src]="notif.avatar" alt="Avatar" />
+                                    <div class="content">
+                                        <p>
+                                            <strong>{{ notif.sender }}</strong>
+                                            <span [innerHTML]="notif.message"></span>
+                                        </p>
+                                        <small>{{ notif.time }}</small>
+                                    </div>
+                                    <span class="status-dot" *ngIf="notif.unread"></span>
+                                </div>
+                            </div>
+
+                            <div class="footer">
+                                <button class="see-all-btn">See previous notifications</button>
+                            </div>
+                        </div>
+                    </ul>
                 </li>
 
                 <li #profile class="topbar-item user-profile "
                     [ngClass]="{'active-topmenuitem fadeInDown': appMain.activeTopbarItem === profile}">
                     <a href="#" (click)="appMain.onTopbarItemClick($event,profile)">
-                        <img [src]="user.gender=='Male'?'./assets/images/man.jpg':'./assets/images/woman.png'" alt="freya-layout" />
+                        <img [src]="user.gender=='Male'?'./assets/images/man.jpg':'./assets/images/woman.png'"
+                            alt="freya-layout" />
                     </a>
                     <ul class="fadeInDown">
                         <!-- <li>

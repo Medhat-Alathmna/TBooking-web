@@ -61,6 +61,7 @@ export class AppComponent implements OnInit {
     this.socketService.listen('new-appointment').subscribe((appointment) => {
       this.showBrowserNotification(appointment);
       this.playSound();
+      this.socketService.socketIO.next(true);
       if (!this.isTabActive) {
         this.startTitleBlink();
       }
@@ -69,7 +70,6 @@ export class AppComponent implements OnInit {
     this.getLang()
     this.getGeneralSettings()
     this.getCurrencies()
-    this.socketIO()
 
   }
 
@@ -116,13 +116,7 @@ export class AppComponent implements OnInit {
     })
   }
 
-  socketIO() {
 
-    this.socketService.listen('new-appointment').subscribe((appointment) => {
-      console.log('New appointment received:', appointment);
-
-    })
-  }
   showBrowserNotification(appointment: any): void {
     if (Notification.permission === 'granted') {
       const notification = new Notification('📅 New Appointment', {

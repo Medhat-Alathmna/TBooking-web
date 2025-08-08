@@ -11,13 +11,29 @@ import { AppComponent } from 'src/app/app.component';
 
 @Component({
     selector: 'app-topbar',
+    styleUrls: ['./app.topbar.component.scss'],
     templateUrl: './app.topbar.component.html',
 })
 export class AppTopBarComponent extends BaseComponent implements OnDestroy, OnInit {
-
+newAppointmentsCount: number = 1;
     subscription: Subscription;
     items: MenuItem[];
-    user = {displayName:this.userAuth.username,gender:this.userAuth.gender}
+notifications = [
+  {
+    sender: 'Orabi Mansour',
+    avatar: 'https://example.com/avatar1.jpg',
+    message: 'listed in <strong>Gaza Hardware</strong>: "تشكيلة مميزة من طقم ..."',
+    time: '1d',
+    unread: false
+  },
+  {
+    sender: 'Mohamed Bekhit',
+    avatar: 'https://example.com/avatar2.jpg',
+    message: 'mentioned you in a comment.',
+    time: '1w',
+    unread: true
+  }
+];    user = {displayName:this.userAuth.username,gender:this.userAuth.gender}
     currentLogo: any
     showPriv:boolean=false
    
@@ -49,6 +65,8 @@ location.reload()
     sanitize(file: any) {
         return this.sanitizer.bypassSecurityTrustUrl(file.objectURL.changingThisBreaksApplicationSecurity);
     }
+moveToAppointment(){
 
+}
   
 }

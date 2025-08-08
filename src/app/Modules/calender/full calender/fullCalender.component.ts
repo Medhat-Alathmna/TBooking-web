@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { CalenderService } from '../calender.service';
 import { DatePipe } from '@angular/common';
 import { PermissionService } from 'src/app/core/permission.service';
+import { SocketService } from 'src/app/Shared/socket.service';
 
 @Component({
   selector: 'app-full-calender',
@@ -15,7 +16,7 @@ import { PermissionService } from 'src/app/core/permission.service';
 })
 export class FullCalenderComponent extends BaseComponent implements OnInit, AfterViewInit,AfterContentChecked {
 
-  constructor(public translates: TranslateService,private cd: ChangeDetectorRef,
+  constructor(public translates: TranslateService,private cd: ChangeDetectorRef,private socketService:SocketService,
     public messageService: MessageService, private datePipe: DatePipe, private permisionServices:PermissionService,
      private calenderService: CalenderService) { super(messageService, translates) }
   private eventSource: EventSource | undefined;
@@ -84,6 +85,7 @@ setTimeout(() => {
       },
     }
     this.getTodayAppo()
+    this.socketIOListner()
   //  this.inter= interval(5000).pipe(
       
   //     switchMap(() =>this.calenderService.getTodayAppominets(currentDate))  // Call the API at each interval
@@ -208,6 +210,19 @@ setTimeout(() => {
     this.detailMode = false
 
     this.showSppoSidebar = true
+  }
+
+  socketIOListner(){
+  const sub=  this.socketService.socketIOEmitter.subscribe({next:(data)=>{
+      if (!isSet(data)) {
+        return
+      }
+      this.getTodayAppo()
+    },
+    complete:()=>{
+      this.subscriptions.push(sub)
+    }
+  });
   }
 
 }
