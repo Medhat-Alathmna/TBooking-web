@@ -74,63 +74,25 @@ export class PurchaseOrderListComponent
     this.clearAllFillter();
   }
 
-  getPurchaseOrders(pageNum?: number, query?: any) {        
+  getPurchaseOrders(event,query) {
     (query?.name=='createdAt'&& query)? (query.value = this.datePipe.transform(query.value,'yyyy-MM-dd')): null;
     
-    this.loading = true;
-    const subscription = this.calenderService
-      .getlist('purchase-orders', pageNum, 10, query)
-      .subscribe(
-        (results: any) => {
-          this.loading = false;
-          if (!isSet(results)) {
-            return;
-          }
-          this.paginator = true;
-          this.purchaseOrders = [];
-          const clone = results.data;
-          this.total = results.meta.pagination.total;
-          if (!isSet(this.purchaseOrders)) {
-            this.purchaseOrders = Array(this.total).fill(0);
-          }
-          if (clone.length < this.rowNum) {
-            for (let index = clone.length; index < this.rowNum; index++) {
-              clone[index] = null;
-            }
-          }
-          //
-          if (!isSet(pageNum)) {
-            clone.map((item, index) => {
-              this.purchaseOrders[index] = item;
-            });
-          } else {
-            const currentPage = pageNum * this.rowNum;
-            let cloneObjIndex = 0;
-            for (
-              let index = currentPage - this.rowNum;
-              index < currentPage;
-              index++
-            ) {
-              this.purchaseOrders[index] = clone[cloneObjIndex++];
-            }
-          }
-          //
-          if (!isSet(this.purchaseOrders?.next)) {
-            this.purchaseOrders = this.purchaseOrders.filter((item) => {
-              return isSet(item);
-            });
-          }
-          setTimeout(() => {
-            this.table.first = pageNum > 1 ? (pageNum - 1) * this.rowNum : 0;
-          });
+const first = event?.first ?? 0;
+const pageNum = first / this.rowNum + 1;
+  this.loading = true;
 
-          subscription.unsubscribe();
-        },
-        (error) => {
-          this.loading = false;
-          subscription.unsubscribe();
-        }
-      );
+  this.calenderService
+    .getlist('purchase-orders', pageNum, this.rowNum,query)
+    .subscribe({
+      next: (results: any) => {
+        this.purchaseOrders = results.data || [];
+        this.total = results.meta?.pagination?.total || 0;
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+      }
+    });
   }
   showPurSide() {
     this.selectedPo = null;
@@ -145,6 +107,6 @@ export class PurchaseOrderListComponent
   }
   clearAllFillter() {
     this.calenderService.queryFilters = [];
-    this.getPurchaseOrders(1, null);
+    this.getPurchaseOrders(1,null);
   }
 }

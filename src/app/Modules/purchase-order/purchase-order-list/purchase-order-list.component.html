@@ -3,9 +3,20 @@
 <p-confirmDialog containerStyleClass="vw" 
   rejectButtonStyleClass="p-button-text" appendTo="body"></p-confirmDialog>
 <div class="grid card h-full">
-  <p-table #kt [value]="purchaseOrders" (onPage)="getPurchaseOrders($event?.first / rowNum + 1)" [paginator]="paginator"
-    [rows]="rowNum" currentPageReportTemplate="Showing {first} to {last} entries" [scrollable]="true"
-    [tableStyle]="{ 'width.%': 100 }" scrollHeight="80vh">
+  <p-table
+  #dt
+  [value]="purchaseOrders"
+  [lazy]="true"
+  (onLazyLoad)="getPurchaseOrders($event,null)"
+  [paginator]="true"
+  [rows]="rowNum"
+  [totalRecords]="total"
+  [loading]="loading"
+  [scrollable]="true"
+  scrollHeight="80vh"
+  [tableStyle]="{ 'width.%': 100 }"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+>
     <ng-template pTemplate="caption">
       <div class="flex align-items-center justify-content-between">
         <div>
