@@ -1,13 +1,21 @@
-<app-loading *ngIf="loading" display="full"></app-loading>
+<!-- <app-loading *ngIf="loading" display="full"></app-loading> -->
 <p-toast position="top-right"></p-toast>
 <p-confirmDialog containerStyleClass="vw" acceptButtonStyleClass="p-button-danger" acceptIcon="pi pi-trash"
     rejectButtonStyleClass="p-button-text" appendTo="body"></p-confirmDialog>
 <div class="grid card h-full">
 
 
-    <p-table #kt [value]="orders" (onPage)="getOrders(($event?.first/rowNum)+1)" [paginator]="paginator" [rows]='rowNum'
-        currentPageReportTemplate="Showing {first} to {last} entries" [scrollable]="true"
-        [tableStyle]="{'width.%': 100}" scrollHeight="80vh">
+    <p-table #kt
+  [value]="orders"
+  [lazy]="true"
+  (onLazyLoad)="getOrders($event,null)"
+  [paginator]="true"
+  [rows]="rowNum"
+  [totalRecords]="total"
+  [loading]="loading"
+  [scrollable]="true"
+  scrollHeight="80vh"
+  [tableStyle]="{ 'width.%': 100 }">
         <ng-template pTemplate="caption">
             <div class="flex justify-content-between">
                 <div class="flex align-items-center justify-content-between">

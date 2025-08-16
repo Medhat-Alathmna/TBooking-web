@@ -73,8 +73,7 @@ export class SettingsMainComponent extends BaseComponent implements AfterViewIni
       },
       {
         id: 5, label: 'Mobile Notifications',  icon: this.angleIcon() + ' px-2',
-        // disabled:!this.permissionService.hasPermission('SiteSittengs','AppointmentsSettings'),
-
+        disabled:!this.permissionService.hasPermission('SiteSittengs','MobilePushNotifications'),
         command: (event) => {
           this.selectedView = 'Mobile Notifications'
           this.selectActiveMenu(event?.item?.id)

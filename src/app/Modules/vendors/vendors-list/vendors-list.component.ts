@@ -19,23 +19,23 @@ export class VendorsListComponent extends BaseComponent implements OnInit {
   detailMode: boolean = false;
   id;
   fillterFildes = {
-    company: {name:'company',type:'$contains',filter:'text'},
-    name: {name:'name',type:'$contains',filter:'text'},
-    phone: {name:'phone',type:'$contains',filter:'text'},
-    email: {name:'email',type:'$contains',filter:'text'},
+    company: { name: 'company', type: '$contains', filter: 'text' },
+    name: { name: 'name', type: '$contains', filter: 'text' },
+    phone: { name: 'phone', type: '$contains', filter: 'text' },
+    email: { name: 'email', type: '$contains', filter: 'text' },
     createdAt: new Filter(),
   };
 
   keys = [
-    { header:this.lang=='en'? 'Vendor Name':'اسم المزود', key: 'name' },
-    { header: this.lang=='en'?'Status':'الحالة', key: 'status' },
-    { header: this.lang=='en'?'Email':'البريد الإلكتروني', key: 'email' },
-    { header: this.lang=='en'?'Phone':'الهاتف', key: 'phone' },
-    { header: this.lang=='en'?'Company':'الشركة', key: 'company' },
-    { header: this.lang=='en'?'Company Phone':'هاتف الشركة', key: 'companyPhone' },
-    { header: this.lang=='en'?'Address':'العنوان', key: 'address' },
-    { header: this.lang=='en'?'Vendor Type':'نوع المزود', key: 'vendor_type.name' },
-    { header:this.lang=='en'? 'Created At':'تاريخ الإنشاء', key: 'createdAt', format: 'YYYY-MM-DD HH:mm' },
+    { header: this.lang == 'en' ? 'Vendor Name' : 'اسم المزود', key: 'name' },
+    { header: this.lang == 'en' ? 'Status' : 'الحالة', key: 'status' },
+    { header: this.lang == 'en' ? 'Email' : 'البريد الإلكتروني', key: 'email' },
+    { header: this.lang == 'en' ? 'Phone' : 'الهاتف', key: 'phone' },
+    { header: this.lang == 'en' ? 'Company' : 'الشركة', key: 'company' },
+    { header: this.lang == 'en' ? 'Company Phone' : 'هاتف الشركة', key: 'companyPhone' },
+    { header: this.lang == 'en' ? 'Address' : 'العنوان', key: 'address' },
+    { header: this.lang == 'en' ? 'Vendor Type' : 'نوع المزود', key: 'vendor_type.name' },
+    { header: this.lang == 'en' ? 'Created At' : 'تاريخ الإنشاء', key: 'createdAt', format: 'YYYY-MM-DD HH:mm' },
   ]
   @ViewChild('kt') table: any;
 
@@ -47,60 +47,21 @@ export class VendorsListComponent extends BaseComponent implements OnInit {
     this.getVendorsList(1, null);
   }
 
-  getVendorsList(pageNum?: number, query?: any,) {
+  getVendorsList(event, query) {
+    const first = event?.first ?? 0;
+    const pageNum = first / this.rowNum + 1;
     this.loading = true;
-    const subscription = this.calenderService
-      .getlist('vendors', pageNum, 10, query,'any')
-      .subscribe(
-        (results: any) => {
-          this.loading = false;
-          if (!isSet(results)) {
-            return;
-          }
-          this.paginator = true;
-          this.vendors = [];
-          const clone = results.data;
-          this.total = results.meta.pagination.total;
-          if (!isSet(this.vendors)) {
-            this.vendors = Array(this.total).fill(0);
-          }
-          if (clone.length < this.rowNum) {
-            for (let index = clone.length; index < this.rowNum; index++) {
-              clone[index] = null;
-            }
-          }
-          if (!isSet(pageNum)) {
-            clone.map((item, index) => {
-              this.vendors[index] = item;
-            });
-          } else {
-            const currentPage = pageNum * this.rowNum;
-            let cloneObjIndex = 0;
-            for (
-              let index = currentPage - this.rowNum;
-              index < currentPage;
-              index++
-            ) {
-              this.vendors[index] = clone[cloneObjIndex++];
-            }
-          }
-          //
-          if (!isSet(this.vendors?.next)) {
-            this.vendors = this.vendors.filter((item) => {
-              return isSet(item);
-            });
-          }
-          setTimeout(() => {
-            this.table.first = pageNum > 1 ? (pageNum - 1) * this.rowNum : 0;
-          });
 
-          subscription.unsubscribe();
-        },
-        (error) => {
-          this.loading = false;
-          subscription.unsubscribe();
-        }
-      );
+    const subscribe = this.calenderService.getlist('vendors', pageNum, this.rowNum, query).subscribe({
+      next: (results: any) => {
+        this.vendors = results.data || [];
+        this.total = results.meta?.pagination?.total || 0;
+      },
+      complete: () => {
+        this.loading = false;
+        subscribe.unsubscribe()
+      }
+    });
   }
 
   getVendor(data) {
@@ -113,7 +74,7 @@ export class VendorsListComponent extends BaseComponent implements OnInit {
     this.showSidebar = true;
     this.detailMode = false;
   }
-  clearFilter(){
+  clearFilter() {
     this.calenderService.queryFilters = []
   }
 }

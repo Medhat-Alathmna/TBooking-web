@@ -50,9 +50,9 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
   @Output() displayChange: EventEmitter<boolean> = new EventEmitter();
   @Output() refreshLish: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(private userService: UsersService, private confirmationService: ConfirmationService,private roleService:RolesService,
+  constructor(private userService: UsersService,  confirmationService: ConfirmationService,private roleService:RolesService,
     public permissionService:PermissionService,
-    public translates: TranslateService,) { super(null,translates) }
+    public translates: TranslateService,) { super(null,translates,confirmationService) }
 
   ngOnInit(): void {
    
@@ -197,11 +197,8 @@ export class AddEditUserComponent extends BaseComponent implements OnInit {
     })
   }
   confirm1Delete() {
-    this.confirmationService.confirm({
-      message: 'Are you sure that you want to delete this User ?',
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => { this.deleteUser() },
+    this.confirmMessage('Are you sure that you want to delete this User ?', () => {
+      this.deleteUser();
     });
   }
   deleteUser() {

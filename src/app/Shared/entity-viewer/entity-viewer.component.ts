@@ -31,4 +31,15 @@ export class EntityViewerComponent implements OnInit {
       this.show = this.entity?.value?.length
     }
   }
+
+  get avatarImage(): string {
+    
+  if (this.entity.platform === 'Mobile') {
+    return './assets/images/Mobile.png';
+  }
+  return this.entity.gender === 'Male'
+    ? './assets/images/man.jpg'
+    : './assets/images/woman.png';
+}
+
 }

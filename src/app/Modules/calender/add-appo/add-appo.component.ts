@@ -85,8 +85,8 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
 
   constructor(public translates: TranslateService, public permissionService: PermissionService,
     public messageService: MessageService, private cd: ChangeDetectorRef, private calenderService: CalenderService, private settingsService: SettingsService,
-    private confirmationService: ConfirmationService, private productsService: ProductsService, private orderService: OrdersService
-  ) { super(messageService, translates) }
+    confirmationService: ConfirmationService, private productsService: ProductsService, private orderService: OrdersService
+  ) { super(messageService, translates,confirmationService) }
 
   ngOnInit(): void {
 
@@ -382,11 +382,8 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     })
   }
   confirm1Delete() {
-    this.confirmationService.confirm({
-      message: this.trans('Are you sure that you want to delete this Appontment ?'),
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => { this.deleteAppo() },
+    this.confirmMessage('Are you sure that you want to Delete this Appointment ?', () => {
+      this.deleteAppo()
     });
   }
   deleteAppo() {
@@ -421,11 +418,8 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
     })
   }
   confirmCancel() {
-    this.confirmationService.confirm({
-      message: 'Are you sure that you want to cancel this Appontment ?',
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => { this.cancelAppointment() },
+    this.confirmMessage('Are you sure you want to cancel this appointment?', () => {
+      this.cancelAppointment()
     });
   }
 

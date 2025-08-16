@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { ToastModule } from 'primeng/toast';
 import { LoadingComponent } from 'src/app/Shared/loading/loading.component';
@@ -25,7 +25,7 @@ export class BaseComponent implements OnInit, OnDestroy {
 
   fileTypes = ['image/png', 'application/pdf', 'application/vnd.ms-excel', "image/jpeg", ".doc", '.docx', '.ppt', '.pptx', '.xls', '.xlsx', '.csv', '.mp4', '.mov', '.wmv', '.avi', '.mkv']
 
-  constructor(public messageService?: MessageService, public translates?: TranslateService) {
+  constructor(public messageService?: MessageService, public translates?: TranslateService,protected  confirmationService?:ConfirmationService) {
 
   }
 
@@ -80,6 +80,19 @@ export class BaseComponent implements OnInit, OnDestroy {
     }
     this.messageService.add({ severity: 'warning', summary: header, detail: detail || '' });
 
+  }
+  protected confirmMessage(msg: string, onAccept?: () => void) {
+     this.confirmationService.confirm({
+      message: this.trans(msg||'Are you sure that you want to Delete this Entry ?'),
+      acceptLabel: this.trans('Yes'),
+      rejectLabel: this.trans('No'),
+      icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+        if (onAccept) {
+          onAccept(); 
+        }
+      },
+    });
   }
   minString(word: string, length?) {
     if (!isSet(length)) length = 25

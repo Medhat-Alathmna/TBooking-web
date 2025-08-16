@@ -62,8 +62,8 @@ export class CalenderService {
         employee: appointment?.employee,
         approved: true,
         hide: false,
-        appoBy: this.userAuth,
-        createBy: this.userAuth,
+        confirmBy: this.userAuth,
+        bookBy: this.userAuth,
       }
     }
     return this.api.post<Appointment>('/appointments', body);
@@ -72,7 +72,7 @@ export class CalenderService {
     let body = {
       data: {
         approved: appointment.approved,
-        appoBy: this.userAuth,
+        confirmBy: this.userAuth,
 
       }
     }

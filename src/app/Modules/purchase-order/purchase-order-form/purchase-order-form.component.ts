@@ -80,11 +80,11 @@ export class PurchaseOrderFormComponent
     private cdr: ChangeDetectorRef,
     private calenderService: CalenderService,
     private purchaseOrderService: PurchaseOrderService,
-    private confirmationService: ConfirmationService,
+    confirmationService: ConfirmationService,
     public permisionServices: PermissionService,
     private mobileService: MobileAppService,
   ) {
-    super(messageService, translates);
+    super(messageService, translates,confirmationService);
   }
 
   async ngOnInit(): Promise<void> {
@@ -100,17 +100,17 @@ export class PurchaseOrderFormComponent
       this.po.selectedVendor = null;
     }
     this.acions = [
-        {
-          label: this.trans('Cancel the Order'),
-          icon: 'pi pi-times-circle',
-          disabled: !this.permisionServices.hasPermission('PurchaseOrders', 'cancel'),
-          command: () => {
-            this.showCancelltionNote=true
-            this.po.cancelNote=null
-          }
-        },
-  
-      ]
+      {
+        label: this.trans('Cancel the Order'),
+        icon: 'pi pi-times-circle',
+        disabled: !this.permisionServices.hasPermission('PurchaseOrders', 'cancel'),
+        command: () => {
+          this.showCancelltionNote = true
+          this.po.cancelNote = null
+        }
+      },
+
+    ]
   }
   confirm1Cancel() {
     this.confirmationService.confirm({
@@ -120,9 +120,9 @@ export class PurchaseOrderFormComponent
       accept: () => { this.cancelPO(); },
     });
   }
-   cancelPO() {
+  cancelPO() {
     this.loading = true
-    const subscription = this.purchaseOrderService.cancelPO(this.po,this.id).subscribe((data) => {
+    const subscription = this.purchaseOrderService.cancelPO(this.po, this.id).subscribe((data) => {
       if (!isSet(data)) {
         return
       }
@@ -161,17 +161,17 @@ export class PurchaseOrderFormComponent
       this.po.addedToStuck = true;
     }
 
-   this.uploadFiles().pipe(switchMap(() => this.purchaseOrderService.createPO(this.po))).subscribe({
-    next: (data) => {
-      if (!isSet(data)) return;
-      this.successMessage(null, 'The purchase order has been created');
-      this.display = false;
-      this.refreshLish.emit(true);
-    },
-    error: (err) => {
-      this.errorMessage(null, 'Failed to create purchase order');
-    }
-  });
+    this.uploadFiles().pipe(switchMap(() => this.purchaseOrderService.createPO(this.po))).subscribe({
+      next: (data) => {
+        if (!isSet(data)) return;
+        this.successMessage(null, 'The purchase order has been created');
+        this.display = false;
+        this.refreshLish.emit(true);
+      },
+      error: (err) => {
+        this.errorMessage(null, 'Failed to create purchase order');
+      }
+    });
   }
   updatePo(addedToStuck?) {
     if (
@@ -200,17 +200,20 @@ export class PurchaseOrderFormComponent
     } else {
       this.po.status = 'Unpaid';
     }
-   this.uploadFiles().pipe(switchMap(() => this.purchaseOrderService.updatePO(this.po,this.id))).subscribe({
-    next: (data) => {
-      if (!isSet(data)) return;
-      this.successMessage(null, 'The purchase order has been updated');
-      this.display = false;
-      this.refreshLish.emit(true);
-    },
-    error: (err) => {
-      this.errorMessage(null, 'Failed to create purchase order');
+    if (!this.fileUploader) {
+      delete this.po.pic
     }
-  });
+    this.uploadFiles().pipe(switchMap(() => this.purchaseOrderService.updatePO(this.po, this.id))).subscribe({
+      next: (data) => {
+        if (!isSet(data)) return;
+        this.successMessage(null, 'The purchase order has been updated');
+        this.display = false;
+        this.refreshLish.emit(true);
+      },
+      error: (err) => {
+        this.errorMessage(null, 'Failed to create purchase order');
+      }
+    });
   }
   getPO(id) {
     const subscription = this.purchaseOrderService.getPO(id).subscribe(
@@ -415,18 +418,10 @@ export class PurchaseOrderFormComponent
   updateOptions() {
     if (this.getTotalPrice().totalPayments == 0) {
       this.updatePo(false);
-    } else if (
-      this.getTotalPrice().totalPayments ==
-      this.getTotalPrice().productsAmount &&
-      !this.po.addedToStuck
-    ) {
+    } else if (this.getTotalPrice().totalPayments == this.getTotalPrice().productsAmount && !this.po.addedToStuck) {
       this.updatePo(true);
       this.updateStock();
-    } else if (
-      this.getTotalPrice().totalPayments ==
-      this.getTotalPrice().productsAmount &&
-      this.po.addedToStuck
-    ) {
+    } else if (this.getTotalPrice().totalPayments == this.getTotalPrice().productsAmount && this.po.addedToStuck) {
       this.updatePo(true);
     } else if (!this.po.addedToStuck) {
       this.updatePOandAddToStuck();
@@ -451,17 +446,21 @@ export class PurchaseOrderFormComponent
   }
 
   uploadFiles(): Observable<any> {
-    const files = this.fileUploader.files;
-    if (files && files.length) {
+        console.log(this.fileUploader);
+
+    const files = this.fileUploader?.files;
+    
+    if (isSet(files) && files.length) {
       const formData = new FormData();
       files.forEach((po) => {
         formData.append('files', po);
-        console.log('files:'+files);
-        
+        console.log('files:' + files);
+
       });
       return this.uploadMedia(formData);
+    }else{
+      return of(null);
     }
-    return of(null);
   }
   uploadMedia(body: FormData): Observable<any> {
     this.loading = true;
@@ -470,7 +469,7 @@ export class PurchaseOrderFormComponent
         this.loading = false;
         if (isSet(data)) {
           this.po.pic = data;
-        }        
+        }
       }),
       catchError(error => {
         this.loading = false;
@@ -479,11 +478,11 @@ export class PurchaseOrderFormComponent
     );
   }
   onDeleteImage() {
-    this.po.pic=null
-   this.purchaseOrderService.updatePO(this.po,this.id).subscribe({
-    next: () => this.successMessage(null, 'the image has been deleted'),
-    
-   })
+    this.po.pic = null
+    this.purchaseOrderService.updatePO(this.po, this.id).subscribe({
+      next: () => this.successMessage(null, 'the image has been deleted'),
+
+    })
   }
   deleteMedia(id) {
     this.loading = true
@@ -492,7 +491,7 @@ export class PurchaseOrderFormComponent
       if (!isSet(data)) {
         return
       }
-     this.onDeleteImage()
+      this.onDeleteImage()
       subscription.unsubscribe()
     }, error => {
       this.loading = false

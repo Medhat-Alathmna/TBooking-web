@@ -3,20 +3,29 @@
 <p-confirmDialog containerStyleClass="vw" acceptButtonStyleClass="p-button-danger" acceptIcon="pi pi-trash"
   rejectButtonStyleClass="p-button-text" appendTo="body"></p-confirmDialog>
 <div class="grid card h-full">
-  <p-table #kt [value]="vendors" [paginator]="paginator" [rows]="rowNum"
-    currentPageReportTemplate="Showing {first} to {last} entries" [scrollable]="true" [tableStyle]="{ 'width.%': 100 }"
-    scrollHeight="80vh">
+  <p-table
+  #dt
+  [value]="vendors"
+  [lazy]="true"
+  (onLazyLoad)="getVendorsList($event,null)"
+  [paginator]="true"
+  [rows]="rowNum"
+  [totalRecords]="total"
+  [loading]="loading"
+  [scrollable]="true"
+  scrollHeight="80vh"
+  [tableStyle]="{ 'width.%': 100 }">
     <ng-template pTemplate="caption">
       <div class="flex align-items-center justify-content-between">
         <div>
-          <h5 class="m-0 primary" translate>Vendors Manager</h5>
+          <h5 class="m-0 primary" translate>Suppliers Manager</h5>
         </div>
         <div class="table-header inputgroup-stopwords block">
           <div class="p-inputgroup inputgroup-stopwords">
             <div class="flex justify-content-between w-full">
               <app-excel-export [keys]="keys" [page]="'Vendors'" [collection]="'vendor'"></app-excel-export>
 
-              <button type="button" (click)="showVendorSidebar()" label="{{ 'Add Vendor' | translate }}" pRipple pButton
+              <button type="button" (click)="showVendorSidebar()" label="{{ 'Add Supplier' | translate }}" pRipple pButton
                 icon="pi pi-plus" class="p-button-success mx-2"></button>
             </div>
           </div>
@@ -31,7 +40,7 @@
             (refresh)="getVendorsList(1, $event)"></app-column-filter>
         </th>
         <th style="width: 30vw" translate>
-          Vendor
+          Supplier
           <app-column-filter [filterValue]="fillterFildes.name" (clear)="clearFilter(); getVendorsList(1, null)"
             (refresh)="getVendorsList(1, $event)"></app-column-filter>
         </th>

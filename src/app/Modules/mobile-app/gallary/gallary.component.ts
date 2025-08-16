@@ -24,8 +24,8 @@ export class GallaryComponent extends BaseComponent implements OnInit {
   responsiveOptions: any[] | undefined;
 
   imgUrl = environment.imgUrl
-  constructor(private mobileService: MobileAppService, public translates: TranslateService,public permissionService:PermissionService,
-    public messageService: MessageService, private confirmationService: ConfirmationService) { super(messageService, translates) }
+  constructor(private mobileService: MobileAppService, public translates: TranslateService, public permissionService: PermissionService,
+    public messageService: MessageService, confirmationService: ConfirmationService) { super(messageService, translates,confirmationService) }
 
   ngOnInit(): void {
     this.getPosts()
@@ -81,9 +81,9 @@ export class GallaryComponent extends BaseComponent implements OnInit {
     })
   }
   updatePost() {
-    this.loading=true
+    this.loading = true
     const subscription = this.mobileService.updatePost(this.post).subscribe((data) => {
-      this.loading=false
+      this.loading = false
       if (!isSet(data)) {
         return
       }
@@ -92,14 +92,14 @@ export class GallaryComponent extends BaseComponent implements OnInit {
 
       subscription.unsubscribe()
     }, error => {
-      this.loading=false
+      this.loading = false
       subscription.unsubscribe()
     })
   }
   uploadMedia(body) {
-    this.loading=true
+    this.loading = true
     const subscription = this.mobileService.uploadMedia(body).subscribe((data) => {
-      this.loading=false
+      this.loading = false
       if (!isSet(data)) {
         return
       }
@@ -107,7 +107,7 @@ export class GallaryComponent extends BaseComponent implements OnInit {
       this.createPost()
       subscription.unsubscribe()
     }, error => {
-      this.loading=false
+      this.loading = false
       subscription.unsubscribe()
     })
   }
@@ -120,17 +120,13 @@ export class GallaryComponent extends BaseComponent implements OnInit {
     this.uploadMedia(formData)
   }
   confirm1Delete(post) {
-    this.confirmationService.confirm({
-      message: this.trans('Are you sure that you want to delete this Post ?'),
-      header: this.trans('Confirmation'),
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => { 
-        this.deletePost(post.id)
-        post.attributes.ads.data.forEach(x=>{          
-          this.onDeleteImage(x.id)
-        })
-       },
-    });
+
+    this.confirmMessage('Are you sure that you want to delete this Post ?', () => {
+      this.deletePost(post.id)
+      post.attributes.ads.data.forEach(x => {
+        this.onDeleteImage(x.id)
+      })
+    })
   }
   deletePost(id) {
     const subscription = this.mobileService.deletePost(id).subscribe((data) => {
@@ -144,14 +140,14 @@ export class GallaryComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     })
   }
-  publishedPost(published, id) {    
+  publishedPost(published, id) {
     this.loading = true
     const subscription = this.mobileService.publishedPost(published, id).subscribe((data) => {
       this.loading = false
       if (!isSet(data)) {
         return
       }
-      this.successMessage(null, data.data.attributes.published?'This post Published':'This post UnPublished')
+      this.successMessage(null, data.data.attributes.published ? 'This post Published' : 'This post UnPublished')
       this.getPosts()
       subscription.unsubscribe()
     }, error => {
@@ -178,7 +174,7 @@ export class GallaryComponent extends BaseComponent implements OnInit {
   showSelectedPost(post) {
     this.post = null
     this.post = post.attributes
-    this.post.id=post.id
+    this.post.id = post.id
     this.showPost = true
     this.editMode = true
 
@@ -201,10 +197,10 @@ export class GallaryComponent extends BaseComponent implements OnInit {
     })
 
   }
-  cheackMediaType(type:string,media:any){
-     if ( type?.includes(media) ) {
+  cheackMediaType(type: string, media: any) {
+    if (type?.includes(media)) {
       return true
-     }else return false
+    } else return false
   }
 
 }

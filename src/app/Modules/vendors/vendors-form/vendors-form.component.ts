@@ -53,7 +53,7 @@ export class VendorsFormComponent extends BaseComponent implements OnInit {
   @Output() refreshLish: EventEmitter<boolean> = new EventEmitter();
   @ViewChild('menu') menu: Menu
   constructor(private vendorService: VendorsService, public translates: TranslateService, public messageService: MessageService, public permissionService: PermissionService,
-    private confirmationService: ConfirmationService,) { super(messageService, translates) }
+     confirmationService: ConfirmationService,) { super(messageService, translates,confirmationService) }
 
   ngOnInit(): void {
     this.formTypes = 'vendor'
@@ -86,7 +86,7 @@ export class VendorsFormComponent extends BaseComponent implements OnInit {
         return
       }
       this.loading = false
-      this.successMessage(null, 'The Vendor has been created')
+      this.successMessage(null, 'The Supplier has been created')
       this.refreshLish.emit(true)
       this.display = false
       subscription.unsubscribe()
@@ -103,7 +103,7 @@ export class VendorsFormComponent extends BaseComponent implements OnInit {
       }
       this.vendorTypes = []
       this.vendorTypes.push({
-        id: 0, name: `<span class="font-bold text-primary">${this.trans('New Vendor Type')}</span>`
+        id: 0, name: `<span class="font-bold text-primary">${this.trans('New Supplier Type')}</span>`
       })
       results.data.map(item => {
         this.vendorTypes.push({
@@ -134,7 +134,7 @@ export class VendorsFormComponent extends BaseComponent implements OnInit {
       this.vendor.vendorType = null
       this.vendorEdit = false
     }
-    this.headerDialog = this.vendorEdit ? this.trans('Vendor Type Modification') : this.trans('New Vendor Type')
+    this.headerDialog = this.vendorEdit ? this.trans('Supplier Type Modification') : this.trans('New Supplier Type')
   }
 
   createvendorType() {
@@ -173,10 +173,8 @@ export class VendorsFormComponent extends BaseComponent implements OnInit {
     this.vendorName = value.name
   }
   confirmCancel() {
-    this.confirmationService.confirm({
-      message: this.trans('Are you sure that you want to Delete this Entry ?'),
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => { this.updateVendorType('delete') },
+    this.confirmMessage(null, () => {
+      this.updateVendorType('delete') ;
     });
   }
 
@@ -205,7 +203,7 @@ export class VendorsFormComponent extends BaseComponent implements OnInit {
       }
       this.loading = false
       this.refreshLish.emit(true)
-      this.successMessage(null, 'This Vendor has been changed')
+      this.successMessage(null, 'This Supplier has been changed')
       this.display = false
       subscription.unsubscribe()
     }, error => {

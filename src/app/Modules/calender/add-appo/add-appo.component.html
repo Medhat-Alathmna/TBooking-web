@@ -40,12 +40,12 @@
 
                 <div class="flex align-items-center justify-content-center border-break"></div>
                 <div class="flex-initial flex align-items-center justify-content-center px-3">
-                    <entity-viewer [entity]="{type:'user',title:'Confirmed BY'|translate,value:appointment?.appoBy?.username??null,gender:appointment?.appoBy?.gender}"
+                    <entity-viewer [entity]="{type:'user',title:'Confirmed BY'|translate,value:appointment?.confirmBy?.username??null,gender:appointment?.confirmBy?.gender}"
                         [darkMode]="true"></entity-viewer>
                 </div>
                 <div class="flex align-items-center justify-content-center border-break"></div>
                 <div class="flex-initial flex align-items-center justify-content-center px-3">
-                    <entity-viewer [entity]="{type:'user',title:'CREATED BY'|translate,value:appointment?.createBy?.username??'Mobile User'| translate,gender:appointment?.createBy?.gender}"
+                    <entity-viewer [entity]="{type:'user',title:'CREATED BY'|translate,value:appointment?.bookBy?.username??'Mobile User'| translate,gender:appointment?.bookBy?.gender,platform:appointment?.platform}"
                         [darkMode]="true"></entity-viewer>
                 </div>
             </div>

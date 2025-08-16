@@ -79,55 +79,23 @@ export class OrdersComponent extends BaseComponent implements OnInit {
 
 
 
-  getOrders(pageNum?: number, query?: any) {
+  getOrders(event, query) {
     isSet(this.fillterFildes.createdAt.value) ? this.fillterFildes.createdAt.value = this.datePipe.transform(this.fillterFildes.createdAt.value, 'yyyy-MM-dd') : null
 
-    this.loading = true
-    const subscription = this.calenderService.getlist('orders', pageNum, 10, query).subscribe((results: any) => {
-      this.loading = false
-      if (!isSet(results)) {
-        return
-      }
-      this.paginator = true
-      this.orders = []
-      const clone = results.data
-      this.total = results.meta.pagination.total
-      if (!isSet(this.orders)) {
-        this.orders = Array(this.total).fill(0)
-      }
-      if (clone.length < this.rowNum) {
-        for (let index = clone.length; index < this.rowNum; index++) {
-          clone[index] = null
-        }
-      }
-      //
-      if (!isSet(pageNum)) {
-        clone.map((item, index) => {
-          this.orders[index] = item
-        })
+    const first = event?.first ?? 0;
+    const pageNum = first / this.rowNum + 1;
+    this.loading = true;
 
-      } else {
-        const currentPage = pageNum * this.rowNum
-        let cloneObjIndex = 0
-        for (let index = currentPage - this.rowNum; index < currentPage; index++) {
-          this.orders[index] = clone[cloneObjIndex++]
-        }
+    const sub = this.calenderService.getlist('orders', pageNum, this.rowNum, query).subscribe({
+      next: (results: any) => {
+        this.orders = results.data || [];
+        this.total = results.meta?.pagination?.total || 0;
+      },
+      complete: () => {
+        this.loading = false;
+        sub.unsubscribe()
       }
-      //
-      if (!isSet(this.orders?.next)) {
-        this.orders = this.orders.filter(item => {
-          return isSet(item)
-        })
-      }
-      setTimeout(() => {
-        this.table.first = pageNum > 1 ? (pageNum - 1) * this.rowNum : 0
-      });
-
-      subscription.unsubscribe()
-    }, error => {
-      this.loading = false
-      subscription.unsubscribe()
-    })
+    });
   }
 
   getOrder(order) {

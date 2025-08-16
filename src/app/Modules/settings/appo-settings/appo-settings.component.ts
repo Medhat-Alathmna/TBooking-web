@@ -12,7 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class AppoSettingsComponent extends BaseComponent implements OnInit {
 
   constructor(public translates: TranslateService, public messageService: MessageService,
-     private settingsService: SettingsService, private confirmationService: ConfirmationService,) {super(messageService, translates)}
+     private settingsService: SettingsService, confirmationService: ConfirmationService,) {super(messageService, translates,confirmationService)}
 
   ngOnInit(): void {
   }

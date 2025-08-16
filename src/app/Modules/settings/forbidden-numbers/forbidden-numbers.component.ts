@@ -26,7 +26,7 @@ export class ForbiddenNumbersComponent extends BaseComponent implements OnInit {
 
   constructor(public translates: TranslateService, public messageService: MessageService,public permissionService:PermissionService,
      private calenderService:CalenderService,
-    private confirmationService: ConfirmationService, private settingsService: SettingsService) { super(messageService, translates) }
+     confirmationService: ConfirmationService, private settingsService: SettingsService) { super(messageService, translates,confirmationService) }
 
   ngOnInit(): void {
     this.getNumbers(1, null)
@@ -113,11 +113,8 @@ export class ForbiddenNumbersComponent extends BaseComponent implements OnInit {
     })
   }
   confirmDelete(id) {
-    this.confirmationService.confirm({
-      message: this.trans('Are you sure that you want to Delete this Entry ?'),
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => { this.deleteNumber(id) },
+    this.confirmMessage(null, () => {
+      this.deleteNumber(id);
     });
   }
 }

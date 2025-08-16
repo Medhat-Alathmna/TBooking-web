@@ -11,8 +11,7 @@ import { DatePipe } from '@angular/common';
 })
 export class PurchaseOrderListComponent
   extends BaseComponent
-  implements OnInit
-{
+  implements OnInit {
   purchaseOrders;
   selectedPo;
   rowNum: any = 10;
@@ -23,7 +22,7 @@ export class PurchaseOrderListComponent
   detailMode: boolean = false;
   fillterFildes = {
     no: { name: 'no', type: '$contains', filter: 'text' },
-    createdAt:{ name: 'createdAt', filter: 'date' },
+    createdAt: { name: 'createdAt', filter: 'date' },
     status: {
       name: 'status',
       type: '$eq',
@@ -45,22 +44,22 @@ export class PurchaseOrderListComponent
       name: 'addedToStuck',
       type: '$eq',
       filter: 'boolean',
-     
+
     },
   };
   keys = [
-    { header:this.lang=='en'? 'PO No':' رقم فاتورة مشتريات ' , key: 'no' },
-    { header:this.lang=='en'? 'Vendor Name':'اسم المزود', key: 'vendor.name' },
-    { header: this.lang=='en'?'Cash':'نقدي', key: 'cash' },
-     { header: this.lang=='en'?'Payments':'الدفعات', key: 'payments.list' },
-    { header: this.lang=='en'?'Status':'الحالة', key: 'status' },
-    { header: this.lang=='en'?'Products (Sell Price)':'المنتج (سعر شراء)', key: 'products.sell' },
-    { header: this.lang=='en'?'Products (QTY)':'المنتج (الكمية)', key: 'products.qty' },
-    { header: this.lang=='en'?'Create By':'إنشاء بواسطة', key: 'createBy.username' },
-    { header: this.lang=='en'?'Added to Stock':'مضاف إلى المخزن', key: 'addedToStuck' },
-    { header:this.lang=='en'? 'Created At':'تاريخ الإنشاء', key: 'createdAt', format: 'YYYY-MM-DD HH:mm' },
+    { header: this.lang == 'en' ? 'PO No' : ' رقم فاتورة مشتريات ', key: 'no' },
+    { header: this.lang == 'en' ? 'Vendor Name' : 'اسم المزود', key: 'vendor.name' },
+    { header: this.lang == 'en' ? 'Cash' : 'نقدي', key: 'cash' },
+    { header: this.lang == 'en' ? 'Payments' : 'الدفعات', key: 'payments.list' },
+    { header: this.lang == 'en' ? 'Status' : 'الحالة', key: 'status' },
+    { header: this.lang == 'en' ? 'Products (Sell Price)' : 'المنتج (سعر شراء)', key: 'products.sell' },
+    { header: this.lang == 'en' ? 'Products (QTY)' : 'المنتج (الكمية)', key: 'products.qty' },
+    { header: this.lang == 'en' ? 'Create By' : 'إنشاء بواسطة', key: 'createBy.username' },
+    { header: this.lang == 'en' ? 'Added to Stock' : 'مضاف إلى المخزن', key: 'addedToStuck' },
+    { header: this.lang == 'en' ? 'Created At' : 'تاريخ الإنشاء', key: 'createdAt', format: 'YYYY-MM-DD HH:mm' },
   ]
- 
+
   @ViewChild('kt') table: any;
 
   constructor(
@@ -74,23 +73,21 @@ export class PurchaseOrderListComponent
     this.clearAllFillter();
   }
 
-  getPurchaseOrders(event,query) {
-    (query?.name=='createdAt'&& query)? (query.value = this.datePipe.transform(query.value,'yyyy-MM-dd')): null;
-    
-const first = event?.first ?? 0;
-const pageNum = first / this.rowNum + 1;
-  this.loading = true;
+  getPurchaseOrders(event, query) {
+    (query?.name == 'createdAt' && query) ? (query.value = this.datePipe.transform(query.value, 'yyyy-MM-dd')) : null;
 
-  this.calenderService
-    .getlist('purchase-orders', pageNum, this.rowNum,query)
-    .subscribe({
+    const first = event?.first ?? 0;
+    const pageNum = first / this.rowNum + 1;
+    this.loading = true;
+
+    const sub = this.calenderService.getlist('purchase-orders', pageNum, this.rowNum, query).subscribe({
       next: (results: any) => {
         this.purchaseOrders = results.data || [];
         this.total = results.meta?.pagination?.total || 0;
-        this.loading = false;
       },
-      error: () => {
+      complete: () => {
         this.loading = false;
+        sub.unsubscribe()
       }
     });
   }
@@ -107,6 +104,6 @@ const pageNum = first / this.rowNum + 1;
   }
   clearAllFillter() {
     this.calenderService.queryFilters = [];
-    this.getPurchaseOrders(1,null);
+    this.getPurchaseOrders(1, null);
   }
 }

@@ -8,6 +8,7 @@ import { CalenderService } from '../calender.service';
 import { DatePipe } from '@angular/common';
 import { PermissionService } from 'src/app/core/permission.service';
 import { SocketService } from 'src/app/Shared/socket.service';
+import arLocale from '@fullcalendar/core/locales/ar';
 
 @Component({
   selector: 'app-full-calender',
@@ -74,6 +75,7 @@ setTimeout(() => {
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay' // user can switch between the two
       },
+       locales: [arLocale], 
       titleFormat: { year: 'numeric', day: 'numeric', month: 'numeric', },
       height: '100%',
       editable: true,

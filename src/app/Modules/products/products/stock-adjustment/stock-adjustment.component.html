@@ -1,0 +1,67 @@
+<p-card >
+    <ng-template pTemplate="title">
+        إدخال/تعديل مخزون
+    </ng-template>
+
+    <div class="grid form-grid">
+        <div class="col-12 md:col-6">
+            <label>المنتج</label>
+            <input [(ngModel)]="selectedProduct.name" disabled name="title" pInputText />
+        </div>
+
+        <div class="col-12 md:col-3">
+            <label>العملية</label>
+            <p-selectButton [(ngModel)]="action" dir="inherit"
+                [options]="[{label:'زيادة',value:'increase'},{label:'نقصان',value:'decrease'}]"></p-selectButton>
+        </div>
+
+        <div class="col-12 md:col-3">
+            <label>الكمية</label>
+            <p-inputNumber [(ngModel)]="quantity"   [minFractionDigits]="0" [maxFractionDigits]="4"
+                [showButtons]="true"></p-inputNumber>
+        </div>
+
+        <div class="col-12 md:col-3" *ngIf="action==='increase'">
+            <label>سعر التكلفة (اختياري)</label>
+            <p-inputNumber [(ngModel)]="cost" [minFractionDigits]="0" [maxFractionDigits]="4"></p-inputNumber>
+        </div>
+
+        <div class="col-12 md:col-3">
+            <label>السبب</label>
+            <p-dropdown [(ngModel)]="reason" [options]="reasonList" optionLabel="label"
+                optionValue="value"></p-dropdown>
+        </div>
+
+        <div class="col-12">
+            <label>ملاحظة</label>
+            <textarea pInputTextarea rows="3" [(ngModel)]="note" class="w-full"></textarea>
+        </div>
+
+
+    </div>
+</p-card>
+
+<p-card header="آخر الحركات" styleClass="mt-4 shadow-2 border-round-2xl">
+    <p-table [value]="movements" [rows]="10" [paginator]="true" [loading]="loading">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>التاريخ</th>
+                <th>المنتج</th>
+                <th>العملية</th>
+                <th>الكمية</th>
+                <th>السبب</th>
+                <th>ملاحظة</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-m>
+            <tr>
+                <td>{{ m.createdAt | date:'yyyy-MM-dd HH:mm' }}</td>
+                <td>{{ m.productName }}</td>
+                <td>{{ m.direction===1?'زيادة':'نقصان' }}</td>
+                <td>{{ m.quantity }}</td>
+                <!-- <td>{{ reasonList.find(r=>r.value===m.reason)?.label || m.reason }}</td> -->
+                <td>{{ m.note }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-card>

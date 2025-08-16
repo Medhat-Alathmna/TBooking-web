@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/core/api.service';
 import { isSet } from 'src/app/core/base/base.component';
-import { Products } from 'src/app/modals/products';
+import { Products, StockAdjustmentPayload } from 'src/app/modals/products';
 
 @Injectable({
   providedIn: 'root'
@@ -82,5 +82,15 @@ export class ProductsService {
     let delet ={data:{hide:true}}
     return this.api.put<any>(`brands/${id}`,type=='update'?body:delet);
   }
-
+  createAdjustment(payload: StockAdjustmentPayload): Observable<StockAdjustmentPayload> {
+    let body={
+       productId: payload.product,
+      direction: payload.action === 'increase' ? 1 : -1,
+      quantity: payload.quantity,
+      reason: payload.reason,
+      note: payload.note || undefined,
+      cost: payload.action === 'increase' && payload.cost ? payload.cost : undefined
+    }
+    return this.api.post<StockAdjustmentPayload>(`stock-adjustment`, body);
+  }
 }

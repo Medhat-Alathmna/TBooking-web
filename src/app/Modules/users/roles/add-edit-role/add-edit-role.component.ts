@@ -48,9 +48,10 @@ export class AddEditRoleComponent extends BaseComponent implements OnInit {
     { name: 'Services', actions: ['create', 'update', 'delete', 'export'] },
     { name: 'Gallary', actions: ['create', 'view', 'update', 'delete'] },
     // { name: 'MobileApp', actions: ['create', 'view', 'update', 'delete'] },
-    { name: 'SiteSittengs', actions: ['view', 'update', 'Notifications', 'ForbbidenNumber', 'AppointmentsSettings'] },
+    { name: 'SiteSittengs', actions: ['view', 'update', 'Notifications', 'ForbbidenNumber', 'AppointmentsSettings','MobilePushNotifications'] },
     { name: 'Notifications', actions: ['create', 'update', 'delete'] },
     { name: 'ForbbidenNumber', actions: ['create', 'update', 'delete'] },
+    { name: 'MobilePushNotifications', actions: ['create', 'update', 'delete'] },
   ];
 
   pages = {
@@ -68,6 +69,7 @@ export class AddEditRoleComponent extends BaseComponent implements OnInit {
     SiteSittengs: { view: false, update: false, Notifications: false, ForbbidenNumber: false, AppointmentsSettings: false },
     Notifications: { create: false, update: false, delete: false },
     ForbbidenNumber: { create: false, update: false, delete: false },
+    MobilePushNotifications: { create: false, update: false, delete: false },
 
   };
 

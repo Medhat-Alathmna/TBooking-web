@@ -56,18 +56,18 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
   link
   imgData
 
-  @Input() selectedOrder: Order |any
+  @Input() selectedOrder: Order | any
   @Input() display: boolean = false
   @Input() isAttributes: boolean = true
   @Output() displayChange: EventEmitter<boolean> = new EventEmitter();
   @Output() refreshLish: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(public translate: TranslateService, public permissionService: PermissionService,private fontSerivces:FontsService,
+  constructor(public translate: TranslateService, public permissionService: PermissionService, private fontSerivces: FontsService,
     public messageService: MessageService, private orderService: OrdersService, private settingsService: SettingsService,
-    private confirmationService: ConfirmationService,) { super(messageService, translate) }
+    confirmationService: ConfirmationService,) { super(messageService, translate) }
 
-  ngOnInit(): void {    
-      this.getOrder(this.selectedOrder.id)
+  ngOnInit(): void {
+    this.getOrder(this.selectedOrder.id)
   }
   onHide() {
 
@@ -156,12 +156,11 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
   }
 
   confirm1Cancel() {
-    this.confirmationService.confirm({
-      message: this.trans('Are you sure that you want to Cancel this Order ?'),
-      header: this.trans('Confirmation'),
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => { this.cancelOrder(); this.draftAppointment() },
-    });
+    this.confirmMessage('Are you sure that you want to Cancel this Order ?', () => {
+      this.cancelOrder();
+      this.draftAppointment();
+    })
+
   }
   replaceValuesStrings(body) {
     var startDate = moment(this.selectedOrder.attributes.appointment.data.attributes.fromDate).format('YYYY-MM-D')
@@ -212,26 +211,26 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
     })
   }
   async generateInvoice() {
-    
+
     const doc = new jsPDF();
     doc.addFileToVFS('Amiri-Regular-normal', this.fontSerivces.font);
-        doc.addFont('Amiri-Regular-normal', 'amiri', 'normal');
+    doc.addFont('Amiri-Regular-normal', 'amiri', 'normal');
     // Use the font
     doc.setFont('amiri');
     // Add header (business name, logo, etc.)
     doc.setFontSize(24);
     doc.text(this.invoiceInfo?.name, 150, 30, { align: 'center' });
     doc.setFontSize(12);
-    doc.text(this.invoiceInfo?.address?this.invoiceInfo?.address:'', 150, 40, { align: 'center' });
+    doc.text(this.invoiceInfo?.address ? this.invoiceInfo?.address : '', 150, 40, { align: 'center' });
     doc.text(this.invoiceInfo?.phone, 150, 50, { align: 'center' });
 
 
     // Add Invoice Title
     doc.setFontSize(12);
     const customer = this.selectedOrder?.attributes?.appointment?.data?.attributes?.customer;
-    const address=this.selectedOrder?.attributes?.appointment?.data?.attributes?.address
+    const address = this.selectedOrder?.attributes?.appointment?.data?.attributes?.address
     doc.text(`${customer.firstName} ${customer.middleName} ${customer.lastName}`, 15, 70);
-    doc.text(`${address?address:''}`, 15, 80);
+    doc.text(`${address ? address : ''}`, 15, 80);
     doc.text(`${this.selectedOrder?.attributes?.appointment?.data?.attributes?.phone}`, 15, 90);
 
     // Invoice details
@@ -239,7 +238,7 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
     doc.text(`${new Date(this.selectedOrder?.attributes?.createdAt).toLocaleString()}`, 150, 80, { align: 'center' });
 
     // Table with autoTable
-    const product=this.selectedOrder.attributes.appointment.data.attributes.products
+    const product = this.selectedOrder.attributes.appointment.data.attributes.products
     const tableBody = product.map((product: any, index: number) => ([
       index + 1,
       product.name,
@@ -247,67 +246,67 @@ export class AddEditOrderComponent extends BaseComponent implements OnInit {
       product.price,
       (product.qty * product.price).toFixed(2),
     ]));
-if (isSet(product)) {
-  autoTable(doc, {
-    startY: 115,
-    theme: 'grid',
-    tableWidth:'auto',
-    styles:{font:'amiri'},
-    head: [[this.trans('Product Name'), this.trans('Quantity'),this.trans('Price')]],
-    body: product.map((product) => [
-      product.name || 'N/A',   
-      product.qty || 0,        
-      product.price || 0       
-    ])
-  });
- 
-}
-    
+    if (isSet(product)) {
+      autoTable(doc, {
+        startY: 115,
+        theme: 'grid',
+        tableWidth: 'auto',
+        styles: { font: 'amiri' },
+        head: [[this.trans('Product Name'), this.trans('Quantity'), this.trans('Price')]],
+        body: product.map((product) => [
+          product.name || 'N/A',
+          product.qty || 0,
+          product.price || 0
+        ])
+      });
+
+    }
+
     // Employee Services Table (Ensure values are not undefined)
-if (isSet(this.selectedOrder.attributes.appointment.data.attributes.employee)) {
-  const employeeTableBody = this.selectedOrder.attributes?.appointment?.data?.attributes?.employee.map((employee: any, index: number) => {
-    const services = employee.services.map((service: any) => `${this.lang =='en'?service.en:service.ar} (${service.price})`).join(", ");
-    return [
-      index + 1,
-      employee.username,
-      services
-    ];
-  });
-  autoTable(doc, {
-    startY:isSet(this.selectedOrder.attributes.appointment.data.attributes.products)? (doc as any).lastAutoTable.finalY + 10:100,
-    styles:{font:'amiri'},
-    tableWidth:'auto',
-    head: [['#',this.trans('Employee'), this.trans('Services')]],
-    body: employeeTableBody
-  });
-}
+    if (isSet(this.selectedOrder.attributes.appointment.data.attributes.employee)) {
+      const employeeTableBody = this.selectedOrder.attributes?.appointment?.data?.attributes?.employee.map((employee: any, index: number) => {
+        const services = employee.services.map((service: any) => `${this.lang == 'en' ? service.en : service.ar} (${service.price})`).join(", ");
+        return [
+          index + 1,
+          employee.username,
+          services
+        ];
+      });
+      autoTable(doc, {
+        startY: isSet(this.selectedOrder.attributes.appointment.data.attributes.products) ? (doc as any).lastAutoTable.finalY + 10 : 100,
+        styles: { font: 'amiri' },
+        tableWidth: 'auto',
+        head: [['#', this.trans('Employee'), this.trans('Services')]],
+        body: employeeTableBody
+      });
+    }
     doc.setFontSize(12);
-    doc.text(this.trans('Services'),150, (doc as any).lastAutoTable.finalY + 30, { align: 'center' })
-    doc.text(`${this.getTotalPrice().products}`+ `    ${this.getCurrencySymbol(this.cur.name)}`, 180, (doc as any).lastAutoTable.finalY + 30, { align: 'center' });
-    doc.text(this.trans('Deposit'),150, (doc as any).lastAutoTable.finalY + 35, { align: 'center' })
-    doc.text(`${this.selectedOrder.attributes.appointment.data.attributes.deposit}`+ `    ${this.getCurrencySymbol(this.cur.name)}`, 180, (doc as any).lastAutoTable.finalY + 35, { align: 'center' });
+    doc.text(this.trans('Services'), 150, (doc as any).lastAutoTable.finalY + 30, { align: 'center' })
+    doc.text(`${this.getTotalPrice().products}` + `    ${this.getCurrencySymbol(this.cur.name)}`, 180, (doc as any).lastAutoTable.finalY + 30, { align: 'center' });
+    doc.text(this.trans('Deposit'), 150, (doc as any).lastAutoTable.finalY + 35, { align: 'center' })
+    doc.text(`${this.selectedOrder.attributes.appointment.data.attributes.deposit}` + `    ${this.getCurrencySymbol(this.cur.name)}`, 180, (doc as any).lastAutoTable.finalY + 35, { align: 'center' });
     doc.setTextColor('green')
-    doc.text(this.trans('Paid'),150, (doc as any).lastAutoTable.finalY + 40, { align: 'center' })
-    doc.text(`${this.selectedOrder.attributes.cash}`+ `    ${this.getCurrencySymbol(this.cur.name)}`, 180, (doc as any).lastAutoTable.finalY + 40, { align: 'center' });
+    doc.text(this.trans('Paid'), 150, (doc as any).lastAutoTable.finalY + 40, { align: 'center' })
+    doc.text(`${this.selectedOrder.attributes.cash}` + `    ${this.getCurrencySymbol(this.cur.name)}`, 180, (doc as any).lastAutoTable.finalY + 40, { align: 'center' });
     doc.setTextColor('red')
-    doc.text(this.trans('Unpaid'),150, (doc as any).lastAutoTable.finalY + 45, { align: 'center' })
+    doc.text(this.trans('Unpaid'), 150, (doc as any).lastAutoTable.finalY + 45, { align: 'center' })
     doc.text(`${this.getTotalPrice().total}` + `    ${this.getCurrencySymbol(this.cur.name)}`, 180, (doc as any).lastAutoTable.finalY + 45, { align: 'center' });
     doc.setFontSize(10);
     doc.setTextColor('black')
     doc.text(this.invoiceInfo?.footer, 40, (doc as any).lastAutoTable.finalY + 70);
     this.blob = doc.output('blob');
-   this.convertPdfToImage(this.blob)
+    this.convertPdfToImage(this.blob)
   }
   async convertPdfToImage(pdfBlob) {
     const pdfjsLib = window['pdfjs-dist/build/pdf'];
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.js';
-  
+
     // Load the PDF from the blob
     const pdf = await pdfjsLib.getDocument(URL.createObjectURL(pdfBlob)).promise;
-  
+
     // Loop through each page
     const page = await pdf.getPage(1); // For simplicity, converting only the first page
-  
+
     // Create a canvas element
     const scale = 2;
     const viewport = page.getViewport({ scale });
@@ -315,34 +314,34 @@ if (isSet(this.selectedOrder.attributes.appointment.data.attributes.employee)) {
     const context = canvas.getContext('2d');
     canvas.height = viewport.height;
     canvas.width = viewport.width;
-  
+
     // Render the PDF page into the canvas context
     const renderContext = {
       canvasContext: context,
       viewport: viewport,
     };
-  
+
     await page.render(renderContext).promise;
-  
+
     // Convert the canvas to an image
     const imageData = canvas.toDataURL('image/png');
-  
+
     // Create an image element to display or save
     const imgElement = document.createElement('img');
     imgElement.src = imageData;
     // document.body.appendChild(imgElement); // Optionally display the image
-  
+
     // To download the image
-    this.imgDealog=true
+    this.imgDealog = true
     this.link = document.createElement('a');
-    this.imgData=imageData
+    this.imgData = imageData
     // console.log( encodeURIComponent(imageData));
     // window.open(`https://web.whatsapp.com/send?phone=${this.selectedOrder.attributes.appointment.data.attributes.phone}&text=${encodeURIComponent(imageData)}`, "_blank")
 
-   
+
   }
-  downloadImg(){
-    this.link.href= this.imgData
+  downloadImg() {
+    this.link.href = this.imgData
     this.link.download = this.selectedOrder.attributes.orderNo;
     this.link.click();
   }
@@ -351,7 +350,7 @@ if (isSet(this.selectedOrder.attributes.appointment.data.attributes.employee)) {
       if (!isSet(results)) {
         return
       }
-      this.selectedOrder=results.data
+      this.selectedOrder = results.data
       this.selectedOrder.attributes.createdAt = moment(this.selectedOrder.attributes.createdAt).format('YYYY-MM-DD HH:ss')
       this.selectedOrder.attributes.appointment.data.attributes.fromDate = new Date(this.selectedOrder.attributes.appointment.data.attributes.fromDate)
       this.selectedOrder.attributes.appointment.data.attributes.toDate = new Date(this.selectedOrder.attributes.appointment.data.attributes.toDate)
@@ -376,13 +375,13 @@ if (isSet(this.selectedOrder.attributes.appointment.data.attributes.employee)) {
             this.confirm1Cancel()
           }
         },
-  
+
       ]
-      this.getNotfi()      
+      this.getNotfi()
       subscription.unsubscribe()
     }, error => {
       subscription.unsubscribe()
     })
   }
-  
+
 }

@@ -51,7 +51,7 @@ notifications = [
     }
     changeLang(lang) {
         localStorage.setItem('currentLang', lang)
-        location.reload()
+        window.location.href = window.location.pathname;
     }
     logOut() {
         localStorage.removeItem('userAuth')

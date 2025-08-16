@@ -15,7 +15,7 @@
         </p-accordion>
         <div class="col-6">
             <button pButton pRipple type="button" icon="pi pi pi-plus " label="{{'Add New Notification'| translate}}"
-                (click)="initNotfi('Approved Appointments')"
+                (click)="initNotfi('Approved Appointments')" 
                 class="p-button-rounded p-button-outlined p-button-secondary2 text-btn "></button>
             <i class="pi pi-exclamation-circle pr-3 pointer" (click)="info=true" style="font-size: 1.5rem"></i>
         </div>
@@ -60,11 +60,11 @@
 
     </div>
     <ng-template pTemplate="footer">
-        <button *ngIf="!editMode&&permissionService.hasPermission('Notifications', 'create')" (click)="createNotfication()" pButton pRipple type="button"
+        <button *ngIf="!editMode&&permissionService.hasPermission('MobilePushNotifications', 'create')" (click)="createNotfication()" pButton pRipple type="button"
             label=" {{'Save' |translate}}" class="p-button-primary"></button>
-        <button *ngIf="editMode&&permissionService.hasPermission('Notifications', 'update')"  (click)="updateNotifications()" pButton pRipple type="button"
+        <button *ngIf="editMode&&permissionService.hasPermission('MobilePushNotifications', 'update')"  (click)="updateNotifications()" pButton pRipple type="button"
             label=" {{'Update' |translate}}" class="p-button-primary"></button>
-        <button *ngIf="editMode &&permissionService.hasPermission('Notifications', 'delete')" (click)="confirmDelete()" pButton pRipple type="button"
+        <button *ngIf="editMode &&permissionService.hasPermission('MobilePushNotifications', 'delete')" (click)="confirmDelete()" pButton pRipple type="button"
             label=" {{'Delete' |translate}}" class="p-button-danger"></button>
     </ng-template>
 </p-dialog>

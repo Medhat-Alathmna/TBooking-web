@@ -60,7 +60,7 @@ keys = [
   @ViewChild('kt') table: Table;
 
   constructor(public translates: TranslateService, public messageService: MessageService,public permissionService:PermissionService, private calenderService:CalenderService,
-     private mobileService: ProductsService,private confirmationService: ConfirmationService) { super(messageService, translates) }
+     private mobileService: ProductsService,confirmationService: ConfirmationService) { super(messageService, translates,confirmationService) }
 
   ngOnInit(): void {
     this.clearAllFillter()
@@ -178,11 +178,8 @@ keys = [
   }
 
   confirm1Delete(id) {
-    this.confirmationService.confirm({
-        message: this.trans('Are you sure that you want to delete this service ?') ,
-        header:  this.trans('Confirmation'),
-        icon: 'pi pi-exclamation-triangle',
-        accept: () => {this.deleteSerive(id)},
+    this.confirmMessage('Are you sure that you want to delete this service ?', () => {
+      this.deleteSerive(id)
     });
   }
   deleteSerive(id){

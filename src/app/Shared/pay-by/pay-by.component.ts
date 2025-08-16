@@ -38,7 +38,7 @@ export class PayByComponent extends BaseComponent implements ControlValueAccesso
   @Input() payByMode:any =false
   @Input() disabled:any =false
 
-  constructor(messageService: MessageService, translates: TranslateService,private sharedServies:SharedService,private confirmationService: ConfirmationService,) { super(messageService,translates)}
+  constructor(messageService: MessageService, translates: TranslateService,private sharedServies:SharedService,confirmationService: ConfirmationService,) { super(messageService,translates,confirmationService)}
 
   ngOnInit(): void {
     this.getPayBy()    
@@ -117,7 +117,6 @@ export class PayByComponent extends BaseComponent implements ControlValueAccesso
       if (!isSet(data)) {
         return
       }
-      console.log(data);
       this.loading = false
       this.PayByDialog = false
       this.payByMode=false
@@ -134,7 +133,6 @@ export class PayByComponent extends BaseComponent implements ControlValueAccesso
       if (!isSet(data)) {
         return
       }
-      console.log(data);
       this.loading = false
       this.PayByDialog = false
       this.payByMode = false

@@ -2,8 +2,8 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { BehaviorSubject, Observable } from 'rxjs';
-// import { getClientConfig,clientName } from 'src/environments/environment.prod';
-import { getLocalConfig, clientName } from 'src/environments/environment';
+import { getClientConfig,clientName } from 'src/environments/environment.prod';
+// import { getLocalConfig, clientName } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class SocketService {
@@ -13,7 +13,7 @@ export class SocketService {
   private socket: Socket;
 
   constructor() {
-    this.socket = io(getLocalConfig(clientName).imgUrl); // Replace with your Strapi domain    
+    this.socket = io(getClientConfig(clientName).imgUrl); // Replace with your Strapi domain    
   }
 
   listen(eventName: string): Observable<any> {

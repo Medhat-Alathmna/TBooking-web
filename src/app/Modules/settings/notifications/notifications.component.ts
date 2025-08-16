@@ -14,7 +14,7 @@ import { PermissionService } from 'src/app/core/permission.service';
 export class NotificationsComponent extends BaseComponent implements OnInit {
 
   constructor(public translates: TranslateService, public messageService: MessageService, public permissionService:PermissionService,
-    private confirmationService: ConfirmationService, private settingsService: SettingsService) { super(messageService, translates) }
+    confirmationService: ConfirmationService, private settingsService: SettingsService) { super(messageService, translates,confirmationService) }
   appointments = []
   orders = []
   group = []

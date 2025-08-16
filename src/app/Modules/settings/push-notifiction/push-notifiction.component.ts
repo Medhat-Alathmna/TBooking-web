@@ -12,90 +12,90 @@ import { Notifications } from 'src/app/modals/notfi';
   styleUrls: ['./push-notifiction.component.scss']
 })
 export class PushNotifictionComponent extends BaseComponent implements OnInit {
-  tabSelected='Approved Appointments'
-  appointmentsApproved=[]
-  appointmentsRejected=[]
-  allUsers=[]
+  tabSelected = 'Approved Appointments'
+  appointmentsApproved = []
+  appointmentsRejected = []
+  allUsers = []
   bodyDialog: boolean = false
   info: boolean = false
   editMode: boolean = false
   selectedBody = new Notifications
-  tabIndex = [  ]
- constructor(public translates: TranslateService, public messageService: MessageService, public permissionService:PermissionService,
-     private confirmationService: ConfirmationService, private settingsService: SettingsService) { super(messageService, translates) }
+  tabIndex = []
+  constructor(public translates: TranslateService, public messageService: MessageService, public permissionService: PermissionService,
+    confirmationService: ConfirmationService, private settingsService: SettingsService) { super(messageService, translates, confirmationService) }
 
   ngOnInit(): void {
     this.getNotfi()
     setTimeout(() => {
-       this.tabIndex = [
-    {
-      label: this.trans( 'Approved Appointments'),
-      command: event => {
-        this.tabSelected = 'Approved Appointments'
-      }
-    },
-    {
-      label: this.trans('Rejected Appointments'),
-      command: event => {
-        this.tabSelected = 'Rejected Appointments'
-      }
-    },
-    {
-      label: this.trans('All users'),
-      command: event => {
-        this.tabSelected = 'All users'
-      }
-    },
-  
-  ]
+      this.tabIndex = [
+        {
+          label: this.trans('Approved Appointments'),
+          command: event => {
+            this.tabSelected = 'Approved Appointments'
+          }
+        },
+        {
+          label: this.trans('Rejected Appointments'),
+          command: event => {
+            this.tabSelected = 'Rejected Appointments'
+          }
+        },
+        {
+          label: this.trans('All users'),
+          command: event => {
+            this.tabSelected = 'All users'
+          }
+        },
+
+      ]
     });
   }
- getNotfi() {
-    this.loading=true
+  getNotfi() {
+    this.loading = true
     const subscription = this.settingsService.getMobileNotifications().subscribe((results: any) => {
       if (!isSet(results)) {
         return
       }
-      this.loading=false
+      this.loading = false
       this.appointmentsApproved = results.data.filter(x => x.attributes.type == 'Approved Appointments')
       this.appointmentsRejected = results.data.filter(x => x.attributes.type == 'Rejected Appointments')
       this.allUsers = results.data.filter(x => x.attributes.type == 'All users')
       subscription.unsubscribe()
     }, error => {
-      this.loading=false
+      this.loading = false
       subscription.unsubscribe()
     })
   }
-    initNotfi(type) {
-      this.selectedBody = new Notifications
-      this.selectedBody.body=''
-      this.editMode=false
-      this.selectedBody.type=type
-      this.bodyDialog = true
-    }
-  
-    createNotfication() {
-      this.loading=true
-      const subscription = this.settingsService.createMobileNotifications(this.selectedBody).subscribe((data) => {
-        if (!isSet(data)) {
-          return
-        }      
-        this.bodyDialog = false
-        this.loading = false
-        this.getNotfi()
-        subscription.unsubscribe()
-      }, error => {
-        this.loading = false
-        subscription.unsubscribe()
-      })
-    }
+  initNotfi(type) {
+    this.selectedBody = new Notifications
+    this.selectedBody.body = ''
+    this.editMode = false
+    this.selectedBody.type = type
+    this.bodyDialog = true
+  }
 
-    updateNotifications() {
-    this.loading=true
+  createNotfication() {
+    this.loading = true
+    const subscription = this.settingsService.createMobileNotifications(this.selectedBody).subscribe((data) => {
+      if (!isSet(data)) {
+        return
+      }
+      this.bodyDialog = false
+      this.loading = false
+      this.getNotfi()
+      subscription.unsubscribe()
+    }, error => {
+      this.loading = false
+      subscription.unsubscribe()
+    })
+  }
+
+  updateNotifications() {
+    this.loading = true
     const subscription = this.settingsService.updateMobileNotifications(this.selectedBody).subscribe((data) => {
       if (!isSet(data)) {
         return
-      }      
+      }
       this.bodyDialog = false
       this.loading = false
       this.getNotfi()
@@ -107,11 +107,11 @@ export class PushNotifictionComponent extends BaseComponent implements OnInit {
     })
   }
   deleteNotifications() {
-    this.loading=true
+    this.loading = true
     const subscription = this.settingsService.deleteMobileNotifications(this.selectedBody).subscribe((data) => {
       if (!isSet(data)) {
         return
-      }      
+      }
       this.bodyDialog = false
       this.loading = false
       this.getNotfi()
@@ -122,20 +122,17 @@ export class PushNotifictionComponent extends BaseComponent implements OnInit {
     })
   }
 
-  showNotfi(notfi){
-    this.bodyDialog=true
-    this.editMode=true
-    this.selectedBody.title=notfi.attributes.title
-    this.selectedBody.body=notfi.attributes.body
-    this.selectedBody.type=notfi.attributes.type
-    this.selectedBody.id=notfi.id
+  showNotfi(notfi) {
+    this.bodyDialog = true
+    this.editMode = true
+    this.selectedBody.title = notfi.attributes.title
+    this.selectedBody.body = notfi.attributes.body
+    this.selectedBody.type = notfi.attributes.type
+    this.selectedBody.id = notfi.id
   }
   confirmDelete() {
-    this.confirmationService.confirm({
-      message: 'Are you sure that you want to Delete this Notification ?',
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => { this.deleteNotifications() },
+    this.confirmMessage('Are you sure you want to delete this notification?', () => {
+      this.deleteNotifications();
     });
   }
 }

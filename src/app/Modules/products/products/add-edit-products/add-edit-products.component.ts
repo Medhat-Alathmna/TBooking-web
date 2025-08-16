@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -18,6 +18,8 @@ import { PermissionService } from 'src/app/core/permission.service';
 import { FromToDateComponent } from 'src/app/Shared/from-to-date/from-to-date.component';
 import { AddEditOrderComponent } from 'src/app/Modules/orders/add-edit-order/add-edit-order.component';
 import { SupplierContact } from 'src/app/modals/supplierContact';
+import { StockAdjustmentComponent } from '../stock-adjustment/stock-adjustment.component';
+import { Menu } from 'primeng/menu';
 
 @Component({
   selector: 'app-add-edit-products',
@@ -33,6 +35,8 @@ import { SupplierContact } from 'src/app/modals/supplierContact';
     ModalComponent,
     AddEditOrderComponent,
     LoadingComponent,
+    EntityViewerComponent,
+    StockAdjustmentComponent,
     FromToDateComponent,
   ],
 })
@@ -49,6 +53,7 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
   brandDialog: boolean = false
   brandMode: boolean = false
   brandEdit: boolean = false
+  showStockAdjustment: boolean = false
   showOrderSidebar: boolean = false
   showSuppliersDialog: boolean = false
   showInfoDialog: boolean = false
@@ -80,37 +85,22 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
   @Input() detailMode: boolean = true
   @Output() displayChange: EventEmitter<boolean> = new EventEmitter();
   @Output() refreshLish: EventEmitter<boolean> = new EventEmitter();
+  @ViewChild('menu') menu: Menu
 
   constructor(public translates: TranslateService, public messageService: MessageService, public permissionService: PermissionService,
-    private confirmationService: ConfirmationService, private productsService: ProductsService) {
-      super(messageService, translates)
+    confirmationService: ConfirmationService, private productsService: ProductsService) {
+    super(messageService, translates, confirmationService)
 
   }
 
   ngOnInit(): void {
-    this.acions = [
-      {
-        label: this.trans('New Category'),
-        icon: 'pi pi-plus',
-        command: () => {
-          this.showCategoryDialog = true
-        }
-      },
-      {
-        label: this.trans('Delete'),
-        icon: 'pi pi-trash',
-        disabled: !this.permissionService.hasPermission('Products', 'delete'),
-        command: () => {
-          this.confirmProductDelete()
-        }
-      }
-    ]
+
     this.catsMenu = [
       {
         label: this.trans('Add this Category for all products'),
         icon: 'pi pi-plus',
         command: () => {
-          this.selectedApplyCategory.cat.subCategory.splice(0,1)   
+          this.selectedApplyCategory.cat.subCategory.splice(0, 1)
           this.applayCatProducts()
         }
       },
@@ -148,6 +138,36 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
 
 
     this.getBrands()
+  }
+
+  onActionClick(event: MouseEvent) {
+    this.acions = [
+      {
+        label: this.showStockAdjustment ? this.trans('Details') : this.trans('Stock adjustment'),
+        icon: this.showStockAdjustment ? 'pi pi-file' : 'pi pi-shopping-cart',
+
+        command: () => {
+          this.showStockAdjustment =  !this.showStockAdjustment
+        }
+      },
+      {
+        label: this.trans('New Category'),
+        icon: 'pi pi-plus',
+        command: () => {
+          this.showCategoryDialog = true
+        }
+      },
+      {
+        label: this.trans('Delete'),
+        icon: 'pi pi-trash',
+        disabled: !this.permissionService.hasPermission('Products', 'delete'),
+        command: () => {
+          this.confirmProductDelete()
+        }
+      }
+    ]
+    this.menu.hide();
+    setTimeout(() => this.menu.show(event), 0);
   }
   initProduct() {
     this.selectedProduct = new Products
@@ -319,10 +339,8 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
     this.brandName = value.name
   }
   confirmCancel() {
-    this.confirmationService.confirm({
-      message: this.trans('Are you sure that you want to Delete this Entry ?'),
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => { this.updateBrand('delete') },
+    this.confirmMessage(null, () => {
+      this.updateBrand('delete')
     });
   }
   productChartCharts() {
@@ -409,12 +427,8 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
     this.showOrderSidebar = true
   }
   confirmProductDelete() {
-    this.confirmationService.confirm({
-      message: this.trans('Are you sure that you want to Delete this Entry ?'),
-      acceptLabel: this.trans('Yes'),
-      rejectLabel: this.trans('No'),
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => { this.hideProduct() },
+    this.confirmMessage(null, () => {
+      this.hideProduct()
     });
   }
   hideProduct() {
@@ -441,7 +455,7 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
       }
       this.loading = false
       this.successMessage(null, 'This Category has been added for all products')
-      this.selectedApplyCategory= { index: null, cat: null };       
+      this.selectedApplyCategory = { index: null, cat: null };
 
       // this.display = false
       subscription.unsubscribe()
@@ -538,5 +552,10 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
   }
   deleteCat(index) {
     this.selectedProduct.category.splice(index, 1)
+  }
+  stockAdjustment(data){
+    console.log(data);
+    
+
   }
 }

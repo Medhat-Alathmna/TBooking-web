@@ -1,35 +1,74 @@
 <app-loading *ngIf="loading" display="full"></app-loading>
 <app-sidebar [display]="display" (displayChange)="onHide()">
     <div header>
+
+
         <div class="flex justify-content-between flex-wrap ">
-            <div class="flex align-items-center justify-content-center   ">
+
+            <div *ngIf="detailMode  " class="flex align-items-center justify-content-center   ">
                 <div class="flex-initial flex align-items-center justify-content-center mx-2">
                     <button pButton pRipple type="button" icon="pi pi-times" (click)="onHide()"
                         class="p-button-rounded p-button-secondary p-button-lg p-button-text btn-white "></button>
                 </div>
-                <div class="flex align-items-center justify-content-center border-break"></div>
+                <div class="flex align-items-center justify-content-center   ">
+                    <div class="flex align-items-center justify-content-center border-break"></div>
+                    <ng-container *ngIf="showStockAdjustment">
 
+                        <div class="flex-initial flex align-items-center justify-content-center px-3">
+                            <span [class]="'css.mr-2'|translate">
+                                <i class="pi pi-tags text-100 text-3xl "></i>
+                            </span>
+                            <entity-viewer
+                                [entity]="{type:'text',title:'Product Name'| translate,value:selectedProduct.name| translate}"
+                                [darkMode]="true"></entity-viewer>
+                        </div>
+                        <div class="flex align-items-center justify-content-center border-break"></div>
+                        <div class="flex-initial flex align-items-center justify-content-center px-3">
+                            <span [class]="'css.mr-2'|translate">
+                                <i class="pi pi-tags text-100 text-3xl "></i>
+                            </span>
+                            <entity-viewer
+                                [entity]="{type:'text',title:'Stock'| translate,value:selectedProduct.stocks| translate}"
+                                [darkMode]="true"></entity-viewer>
+                        </div>
+                        <div class="flex-initial flex align-items-center justify-content-center px-3"> </div>
+
+                    </ng-container>
+
+                </div>
+            </div>
+
+            <div *ngIf="!detailMode" class="flex align-items-center justify-content-center   ">
+                <div class="flex-initial flex align-items-center justify-content-center mx-2">
+                    <button pButton (click)="onHide()" pRipple type="button" icon="pi pi-times"
+                        class="p-button-rounded p-button-secondary p-button-lg p-button-text btn-white "></button>
+                </div>
+                <div class="flex align-items-center justify-content-center border-break"></div>
+                <div class="flex-initial flex align-items-center justify-content-center px-3">
+                    <span class="text-3xl text-white " translate> Add New Product </span>
+                </div>
             </div>
             <div class="flex align-items-center justify-content-center mx-2 ">
-
-
-                <button (click)="menu.toggle($event)" pButton
-                    pRipple type="button" icon="pi pi-ellipsis-v"
+                <button *ngIf="detailMode" (click)="onActionClick($event);menu.toggle($event)" pButton pRipple
+                    type="button" icon="pi pi-ellipsis-v"
                     class="p-button-rounded mr-2 p-button-secondary p-button-lg p-button-text btn-white "></button>
                 <p-menu #menu id="meetingActinos" styleClass="meetingActinos" [popup]="true" appendTo="body"
                     [model]="acions"></p-menu>
                 <button pButton [disabled]="form?.invalid " pRipple type="button" [label]="'Save'|translate"
-                    icon="pi pi-check " *ngIf="detailMode&&permissionService.hasPermission('Products', 'update')"
+                    icon="pi pi-check " *ngIf="detailMode&&!showStockAdjustment&&permissionService.hasPermission('Products', 'update')"
                     (click)="updateProduct()"
                     class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
                 <button pButton [disabled]="form?.invalid " pRipple type="button" [label]="'Save'|translate"
                     icon="pi pi-check " *ngIf="!detailMode&&permissionService.hasPermission('Products', 'create')"
                     (click)="createProduct()"
                     class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
+                <button pButton pRipple type="button" [label]="'Adjusment'|translate" icon="pi pi-check "
+                    *ngIf="detailMode&&showStockAdjustment" (click)="createStockAdjusment()"
+                    class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
             </div>
         </div>
     </div>
-    <form #form="ngForm" body class="px-5 ">
+    <form #form="ngForm" *ngIf="!showStockAdjustment" body class="px-5 ">
         <div class="grid ">
             <div class="col-12 pb-4">
                 <span class="text-3xl ont-semibold font-bold" translate>Product Details </span>
@@ -92,30 +131,32 @@
                 <app-input [(ngModel)]="selectedProduct.stocks" disabled [number]="number" name="stocks"
                     title="{{'Stock'|translate}}" type="number"></app-input>
             </div>
-            <div class="col-12 py-4" style="flex-direction: row;display: flex;flex-wrap: wrap;" *ngIf="selectedProduct.category && selectedProduct.category.length">
+            <div class="col-12 py-4" style="flex-direction: row;display: flex;flex-wrap: wrap;"
+                *ngIf="selectedProduct.category && selectedProduct.category.length">
                 <div class="lg:col-4 sm:col-6 " *ngFor="let cat of selectedProduct.category ; let i=index">
                     <ng-container>
                         <div class="flex" style="justify-content: space-between;align-items: baseline;">
-                        <div class="text-lg font-semibold mb-2" translate>
-                            {{cat.category}}
-                        </div>
-                        <div> <button *ngIf="permissionService.hasPermission('Products', 'update')" (click)="catMenu.toggle($event);selectedApplyCategory.index=i;selectedApplyCategory.cat=cat" pButton
-                            pRipple type="button" icon="pi pi-ellipsis-v"
-                            class="p-button-rounded mr-2 p-button-secondary p-button-lg p-button-text btn-white "></button>
-                        <p-menu #catMenu id="meetingActinos" styleClass="meetingActinos" [popup]="true" appendTo="body"
-                            [model]="catsMenu"></p-menu></div>
-                       
-                        <!-- <button pButton pRipple type="button" icon="pi pi-trash" (click)="confirmCancelCat(i)"
+                            <div class="text-lg font-semibold mb-2" translate>
+                                {{cat.category}}
+                            </div>
+                            <div> <button *ngIf="permissionService.hasPermission('Products', 'update')"
+                                    (click)="catMenu.toggle($event);selectedApplyCategory.index=i;selectedApplyCategory.cat=cat"
+                                    pButton pRipple type="button" icon="pi pi-ellipsis-v"
+                                    class="p-button-rounded mr-2 p-button-secondary p-button-lg p-button-text btn-white "></button>
+                                <p-menu #catMenu id="meetingActinos" styleClass="meetingActinos" [popup]="true"
+                                    appendTo="body" [model]="catsMenu"></p-menu>
+                            </div>
+
+                            <!-- <button pButton pRipple type="button" icon="pi pi-trash" (click)="confirmCancelCat(i)"
                         class="p-button-rounded p-button-danger p-button-text  "></button> -->
-                    </div>
+                        </div>
                     </ng-container>
-                    <p-dropdown [options]="cat.subCategory" [ngModelOptions]="{standalone: true}" *ngIf="cat.subCategory"
-                    [(ngModel)]="cat.selectedItem" 
-                    (onChange)="selectItem(i, $event.value)" [filter]="true" appendTo="body" 
-                        filterBy="name" optionLabel="name">
+                    <p-dropdown [options]="cat.subCategory" [ngModelOptions]="{standalone: true}"
+                        *ngIf="cat.subCategory" [(ngModel)]="cat.selectedItem" (onChange)="selectItem(i, $event.value)"
+                        [filter]="true" appendTo="body" filterBy="name" optionLabel="name">
                         <ng-template pTemplate="selectedItem" let-selectedOption>
-                            <div class="flex align-items-center gap-2" >
-                                <div [innerHTML]="selectedOption.name">{{  selectedOption?.name }}</div>
+                            <div class="flex align-items-center gap-2">
+                                <div [innerHTML]="selectedOption.name">{{ selectedOption?.name }}</div>
                             </div>
                         </ng-template>
                         <ng-template let-item let-s="rowIndex" pTemplate="item">
@@ -124,17 +165,19 @@
                                     <span [innerHTML]="item.name"></span>
                                 </div>
                                 <div class="col-2" *ngIf="(item.id != 0) && item.id != -1">
-                                    <button style="z-index: 10000; color: #000000;" pButton pTooltip="{{'Edit'|translate}}"
-                                        tooltipPosition="bottom" (click)="showUpdateDialog(cat, item,s)"
-                                        class="p-button-text  ml-sm-1" type="button" icon="fas fa-edit"></button>
+                                    <button style="z-index: 10000; color: #000000;" pButton
+                                        pTooltip="{{'Edit'|translate}}" tooltipPosition="bottom"
+                                        (click)="showUpdateDialog(cat, item,s)" class="p-button-text  ml-sm-1"
+                                        type="button" icon="fas fa-edit"></button>
                                     <button style="z-index: 10000" pButton pTooltip="{{'Delete'|translate}}"
                                         (click)="confirmCancelSubCat(cat, item)" tooltipPosition="bottom"
-                                        class="p-button-text p-button-danger" type="button" icon="fas fa-trash"></button>
+                                        class="p-button-text p-button-danger" type="button"
+                                        icon="fas fa-trash"></button>
                                 </div>
                             </div>
                         </ng-template>
                     </p-dropdown>
-                    
+
                 </div>
             </div>
             <div [class]="lang=='ar'?' leftLine col-6 py-4':'leftRight col-6 py-4'">
@@ -178,10 +221,11 @@
 
                         </div>
                     </div>
-                        <div class="text-2xl" *ngIf="selectedProduct?.details?.length">
-                            <strong translate>Extra Details</strong>
-                        </div>
-                    <div class="grid" *ngFor="let info of selectedProduct.details let i=index" style="justify-content: space-between">
+                    <div class="text-2xl" *ngIf="selectedProduct?.details?.length">
+                        <strong translate>Extra Details</strong>
+                    </div>
+                    <div class="grid" *ngFor="let info of selectedProduct.details let i=index"
+                        style="justify-content: space-between">
                         <div class="block text-base font-semibold pt-2">
                             <ng-container>
                                 <div class="flex">
@@ -207,7 +251,7 @@
             <div *ngIf="detailMode" body class="col-12 lg:col-6 layout-dashboard relative" style="margin-bottom: 10rem">
                 <div class="grid flex-column grid-nogutter">
                     <div class="col-12">
-                        <div >
+                        <div>
                             <div class="row flex justify-content-between">
 
                                 <div class="col-6">
@@ -237,12 +281,14 @@
                 </div>
             </div>
         </div>
-         <div [class]="lang=='en'?'fixed rightFilter':'fixed leftFilter'" *ngIf="detailMode">
-        <p-speedDial appendTo="body" buttonClassName="dashbored-btn" showIcon="pi pi-filter "
-        [model]="items"></p-speedDial>
-</div>
+        <div [class]="lang=='en'?'fixed rightFilter':'fixed leftFilter'" *ngIf="detailMode">
+            <p-speedDial appendTo="body" buttonClassName="dashbored-btn" showIcon="pi pi-filter "
+                [model]="items"></p-speedDial>
+        </div>
     </form>
-   
+    <ng-container body *ngIf="showStockAdjustment">
+        <app-stock-adjustment [selectedProduct]="selectedProduct" (save)="createStockAdjusment($event)"></app-stock-adjustment>
+    </ng-container>
 </app-sidebar>
 
 <p-dialog modal="true" [resizable]="false" [draggable]="false" [(visible)]="showInfoDialog"
@@ -424,29 +470,31 @@
 
 <app-modal [(display)]="showUpdateCatDialog" title="{{'Sub Category'|translate}}" class="modal-sm">
     <div body>
-        <app-input [(ngModel)]="selectedCategory.name" [title]="'Sub Category'|translate" name="selectedCategory" type="text"></app-input>
+        <app-input [(ngModel)]="selectedCategory.name" [title]="'Sub Category'|translate" name="selectedCategory"
+            type="text"></app-input>
     </div>
     <div footer>
         <button (click)="showUpdateCatDialog=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"
             icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
-        <button pButton pRipple type="button" label=" {{'Update' |translate}}"
-            (click)="updateCategory()" class="p-button-primary"></button>
+        <button pButton pRipple type="button" label=" {{'Update' |translate}}" (click)="updateCategory()"
+            class="p-button-primary"></button>
     </div>
 </app-modal>
 
 <app-modal [(display)]="showCategoryDialog" title="{{'New Category'|translate}}" class="modal-sm">
     <div body>
-        <app-input *ngIf="!subCatMode" [(ngModel)]="catName"  class="mb-2" name="catName" [title]="'Category'|translate" type="text"></app-input>
+        <app-input *ngIf="!subCatMode" [(ngModel)]="catName" class="mb-2" name="catName" [title]="'Category'|translate"
+            type="text"></app-input>
 
-        <app-input [(ngModel)]="subCat" name="subCat" [title]="'Sub Category'|translate"  type="text"></app-input>
+        <app-input [(ngModel)]="subCat" name="subCat" [title]="'Sub Category'|translate" type="text"></app-input>
     </div>
     <div footer>
         <button (click)="showCategoryDialog=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"
             icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
-        <button *ngIf="!subCatMode" pButton pRipple type="button" label=" {{'Add' |translate}}"
-            (click)="AddCat()" class="p-button-primary"></button>
-        <button *ngIf="subCatMode" pButton pRipple type="button" label=" {{'Add' |translate}}"
-            (click)="subAddCat()" class="p-button-primary"></button>
+        <button *ngIf="!subCatMode" pButton pRipple type="button" label=" {{'Add' |translate}}" (click)="AddCat()"
+            class="p-button-primary"></button>
+        <button *ngIf="subCatMode" pButton pRipple type="button" label=" {{'Add' |translate}}" (click)="subAddCat()"
+            class="p-button-primary"></button>
     </div>
 </app-modal>
 

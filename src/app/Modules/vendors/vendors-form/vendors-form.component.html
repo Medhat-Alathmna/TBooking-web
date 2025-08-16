@@ -8,49 +8,51 @@
                 </div>
                 <div class="flex align-items-center justify-content-center border-break"></div>
 
-                <div *ngIf="formTypes=='statics'" class="flex-initial flex align-items-center justify-content-center px-3">
+                <div *ngIf="formTypes=='statics'"
+                    class="flex-initial flex align-items-center justify-content-center px-3">
                     <span [class]="'css.mr-2'|translate">
                         <i class="pi pi-user text-100 text-3xl "></i>
                     </span>
-                    <entity-viewer
-                        [entity]="{type:'text',title:'Vendor'| translate,value:vendor.company| translate}"
+                    <entity-viewer [entity]="{type:'text',title:'Supplier'| translate,value:vendor.company| translate}"
                         [darkMode]="true"></entity-viewer>
                 </div>
 
-              
-               
-            </div>
-            <div *ngIf="!detailMode" class="flex align-items-center justify-content-center   ">
-                <div class="flex-initial flex align-items-center justify-content-center mx-2">
-                    <button pButton (click)="onHide()" pRipple type="button" icon="pi pi-times"
-                        class="p-button-rounded p-button-secondary p-button-lg p-button-text btn-white "></button>
-                </div>
-                <div class="flex align-items-center justify-content-center border-break"></div>
-                <div class="flex-initial flex align-items-center justify-content-center px-3">
-                    <span class="text-3xl text-white " translate> Add New Vendor </span>
-                </div>
-            </div>
-            <div class="flex align-items-center justify-content-center mx-2 ">
-                 <button *ngIf="detailMode"  (click)="onActionClick($event);menu.toggle($event)"
-                    pButton pRipple type="button" icon="pi pi-ellipsis-v"
-                    class="p-button-rounded mr-2 p-button-secondary p-button-lg p-button-text btn-white "></button>
-                <p-menu #menu id="meetingActinos" styleClass="meetingActinos" [popup]="true" appendTo="body"
-                    [model]="acions"></p-menu>
-                <button pButton [disabled]="form?.invalid " pRipple type="button" [label]="'Save'|translate"
-                icon="pi pi-check " *ngIf="detailMode"
-                (click)="updateVendor()"
-                class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
 
-                <button *ngIf="!detailMode" [disabled]="form?.invalid " pButton pRipple type="button" [label]="'Save'|translate" icon="pi pi-check " (click)="createVendor()"
-                    class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
+
             </div>
+
+                <div *ngIf="!detailMode" class="flex align-items-center justify-content-center   ">
+                    <div class="flex-initial flex align-items-center justify-content-center mx-2">
+                        <button pButton (click)="onHide()" pRipple type="button" icon="pi pi-times"
+                            class="p-button-rounded p-button-secondary p-button-lg p-button-text btn-white "></button>
+                    </div>
+                    <div class="flex align-items-center justify-content-center border-break"></div>
+                    <div class="flex-initial flex align-items-center justify-content-center px-3">
+                        <span class="text-3xl text-white " translate> Add New Supplier </span>
+                    </div>
+                </div>
+                <div class="flex align-items-center justify-content-center mx-2 ">
+                    <button *ngIf="detailMode" (click)="onActionClick($event);menu.toggle($event)" pButton pRipple
+                        type="button" icon="pi pi-ellipsis-v"
+                        class="p-button-rounded mr-2 p-button-secondary p-button-lg p-button-text btn-white "></button>
+                    <p-menu #menu id="meetingActinos" styleClass="meetingActinos" [popup]="true" appendTo="body"
+                        [model]="acions"></p-menu>
+                    <button pButton [disabled]="form?.invalid " pRipple type="button" [label]="'Save'|translate"
+                        icon="pi pi-check " *ngIf="detailMode" (click)="updateVendor()"
+                        class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
+
+                    <button *ngIf="!detailMode" [disabled]="form?.invalid " pButton pRipple type="button"
+                        [label]="'Save'|translate" icon="pi pi-check " (click)="createVendor()"
+                        class="p-button-rounded p-button-outlined p-button-secondary2  p-button-lg text-btn "></button>
+                </div>
         </div>
     </div>
     <form *ngIf="formTypes=='vendor'" #form="ngForm" body class="px-5 " style="margin-bottom: 6rem;">
         <div class="grid">
             <div class="col-12">
                 <div class="row pb-4">
-                    <span class="text-3xl ont-semibold font-bold" translate> {{'Details'|translate}} {{'Vendor'|translate}}  </span>
+                    <span class="text-3xl ont-semibold font-bold" translate> {{'Details'|translate}}
+                        {{'Supplier'|translate}} </span>
                 </div>
                 <div class=" flex">
                     <div class="lg:col-4 sm:col-6" style="flex-direction: column;align-items: flex-start;">
@@ -72,21 +74,22 @@
                                 [title]="'Address'|translate"></app-input>
                         </div>
                     </div>
-                    <div class="lg:col-4 sm:col-6"  style="flex-direction: column;align-items: flex-start;">
+                    <div class="lg:col-4 sm:col-6" style="flex-direction: column;align-items: flex-start;">
 
                         <div class="lg:col-12 sm:col-12">
-                            <app-input [(ngModel)]="vendor.name" name="name" [title]="'Vendor Name'|translate"
+                            <app-input [(ngModel)]="vendor.name" name="name" [title]="'Supplier Name'|translate"
                                 [required]="false"></app-input>
                         </div>
                         <div class="lg:col-12 sm:col-12 ">
                             <ng-container>
                                 <div class="text-lg font-semibold mb-2" translate>
-                                    Vendor Type
+                                    Supplier Type
                                 </div>
                             </ng-container>
                             <p-dropdown [options]="vendorTypes" [ngModelOptions]="{standalone: true}"
-                                (onChange)="selectVendorType($event)" [(ngModel)]="vendor.vendorType" [filter]="true" appendTo="body"
-                                filterBy="name" optionLabel="name" placeholder="{{'Select a'|translate}} {{'Vendor Type'|translate}}">
+                                (onChange)="selectVendorType($event)" [(ngModel)]="vendor.vendorType" [filter]="true"
+                                appendTo="body" filterBy="name" optionLabel="name"
+                                placeholder="{{'Select a'|translate}} {{'Supplier Type'|translate}}">
                                 <ng-template pTemplate="selectedItem">
                                     <div class="flex align-items-center gap-2" *ngIf="vendor.vendorType">
                                         <div>{{ vendor?.vendorType?.name }}</div>
@@ -99,11 +102,14 @@
                                         </div>
                                         <div class="col-2" *ngIf="(item.id != 0) && item.id != -1">
                                             <button style="z-index: 10000; color: #000000;" pButton pTooltip="Edit"
-                                                tooltipPosition="bottom" (click)="selectUpdatVendorType(item);vendorTypeDialog=true"
-                                                class="p-button-text  ml-sm-1" type="button" icon="fas fa-edit"></button>
+                                                tooltipPosition="bottom"
+                                                (click)="selectUpdatVendorType(item);vendorTypeDialog=true"
+                                                class="p-button-text  ml-sm-1" type="button"
+                                                icon="fas fa-edit"></button>
                                             <button style="z-index: 10000" pButton pTooltip="Delete"
                                                 (click)="confirmCancel(item.id)" tooltipPosition="bottom"
-                                                class="p-button-text p-button-danger" type="button" icon="fas fa-trash"></button>
+                                                class="p-button-text p-button-danger" type="button"
+                                                icon="fas fa-trash"></button>
                                         </div>
                                     </div>
                                 </ng-template>
@@ -123,17 +129,18 @@
         </div>
 
     </form>
-<app-statics [name]="vendor.company"  [id]="id" body *ngIf="formTypes=='statics'"></app-statics>
+    <app-statics [name]="vendor.company" [id]="id" body *ngIf="formTypes=='statics'"></app-statics>
 </app-sidebar>
 
 <app-modal [(display)]="vendorTypeDialog" [title]="headerDialog" class="modal-sm">
     <div body>
-        <app-input [(ngModel)]="vendorName" name="vendorName" title="{{'Vendor Type'|translate}}" type="text"></app-input>
+        <app-input [(ngModel)]="vendorName" name="vendorName" title="{{'Supplier Type'|translate}}"
+            type="text"></app-input>
     </div>
     <div footer>
         <button (click)="vendorTypeDialog=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"
             icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
-        <button pButton pRipple type="button" label=" {{'Save' |translate}}" (click)="vendorEdit?updateVendorType('update'):createvendorType()"
-             class="p-button-primary"></button>
+        <button pButton pRipple type="button" label=" {{'Save' |translate}}"
+            (click)="vendorEdit?updateVendorType('update'):createvendorType()" class="p-button-primary"></button>
     </div>
 </app-modal>
