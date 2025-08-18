@@ -38,14 +38,14 @@ export class Products {
     }
 
 }
-export interface StockAdjustmentPayload {
+export class StockAdjustmentPayload {
 product: number | string;
-direction: 1 | -1; // 1 increase, -1 decrease
-quantity: number;
-reason: 'opening_balance' | 'count_adjustment' | 'vendor_gift' | 'inhouse_production' | 'other' | string;
+quantity: number=0
+reason: 'Opening Balance' | 'Count Adjustment' | 'Vendor Gift' | 'Inhouse Production' | 'Other' | string='Opening Balance'
 note?: string;
-cost?: number;
-action
+cost?: number=0
+stocks?: number=0
+action:'increase' | 'decrease'='increase'
 }
 
 export interface StockMovement {

@@ -10,6 +10,7 @@ import { ProductsComponent } from './products/products/products.component';
 import { AddEditProductsComponent } from './products/add-edit-products/add-edit-products.component';
 import { ExcelExportComponent } from 'src/app/Shared/excel-export/excel-export.component';
 import { StockAdjustmentComponent } from './products/stock-adjustment/stock-adjustment.component';
+import { MovementsComponent } from './products/movements/movements.component';
 
 
 export const routes: Routes = [
@@ -23,6 +24,7 @@ export const routes: Routes = [
     ProductsComponent,
     
     
+    
   ],
   imports: [
     CommonModule,
@@ -33,6 +35,7 @@ export const routes: Routes = [
     ExcelExportComponent,
     AddEditProductsComponent,
     StockAdjustmentComponent,
+    MovementsComponent,
     LoadingComponent
   ]
 })

@@ -62,6 +62,7 @@ export class CalenderService {
         employee: appointment?.employee,
         approved: true,
         hide: false,
+        platform:'web',
         confirmBy: this.userAuth,
         bookBy: this.userAuth,
       }

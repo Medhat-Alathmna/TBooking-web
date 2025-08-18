@@ -1,0 +1,35 @@
+<p-table [value]="movements" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'">
+  <ng-template pTemplate="header">
+    <tr>
+       <th>{{ 'Type of Movement' | translate }}</th>
+      <th>{{ 'Product' | translate }}</th>
+      <th>{{ 'Quantity' | translate }}</th>
+      <th>{{ 'Price' | translate }}</th>
+      <th>{{ 'Cost' | translate }}</th>
+      <th>{{ 'Customer / Vendor' | translate }}</th>
+      <th>{{ 'Responsible' | translate }}</th>
+      <th>{{ 'Reason / Note' | translate }}</th>
+      <th>{{ 'Date' | translate }}</th>
+      <th>{{ 'Balance' | translate }}</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-move>
+    <tr [ngClass]="{
+          'sale-row': move.type === 'sales',
+          'purchase-row': move.type === 'purchases',
+          'adjustment-row': move.type === 'adjustment'
+        }">
+      <td>{{ move.type | titlecase |translate }}</td>
+      <td>{{ move.productName }}</td>
+      <td>{{ move.quantity }}</td>
+      <td>{{ move.price || '-' }}</td>
+      <td>{{ move.cost?? '-' }}</td>
+      <td>{{ move.customer || move.vendor || '-' }}</td>
+      <td>{{ move.user || '-' }}</td>
+      <td>{{ move.reason || move.note || '-' |translate }}</td>
+      <td>{{ move.date | date:'short' }}</td>
+      <td>{{ move.balance }}</td>
+    </tr>
+  </ng-template>
+</p-table>

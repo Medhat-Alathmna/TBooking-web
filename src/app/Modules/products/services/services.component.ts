@@ -78,7 +78,7 @@ keys = [
           disabled:!this.permissionService.hasPermission('Products','Services'),
           command: event => {
             this.tabSelected = 'service'
-            this.listServices()
+            this.listServices(1)
           }
         },
         
@@ -91,51 +91,23 @@ keys = [
 
 
 
-  listServices(pageNum?: number, query?: any) {
-    this.loading = true
-    const subscription = this.calenderService.getlist('services', pageNum, 10, query).subscribe((results: any) => {
-      this.loading = false
-      if (!isSet(results)) {
-        return
+  listServices(event, query?) {
+
+     const first = event?.first ?? 0;
+    const pageNum = first / this.rowNum + 1;
+    this.loading = true;
+
+
+    const sub = this.calenderService.getlist('services', pageNum, this.rowNum, query).subscribe({
+      next: (results: any) => {
+        this.services = results.data || [];
+        this.total = results.meta?.pagination?.total || 0;
+      },
+      complete: () => {
+        this.loading = false;
+        sub.unsubscribe()
       }
-      this.services=[]
-      const clone = results.data
-      this.total = results.meta.pagination.total
-      if (!isSet(this.services)) {
-        this.services = Array(this.total).fill(0)
-      }
-      if (clone.length < this.rowNum) {
-        for (let index = clone.length; index < this.rowNum; index++) {
-          clone[index] = null
-        }
-      }
-      //
-      if (!isSet(pageNum)) {
-        clone.map((item, index) => {
-          this.services[index] = item
-        })
-      } else {
-        const currentPage = pageNum * this.rowNum
-        let cloneObjIndex = 0
-        for (let index = currentPage - this.rowNum; index < currentPage; index++) {
-          this.services[index] = clone[cloneObjIndex++]
-        }
-      }
-      
-      //
-      if (!isSet(this.services?.next)) {
-        this.services = this.services.filter(item => {
-          return isSet(item)
-        })
-      }
-      setTimeout(() => {
-        this.table.first = pageNum > 1 ? (pageNum - 1) * this.rowNum : 0
-      });
-      subscription.unsubscribe()
-    }, error => {
-      this.loading = false
-      subscription.unsubscribe()
-    })
+    });
   }
 
   showServices(value) {    
@@ -156,7 +128,7 @@ keys = [
       if (!isSet(data)) {
         return
       }
-      this.listServices()
+      this.listServices(1)
       this.showServ = false
       subscription.unsubscribe()
     }, error => {
@@ -170,7 +142,7 @@ keys = [
         return
       }
       this.showServ = false
-      this.listServices()
+      this.listServices(1)
       subscription.unsubscribe()
     }, error => {
       subscription.unsubscribe()
@@ -187,7 +159,7 @@ keys = [
       if (!isSet(data)) {
         return
       }
-      this.listServices()
+      this.listServices(1)
       subscription.unsubscribe()
     }, error => {
       subscription.unsubscribe()

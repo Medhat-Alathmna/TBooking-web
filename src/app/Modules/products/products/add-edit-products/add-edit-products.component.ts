@@ -20,6 +20,7 @@ import { AddEditOrderComponent } from 'src/app/Modules/orders/add-edit-order/add
 import { SupplierContact } from 'src/app/modals/supplierContact';
 import { StockAdjustmentComponent } from '../stock-adjustment/stock-adjustment.component';
 import { Menu } from 'primeng/menu';
+import { MovementsComponent } from '../movements/movements.component';
 
 @Component({
   selector: 'app-add-edit-products',
@@ -37,6 +38,7 @@ import { Menu } from 'primeng/menu';
     LoadingComponent,
     EntityViewerComponent,
     StockAdjustmentComponent,
+    MovementsComponent,
     FromToDateComponent,
   ],
 })
@@ -54,6 +56,7 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
   brandMode: boolean = false
   brandEdit: boolean = false
   showStockAdjustment: boolean = false
+  showMovements: boolean = false
   showOrderSidebar: boolean = false
   showSuppliersDialog: boolean = false
   showInfoDialog: boolean = false
@@ -120,6 +123,7 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
           this.displayDate = true
         }
       },
+      
       {
         icon: 'pi pi-file text-primary',
         command: () => {
@@ -147,7 +151,16 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
         icon: this.showStockAdjustment ? 'pi pi-file' : 'pi pi-shopping-cart',
 
         command: () => {
-          this.showStockAdjustment =  !this.showStockAdjustment
+          this.showStockAdjustment = !this.showStockAdjustment
+          this.showMovements=false
+        }
+      },
+      {
+        label: this.trans('Movements'),
+        icon: 'pi pi-chart-bar',
+        command: () => {
+          this.showMovements = true
+          this.showStockAdjustment=false
         }
       },
       {
@@ -179,6 +192,9 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
     setTimeout(() => {
       this.displayChange.emit(false)
     }, 300);
+  }
+  refreshList(){
+    this.refreshLish.emit(true)
   }
   createProduct() {
     this.loading = true
@@ -553,9 +569,7 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
   deleteCat(index) {
     this.selectedProduct.category.splice(index, 1)
   }
-  stockAdjustment(data){
-    console.log(data);
-    
-
+  createStockAdjustment() {
+    this.productsService.saveStockAdjustment.next(true)
   }
 }
