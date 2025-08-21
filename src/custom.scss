@@ -593,7 +593,6 @@ p-inputnumber,
   background-color: #f5f5f5;
   padding: 20px;
   border-radius: 10px;
- width: 50%;
   
   h2 {
     text-align: center;
@@ -627,6 +626,7 @@ p-inputnumber,
         
         p-checkbox {
           margin-right: 15px;
+          gap: 5px;
         }
       }
     }

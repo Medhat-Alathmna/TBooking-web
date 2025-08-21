@@ -123,7 +123,7 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
           this.displayDate = true
         }
       },
-      
+
       {
         icon: 'pi pi-file text-primary',
         command: () => {
@@ -149,18 +149,19 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
       {
         label: this.showStockAdjustment ? this.trans('Details') : this.trans('Stock adjustment'),
         icon: this.showStockAdjustment ? 'pi pi-file' : 'pi pi-shopping-cart',
-
+        disabled: !this.permissionService.hasPermission('Products', 'adjustmentStock'),
         command: () => {
           this.showStockAdjustment = !this.showStockAdjustment
-          this.showMovements=false
+          this.showMovements = false
         }
       },
       {
         label: this.trans('Movements'),
         icon: 'pi pi-chart-bar',
+        disabled: !this.permissionService.hasPermission('Products', 'movements'),
         command: () => {
           this.showMovements = true
-          this.showStockAdjustment=false
+          this.showStockAdjustment = false
         }
       },
       {
@@ -193,7 +194,7 @@ export class AddEditProductsComponent extends BaseComponent implements OnInit {
       this.displayChange.emit(false)
     }, 300);
   }
-  refreshList(){
+  refreshList() {
     this.refreshLish.emit(true)
   }
   createProduct() {
