@@ -449,7 +449,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   }
   addOrder() {
     if (this.appointment.deposit > this.getTotalPrice().products) {
-      this.errorMessage(null, "It's not allowe to be a deposit more then services Total")
+      this.errorMessage(null, "It's not allowed to be a deposit more then services Total")
       return
     }
     this.appointment.fromDate = new Date(this.appointment.fromDate).toISOString()

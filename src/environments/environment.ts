@@ -2,7 +2,7 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export var clientName='local'
+export var clientName='Demo'
 export interface ClientConfig {
   apiUrl: string;
   logoUrl: string;

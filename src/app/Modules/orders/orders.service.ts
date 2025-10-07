@@ -21,7 +21,7 @@ export class OrdersService {
         products: order.products,
         status: order.status,
         discountType: order.discountType,
-        orderBy: this.userAuth.username,
+        orderBy: this.userAuth,
         discount: order.discount,
         employee: order.employee,
         cash: order.cash,

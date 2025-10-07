@@ -25,8 +25,7 @@
                 </div>
                 <div class="flex align-items-center justify-content-center border-break"></div>
                 <div class="flex-initial flex align-items-center justify-content-center px-3">
-                    <entity-viewer
-                        [entity]="{type:'user',title:'Ordered BY'|translate,value:selectedOrder?.attributes?.appointment?.data?.attributes?.appoBy}"
+                         <entity-viewer [entity]="{type:'user',title:'Ordered BY'|translate,value:selectedOrder?.attributes?.orderBy?.username| translate,gender:selectedOrder?.attributes?.orderBy?.gender??'Male'}"
                         [darkMode]="true"></entity-viewer>
                 </div>
             </div>
