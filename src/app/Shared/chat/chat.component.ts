@@ -35,44 +35,58 @@ export class ChatComponent {
   }
 
   sendMessage() {
-    const sub = this.assistant.ask(this.message, this.type).subscribe({
+  const sub = this.assistant.ask(this.message, this.type).subscribe({
   next: (res) => {
     this.loading = false;
 
-    try {
-      // 🧩 تحقق إذا كان الرد من نوع Dashboard JSON
-      if (res && (res.type === 'dashboard' || res.dashboardType || res.widgets)) {
-        // 🧠 حفظ البيانات لعرضها في Dialog خاص
-        this.dashboardData = res;
-        this.showDashboard = true;
+    // 🧠 منطق موحّد لمعالجة الأنواع الجديدة
+    switch (res.type) {
+      case 'summary':
+        this.messages.push({
+          role: 'assistant',
+          text: res.summary?.text || '🤖 لا يوجد ملخص متاح.'
+        });
+        break;
 
-        // إضافة رد نصي في الشات للتأكيد فقط
+      case 'dashboard':
         this.messages.push({
           role: 'assistant',
-          text: `📊 تم إنشاء لوحة القيادة (${res.title || 'Dashboard'})`
+          text: `📊 تم إنشاء لوحة "${res.title}" بنجاح!`
         });
-      } else {
-        // 🔹 الرد النصي العادي
+        this.dashboardData = res; // <-- لتخزين JSON
+          this.dashboardService.createDashboard(res);
+
+        this.showDashboard = true; // <-- لفتح نافذة الداشبورد
+        break;
+
+      case 'clarify':
         this.messages.push({
           role: 'assistant',
-          text: res.reply || '🤖 لم يتم العثور على نتيجة.'
+          text:
+            res.summary?.text ||
+            '❓ لم أفهم سؤالك بدقة. هل يمكنك التوضيح أكثر؟'
         });
-      }
-    } catch (err) {
-      console.error('Error parsing assistant response:', err);
-      this.messages.push({
-        role: 'assistant',
-        text: '⚠️ حدث خطأ أثناء تحليل الرد من المساعد.'
-      });
+        if (res.suggestions?.length) {
+          res.suggestions.forEach((s: string) =>
+            this.messages.push({ role: 'assistant', text: `💡 ${s}` })
+          );
+        }
+        break;
+
+      default:
+        this.messages.push({
+          role: 'assistant',
+          text: res.reply || '🤖 لا يوجد رد.'
+        });
     }
   },
   error: (err) => {
     console.error('Error:', err);
+    this.loading = false;
     this.messages.push({
       role: 'assistant',
       text: 'حدث خطأ أثناء الاتصال بالمساعد 😔'
     });
-    this.loading = false;
   }
 });
   }

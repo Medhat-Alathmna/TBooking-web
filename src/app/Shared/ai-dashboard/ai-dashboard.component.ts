@@ -19,6 +19,8 @@ dashboardData:any
 
   ngOnInit(): void {
      this.dashboardService.dashboard$.subscribe((data) => {
+      console.log(data);
+      
       if (data) {
         this.dashboardData = data;
         this.generateDashboardFromJson(data);
