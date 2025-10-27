@@ -19,17 +19,18 @@ export class BaseComponent implements OnInit, OnDestroy {
   public loading = false;
   imgUrl = environment.imgUrl
   lang = localStorage.getItem('currentLang')
-  cur:any =JSON.parse(localStorage.getItem('currency')) 
-  userAuth =JSON.parse(localStorage.getItem('userAuth'))?.user
-  role =JSON.parse(localStorage.getItem('role'))
+  cur: any = JSON.parse(localStorage.getItem('currency'))
+  userAuth = JSON.parse(localStorage.getItem('userAuth'))?.user
+  role = JSON.parse(localStorage.getItem('role'))
 
   fileTypes = ['image/png', 'application/pdf', 'application/vnd.ms-excel', "image/jpeg", ".doc", '.docx', '.ppt', '.pptx', '.xls', '.xlsx', '.csv', '.mp4', '.mov', '.wmv', '.avi', '.mkv']
 
-  constructor(public messageService?: MessageService, public translates?: TranslateService,protected  confirmationService?:ConfirmationService) {
+  constructor(public messageService?: MessageService, public translates?: TranslateService, protected confirmationService?: ConfirmationService) {
 
   }
 
   ngOnInit(): void {
+  
   }
 
   ngOnDestroy(): void {
@@ -47,7 +48,7 @@ export class BaseComponent implements OnInit, OnDestroy {
     }
   }
   public getCurrencySymbol(code?: any, format?: 'wide' | 'narrow', locale?: string): string {
-    if(!isSet(format)) {
+    if (!isSet(format)) {
       format = 'narrow';
     }
     return getCurrencySymbol(code, format, locale);
@@ -82,14 +83,14 @@ export class BaseComponent implements OnInit, OnDestroy {
 
   }
   protected confirmMessage(msg: string, onAccept?: () => void) {
-     this.confirmationService.confirm({
-      message: this.trans(msg||'Are you sure that you want to Delete this Entry ?'),
+    this.confirmationService.confirm({
+      message: this.trans(msg || 'Are you sure that you want to Delete this Entry ?'),
       acceptLabel: this.trans('Yes'),
       rejectLabel: this.trans('No'),
       icon: 'pi pi-exclamation-triangle',
-        accept: () => {
+      accept: () => {
         if (onAccept) {
-          onAccept(); 
+          onAccept();
         }
       },
     });
@@ -102,14 +103,14 @@ export class BaseComponent implements OnInit, OnDestroy {
       return word;
     }
   }
-  arrayInsert(array,index, ...items){
-     return array.splice( index, 0, ...items )    
-  
+  arrayInsert(array, index, ...items) {
+    return array.splice(index, 0, ...items)
+
   }
   trans(key: any): any {
     return this.translates?.instant(key)
   }
-  
+
   multiReplace(text, replacements) {
     for (const oldStr in replacements) {
       if (replacements.hasOwnProperty(oldStr)) {
@@ -120,23 +121,23 @@ export class BaseComponent implements OnInit, OnDestroy {
     }
     return text;
   }
-  base64ToBlob(base64, doctype):any {
+  base64ToBlob(base64, doctype): any {
     const binaryString = window?.atob(base64);
     const len = binaryString?.length;
     const bytes = new Uint8Array(len);
     for (let i = 0; i < len; ++i) {
       bytes[i] = binaryString.charCodeAt(i);
-    }    
+    }
     return new Blob([bytes], { type: `${doctype}` });
   }
-   onKeyEnter(event,temp) {//test
+  onKeyEnter(event, temp) {//test
     if (event.keyCode === 13) {
-     temp=false
+      temp = false
 
     }
   }
 }
 export const isSet = (value: any): boolean => {
-  return value !== null && value !== undefined && value !== '' && value?.length !== 0 ;;
+  return value !== null && value !== undefined && value !== '' && value?.length !== 0;;
 };
 

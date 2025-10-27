@@ -442,11 +442,7 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
       subscription.unsubscribe()
     })
   }
-  seq() {
-    new Promise(res => {
-      this.updateAppominet()
-    }).then(tt => { this.addOrder() }).catch(tt => this.errorMessage(null, 'Something wrong happen'))
-  }
+
   addOrder() {
     if (this.appointment.deposit > this.getTotalPrice().products) {
       this.errorMessage(null, "It's not allowed to be a deposit more then services Total")
@@ -481,7 +477,10 @@ export class AddAppoComponent extends BaseComponent implements OnInit {
   }
   getNotfi() {
     const subscription = this.settingsService.getNotifications().subscribe((results: any) => {
-      if (!isSet(results)) {
+      if (!isSet(results.data)) {
+            this.notfiItems.push({
+          label: 'There are no messages yet'
+        })
         return
       }
       var arr = results.data.filter(x => x.attributes.type == 'Appointment')

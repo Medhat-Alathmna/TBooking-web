@@ -13,7 +13,7 @@ export class SocketService {
   private socket: Socket;
 
   constructor() {
-    // this.socket = io(getClientConfig(clientName).imgUrl); 
+    this.socket = io(getClientConfig(clientName).imgUrl); 
   }
 
   listen(eventName: string): Observable<any> {

@@ -18,12 +18,7 @@ export class ProductsService {
   constructor(private api: ApiService) { }
 
   createProduct(product: Products): Observable<Products> {
-    product.category.forEach(cat => {
-      cat.subCategory = cat.subCategory.filter(item => item.id !== 0);
-      if (cat.selectedItem.id === 0) {
-        cat.selectedItem = null
-      }
-    });
+   
     let body = {
       data: {
         name: product?.name,
@@ -36,7 +31,7 @@ export class ProductsService {
         suppliers: product?.suppliers,
         details: product?.details,
         hide: false,
-        category: product?.category,
+        category: [],
 
       }
     }

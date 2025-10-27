@@ -1,0 +1,99 @@
+<!-- 🔘 زر المساعد العائم -->
+<p-button
+  icon="pi pi-comments"
+  class="p-button-rounded p-button-lg p-button-info chat-float-btn"
+  (click)="visible = true"
+  pTooltip="المساعد الذكي"
+  tooltipPosition="left"
+></p-button>
+
+<!-- 💬 نافذة الدردشة -->
+<p-dialog
+  [(visible)]="visible"
+  [modal]="false"
+  [draggable]="true"
+  [resizable]="false"
+  [style]="{ width: '400px', height: '500px' }"
+  position="bottom-right"
+  [baseZIndex]="10000"
+  [dismissableMask]="true"
+  [showHeader]="false"
+>
+  <!-- 🧠 ترويسة -->
+  <div class="assistant-header">
+    <div class="assistant-header-left">
+      <img src="assets/images/TS.png" alt="logo" class="assistant-logo" />
+      <div>
+        <h3 class="assistant-title">TBooking AI Assistant</h3>
+        <!-- <small class="assistant-sub">مدعوم بالذكاء الاصطناعي</small> -->
+      </div>
+    </div>
+    <button
+      pButton
+      icon="pi pi-times"
+      class="p-button-rounded p-button-text p-button-danger"
+      (click)="visible = false"
+    ></button>
+  </div>
+
+  <!-- 💬 منطقة الدردشة -->
+  <div class="chat-dialog">
+    <div class="chat-messages">
+      <div
+        *ngFor="let msg of messages"
+        class="chat-message"
+        [ngClass]="msg.role"
+      >
+        <div class="bubble">
+          <i
+            *ngIf="msg.role === 'assistant'"
+            class="pi pi-robot"
+            style="margin-right: 6px"
+          ></i>
+          <i
+            *ngIf="msg.role === 'user'"
+            class="pi pi-user"
+            style="margin-left: 6px"
+          ></i>
+          <span>{{ msg.text }}</span>
+        </div>
+      </div>
+
+      <div *ngIf="loading" class="loading">
+        <i class="pi pi-spin pi-spinner"></i> جاري التحليل...
+      </div>
+    </div>
+
+    <!-- 📝 حقل الإدخال -->
+    <div class="chat-input">
+      <textarea
+        pInputTextarea
+        [(ngModel)]="message"
+        rows="2"
+        placeholder="اكتب سؤالك هنا..."
+        (keydown.enter)="sendMessage()"
+      ></textarea>
+      <button
+        pButton
+        icon="pi pi-send"
+        class="p-button-rounded p-button-success"
+        (click)="sendMessage()"
+      ></button>
+    </div>
+  </div>
+</p-dialog>
+
+
+<p-dialog
+  header="{{ dashboardData?.title || 'لوحة معلومات الذكاء الاصطناعي' }}"
+  [(visible)]="showDashboard"
+  modal="true"
+  [style]="{ width: '90vw', height: '80vh' }"
+  [resizable]="false"
+  (onHide)="closeDashboard()"
+>
+  <app-ai-dashboard
+    *ngIf="showDashboard"
+    [data]="dashboardData"
+  ></app-ai-dashboard>
+</p-dialog>

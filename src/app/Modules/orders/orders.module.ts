@@ -8,6 +8,7 @@ import { LoadingComponent } from 'src/app/Shared/loading/loading.component';
 import { PrimengComponentsModule } from 'src/app/primeng-components.module';
 import { AddEditOrderComponent } from './add-edit-order/add-edit-order.component';
 import { ExcelExportComponent } from 'src/app/Shared/excel-export/excel-export.component';
+import { ChatComponent } from 'src/app/Shared/chat/chat.component';
 
 
 
@@ -23,6 +24,7 @@ export const routes: Routes = [
   ],
   imports: [
     CommonModule,
+    ChatComponent,
     RouterModule.forChild(routes),
     PrimengComponentsModule,
     TranslateModule,

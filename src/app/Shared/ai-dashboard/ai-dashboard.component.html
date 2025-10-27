@@ -1,0 +1,30 @@
+<div *ngFor="let widget of dashboardWidgets" class="mb-4">
+  <!-- الكروت الإحصائية -->
+  <div *ngIf="widget.type === 'stat'" class="p-3 border-round shadow-1 surface-card">
+    <h4>{{ widget.title }}</h4>
+    <h2>{{ widget.value }} {{ widget.unit }}</h2>
+  </div>
+
+  <!-- الرسوم البيانية -->
+  <p-chart
+    *ngIf="widget.type === 'chart'"
+    [type]="widget.chartType"
+    [data]="widget.config.data"
+    [options]="widget.config.options"
+    [style]="{ height: '400px' }"
+  ></p-chart>
+
+  <!-- الجداول -->
+  <p-table *ngIf="widget.type === 'table'" [value]="widget.rows">
+    <ng-template pTemplate="header">
+      <tr>
+        <th *ngFor="let col of widget.columns">{{ col }}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-row>
+      <tr>
+        <td *ngFor="let col of widget.columns">{{ row[col] }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { MessageService, ConfirmationService, Footer } from 'primeng/api';
 import { SettingsService } from '../settings.service';
 import { BaseComponent } from 'src/app/core/base/base.component';
 
@@ -21,7 +21,7 @@ export class OrdersSettingsComponent extends BaseComponent implements OnInit {
   updateOrderPicSettings() {
     this.loading = true
     const subscription = this.settingsService.updateOrderPicSettings(this.data).subscribe((results: any) => {
-      this.data=results.data.attributes
+      this.data=results.data.attributes??{name:'',footer:'',phone:'000-000-000-000',address:'Gaza-Rafah'}
       this.successMessage(null,'Entry Updated Successfully')
       this.loading = false
       subscription.unsubscribe()
