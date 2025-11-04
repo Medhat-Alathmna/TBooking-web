@@ -239,6 +239,13 @@
                     </div>
                 </div>
                 <div class="w-full flex justify-content-center">
+                      <!-- <button
+    pButton
+    label="Upload OCR"
+    icon="pi pi-eye"
+    (click)="onUploadOCR()"
+    class="p-button-outlined p-button-success">
+  </button> -->
                     <p-fileUpload *ngIf="!po.pic|| !po.pic.data" #fileUploader name="demo[]" [showUploadButton]="false"
                         accept="image/*" dragDropSupport="true" [chooseLabel]="'Choose' | translate" [cancelLabel]="'Cancel' | translate" rendered="true" style="width: 100%"></p-fileUpload>
                     <div *ngIf="po.pic && po.pic.data ">
@@ -304,4 +311,40 @@
         <button [disabled]="!po.cancellationNote" (click)="cancelPO()" pButton pRipple type="button"
             label=" {{'Apply' |translate}}" class="p-button-primary"></button>
     </div>
+</app-modal>
+
+<!-- ✅ Modal لإضافة مورد جديد -->
+<app-modal
+  [(display)]="showVendorModal"
+  [title]="'Add New Vendor' | translate"
+  icon="pi pi-user-plus"
+>
+  <div body>
+    <app-input
+      [(ngModel)]="newVendorName"
+      name="newVendorName"
+      [title]="'Vendor Name' | translate"
+      placeholder="Enter vendor name"
+      [focus]="true">
+    </app-input>
+  </div>
+
+  <div footer>
+    <button
+      pButton
+      label="{{ 'Cancel' | translate }}"
+      icon="pi pi-times"
+      class="p-button-secondary p-button-outlined"
+      (click)="showVendorModal = false">
+    </button>
+
+    <button
+      pButton
+      label="{{ 'Save' | translate }}"
+      icon="pi pi-check"
+      class="p-button-success"
+      [disabled]="!newVendorName"
+      (click)="confirmAddVendor()">
+    </button>
+  </div>
 </app-modal>

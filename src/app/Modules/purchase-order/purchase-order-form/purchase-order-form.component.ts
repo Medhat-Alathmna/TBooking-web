@@ -60,6 +60,9 @@ export class PurchaseOrderFormComponent
   showCancelltionNote: boolean = false;
   products = [];
   selectProducts: Products[] = [];
+  showVendorModal = false;
+  newVendorName = '';
+  pendingVendorFromOCR: string | null = null;
   acions: any[] = []
   payments: any[] = [];
   id;
@@ -84,7 +87,7 @@ export class PurchaseOrderFormComponent
     public permisionServices: PermissionService,
     private mobileService: MobileAppService,
   ) {
-    super(messageService, translates,confirmationService);
+    super(messageService, translates, confirmationService);
   }
 
   async ngOnInit(): Promise<void> {
@@ -446,10 +449,10 @@ export class PurchaseOrderFormComponent
   }
 
   uploadFiles(): Observable<any> {
-        console.log(this.fileUploader);
+    console.log(this.fileUploader);
 
     const files = this.fileUploader?.files;
-    
+
     if (isSet(files) && files.length) {
       const formData = new FormData();
       files.forEach((po) => {
@@ -458,7 +461,7 @@ export class PurchaseOrderFormComponent
 
       });
       return this.uploadMedia(formData);
-    }else{
+    } else {
       return of(null);
     }
   }
@@ -477,6 +480,121 @@ export class PurchaseOrderFormComponent
       })
     );
   }
+  async onUploadOCR() {
+    const files = this.fileUploader?.files;
+    if (!files || !files.length) {
+      this.errorMessage(null, 'Please select a file first');
+      return;
+    }
+
+    const formData = new FormData();
+    files.forEach((f) => formData.append('files', f));
+
+    this.loading = true;
+    this.purchaseOrderService.uploadOCR(formData).pipe(
+      switchMap((res) => {
+        this.loading = false;
+        if (!res?.result) {
+          this.errorMessage(null, 'Failed to extract data from image');
+          return of(null);
+        }
+
+        const data = res.result;
+        // تعبئة البيانات من الفاتورة
+        this.po.date = data.date;
+        this.po.cash = data.total;
+        this.po.products = data.items?.map((p) => ({
+          name: p.name,
+          qty: p.qty,
+          sellPrice: p.unit_price,
+          total: p.total,
+        })) || [];
+
+        // التحقق من المورد
+        const vendorName = data.vendor?.trim();
+        if (!vendorName) return of(null);
+
+        const vendor = this.vendors.find(
+          (v) => v.company?.toLowerCase() === vendorName.toLowerCase()
+        );
+
+        if (vendor) {
+          this.po.selectedVendor = vendor;
+          this.successMessage(null, `Vendor "${vendor.company}" matched successfully`);
+          return of(null);
+        } else {
+          this.pendingVendorFromOCR = vendorName;
+          this.newVendorName = vendorName;
+          this.showVendorModal = true;
+          // المورد غير موجود → تأكيد إضافته
+          return new Observable<boolean>((observer) => {
+            this.confirmationService.confirm({
+              message: `Vendor "${vendorName}" not found. Do you want to add it?`,
+              header: 'Vendor Not Found',
+              icon: 'pi pi-question-circle',
+              acceptLabel: 'Yes',
+              rejectLabel: 'No',
+              accept: () => {
+                observer.next(true);
+                observer.complete();
+              },
+              reject: () => {
+                observer.next(false);
+                observer.complete();
+              },
+            });
+          }).pipe(
+            switchMap((confirm) => {
+              if (confirm) {
+                const newVendor = { company: vendorName };
+                return this.purchaseOrderService
+                  .createVendor(newVendor)
+                  .pipe(
+                    tap((v) => {
+                      this.vendors.push(v);
+                      this.po.selectedVendor = v;
+                      this.successMessage(null, `Vendor "${vendorName}" added successfully`);
+                    })
+                  );
+              } else {
+
+                this.infoMessage(null, 'Process canceled');
+                return of(null);
+              }
+            })
+          );
+        }
+      }),
+      catchError((err) => {
+        this.loading = false;
+        this.errorMessage(null, 'OCR upload failed');
+        console.error(err);
+        return of(null);
+      })
+    ).subscribe();
+  }
+  confirmAddVendor() {
+  if (!this.newVendorName) return;
+
+  const newVendor = { company: this.newVendorName.trim() };
+  this.loading = true;
+
+  this.purchaseOrderService.createVendor(newVendor).pipe(
+    tap((v) => {
+      this.loading = false;
+      this.vendors.push(v);
+      this.po.selectedVendor = v;
+      this.showVendorModal = false;
+      this.successMessage(null, `Vendor "${v.company}" added successfully`);
+    }),
+    catchError((err) => {
+      this.loading = false;
+      this.errorMessage(null, 'Failed to add vendor');
+      console.error(err);
+      return of(null);
+    })
+  ).subscribe();
+}
   onDeleteImage() {
     this.po.pic = null
     this.purchaseOrderService.updatePO(this.po, this.id).subscribe({

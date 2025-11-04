@@ -1,4 +1,6 @@
 <!-- 🔘 زر المساعد العائم -->
+ <app-loading *ngIf="loading" display="full"></app-loading>
+
 <p-button
   icon="pi pi-comments"
   class="p-button-rounded p-button-lg p-button-info chat-float-btn"
@@ -38,36 +40,18 @@
 
   <!-- 💬 منطقة الدردشة -->
   <div class="chat-dialog">
-    <div class="chat-messages">
-      <div
-        *ngFor="let msg of messages"
-        class="chat-message"
-        [ngClass]="msg.role"
-      >
-        <div class="bubble">
-          <i
-            *ngIf="msg.role === 'assistant'"
-            class="pi pi-robot"
-            style="margin-right: 6px"
-          ></i>
-          <i
-            *ngIf="msg.role === 'user'"
-            class="pi pi-user"
-            style="margin-left: 6px"
-          ></i>
-          <span>{{ msg.text }}</span>
-        </div>
-      </div>
-
-      <div *ngIf="loading" class="loading">
-        <i class="pi pi-spin pi-spinner"></i> جاري التحليل...
+ <div class="chat-body" #chatBody>
+    <div *ngFor="let msg of messages" [ngClass]="msg.isUser ? 'user-msg' : 'bot-msg'">
+      <div class="bubble">
+        <p>{{ msg.text }}</p>
+        <small>{{ msg.time | date:'shortTime' }}</small>
       </div>
     </div>
-
+  </div>
     <!-- 📝 حقل الإدخال -->
     <div class="chat-input">
-      <textarea
-        pInputTextarea
+      <textarea pInputTextarea
+        
         [(ngModel)]="message"
         rows="2"
         placeholder="اكتب سؤالك هنا..."

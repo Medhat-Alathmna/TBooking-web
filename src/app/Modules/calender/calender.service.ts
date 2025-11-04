@@ -169,7 +169,7 @@ export class CalenderService {
     if (typeof query == 'object' || this.queryFilters?.length) {
       filter = this.handleQuery(query)
     } else filter = isSet(query) ? query : ''
-    return this.api.get<any[]>(`${moduleName}?populate=${pop}&sort[0]=createdAt:desc&pagination[pageSize]=${rows}&pagination[page]=${pageNum}&filters[hide][$eq]=false${filter}`);
+    return this.api.get<any[]>(`${moduleName}?populate=${pop}&sort[0]=createdAt:desc&pagination[pageSize]=${rows}&pagination[page]=${pageNum}&${moduleName=='orders'?'':'filters[hide][$eq]=false'}${filter}`);
 
   }
 

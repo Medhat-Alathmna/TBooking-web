@@ -48,6 +48,98 @@
   background-color: #f8f9fa;
   border-radius: 0 0 8px 8px;
 }
+.chat-window {
+  width: 350px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  background: #007ad9;
+  color: white;
+  padding: 10px 15px;
+  font-weight: bold;
+  .assistant-logo {
+    width: 30px;
+    margin-right: 8px;
+  }
+  .close-btn {
+    margin-left: auto;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+  }
+}
+
+.chat-body {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.bubble {
+  border-radius: 16px;
+  padding: 10px 14px;
+  max-width: 80%;
+  display: inline-block;
+  position: relative;
+  p {
+    margin: 0;
+  }
+  small {
+    display: block;
+    text-align: right;
+    font-size: 10px;
+    opacity: 0.6;
+  }
+}
+
+.user-msg {
+  align-self: flex-end;
+  .bubble {
+    background: #007ad9;
+    color: white;
+  }
+}
+
+.bot-msg {
+  align-self: flex-start;
+  .bubble {
+    background: #f0f0f0;
+    color: #333;
+  }
+}
+
+.chat-footer {
+  display: flex;
+  border-top: 1px solid #ddd;
+  padding: 10px;
+  input {
+    flex: 1;
+    border: none;
+    padding: 8px;
+    outline: none;
+  }
+  button {
+    background: #007ad9;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+}
 
 .chat-messages {
   flex: 1;
@@ -112,4 +204,84 @@
   color: gray;
   font-style: italic;
   padding: 10px;
+}
+.chat-body {
+  flex: 1;
+  padding: 18px 14px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  scroll-behavior: smooth;
+
+  /* خلفية ناعمة مع تدرّج */
+  background: linear-gradient(180deg, #f8fafc 0%, #eef3f8 100%);
+  background-attachment: fixed;
+  position: relative;
+
+  /* تأثير خطوط خفيفة على الخلفية */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 0);
+    background-size: 24px 24px;
+    pointer-events: none;
+  }
+
+  /* تحسين شكل شريط التمرير */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #007ad9, #00bcd4);
+    border-radius: 8px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* حركة لطيفة عند دخول الرسائل */
+  .message {
+    animation: fadeIn 0.3s ease forwards;
+    transform: translateY(5px);
+    opacity: 0;
+  }
+
+  @keyframes fadeIn {
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  /* فقاعات المحادثة */
+  .bubble {
+    padding: 10px 14px;
+    border-radius: 16px;
+    line-height: 1.4;
+    word-wrap: break-word;
+    font-size: 14px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    position: relative;
+    max-width: 80%;
+  }
+
+  .from-user {
+    align-self: flex-end;
+    .bubble {
+      background: linear-gradient(135deg, #007ad9, #00bcd4);
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+  }
+
+  .from-bot {
+    align-self: flex-start;
+    .bubble {
+      background: white;
+      color: #333;
+      border-bottom-left-radius: 4px;
+    }
+  }
 }

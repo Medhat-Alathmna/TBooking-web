@@ -1,3 +1,12 @@
+<div *ngIf="dashboardData?.summary?.text" class="dashboard-summary mb-4">
+  <h3 class="summary-title">
+    <i class="pi pi-chart-line mr-2 text-primary"></i>
+    {{ dashboardData.title || 'AI Dashboard Summary' }}
+  </h3>
+  <p class="summary-description">
+    {{ dashboardData.summary.text }}
+  </p>
+</div>
 <div *ngFor="let widget of dashboardWidgets" class="mb-4">
   <!-- الكروت الإحصائية -->
   <div *ngIf="widget.type === 'stat'" class="p-3 border-round shadow-1 surface-card">
@@ -14,16 +23,21 @@
     [style]="{ height: '400px' }"
   ></p-chart>
 
+   <div *ngIf="widget.widgetsSummary" class="widget-summary">
+  <i class="pi pi-info-circle mr-2 text-primary"></i>
+  <span style="font-size: 16px;
+    font-weight: bold;">{{ widget.widgetsSummary }}</span>
+</div>
   <!-- الجداول -->
   <p-table *ngIf="widget.type === 'table'" [value]="widget.rows">
     <ng-template pTemplate="header">
       <tr>
-        <th *ngFor="let col of widget.columns">{{ col }}</th>
+        <th *ngFor="let col of widget.columns">{{ col.label }}</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-row>
       <tr>
-        <td *ngFor="let col of widget.columns">{{ row[col] }}</td>
+        <td *ngFor="let col of widget.columns">{{ row[col].value }}</td>
       </tr>
     </ng-template>
   </p-table>
