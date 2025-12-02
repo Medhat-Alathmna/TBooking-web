@@ -1,0 +1,137 @@
+<p-sidebar
+  [(visible)]="visible"
+  position="right"
+  [style]="{ width: sidebarWidth + '%', height: '100vh' }"
+  [showCloseIcon]="false"
+  [modal]="false"
+  [baseZIndex]="9999"
+  styleClass="ai-chat-sidebar"
+>
+  <!-- Header -->
+  <div class="surface-card shadow-3 chat-header">
+    <div class="flex align-items-center justify-content-between p-3">
+      <!-- Left Side: Avatar & Info -->
+      <div class="flex align-items-center gap-3">
+        <p-avatar
+          image="assets/images/TS.png"
+          size="large"
+          shape="circle"
+          styleClass="shadow-2"
+        ></p-avatar>
+        <div>
+          <div class="text-xl font-bold text-primary mb-1">AI Assistant</div>
+          <div class="text-sm text-500">
+            <i class="pi pi-circle-fill text-green-500 text-xs mr-2"></i>
+            Online - Ready to help
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Side: Actions -->
+      <div class="flex gap-2">
+        <button
+          pButton
+          icon="pi pi-refresh"
+          class="p-button-rounded p-button-text p-button-secondary"
+          (click)="clearChat()"
+          pTooltip="New Conversation"
+          tooltipPosition="bottom"
+        ></button>
+        <button
+          pButton
+          icon="pi pi-times"
+          class="p-button-rounded p-button-text p-button-secondary"
+          (click)="closeSidebar()"
+          pTooltip="Close"
+          tooltipPosition="bottom"
+        ></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Messages Area -->
+  <div class="chat-messages p-3" #messagesContainer>
+    <div *ngIf="messages.length === 0" class="empty-state">
+      <div class="welcome-section">
+        <i class="pi pi-sparkles welcome-icon"></i>
+        <h2 class="welcome-title">AI Assistant</h2>
+        <p class="welcome-subtitle">How can I help you today?</p>
+      </div>
+
+      <div class="suggestions-container">
+        <div *ngFor="let suggestion of suggestions" class="suggestion-category">
+          <div class="category-header">
+            <i class="pi {{ suggestion.icon }} category-icon"></i>
+            <h3 class="category-title">{{ suggestion.category }}</h3>
+          </div>
+          <div class="prompts-grid">
+            <button
+              *ngFor="let prompt of suggestion.prompts"
+              pButton
+              class="prompt-button"
+              [label]="prompt"
+              (click)="selectSuggestion(prompt)"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngFor="let msg of messages" class="mb-3 ">
+      <app-message-bubble
+        [message]="msg"
+        [isUser]="msg.role === 'user'"
+      ></app-message-bubble>
+
+      <!-- Chart Viewer -->
+      <app-chart-viewer
+        *ngIf="msg.chartData"
+        [data]="msg.chartData"
+      ></app-chart-viewer>
+
+      <!-- Table Viewer -->
+      <app-table-viewer
+        *ngIf="msg.listData"
+        [data]="msg.listData"
+      ></app-table-viewer>
+
+      <!-- Record Viewer -->
+      <app-record-viewer
+        *ngIf="msg.singleData"
+        [data]="msg.singleData"
+        [aiResponseText]="msg.content"
+      ></app-record-viewer>
+    </div>
+
+    <div *ngIf="loading" class="flex align-items-center gap-2 p-3 surface-100 border-round">
+      <app-loading display="inline"></app-loading>
+      <span class="text-sm text-600 font-italic">AI is thinking...</span>
+    </div>
+  </div>
+
+  <!-- Input Area -->
+  <div class="surface-card border-top-1 surface-border p-3 chat-input-area">
+    <div class="flex gap-2 align-items-end">
+      <textarea
+        pInputTextarea
+        [(ngModel)]="message"
+        [rows]="2"
+        [autoResize]="true"
+        [maxlength]="2000"
+        placeholder="Type your question here..."
+        (keydown)="onKeyDown($event)"
+        [disabled]="loading"
+        class="flex-1"
+      ></textarea>
+      <button
+        pButton
+        icon="pi pi-send"
+        class="p-button-rounded p-button-primary"
+        (click)="sendMessage()"
+        [disabled]="!message.trim() || loading"
+        pTooltip="Send (Enter)"
+        tooltipPosition="top"
+      ></button>
+    </div>
+  </div>
+</p-sidebar>

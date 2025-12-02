@@ -8,7 +8,7 @@ export class AssistantService {
 
   constructor(private api: ApiService) {}
 
-  ask(message: string, type: string = 'sales'): Observable<any> {
-    return this.api.post('/assistant', { message, type });
+  ask(userMessage: string): Observable<any> {
+    return this.api.post('/assistant', { userMessage, conversationHistory: [userMessage] });
   }
 }

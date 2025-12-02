@@ -1,0 +1,27 @@
+<p-card *ngIf="data" class="record-card">
+  <!-- AI Response Section -->
+  <div *ngIf="aiResponseText" class="mb-3 p-3 surface-50 border-round">
+    <div class="flex align-items-center gap-2 mb-2">
+      <i class="pi pi-comment text-primary"></i>
+      <span class="font-semibold text-700">AI Response</span>
+    </div>
+    <p class="text-600 line-height-3 m-0">{{ aiResponseText }}</p>
+  </div>
+
+  <div class="record-header">
+    <h4>{{ data.displayName || 'Record Details' }}</h4>
+    <button
+      pButton
+      label="Open Record"
+      icon="pi pi-external-link"
+      class="p-button-sm p-button-outlined"
+      (click)="openRecord()"
+    ></button>
+  </div>
+  <div class="record-content">
+    <div *ngFor="let field of getFields()" class="field-row">
+      <span class="field-label">{{ field.key }}:</span>
+      <span class="field-value">{{ field.value }}</span>
+    </div>
+  </div>
+</p-card>

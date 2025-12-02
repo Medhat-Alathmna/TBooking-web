@@ -30,8 +30,9 @@ import { AppComponent } from './app.component';
 import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 import { ErrorBlobInterceptor } from './core/https/HttpsInterceptor';
 
-
-
+// AI Chat Components
+import { FloatingChatButtonComponent } from './Shared/ai-chat/components/floating-button/floating-button.component';
+import { ChatSidebarComponent } from './Shared/ai-chat/components/chat-sidebar/chat-sidebar.component';
 
 @NgModule({
     imports: [
@@ -51,6 +52,9 @@ import { ErrorBlobInterceptor } from './core/https/HttpsInterceptor';
                 deps: [HttpClient]
             }
         }),
+        // AI Chat standalone components
+        FloatingChatButtonComponent,
+        ChatSidebarComponent
     ],
     declarations: [
         AppComponent,

@@ -1,0 +1,56 @@
+.floating-chat-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 10000;
+  width: 60px;
+  height: 60px;
+  box-shadow: 0 4px 20px rgba(0, 122, 217, 0.4);
+  background: linear-gradient(135deg, #007ad9, #00bcd4) !important;
+  border: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 6px 28px rgba(0, 122, 217, 0.6);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  ::ng-deep .pi {
+    font-size: 24px;
+    color: white;
+  }
+
+  ::ng-deep .p-badge {
+    min-width: 20px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+}
+
+@media (max-width: 768px) {
+  .floating-chat-btn {
+    width: 50px;
+    height: 50px;
+    bottom: 16px;
+    right: 16px;
+
+    ::ng-deep .pi {
+      font-size: 20px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .floating-chat-btn {
+    width: 48px;
+    height: 48px;
+    bottom: 12px;
+    right: 12px;
+  }
+}

@@ -1,0 +1,14 @@
+<div class="message-bubble flex" [class.user]="isUser" [class.assistant]="!isUser" [class.error]="message.isError">
+  <div class="bubble-content">
+    <p class="message-text">{{ message.content }}</p>
+    <small class="message-time">{{ message.timestamp | date: 'shortTime' }}</small>
+  </div>
+  <div *ngIf="message.toolsUsed?.length" class="tools-used">
+    <p-chip
+      *ngFor="let tool of message.toolsUsed"
+      [label]="getToolLabel(tool)"
+      icon="pi pi-cog"
+      styleClass="tool-chip"
+    ></p-chip>
+  </div>
+</div>

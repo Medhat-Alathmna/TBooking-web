@@ -38,7 +38,6 @@ export class AppComponent implements OnInit {
     private socketService: SocketService, private zone: NgZone
     ,
     private translate: TranslateService, private router: Router, private settingsServices: SettingsService,
-    private calenderService: CalenderService, private orderService: OrdersService,
     @Inject(DOCUMENT) private document: Document) {
   }
   originalTitle = this.document.title;

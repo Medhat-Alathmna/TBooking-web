@@ -1,0 +1,92 @@
+.record-card {
+  margin-top: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  animation: fadeIn 0.4s ease-out;
+
+  ::ng-deep .p-card-body {
+    padding: 16px;
+  }
+
+  ::ng-deep .p-card-content {
+    padding: 0;
+  }
+
+  .record-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e0e7ed;
+
+    h4 {
+      margin: 0;
+      color: #007ad9;
+      font-size: 16px;
+      font-weight: 600;
+    }
+  }
+
+  .record-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .field-row {
+      display: flex;
+      padding: 10px 12px;
+      background: #f8fafc;
+      border-radius: 8px;
+      transition: background 0.2s;
+
+      &:hover {
+        background: #eef3f8;
+      }
+
+      .field-label {
+        font-weight: 600;
+        color: #666;
+        min-width: 140px;
+        flex-shrink: 0;
+      }
+
+      .field-value {
+        color: #333;
+        flex: 1;
+        word-break: break-word;
+        white-space: pre-wrap;
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .record-card {
+    .record-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .record-content .field-row {
+      flex-direction: column;
+      gap: 4px;
+
+      .field-label {
+        min-width: auto;
+      }
+    }
+  }
+}
