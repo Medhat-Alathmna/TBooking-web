@@ -1,5 +1,8 @@
 <router-outlet></router-outlet>
 
 <!-- AI Chat Components -->
-<app-floating-chat-button></app-floating-chat-button>
+ <ng-container *ngIf="PermissionService.hasPermission('AIAssistant', 'view')">
+    <app-floating-chat-button></app-floating-chat-button>
 <app-chat-sidebar></app-chat-sidebar>
+ </ng-container>
+

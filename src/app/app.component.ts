@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
   isTabActive = true;
   blinkInterval
 
-  constructor(private primengConfig: PrimeNGConfig, private PermissionService: PermissionService,
+  constructor(private primengConfig: PrimeNGConfig, public PermissionService: PermissionService,
     private socketService: SocketService, private zone: NgZone
     ,
     private translate: TranslateService, private router: Router, private settingsServices: SettingsService,

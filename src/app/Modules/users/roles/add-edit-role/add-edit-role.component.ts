@@ -10,6 +10,7 @@ import { BaseComponent, isSet } from 'src/app/core/base/base.component';
 import { RoleInfo } from 'src/app/modals/role';
 import { PrimengComponentsModule } from 'src/app/primeng-components.module';
 import { RolesService } from '../roles.service';
+import { PermissionService } from 'src/app/core/permission.service';
 
 @Component({
   selector: 'app-add-edit-role',
@@ -34,7 +35,7 @@ export class AddEditRoleComponent extends BaseComponent implements OnInit {
   @Output() displayChange: EventEmitter<boolean> = new EventEmitter();
   @Output() refreshLish: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(public translates: TranslateService,
+  constructor(public translates: TranslateService,public permissionService:PermissionService,
     public messageService: MessageService, private roleService: RolesService) { super(messageService, translates) }
   resources = [
     { name: 'Appointments', actions: ['create', 'view', 'update', 'delete', 'export'] },
@@ -47,6 +48,7 @@ export class AddEditRoleComponent extends BaseComponent implements OnInit {
     { name: 'Products', actions: ['create', 'view', 'update', 'delete', 'adjustmentStock', 'movements', 'Services', 'export'] },
     { name: 'Services', actions: ['create', 'update', 'delete', 'export'] },
     { name: 'Gallary', actions: ['create', 'view', 'update', 'delete'] },
+    { name: 'AIAssistant', actions: [ 'view'] },
     // { name: 'MobileApp', actions: ['create', 'view', 'update', 'delete'] },
     { name: 'SiteSittengs', actions: ['view', 'update', 'Notifications', 'ForbbidenNumber', 'AppointmentsSettings', 'MobilePushNotifications'] },
     { name: 'Notifications', actions: ['create', 'update', 'delete'] },
@@ -65,6 +67,7 @@ export class AddEditRoleComponent extends BaseComponent implements OnInit {
     Products: { create: false, view: false, update: false, delete: false, adjustmentStock: false, movements: false, Services: false, export: false },
     Services: { create: false, update: false, delete: false, export: false },
     Gallary: { create: false, view: false, update: false, delete: false },
+    AIAssistant: {  view: false },
     // MobileApp: { create: false, view: false, update: false, delete: false },
     SiteSittengs: { view: false, update: false, Notifications: false, ForbbidenNumber: false, AppointmentsSettings: false },
     Notifications: { create: false, update: false, delete: false },

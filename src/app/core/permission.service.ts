@@ -21,10 +21,14 @@ export class PermissionService {
   // Check if the user has a specific permission
   hasPermission(resource: string, action: string): boolean {
     if (!this.userPermissions && isSet(this.perv)) {
-      this.userPermissions=this.perv
+      this.userPermissions = this.perv;
+    }
+    // Ensure userPermissions is a valid object before proceeding
+    if (!this.userPermissions || typeof this.userPermissions !== 'object') {
+      return false;
     }
     // Loop over the entries of userPermissions
-    for (const [page, actions] of Object?.entries(this.userPermissions)) {
+    for (const [page, actions] of Object.entries(this.userPermissions)) {
       // Check if the resource (page) matches
       if (page === resource) {
         // Check if the specific action exists and is true
