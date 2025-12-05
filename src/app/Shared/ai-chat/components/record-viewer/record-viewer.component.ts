@@ -17,7 +17,6 @@ interface FieldDisplay {
 })
 export class RecordViewerComponent {
   @Input() data: any;
-  @Input() aiResponseText?: string;
   @Output() recordOpen = new EventEmitter<{ id: number; type: string }>();
 
   getFields(): FieldDisplay[] {

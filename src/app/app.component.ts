@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
 
   ripple: boolean;
   prev: any = localStorage.getItem('prev')
-
+  lang=localStorage.getItem('currentLang')||'en'
   isTabActive = true;
   blinkInterval
 

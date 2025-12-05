@@ -299,72 +299,189 @@
 
 <app-modal [(display)]="toOrderDialog" title="{{'Convert to Order'| translate}}" class="modal-md">
     <div body>
-        <app-input [(ngModel)]="orderNo" name="orderNo" title="{{'Order Number'|translate}}" type="text"></app-input>
-        <table class="py-4">
-            <tr>
-                <th class="px-5">{{'Services Price'|translate}}:</th>
-                <th>{{getTotalPrice().products}} {{getCurrencySymbol(cur.code)}} </th>
-            </tr>
-            <tr>
-                <th class="px-5 py-2" translate> {{'Deposit'|translate}}:</th>
-                <th>{{appointment.deposit}} {{getCurrencySymbol(cur.code)}}</th>
-            </tr>
-            <p-divider></p-divider>
-            <tr>
-                <th class="px-5 py-2" translate> {{'Discount'|translate}}:</th>
-                <th>
-                    <span *ngIf="discountMode =='type'">
-                        <i class="pointer pi pi-money-bill"
-                            (click)="discountMode='price';cashMode=false;appointment.discountType='cash'">
-                        </i>
-                        <span class="px-2">|</span>
-                        <i class="pointer pi pi-percentage"
-                            (click)="discountMode='price';cashMode=false;appointment.discountType='percent'"></i>
-                    </span>
+        <!-- Order Number Card -->
+        <div class="mb-4">
+            <p-card styleClass="shadow-2">
+                <ng-template pTemplate="content">
+                    <div class="flex align-items-center gap-3">
+                        <i class="pi pi-hashtag text-primary text-3xl"></i>
+                        <div class="flex-grow-1">
+                            <app-input [(ngModel)]="orderNo" name="orderNo" title="{{'Order Number'|translate}}" type="text"></app-input>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-card>
+        </div>
 
-                    <span *ngIf="discountMode =='price'">
-                        <p-inputNumber [min]="0" *ngIf="appointment.discountType == 'cash'" name="discount"
-                            [(ngModel)]="appointment.discount" (onFocus)="$event.target.select()"
-                            (keydown)="onKeyEnter($event)" mode="decimal" [minFractionDigits]="2"></p-inputNumber>
+        <!-- Price Summary Card -->
+        <div class="mb-4">
+            <p-card styleClass="shadow-2">
+                <ng-template pTemplate="header">
+                    <div class="flex align-items-center gap-2 px-3 pt-3">
+                        <i class="pi pi-calculator text-primary text-2xl"></i>
+                        <span class="font-bold text-xl" translate>Price Summary</span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="content">
+                    <!-- Services Price -->
+                    <div class="flex justify-content-between align-items-center p-3 border-round mb-2 surface-hover">
+                        <div class="flex align-items-center gap-2">
+                            <i class="pi pi-shopping-bag text-primary"></i>
+                            <span class="font-semibold" translate>Services Price</span>
+                        </div>
+                        <span class="font-bold text-primary text-xl">
+                            {{getTotalPrice().products}} {{getCurrencySymbol(cur.code)}}
+                        </span>
+                    </div>
 
-                        <p-inputNumber [min]="0" *ngIf="appointment.discountType == 'percent'" prefix="%"
-                            name="discount" (keydown)="onKeyEnter($event)" [(ngModel)]="appointment.discount"
-                            [max]="100"></p-inputNumber>
-                    </span>
-                    <span *ngIf="discountMode =='show'" (click)="discountMode ='type'">
-                        <span *ngIf="appointment.discountType =='cash'">
-                            {{appointment.discount}} {{jod}}
+                    <!-- Deposit -->
+                    <div class="flex justify-content-between align-items-center p-3 border-round mb-2 surface-hover">
+                        <div class="flex align-items-center gap-2">
+                            <i class="pi pi-money-bill text-green-500"></i>
+                            <span class="font-semibold" translate>Deposit</span>
+                        </div>
+                        <span class="font-bold text-green-500 text-xl">
+                            {{appointment.deposit}} {{getCurrencySymbol(cur.code)}}
                         </span>
-                        <span *ngIf="appointment.discountType =='percent'">
-                            {{appointment.discount}} %
+                    </div>
+
+                    <p-divider></p-divider>
+
+                    <!-- Discount -->
+                    <div class="flex justify-content-between align-items-center p-3 border-round mb-2 surface-hover">
+                        <div class="flex align-items-center gap-2">
+                            <i class="pi pi-tag text-orange-500"></i>
+                            <span class="font-semibold" translate>Discount</span>
+                        </div>
+                        <div class="flex align-items-center gap-2">
+                            <!-- Type Selection Mode -->
+                            <span *ngIf="discountMode =='type'" class="flex gap-2">
+                                <button pButton pRipple type="button"
+                                    icon="pi pi-money-bill"
+                                    (click)="discountMode='price';cashMode=false;appointment.discountType='cash'"
+                                    class="p-button-rounded p-button-text p-button-lg"
+                                    pTooltip="{{'Cash Discount'|translate}}" tooltipPosition="top"></button>
+                                <button pButton pRipple type="button"
+                                    icon="pi pi-percentage"
+                                    (click)="discountMode='price';cashMode=false;appointment.discountType='percent'"
+                                    class="p-button-rounded p-button-text p-button-lg"
+                                    pTooltip="{{'Percentage Discount'|translate}}" tooltipPosition="top"></button>
+                            </span>
+
+                            <!-- Price Input Mode -->
+                            <span *ngIf="discountMode =='price'" class="flex align-items-center gap-2">
+                                <p-inputNumber *ngIf="appointment.discountType == 'cash'"
+                                    [min]="0"
+                                    name="discount"
+                                    [(ngModel)]="appointment.discount"
+                                    (onFocus)="$event.target.select()"
+                                    (keydown)="onKeyEnter($event)"
+                                    mode="decimal"
+                                    [minFractionDigits]="2"
+                                    styleClass="w-full"
+                                    [suffix]="' ' + getCurrencySymbol(cur.code)"></p-inputNumber>
+
+                                <p-inputNumber *ngIf="appointment.discountType == 'percent'"
+                                    [min]="0"
+                                    prefix="%"
+                                    name="discount"
+                                    (keydown)="onKeyEnter($event)"
+                                    [(ngModel)]="appointment.discount"
+                                    [max]="100"
+                                    styleClass="w-full"></p-inputNumber>
+                            </span>
+
+                            <!-- Show Mode -->
+                            <span *ngIf="discountMode =='show'"
+                                class="font-bold text-orange-500 text-xl cursor-pointer"
+                                (click)="discountMode ='type'"
+                                pTooltip="{{'Click to edit'|translate}}" tooltipPosition="top">
+                                <span *ngIf="appointment.discountType =='cash'">
+                                    {{appointment.discount}} {{getCurrencySymbol(cur.code)}}
+                                </span>
+                                <span *ngIf="appointment.discountType =='percent'">
+                                    {{appointment.discount}} %
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Paid Amount -->
+                    <div class="flex justify-content-between align-items-center p-3 border-round mb-2 surface-hover">
+                        <div class="flex align-items-center gap-2">
+                            <i class="pi pi-wallet text-cyan-500"></i>
+                            <span class="font-semibold" translate>Paid</span>
+                        </div>
+                        <div>
+                            <span *ngIf="!cashMode"
+                                class="font-bold text-cyan-500 text-xl cursor-pointer"
+                                (click)="cashMode=true"
+                                pTooltip="{{'Click to edit'|translate}}" tooltipPosition="top">
+                                {{appointment.cash}} {{getCurrencySymbol(cur.code)}}
+                            </span>
+                            <span *ngIf="cashMode" class="flex align-items-center gap-2">
+                                <input [(ngModel)]="appointment.cash"
+                                    type="number"
+                                    (keydown)="onKeyEnter($event,'cash')"
+                                    placeholder="{{'Enter'|translate}} {{'Cash'|translate}}"
+                                    name="Cash"
+                                    pInputText
+                                    class="text-right" />
+                                <span class="font-semibold">{{getCurrencySymbol(cur.code)}}</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <p-divider></p-divider>
+
+                    <!-- Unpaid Amount (Total) -->
+                    <div class="flex justify-content-between align-items-center p-4 border-round-lg bg-red-50 border-1 border-red-300">
+                        <div class="flex align-items-center gap-2">
+                            <i class="pi pi-exclamation-circle text-red-500 text-2xl"></i>
+                            <span class="font-bold text-lg text-red-700" translate>Unpaid</span>
+                        </div>
+                        <span class="font-bold text-red-600 text-2xl">
+                            {{getTotalPrice().total | number : '1.2-2'}} {{getCurrencySymbol(cur.code)}}
                         </span>
-                    </span>
-                </th>
-            </tr>
-            <tr>
-                <th class="px-5 py-2" translate> {{'Paid'|translate}}:</th>
-                <th>
-                    <span class="pointer" *ngIf="!cashMode" (click)="cashMode=true">
-                        {{appointment.cash}} {{getCurrencySymbol(cur.code)}}</span>
-                    <span *ngIf="cashMode">
-                        <input [(ngModel)]="appointment.cash" type="number" (keydown)="onKeyEnter($event,'cash')"
-                            placeholder="{{'Enter'|translate}} Cash" name="Cash" pInputText />
-                    </span>
-                </th>
-            </tr>
-            <p-divider></p-divider>
-            <tr>
-                <th class="px-5 text-danger">{{'Unpaid'|translate}}:</th>
-                <th>{{getTotalPrice().total | number : '1.2-2'}} {{getCurrencySymbol(cur.code)}}</th>
-            </tr>
-        </table>
-        <app-pay-by *ngIf="toOrderDialog" [(ngModel)]="appointment.payBy"></app-pay-by>
+                    </div>
+                </ng-template>
+            </p-card>
+        </div>
+
+        <!-- Payment Method Card -->
+        <div class="mb-3">
+            <p-card styleClass="shadow-2">
+                <ng-template pTemplate="header">
+                    <div class="flex align-items-center gap-2 px-3 pt-3">
+                        <i class="pi pi-credit-card text-primary text-2xl"></i>
+                        <span class="font-bold text-xl" translate>Payment Method</span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="content">
+                    <app-pay-by *ngIf="toOrderDialog" [(ngModel)]="appointment.payBy"></app-pay-by>
+                </ng-template>
+            </p-card>
+        </div>
 
     </div>
     <div footer>
-        <button (click)="toOrderDialog=false" pButton pRipple type="button" label=" {{'Cancel' |translate}}"
-            icon='pi pi-times {{"css.mr-2"|translate}}' class="p-button-secondary p-button-outlined"></button>
-        <button *ngIf="permissionService.hasPermission('Orders', 'create')" (click)="addOrder()" [disabled]="!appointment.payBy" pButton pRipple type="button" label=" {{'Save' |translate}}"
-            class="p-button-primary"></button>
+        <div class="flex gap-2 justify-content-end">
+            <button (click)="toOrderDialog=false"
+                pButton
+                pRipple
+                type="button"
+                label="{{'Cancel' |translate}}"
+                icon='pi pi-times {{"css.mr-2"|translate}}'
+                class="p-button-secondary p-button-outlined p-button"></button>
+            <button *ngIf="permissionService.hasPermission('Orders', 'create')"
+                (click)="addOrder()"
+                [disabled]="!appointment.payBy"
+                pButton
+                pRipple
+                type="button"
+                label="{{'Save' |translate}}"
+                icon="pi pi-check"
+                class="p-button-success p-button"></button>
+        </div>
     </div>
 </app-modal>

@@ -10,6 +10,11 @@
   border: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
+  &.rtl-position {
+    right: auto;
+    left: 24px;
+  }
+
   &:hover {
     transform: scale(1.1) rotate(5deg);
     box-shadow: 0 6px 28px rgba(0, 122, 217, 0.6);
@@ -40,6 +45,11 @@
     bottom: 16px;
     right: 16px;
 
+    &.rtl-position {
+      right: auto;
+      left: 16px;
+    }
+
     ::ng-deep .pi {
       font-size: 20px;
     }
@@ -52,5 +62,10 @@
     height: 48px;
     bottom: 12px;
     right: 12px;
+
+    &.rtl-position {
+      right: auto;
+      left: 12px;
+    }
   }
 }

@@ -1,6 +1,6 @@
 <p-sidebar
   [(visible)]="visible"
-  position="right"
+  [position]="sidebarPosition"
   [style]="{ width: sidebarWidth + '%', height: '100vh' }"
   [showCloseIcon]="false"
   [modal]="false"
@@ -99,7 +99,6 @@
       <app-record-viewer
         *ngIf="msg.singleData"
         [data]="msg.singleData"
-        [aiResponseText]="msg.content"
       ></app-record-viewer>
     </div>
 

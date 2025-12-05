@@ -26,14 +26,14 @@
     <ng-template pTemplate="header">
       <tr>
         <th *ngFor="let col of columns" [pSortableColumn]="col">
-          {{ col }}
+          {{ col | translate }}
           <p-sortIcon [field]="col"></p-sortIcon>
         </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-row>
       <tr>
-        <td *ngFor="let col of columns">{{ formatValue(row[col]) }}</td>
+        <td *ngFor="let col of columns">{{ formatValue(row[col]) |translate }}</td>
       </tr>
     </ng-template>
     <ng-template pTemplate="emptymessage">
@@ -73,7 +73,7 @@
     <ng-template pTemplate="header">
       <tr>
         <th *ngFor="let col of columns" [pSortableColumn]="col">
-          {{ col }}
+          {{ col |translate}}
           <p-sortIcon [field]="col"></p-sortIcon>
         </th>
       </tr>

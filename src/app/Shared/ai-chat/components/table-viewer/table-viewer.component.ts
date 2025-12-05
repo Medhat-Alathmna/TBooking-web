@@ -5,11 +5,12 @@ import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { TooltipModule } from 'primeng/tooltip';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-table-viewer',
   standalone: true,
-  imports: [CommonModule, TableModule, CardModule, ButtonModule, DialogModule, TooltipModule],
+  imports: [CommonModule, TableModule, CardModule, ButtonModule, DialogModule, TooltipModule,TranslateModule],
   templateUrl: './table-viewer.component.html',
   styleUrls: ['./table-viewer.component.scss']
 })
@@ -17,7 +18,7 @@ export class TableViewerComponent implements OnInit {
   @Input() data: any[] = [];
   columns: string[] = [];
   showPreview = false;
-
+  constructor(public translate: TranslateService) { }
   ngOnInit() {
     if (this.data && this.data.length > 0) {
       // Extract columns from first row, excluding 'id' and objects/arrays

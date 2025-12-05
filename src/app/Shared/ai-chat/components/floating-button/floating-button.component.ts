@@ -15,8 +15,13 @@ import { PrimengComponentsModule } from 'src/app/primeng-components.module';
 })
 export class FloatingChatButtonComponent {
   unreadCount = 0;
+  isRTL = false;
 
-  constructor(private chatService: AiChatService) {}
+  constructor(private chatService: AiChatService) {
+    // Determine direction based on language
+    const currentLang = localStorage.getItem('currentLang') || 'en';
+    this.isRTL = (currentLang === 'ar');
+  }
 
   toggleChat(): void {
     this.chatService.toggleSidebar();

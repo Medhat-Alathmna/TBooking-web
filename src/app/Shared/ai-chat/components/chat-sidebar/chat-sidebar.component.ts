@@ -44,6 +44,7 @@ export class ChatSidebarComponent implements OnInit, OnDestroy {
   message = '';
   messages: ChatMessage[] = [];
   loading = false;
+  sidebarPosition: 'left' | 'right' = 'right';
 
   // Suggestion prompts
   suggestions = [
@@ -51,7 +52,7 @@ export class ChatSidebarComponent implements OnInit, OnDestroy {
       category: 'Analytics & Reports',
       icon: 'pi-chart-bar',
       prompts: [
-        'Show chart for total sales in last 7 days',
+        'Show chart for total cash sales in last 7 days',
         'What are the most requested services this month?',
         'Give me a report of pending orders',
         'Total revenue this month'
@@ -98,6 +99,10 @@ export class ChatSidebarComponent implements OnInit, OnDestroy {
   constructor(private chatService: AiChatService) {}
 
   ngOnInit(): void {
+    // Determine sidebar position based on language direction
+    const currentLang = localStorage.getItem('currentLang') || 'en';
+    this.sidebarPosition = (currentLang === 'ar') ? 'left' : 'right';
+
     // Listen to sidebar state
     this.chatService.sidebarOpen$
       .pipe(takeUntil(this.destroy$))
