@@ -45,7 +45,7 @@ export class ChatSidebarComponent implements OnInit, OnDestroy {
   messages: ChatMessage[] = [];
   loading = false;
   sidebarPosition: 'left' | 'right' = 'right';
-
+  lang=localStorage.getItem('currentLang')
   // Suggestion prompts
   suggestions = [
     {

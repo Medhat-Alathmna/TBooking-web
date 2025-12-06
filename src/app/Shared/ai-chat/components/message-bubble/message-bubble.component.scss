@@ -1,27 +1,30 @@
 .message-bubble {
   display: flex !important;
   flex-direction: column;
-  max-width: 75%;
+  max-width: 100%;
+  width: 100%;
   animation: slideIn 0.3s ease-out;
 
   &.user {
-    align-self: flex-end;
+    align-items: flex-end;
 
     .bubble-content {
       background: linear-gradient(135deg, #007ad9, #00bcd4);
       color: white;
       border-radius: 18px 18px 4px 18px;
+      max-width: 85%;
     }
   }
 
   &.assistant {
-    align-self: flex-start;
+    align-items: flex-start;
 
     .bubble-content {
       background: white;
       color: #333;
       border-radius: 18px 18px 18px 4px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      max-width: 85%;
     }
   }
 
@@ -65,6 +68,14 @@
       color: #007ad9;
     }
   }
+
+  &.user .tools-used {
+    justify-content: flex-end;
+  }
+
+  &.assistant .tools-used {
+    justify-content: flex-start;
+  }
 }
 
 @keyframes slideIn {
@@ -80,6 +91,15 @@
 
 @media (max-width: 768px) {
   .message-bubble {
-    max-width: 85%;
+    max-width: 100%;
+    width: 100%;
+
+    &.user .bubble-content {
+      max-width: 90%;
+    }
+
+    &.assistant .bubble-content {
+      max-width: 90%;
+    }
   }
 }

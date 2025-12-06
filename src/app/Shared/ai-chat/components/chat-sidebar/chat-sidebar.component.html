@@ -50,7 +50,8 @@
   </div>
 
   <!-- Messages Area -->
-  <div class="chat-messages p-3" #messagesContainer>
+  <div [style.direction]="lang=='ar'?'ltr':'rtl'"
+   class="chat-messages p-3" #messagesContainer>
     <div *ngIf="messages.length === 0" class="empty-state">
       <div class="welcome-section">
         <i class="pi pi-sparkles welcome-icon"></i>

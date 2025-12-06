@@ -3,7 +3,7 @@
     <p class="message-text">{{ message.content }}</p>
     <small class="message-time">{{ message.timestamp | date: 'shortTime' }}</small>
   </div>
-  <div *ngIf="message.toolsUsed?.length" class="tools-used">
+  <div  *ngIf="message.toolsUsed?.length" class="tools-used">
     <p-chip
       *ngFor="let tool of message.toolsUsed"
       [label]="getToolLabel(tool)"
